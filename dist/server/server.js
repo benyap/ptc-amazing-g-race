@@ -1,5 +1,9 @@
 "use strict";
 
+var _path = require("path");
+
+var _path2 = _interopRequireDefault(_path);
+
 var _express = require("express");
 
 var _express2 = _interopRequireDefault(_express);
@@ -51,14 +55,30 @@ if (process.env.NODE_ENV === 'development') {
 var busboyBodyParser = require('busboy-body-parser');
 app.use(busboyBodyParser());
 
+// Serve static files
+app.use(_express2.default.static('public'));
+
 // Allow CORS
 app.use((0, _cors2.default)());
 
 // =========
 //	ROUTING
 // =========
-app.all('*', function (req, res) {
-	res.send('Hello World!');
+
+// Route to API
+// app.use('/api', grpahqlapi.router);
+app.use('/api', function (req, res) {
+	res.send('API');
+});
+
+// Return the admin page
+app.use('/admin', function (req, res) {
+	res.sendFile(_path2.default.resolve(__dirname, '..', '..', 'public', 'admin.html'));
+});
+
+// Always return the main index.html, so react-router render the route in the client
+app.get('*', function (req, res) {
+	res.sendFile(_path2.default.resolve(__dirname, '..', '..', 'public', 'index.html'));
 });
 
 // ==========

@@ -1,6 +1,7 @@
 require("babel-core/register");
 require("babel-polyfill");
 
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -38,6 +39,9 @@ if (process.env.NODE_ENV === 'development') {
 let busboyBodyParser = require('busboy-body-parser');
 app.use(busboyBodyParser());
 
+// Serve static files
+app.use(express.static('public'));
+
 // Allow CORS
 app.use(cors());
 
@@ -45,8 +49,21 @@ app.use(cors());
 // =========
 //	ROUTING
 // =========
-app.all('*', (req, res) => {
-	res.send('Hello World!');
+
+// Route to API
+// app.use('/api', grpahqlapi.router);
+app.use('/api', (req, res) => {
+	res.send('API');
+});
+
+// Return the admin page
+app.use('/admin', (req, res) => {
+	res.sendFile(path.resolve(__dirname, '..', '..', 'public', 'admin.html'));
+});
+
+// Always return the main index.html, so react-router render the route in the client
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', '..', 'public', 'index.html'));
 });
 
 
