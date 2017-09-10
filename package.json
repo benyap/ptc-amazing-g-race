@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Power To Change - The Amazing G-Race",
   "main": "src/server/server.js",
+  "engines": {
+    "node": "8.2.1",
+    "npm": "5.3.0"
+  },
   "scripts": {
     "server:build": "./node_modules/.bin/gulp build",
     "server:start": "./node_modules/.bin/gulp build; concurrently -k \"nodemon dist/server/server.js\" \"gulp watch\"",
