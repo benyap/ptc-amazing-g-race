@@ -6,6 +6,7 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import db from './db';
+import graphqlapi from './graphql-api';
 
 
 // ====================
@@ -51,10 +52,7 @@ app.use(cors());
 // =========
 
 // Route to API
-// app.use('/api', grpahqlapi.router);
-app.use('/api', (req, res) => {
-	res.send('API');
-});
+app.use('/api', graphqlapi.router);
 
 // Return the admin page
 app.use('/admin', (req, res) => {

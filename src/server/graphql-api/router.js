@@ -7,9 +7,9 @@ const router = express.Router();
 
 
 // Use authentication middleware
-// router.use(authentication);
+router.use(authentication);
 
-router.use('/api/graphql', graphqlRoutes);
+router.use('/graphql', graphqlRoutes);
 
 
 export default router;
