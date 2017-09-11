@@ -44,10 +44,27 @@ const getSettings = {
 	resolve(root, params, ctx, options) {
 		return resolvers.settingResolver.getSettings(root, params, ctx, options);
 	}
+};
+
+
+const getPublicSetting = {
+	type: types.settingType,
+	description: 'Get a public setting',
+	args: {
+		key: {
+			name: 'key',
+			description: 'The setting key (name)',
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.settingResolver.getPublicSetting(root, params, ctx, options);
+	}
 }
 
 
 export default {
 	getSetting,
+	getPublicSetting,
 	getSettings
 };

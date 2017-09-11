@@ -4,6 +4,7 @@ import {
 	GraphQLString,
 	GraphQLID,
 	GraphQLInt,
+	GraphQLBoolean,
 	GraphQLList,
 	GraphQLEnumType
 } from 'graphql';
@@ -23,6 +24,10 @@ const settingType = new GraphQLObjectType({
 		key: {
 			type: new GraphQLNonNull(GraphQLString),
 			description: 'The name of the setting'
+		},
+		public: {
+			type: new GraphQLNonNull(GraphQLBoolean),
+			description: 'True if this setting is available to the public'
 		},
 		valueType: {
 			type: new GraphQLEnumType({
