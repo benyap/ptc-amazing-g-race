@@ -16,11 +16,11 @@ import mutations from './mutations';
 		description: 'Database queries that do not mutate the database',
 		fields: queries
 	}),
-	// mutation: new GraphQLObjectType({
-	// 	name: 'Mutation',
-	// 	description: 'Database mutations',
-	// 	fields: mutations
-	// })
+	mutation: new GraphQLObjectType({
+		name: 'Mutation',
+		description: 'Database mutations',
+		fields: mutations
+	})
 });
 
 
