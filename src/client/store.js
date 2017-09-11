@@ -78,7 +78,7 @@ networkInterface.use([{
 		if (!req.options.headers) {
 			req.options.headers = {};
 		}
-		req.options.headers['authorization'] = store.getState().auth.tokens.access;
+		req.options.headers['authorization'] = 'Bearer ' + store.getState().auth.tokens.access;
 		next();
 	}
 }]);
