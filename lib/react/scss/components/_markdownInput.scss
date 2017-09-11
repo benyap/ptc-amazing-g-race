@@ -1,0 +1,12 @@
+.markdown {
+	width: 100%;
+	
+	&.input {
+		textarea {
+			width: 100%;
+			min-height: 25rem;
+			font-size: 0.9rem;
+			font-family: monospace;
+		}
+	}
+}

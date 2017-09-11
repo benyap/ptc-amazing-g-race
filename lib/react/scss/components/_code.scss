@@ -1,0 +1,14 @@
+@import '../../../../lib/prismjs/prism.css';
+
+.code {
+	$background-color: #F4F8FF;
+	
+	pre {
+		overflow-x: scroll;
+		border: none;
+		background-color: $background-color;
+	}
+	pre span.token {
+		background-color: $background-color;
+	}
+}

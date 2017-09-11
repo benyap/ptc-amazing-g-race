@@ -326,6 +326,7 @@ const registerUser = async function(user, {firstname, lastname, username, studen
 			email: email.toLowerCase(),
 			mobileNumber: mobileNumber,
 			enabled: true,
+			isAdmin: false,
 			paid: false,
 			raceDetails: {
 				publicTransport, smartphone, friends

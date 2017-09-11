@@ -1,15 +1,15 @@
 import 'babel-polyfill';
 import React from 'react';
-import { Provider } from 'react-redux';
+import { ApolloProvider } from 'react-apollo';
 import ReactDOM from 'react-dom';
-// import Root from './react/Root';
-// import store from './store';
+import AdminRoot from './react/AdminRoot';
+import store, { apolloClient } from './store';
+
 
 let root = (
-	// <Provider store={store}>
-	// 	<Root/>
-	// </Provider>
-	<div>Hello Admin!</div>
+	<ApolloProvider store={store} client={apolloClient}>
+		<AdminRoot/>
+	</ApolloProvider>
 );
 
 ReactDOM.render(root, document.getElementById('root'));

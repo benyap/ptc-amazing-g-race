@@ -6,6 +6,11 @@ const login = function(root, params, ctx, options) {
 	return database.auth.login(ctx.user, params.email, params.password);
 }
 
+// Login administrator 
+const adminLogin = function(root, params, ctx, options) {
+	return database.auth.adminLogin(ctx.user, params.email, params.password);
+}
+
 // Refresh token
 const refresh = function(root, params, ctx, options) {
 	return database.auth.refresh(ctx.user, params.refreshToken);
@@ -29,6 +34,7 @@ const authenticate = function(root, params, ctx, options) {
 
 export default {
 	login,
+	adminLogin,
 	refresh,
 	logout,
 	changePassword,
