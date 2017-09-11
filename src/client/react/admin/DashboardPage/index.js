@@ -20,7 +20,7 @@ class DashboardPage extends React.Component {
 
 				<AdminNavbar/>
 				<main id='admin-dashboard'>
-					<h2 class='heading'>Administrator Dashboard</h2>
+					<h2 style={{margin: '1rem 0.6rem'}}>Administrator Dashboard</h2>
 					<AdminDashboard/>
 				</main>
 			</div>

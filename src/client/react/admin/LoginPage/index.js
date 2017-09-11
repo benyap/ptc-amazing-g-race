@@ -6,8 +6,13 @@ import { loginAdmin } from '../../../actions/authActions';
 import LoginForm from '../../../../../lib/react/components/forms/LoginForm';
 import Authenticated from '../../../../../lib/react/components/utility/Authenticated';
 import Redirector from './Redirector';
-import '../../scss/admin/_login.scss';
 
+
+const titleStyle = {
+	marginTop: '16vh',
+	marginBottom: '5vh',
+	textAlign: 'center'
+}
 
 @autobind
 class LoginPage extends React.Component {
@@ -41,8 +46,8 @@ class LoginPage extends React.Component {
 		return (
 			<div>
 				<main id='admin-login'>
-					<p class='header'>The Amazing GRace</p>
-					<h2 class='title'>Administrator Login</h2>
+					<p style={{margin: '1rem'}}>The Amazing GRace</p>
+					<h2 style={titleStyle}>Administrator Login</h2>
 
 					<Authenticated>
 						<Redirector/>

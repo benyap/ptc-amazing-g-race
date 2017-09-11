@@ -6,8 +6,6 @@ import DateFormat from 'dateformat';
 import ViewError from '../ViewError';
 import UserCard from './UserCard';
 
-import '../../scss/admin/_users-view.scss';
-
 
 const QueryUsers = gql`
 query ListAll($limit:Int, $skip:Int){
@@ -83,11 +81,11 @@ class UsersView extends React.Component {
 			else {
 				content = (
 					<div>
-						<div class='view-header'>
+						<div className='view-header'>
 							<p>Fetched: {this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
 							<Button text='Refresh' iconName='refresh' onClick={this.refetchUsers} loading={this.loading}/>
 						</div>
-						<div class='view-list'>
+						<div className='view-list'>
 							{listAll.map((user) => {
 								return (
 									<UserCard key={user.email} user={user}/>
@@ -100,7 +98,7 @@ class UsersView extends React.Component {
 		}
 
 		return (
-			<div id='dashboard-users' class='dashboard-tab'>
+			<div id='dashboard-users' className='dashboard-tab'>
 				<h4>Users</h4>
 				{content}
 			</div>

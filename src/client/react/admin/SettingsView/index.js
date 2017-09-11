@@ -6,8 +6,6 @@ import DateFormat from 'dateformat';
 import Setting from './Setting';
 import ViewError from '../ViewError';
 
-import '../../scss/admin/_settings-view.scss';
-
 
 const QuerySettings = gql`
 query GetSettings($skip:Int,$limit:Int){
@@ -69,11 +67,11 @@ class Settings extends React.Component {
 			else {
 				content = (
 					<div>
-						<div class='view-header'>
+						<div className='view-header'>
 							<p>Fetched: {this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
 							<Button text='Refresh' iconName='refresh' onClick={this.refetchSettings} loading={this.loading}/>
 						</div>
-						<div class='view-list'>
+						<div className='view-list'>
 							{getSettings.map((setting) => {
 								return <Setting key={setting.key} name={setting.key} value={setting.value} values={setting.values} 
 								modified={setting.modified} modifiedBy={setting.modifiedBy} valueType={setting.valueType}/>;
@@ -85,7 +83,7 @@ class Settings extends React.Component {
 		}
 
 		return (
-			<div id='dashboard-settings' class='dashboard-tab'>
+			<div id='dashboard-settings' className='dashboard-tab'>
 				<h4>Server State Settings</h4>
 				<div className='pt-callout pt-intent-warning pt-icon-warning-sign'>
 					<h5>Warning</h5>

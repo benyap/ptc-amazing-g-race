@@ -60,7 +60,7 @@ class SecondaryNavigation extends React.Component {
 	render() {
 		if (this.props.authenticated) {
 			return (
-				<div className='settings'>
+				<div style={{marginRight: '0.5rem'}}>
 					<MenuButton minimal loading={this.state.loading} iconName='cog' menu={
 						<SettingsMenu handleLogout={this.logout}/>
 					}/>

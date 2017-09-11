@@ -108,7 +108,7 @@ class Setting extends React.Component {
 		let { name, value, valueType, modified, modifiedBy } = this.props;
 
 		return (
-			<div id={name} class='pt-card pt-elevation-0 pt-interactive' onClick={this.handleClick(name, value, valueType)}>
+			<div id={name} className='pt-card pt-elevation-0 pt-interactive' onClick={this.handleClick(name, value, valueType)}>
 				<h5><code>{name}</code></h5>
 				{value ? 
 					<p><b>Value: </b> {value}</p>:
