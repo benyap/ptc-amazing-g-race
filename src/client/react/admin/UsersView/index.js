@@ -4,6 +4,7 @@ import { gql, graphql } from 'react-apollo';
 import { Spinner, Button } from '@blueprintjs/core';
 import DateFormat from 'dateformat';
 import ViewError from '../ViewError';
+import UserCard from './UserCard';
 
 import '../../scss/admin/_users-view.scss';
 
@@ -89,7 +90,7 @@ class UsersView extends React.Component {
 						<div class='view-list'>
 							{listAll.map((user) => {
 								return (
-									<div>{user.email}</div>
+									<UserCard key={user.email} user={user}/>
 								);
 							})}
 						</div>
