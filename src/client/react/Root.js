@@ -28,6 +28,8 @@ const QueryRaceStateOptions = {
 @graphql(QueryRaceState, QueryRaceStateOptions)
 class Root extends React.Component {
 	render() {
+		return <Promotion/>;
+		
 		if (!this.props.QueryRaceState.loading) {
 			switch(this.props.QueryRaceState.getPublicSetting.value) {
 				// Render the site according to the state of the race as determined by backend
