@@ -1,34 +1,62 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { FocusStyleManager } from "@blueprintjs/core";
+import { gql, graphql } from 'react-apollo';
+import { LoadingPage, FallbackPage } from './pages';
+import Promotion from './stages/Promotion';
 
 import './scss/main.scss';
 import AppContainer from '../../../lib/react/components/AppContainer';
 
-import { 
-	HomePage, 
-	NotFoundPage
-} from './pages';
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
+const QueryRaceState = gql`
+query GetPublicSetting($key:String!){
+  getPublicSetting(key:$key) {
+    value
+  }
+}`
 
+const QueryRaceStateOptions = {
+	name: 'QueryRaceState',
+	options: {
+		variables: { key: 'race_state' }
+	}
+}
+
+
+@graphql(QueryRaceState, QueryRaceStateOptions)
 class Root extends React.Component {
 	render() {
-		return (
-			<BrowserRouter>
-				<AppContainer>
-					<Switch>
-						{/* Paths */}
-						<Route exact path='/'><Redirect to='/home'/></Route>
-						<Route exact path='/home' render={HomePage}/>
+		if (!this.props.QueryRaceState.loading) {
+			switch(this.props.QueryRaceState.getPublicSetting.value) {
+				// Render the site according to the state of the race as determined by backend
+				case 'rego_not_open': {
+					return <Promotion/>;
+				}
+				case 'rego_open': {
 
-						{/* Not found page */}
-						<Route component={NotFoundPage}/>
-					</Switch>
-				</AppContainer>
-			</BrowserRouter>
-		);
+				}
+				case 'rego_closed': {
+
+				}
+				case 'pre_race': {
+
+				}
+				case 'race': {
+
+				}
+				case 'post_race': {
+
+				}
+				case 'closed': {
+
+				}
+			}
+		}
+		else {
+			return <LoadingPage/>;
+		}
 	}
 }
 
