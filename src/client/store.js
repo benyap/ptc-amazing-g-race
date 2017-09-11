@@ -1,22 +1,36 @@
 import { applyMiddleware, createStore } from 'redux';
 import { createLogger } from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { ApolloClient, createNetworkInterface } from 'react-apollo';
 import promise from 'redux-promise-middleware';
 import thunk from 'redux-thunk';
 
 import * as storage from 'redux-storage';
 import createEngine from 'redux-storage-engine-localforage';
 import { saveWhitelist, loadWhitelist } from './actions/whitelist';
-
+import API from './API';
 import reducers from './reducers';
 import { DEBUG } from './global.config';
+
+
+// ======================
+//  Create Apollo Client
+// ======================
+
+const networkInterface = createNetworkInterface({
+	uri: API.api
+});
+
+const apolloClient = new ApolloClient({
+	networkInterface
+});
 
 
 // ======================
 //  REDUX-STORAGE CONFIG
 // ======================
 
-const reducersWithStorage = storage.reducer(reducers);
+const reducersWithStorage = storage.reducer(reducers(apolloClient));
 const engine = createEngine('ptc-amazing-g-race');
 
 // Save storage middleware
@@ -43,7 +57,7 @@ let store;
 
 if (DEBUG) {
 	// Add logger and redux dev tools in debug mode
-	middleware = applyMiddleware(loadStorageMiddleware, promise(), thunk, createLogger(), saveStorageMiddleware);
+	middleware = applyMiddleware(apolloClient.middleware(), loadStorageMiddleware, promise(), thunk, createLogger(), saveStorageMiddleware);
 	store = createStore(reducersWithStorage, composeWithDevTools(middleware));
 }
 else {
@@ -53,8 +67,22 @@ else {
 
 // Load store
 load(store);
-	// .then((newState) => console.log('Loaded state:', newState))
-	// .catch(() => console.log('Failed to load previous state'));
+
+
+// ========================================
+//  ADD AUTHORIZATION TO NETWORK INTERFACE
+// ========================================
+
+networkInterface.use([{
+	applyMiddleware(req, next) {
+		if (!req.options.headers) {
+			req.options.headers = {};
+		}
+		req.options.headers['authorization'] = store.getState().auth.tokens.access;
+		next();
+	}
+}]);
 
 
 export default store;
+export { apolloClient };
