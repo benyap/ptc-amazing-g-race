@@ -42,7 +42,7 @@ class LoginPage extends React.Component {
 			<div>
 				<main id='admin-login'>
 					<p class='header'>The Amazing GRace</p>
-					<h1 class='title'>Administrator Login</h1>
+					<h2 class='title'>Administrator Login</h2>
 
 					<Authenticated>
 						<Redirector/>
