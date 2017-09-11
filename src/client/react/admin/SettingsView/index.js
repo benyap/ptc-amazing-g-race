@@ -86,7 +86,7 @@ class Settings extends React.Component {
 
 		return (
 			<div id='dashboard-settings' class='dashboard-tab'>
-				<h4>Settings</h4>
+				<h4>Server State Settings</h4>
 				<div className='pt-callout pt-intent-warning pt-icon-warning-sign'>
 					<h5>Warning</h5>
 					Do not modify these settings unless you know what you are doing.
