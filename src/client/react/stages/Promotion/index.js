@@ -5,7 +5,7 @@ import { NotFoundPage } from '../../pages';
 import Home from './Home';
 
 
-class Promo extends React.Component {
+class Promotion extends React.Component {
 	render() {
 		return (
 			<BrowserRouter>
@@ -24,4 +24,4 @@ class Promo extends React.Component {
 }
 
 
-export default Promo;
+export default Promotion;
