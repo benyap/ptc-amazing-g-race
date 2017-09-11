@@ -38,9 +38,6 @@ class LoginPage extends React.Component {
 	}
 
 	render() {
-		if (this.props.authenticated) {
-
-		}
 		return (
 			<div>
 				<main id='admin-login'>

@@ -1,6 +1,11 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
 import Authenticated from '../../../../../lib/react/components/utility/Authenticated';
+import Kick from './Kick';
+import AdminDashboard from './AdminDashboard';
+import AdminNavbar from '../AdminNavbar';
+
+import '../../scss/admin/_dashboard.scss';
 
 
 @autobind
@@ -8,8 +13,15 @@ class DashboardPage extends React.Component {
 	render() {
 		return (
 			<div>
-				<main id='admin-login'>
-					<h1>Administrator Dashboard</h1>
+				{/* Kick the user if an admin is not logged in */}
+				<Authenticated isAdmin>
+					<Kick/>
+				</Authenticated>
+
+				<AdminNavbar/>
+				<main id='admin-dashboard'>
+					<h2 class='heading'>Administrator Dashboard</h2>
+					<AdminDashboard/>
 				</main>
 			</div>
 		);
