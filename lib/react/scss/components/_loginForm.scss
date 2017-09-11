@@ -1,0 +1,19 @@
+.login{
+	&.form {
+		margin: 0 auto;
+		max-width: 16rem;
+		
+		@media (min-width: 641px) {
+			max-width: 20rem;
+		}
+
+		.remember-checkbox {
+			margin-top: 0.5rem;
+			margin-bottom: 2rem;
+		}
+
+		.pt-callout {
+			margin-bottom: 0.6rem;
+		}
+	}
+}

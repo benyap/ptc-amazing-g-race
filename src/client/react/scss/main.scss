@@ -1,0 +1,16 @@
+// 30 Aug 2017
+// FIX for broken blueprintjs icon 
+// npm install bourbon --save
+$icon-font-path: "~@blueprintjs/core/resources/icons";
+
+// Import blueprintjs styles
+@import "~@blueprintjs/core/src/blueprint.scss";
+
+html, body {
+	min-width: 320px;
+	font-weight: 200;
+
+	margin: 0;
+	width: 100%;
+	height: 100%;
+}

@@ -1,0 +1,73 @@
+.markdown {
+	width: 100%;
+
+	&.output {
+		h1, h2, h3, h4, h5, h6 {
+			margin-top: 1.5rem;
+			margin-bottom: 0.8rem;
+		}
+		
+		h1, h2 {
+			padding-bottom: 0.7rem;
+			border-bottom: 1px solid lightgray;
+		}
+
+		h6 {
+			color: #6a737d;
+		}
+
+		// Youtube video embed
+		.youtube {
+			width: 100%;
+			height: 100%;
+			@media (min-width: 567px) {
+				width: 480px;
+				height: 270px;
+			}
+			@media (min-width: 800px) {
+				width: 720px;
+				height: 405px;
+			}
+		}
+
+		hr {
+			border-bottom: 2px solid lightgray;
+		}
+
+		table {
+			$border-width: 1px;
+			$border-colour: lightgray;
+
+			margin: 1rem 0;
+			border: $border-width solid $border-colour;
+			border-collapse: collapse; 
+			
+			thead tr th {
+				border-bottom: $border-width solid $border-colour; 
+				border-right: $border-width solid $border-colour; 
+				border-spacing: 0;
+				padding: 0.5rem;
+			}
+
+			tbody tr {
+				td {
+					border-right: $border-width solid $border-colour; 
+					border-spacing: 0;
+					padding: 0.5rem;
+				}
+
+				&:not(:last-child) {
+					td {
+						border-bottom: $border-width solid $border-colour;
+					}
+				}
+
+				&:nth-child(2n + 1) {
+					td {
+						background-color: #F5F5F5;
+					}
+				}
+			}
+		}
+	}
+}
