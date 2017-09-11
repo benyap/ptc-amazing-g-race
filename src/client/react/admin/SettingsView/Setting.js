@@ -63,7 +63,8 @@ class Setting extends React.Component {
 				editDialogOpen: !prevState.editDialogOpen,
 				editKey: prevState.editDialogOpen ? 'null' : name,
 				editValue: prevState.editDialogOpen ? 'null' : value,
-				editValueType: prevState.editDialogOpen ? 'null' : valueType
+				editValueType: prevState.editDialogOpen ? 'null' : valueType,
+				editError: false
 			}
 		});
 	}
@@ -79,7 +80,7 @@ class Setting extends React.Component {
 			if (isNaN(parseInt(this.state.editValue))) {
 				this.setState({
 					editError: true,
-					editErrorText: 'Invalid value'
+					editErrorText: 'Invalid value.'
 				});
 				return;
 			}
@@ -99,8 +100,8 @@ class Setting extends React.Component {
 			return;
 		}
 
-		if (this.state.editError) this.setState({editError: false});
-		this.setState({editLoading: false});
+
+		this.setState({editLoading: false, editError: false});
 		this.toggleDialog();
 	}
 

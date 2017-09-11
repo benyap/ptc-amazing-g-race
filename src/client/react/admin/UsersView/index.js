@@ -54,6 +54,9 @@ class UsersView extends React.Component {
 		this.props.QueryUsers.refetch()
 			.then(() => {
 				this.setState({loading: false});
+			})
+			.catch(() => {
+				this.setState({loading: false});
 			});
 	}
 

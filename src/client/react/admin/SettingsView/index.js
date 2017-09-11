@@ -40,6 +40,9 @@ class Settings extends React.Component {
 		this.props.QuerySettings.refetch()
 			.then(() => {
 				this.setState({loading: false});
+			})
+			.catch(() => {
+				this.setState({loading: false});
 			});
 	}
 
