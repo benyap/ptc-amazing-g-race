@@ -52,6 +52,7 @@ class Root extends React.Component {
 				case 'closed': {
 
 				}
+				default: return null;
 			}
 		}
 		else {

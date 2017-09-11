@@ -3,7 +3,7 @@ import { FocusStyleManager } from "@blueprintjs/core";
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import LoginPage from './admin/LoginPage';
-import DashbaordPage from './admin/DashboardPage';
+import DashboardPage from './admin/DashboardPage';
 import { NotFoundPage } from './pages';
 import AppContainer from '../../../lib/react/components/AppContainer';
 import './scss/admin.scss';
@@ -19,7 +19,7 @@ class AdminRoot extends React.Component {
 					<Switch>
 						
 						<Route exact path='/admin' component={LoginPage}/>
-						<Route exact path='/admin/dashboard' component={DashbaordPage}/>
+						<Route exact path='/admin/dashboard' component={DashboardPage}/>
 						
 						<Route component={NotFoundPage}/>
 						
