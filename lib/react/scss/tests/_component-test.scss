@@ -1,0 +1,22 @@
+.test-component-container {
+	padding: 1rem;
+	padding-bottom: 0;
+	
+	.test-component-unit {
+		margin: 1rem 0;
+
+		.subtitle {
+			margin-top: -0.6rem;
+			margin-bottom: 0.5rem;
+		}
+
+		.pt-button-group {
+			margin: 0.5rem 0;
+		}
+
+		.authenticated-wrapper {
+			border: solid 1px gray;
+			padding: 0.3rem;
+		}
+	}
+}

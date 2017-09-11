@@ -1,0 +1,20 @@
+.markdown {
+	&.editor {
+		.pt-tab-list {
+			background-color: #EFEFEF;
+			padding: 0.5rem;
+			border-radius: 0.3rem;
+
+			.pt-tab {
+				margin-left: 1rem;
+				margin-right: 0;
+			}
+		}
+
+		.heading {
+			font-size: 1rem;
+			font-weight: bold;
+			margin: auto;
+		}
+	}
+}
