@@ -342,7 +342,8 @@ const registerUser = async function(user, {firstname, lastname, username, studen
 		const newUserAuthentication = {
 			username: username.toLowerCase(),
 			email: email.toLowerCase(),
-			password: hash
+			password: hash,
+			isAdmin: false
 		};
 		
 		// Save user details
