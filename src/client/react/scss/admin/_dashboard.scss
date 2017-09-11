@@ -41,5 +41,27 @@
 			}
 		}
 
+		.pt-non-ideal-state {
+			margin-top: 10vh;
+		}
+
+		.view-list {
+			.pt-card {
+				margin-bottom: 1rem;
+				padding: 1rem;
+				background-color: #FAFAFA;
+			}
+		}
+	
+		.view-header {
+			display: flex;
+			margin: 0.5rem 0;
+			justify-content: space-between;
+	
+			p {
+				margin: auto 0;
+				color: gray;
+			}
+		}	
 	}
 }

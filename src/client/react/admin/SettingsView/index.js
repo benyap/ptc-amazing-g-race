@@ -4,6 +4,7 @@ import { gql, graphql } from 'react-apollo';
 import { Spinner, Button } from '@blueprintjs/core';
 import DateFormat from 'dateformat';
 import Setting from './Setting';
+import ViewError from '../ViewError';
 
 import '../../scss/admin/_settings-view.scss';
 
@@ -29,7 +30,6 @@ const QuerySettingsOptions = {
 	}
 }
 
-
 @graphql(QuerySettings, QuerySettingsOptions)
 @autobind
 class Settings extends React.Component {
@@ -47,8 +47,9 @@ class Settings extends React.Component {
 
 	render() {
 		let content = null;
+		let { loading, error, getSettings } = this.props.QuerySettings;
 
-		if (this.props.QuerySettings.loading || this.state.loading) {
+		if (loading || this.state.loading) {
 			content = (
 				<div className='loading-spinner'>
 					<Spinner/>
@@ -61,20 +62,26 @@ class Settings extends React.Component {
 				this.lastFetch = new Date();
 				this.loading = false;
 			}
-			content = (
-				<div>
-					<div class='settings-header'>
-						<p>Fetched: {this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
-						<Button text='Refresh' iconName='refresh' onClick={this.refetchSettings} loading={this.loading}/>
+
+			if (error) {
+				content = <ViewError error={error}/>
+			}
+			else {
+				content = (
+					<div>
+						<div class='view-header'>
+							<p>Fetched: {this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
+							<Button text='Refresh' iconName='refresh' onClick={this.refetchSettings} loading={this.loading}/>
+						</div>
+						<div class='view-list'>
+							{getSettings.map((setting) => {
+								return <Setting key={setting.key} name={setting.key} value={setting.value} values={setting.values} 
+								modified={setting.modified} modifiedBy={setting.modifiedBy} valueType={setting.valueType}/>;
+							})}
+						</div>
 					</div>
-					<div class='setting-list'>
-						{this.props.QuerySettings.getSettings.map((setting) => {
-							return <Setting key={setting.key} name={setting.key} value={setting.value} values={setting.values} 
-							modified={setting.modified} modifiedBy={setting.modifiedBy} valueType={setting.valueType}/>;
-						})}
-					</div>
-				</div>
-			);
+				);
+			}
 		}
 
 		return (
