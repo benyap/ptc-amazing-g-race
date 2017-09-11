@@ -15,7 +15,7 @@ class Promo extends React.Component {
 						<Route exact path='/' component={Home}/>
 
 						<Route component={NotFoundPage}/>
-						
+
 					</Switch>
 				</AppContainer>
 			</BrowserRouter>

@@ -3,7 +3,8 @@ const initialState = {
 	authenticated: false,
 	remember: false,
 	lastLogin: null,
-	lastLogout: null
+	lastLogout: null,
+	admin: null
 };
 
 export default function reducer(state = initialState, { type, payload }) {
@@ -13,6 +14,7 @@ export default function reducer(state = initialState, { type, payload }) {
 			return { ...state,
 				email: payload.email,
 				authenticated: true,
+				admin: payload.admin,
 				remember: payload.remember,
 				lastLogin: payload.time
 			}
@@ -27,6 +29,7 @@ export default function reducer(state = initialState, { type, payload }) {
 			else return { ...state,
 				email: state.remember ? state.email : null,
 				authenticated: false,
+				admin: null,
 				lastLogout: payload.time
 			}
 		}

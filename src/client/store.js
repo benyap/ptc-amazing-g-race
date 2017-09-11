@@ -18,7 +18,7 @@ import { DEBUG } from './global.config';
 // ======================
 
 const networkInterface = createNetworkInterface({
-	uri: API.api
+	uri: API.root + API.api
 });
 
 const apolloClient = new ApolloClient({

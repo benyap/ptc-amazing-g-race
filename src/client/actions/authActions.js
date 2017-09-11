@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 /**
  * Log in a user by setting their email, accces and refresh tokens in the store, and `authenticted` will be set to true.
  * If `remember` is set to true, the email will be retained on logout.
@@ -17,10 +15,36 @@ export function login(email, access, refresh, remember, time) {
 			remember,
 			access,
 			refresh,
+			admin: false,
 			time
 		}
 	}
 }
+
+/**
+ * Log in a user by setting their email, accces and refresh tokens in the store, and `authenticted` will be set to true.
+ * If `remember` is set to true, the email will be retained on logout.
+ * @param {*} email 
+ * @param {*} access 
+ * @param {*} refresh 
+ * @param {*} remember 
+ * @param {*} time 
+ */
+export function loginAdmin(email, access, refresh, remember, time) {
+	return {
+		type: 'AUTH_LOGIN',
+		payload: {
+			email,
+			remember,
+			access,
+			refresh,
+			admin: true,
+			time
+		}
+	}
+}
+
+
 
 /**
  * Refresh the user's access token.

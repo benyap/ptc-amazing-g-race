@@ -6,13 +6,21 @@ import jwt from 'jsonwebtoken';
 import connect from '../connect';
 
 
+const login = function(user, email, password) {
+	return _login(user, email, password, false);
+}
+
+const adminLogin = function(user, email, password) {
+	return _login(user, email, password, true);
+}
+
 /**
  * Create JWT tokens for a user if correct credentials are provided.
  * @param {*} user 
  * @param {String} email 
  * @param {String} password 
  */
-const login = async function(user, email, password) {
+const _login = async function(user, email, password, isAdmin) {
 	if (user) {
 		return new Error('Already logged in');
 	}
@@ -21,7 +29,13 @@ const login = async function(user, email, password) {
 		
 		// Connect to MongoDB and verify authentication
 		const db = await connect();
-		const userauthentication = await db.collection('userauthentications').findOne({email});
+		let userauthentication;
+		if (isAdmin) {
+			userauthentication = await db.collection('userauthentications').findOne({email, isAdmin});
+		}
+		else {
+			userauthentication = await db.collection('userauthentications').findOne({email});
+		}
 
 		if (!userauthentication) {
 			return {
@@ -377,6 +391,7 @@ const authenticate = async function(user) {
 
 export default {
 	login,
+	adminLogin,
 	refresh,
 	logout,
 	changePassword,

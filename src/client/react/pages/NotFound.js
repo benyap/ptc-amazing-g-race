@@ -7,7 +7,7 @@ import '../scss/pages/_not-found.scss';
 class NotFound extends Page {
 	renderPage(route) {
 		return (
-			<main>
+			<main id='not-found'>
 				<div class='pt-non-ideal-state not-found'>
 					<div class='pt-non-ideal-state-visual pt-non-ideal-state-icon'>
 						<span class='pt-icon pt-icon-error'></span>

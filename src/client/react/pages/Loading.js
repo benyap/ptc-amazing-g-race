@@ -8,7 +8,7 @@ import '../scss/pages/_loading.scss';
 class Loading extends Page {
 	renderPage(route) {
 		return (
-			<main>
+			<main id='loading'>
 				<div class='pt-non-ideal-state'>
 					<div class='loading'>
 						<Spinner className='pt-large'/>
