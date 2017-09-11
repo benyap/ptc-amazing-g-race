@@ -3,6 +3,7 @@ import { FocusStyleManager } from "@blueprintjs/core";
 import { gql, graphql } from 'react-apollo';
 import { LoadingPage, FallbackPage } from './pages';
 import Promotion from './stages/Promotion';
+import Registration from './stages/Registration';
 
 import './scss/main.scss';
 import AppContainer from '../../../lib/react/components/AppContainer';
@@ -35,7 +36,7 @@ class Root extends React.Component {
 					return <Promotion/>;
 				}
 				case 'rego_open': {
-
+					return <Registration/>;
 				}
 				case 'rego_closed': {
 

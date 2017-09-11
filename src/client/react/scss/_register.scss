@@ -1,0 +1,14 @@
+.registerform {
+	font-size: 2rem;
+	background: rgba(0,0,0,0.7);
+	border-radius: 10px 0 0 10px;
+	color: white;
+	font-weight: 100;
+	margin-left: 3rem;
+	margin-top: 3rem;
+	padding: 1rem;
+	
+	@media (max-width: 640px) {
+		margin-left: 1rem;
+	}
+}
