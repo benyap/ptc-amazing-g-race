@@ -28,6 +28,22 @@ const getSetting = async function(user, key) {
 
 
 /**
+ * Get a setting value
+ * @param {*} user 
+ * @param {String} key
+ */
+const getPublicSetting = async function(key) {
+	// Get setting value
+	const db = await connect();
+	const setting = await db.collection('settings').findOne({ key, public: true });
+
+	if (!setting) return new Error('Setting not found');
+
+	return setting;
+}
+
+
+/**
  * Get list of settings
  * @param {*} user 
  * @param {Number} skip
@@ -239,6 +255,7 @@ const _modifySettingList = async function(modifyAction, user, key, value) {
 
 export default {
 	getSetting,
+	getPublicSetting,
 	getSettings,
 	setSetting,
 	addSetting,
