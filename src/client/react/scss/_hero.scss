@@ -1,11 +1,13 @@
 .hero {
-	.image {
-		float: top;
+	height: 100%;
+	width: 100%;
+
+	&.image {
 		background-position: 30% 20%;
 		background-size: cover;
 		background-attachment: fixed;
-		position: absolute;
-		margin-top: -5rem;
+		top: 0;
+		position: fixed;
 		z-index: -1;
 
 		background-image: url('/images/hero-desktop-min.png');
@@ -22,7 +24,6 @@
 			width: 100%;
 			height: 100%;
 			background: linear-gradient(135deg, rgba(125, 125, 125, 0.10) 0%,rgba(0,0,0,0.9) 100%);
-			z-index: 0;
 		}
 	}
 
