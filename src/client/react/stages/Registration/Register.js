@@ -1,20 +1,15 @@
 import React from 'react';
 import RegisterForm from './RegisterForm';
+import Title from '../Title';
 
-import '../../scss/_hero.scss';
 import '../../scss/_register.scss';
 
-class Home extends React.Component {
+
+class Register extends React.Component {
 	render() {
 		return (
-			<main className='hero'>
-				<div className='hero image'></div>
-				<div className='title text padding'>
-					The Amazing G<span className='em'>Race</span>
-				</div>
-				<div className='date text padding'>
-					7th December, 2017
-				</div>
+			<main>
+				<Title/>
 				<div className='registerform'>
 					Register
 					<RegisterForm/>
@@ -25,4 +20,4 @@ class Home extends React.Component {
 }
 
 
-export default Home;
+export default Register;

@@ -1,19 +1,12 @@
 import React from 'react';
-
-import '../../scss/_hero.scss';
+import Title from '../Title';
 
 
 class Home extends React.Component {
 	render() {
 		return (
-			<main className='hero'>
-				<div className='hero image'></div>
-				<div className='title text padding'>
-					The Amazing G<span className='em'>Race</span>
-				</div>
-				<div className='date text padding'>
-					7th December, 2017
-				</div>
+			<main>
+				<Title/>
 				<div className='registration text padding'>
 					Registration opens
 					<br/>
