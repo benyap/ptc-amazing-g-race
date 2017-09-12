@@ -144,20 +144,20 @@ const registerUser = {
 			description: 'The user\'s password',
 			type: new GraphQLNonNull(GraphQLString)
 		},
-		publicTransport: {
-			name: 'publicTransport',
+		PTProficiency: {
+			name: 'PTProficiency',
 			type: new GraphQLNonNull(GraphQLInt),
 			description: 'How confident are you in taking public transport and using maps?'
 		},
-		smartphone: {
-			name: 'smartphone',
+		hasSmartphone: {
+			name: 'hasSmartphone',
 			type: new GraphQLNonNull(GraphQLBoolean),
-			description: 'Do you have a smartphone that you can use on the day?',
+			description: 'Do you have a smartphone with data that you can use on the day?',
 		},
 		friends: {
 			name: 'friends',
 			type: GraphQLString,
-			description: 'List two other people you want on your team'
+			description: 'List one or two friends that you want on your team'
 		}
 	},
 	resolve(root, params, ctx, options) {

@@ -56,8 +56,8 @@ const registerUser = async function(root, params, ctx, options) {
 		mobileNumber: params.mobileNumber, 
 		password: params.password, 
 		confirmPassword: params.confirmPassword, 
-		publicTransport: params.publicTransport, 
-		smartphone: params.smartphone, 
+		PTProficiency: params.PTProficiency, 
+		hasSmartphone: params.hasSmartphone, 
 		friends: params.friends
 	});
 }
