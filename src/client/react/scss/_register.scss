@@ -1,0 +1,55 @@
+.registerform {
+	font-size: 2rem;
+	background: rgba(0,0,0,0.7);
+	border-radius: 10px 0 0 10px;
+	color: white;
+	font-weight: 100;
+	margin-top: 1rem;
+	padding: 1rem;
+	float: right;
+	width: 80%;
+	margin-bottom: 5rem;
+
+	@media (max-width: 640px) {
+		width: 90%;
+		margin-top: 1rem;
+	}
+
+	.progress {
+		margin: 0.5rem 0;
+	}
+
+	.success {
+		max-width: 35rem;
+		margin-top: 1rem;
+		font-size: 1rem;
+		line-height: 1.6rem;
+
+		.success-title {
+			font-size: 1.4rem;
+			font-weight: 400;
+			margin-bottom: 0.5rem;
+			color: lightgreen;
+		}
+
+		a {
+			color: yellow;
+		}
+	}
+
+	#registerform {
+		font-size: 1.3rem;
+		max-width: 35rem;
+
+		.pt-control.pt-radio {
+			font-size: 1rem;
+			color: aliceblue;
+		}
+	}
+}
+
+.register .pt-button {
+	text-shadow: none;
+	margin-top: 1rem;
+	font-weight: 100;
+}
