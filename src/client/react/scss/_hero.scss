@@ -1,34 +1,32 @@
 .hero {
-	background-position: 30% 20%;
-	background-size: cover;
-	background-attachment: fixed;
-	position: absolute;
-	z-index: -2;
-	
-	background-image: url('/images/hero-desktop-min.png');
+	height: 100%;
+	width: 100%;
 
-	@media (max-width: 480px) {
-		background-image: url('/images/hero-mobile-min.png');
-	}
-
-	&::after {
-		content: '';
-		position: absolute;
+	&.image {
+		background-position: 30% 20%;
+		background-size: cover;
+		background-attachment: fixed;
 		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: linear-gradient(135deg, rgba(125, 125, 125, 0.10) 0%,rgba(0,0,0,0.9) 100%);
+		position: fixed;
 		z-index: -1;
+
+		background-image: url('/images/hero-desktop-min.png');
+	
+		@media (max-width: 480px) {
+			background-image: url('/images/hero-mobile-min.png');
+		}
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(135deg, rgba(125, 125, 125, 0.10) 0%,rgba(0,0,0,0.9) 100%);
+		}
 	}
 
-	.text {
-		text-shadow: 5px 5px 10px rgba(0,0,0,1);
-		font-weight: 200;
-		padding: 1rem;
-		z-index: 1;
-	}
-	
 	.title {
 		font-size: 6rem;
 		background: rgba(0,0,0,0.5);
@@ -60,7 +58,6 @@
 	.date {
 		color: white;
 		font-size: 3rem;
-		margin-left: 3rem;
 
 		@media (max-width: 900px) {
 			font-size: 2.8rem;
@@ -72,37 +69,48 @@
 
 		@media (max-width: 640px) {
 			font-size: 1.8rem;
-			margin-left: 1rem;
 		}
 	}
+}
 
-	.registration {
+.text {
+	text-shadow: 5px 5px 10px rgba(0,0,0,1);
+	font-weight: 100;
+	padding: 1rem;
+}
+
+.registration {
+	font-size: 2rem;
+	margin-top: 5rem;
+	font-weight: 400;
+	color: #E6AA00;
+	background: rgba(18, 18, 18, 0.50);
+	max-width: 40%;
+
+	.em {
+		color: #FCD45F;
+	}
+
+	@media (max-width: 900px) {
 		font-size: 2rem;
-		margin-left: 3rem;
-		margin-top: 5rem;
-		font-weight: 400;
-		color: #E6AA00;
-		background: rgba(18, 18, 18, 0.50);
-		max-width: 40%;
+		max-width: 60%;
+	}
 
-		.em {
-			color: #FCD45F;
-		}
+	@media (max-width: 770px) {
+		font-size: 1.7rem;
+		max-width: 60%;
+	}
 
-		@media (max-width: 800px) {
-			font-size: 2rem;
-			max-width: 60%;
-		}
+	@media (max-width: 640px) {
+		font-size: 1.4rem;
+		max-width: 70%;
+	}
+}
 
-		@media (max-width: 640px) {
-			font-size: 1.7rem;
-			max-width: 60%;
-		}
+.padding {
+	margin-left: 3rem;
 
-		@media (max-width: 480px) {
-			font-size: 1.4rem;
-			max-width: 80%;
-			margin-left: 1rem;
-		}
+	@media (max-width: 640px) {
+		margin-left: 1rem;
 	}
 }

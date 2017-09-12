@@ -3,9 +3,10 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import AppContainer from '../../../../../lib/react/components/AppContainer';
 import { NotFoundPage } from '../../pages';
 import Home from './Home';
+import Register from './Register';
 
 
-class Promotion extends React.Component {
+class Registration extends React.Component {
 	render() {
 		return (
 			<BrowserRouter>
@@ -13,10 +14,11 @@ class Promotion extends React.Component {
 					<Switch>
 						
 						<Route exact path='/' component={Home}/>
+						<Route exact path='/register' component={Register}/>
 
 						<Route component={NotFoundPage}/>
 
-					</Switch>	
+					</Switch>
 				</AppContainer>
 			</BrowserRouter>
 		);
@@ -24,4 +26,4 @@ class Promotion extends React.Component {
 }
 
 
-export default Promotion;
+export default Registration;

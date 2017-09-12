@@ -22,9 +22,9 @@ query ListAll($limit:Int, $skip:Int){
     registerDate
     paidAmount
     raceDetails{
-      smartphone
+      hasSmartphone
       friends
-      publicTransport
+      PTProficiency
     }
     roles
     permissions
