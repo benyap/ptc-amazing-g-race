@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { AnchorButton, Intent } from '@blueprintjs/core';
+import { Button, Intent } from '@blueprintjs/core';
 
 import '../../scss/_hero.scss';
 
@@ -20,11 +20,11 @@ class Home extends React.Component {
 				<div className='registration text padding'>
 					Registration closes
 					<br/>
-					<span className='em'>Sunday 12th November, 2017</span>
+					<span className='em'>Sunday 12th November</span>
 					<Link className='register' to='/register'>
-						<AnchorButton className='pt-large pt-fill' intent={Intent.PRIMARY}>
-							REGISTER
-						</AnchorButton>
+						<Button className='pt-large pt-fill' intent={Intent.PRIMARY}>
+							Register now
+						</Button>
 					</Link>
 				</div>
 			</main>

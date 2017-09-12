@@ -4,11 +4,24 @@
 	border-radius: 10px 0 0 10px;
 	color: white;
 	font-weight: 100;
-	margin-left: 3rem;
 	margin-top: 3rem;
 	padding: 1rem;
-	
+	float: right;
+	clear: both;
+	width: 80%;
+
 	@media (max-width: 640px) {
-		margin-left: 1rem;
+		width: 90%;
+		margin-top: 1rem;
+	}
+
+	.progress {
+		margin: 0.5rem 0;
+	}
+
+	#registerform {
+		font-size: 1.3rem;
+		width: 100%;
+		max-width: 35rem;
 	}
 }
