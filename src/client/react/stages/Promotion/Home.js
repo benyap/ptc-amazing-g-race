@@ -13,7 +13,7 @@ class Home extends React.Component {
 					<div className='registration text padding'>
 						Registration opens
 						<br/>
-						<span className='em'>Monday 18th September, 2017</span>
+						<span className='em'>Monday 18th September</span>
 					</div>
 				</ScrollAnimation>
 				<Description/>
