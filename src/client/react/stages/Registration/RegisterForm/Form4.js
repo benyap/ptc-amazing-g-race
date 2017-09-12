@@ -73,11 +73,11 @@ class Form4 extends React.Component {
 				</div>
 
 				<Validator validationFunction={this.validateStudentID} errorProps={errorProps()}>
-					<FormInput id='studentID' large value={this.state.studentID} onChange={this.onChange} label='Student ID'/>
+					<FormInput id='studentID' large value={this.state.studentID} onChange={this.onChange} label='Student ID' disabled={this.props.loading}/>
 				</Validator>
 
 				<RadioGroup onChange={this.onPTChange} selectedValue={this.state.PTProficiency}
-					label='How proficient are you at taking PT?'>
+					label='How proficient are you at taking PT?' disabled={this.props.loading}>
 					<Radio label='What is PT?' value='0'/>
 					<Radio label={'I\'ve taken it before'} value='1'/>
 					<Radio label='Fairly comfortable' value='2'/>
@@ -86,15 +86,15 @@ class Form4 extends React.Component {
 				</RadioGroup>
 
 				<RadioGroup onChange={this.onSmarphoneChange} selectedValue={this.state.hasSmartphone}
-					label='Do you have a smartphone with data you can use on the day?'>
+					label='Do you have a smartphone with data you can use on the day?' disabled={this.props.loading}>
 					<Radio label='Yes' value='yes'/>
 					<Radio label='No' value='no'/>
 				</RadioGroup>
 
-				<FormInput id='friends' large value={this.state.friends} onChange={this.onChange} label='Name a friend or two you would like on your team.' sublabel='(no promises)'/>
+				<FormInput id='friends' large value={this.state.friends} onChange={this.onChange} label='Name a friend or two you would like on your team.' sublabel='(no promises)' disabled={this.props.loading}/>
 				
-				<Button onClick={this.props.submitForm} className='pt-large' text='Register' disabled={this.state.nextDisabled} intent={Intent.SUCCESS} style={{float:'right'}}/>
-				<Button onClick={this.props.back} className='pt-large pt-minimal' text='< Back' intent={Intent.PRIMARY} style={{float:'left'}}/>
+				<Button onClick={this.props.submitForm} className='pt-large' text='Register' disabled={this.state.nextDisabled} loading={this.props.loading} intent={Intent.SUCCESS} style={{float:'right'}}/>
+				<Button onClick={this.props.back} className='pt-large pt-minimal' text='< Back' intent={Intent.PRIMARY} style={{float:'left'}} disabled={this.props.loading}/>
 			</div>
 		);
 	}
