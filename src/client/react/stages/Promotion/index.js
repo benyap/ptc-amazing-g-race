@@ -16,7 +16,7 @@ class Promotion extends React.Component {
 
 						<Route component={NotFoundPage}/>
 
-					</Switch>
+					</Switch>	
 				</AppContainer>
 			</BrowserRouter>
 		);
