@@ -16,7 +16,7 @@ const QueryEmailUnique = gql`query CheckUnique($parameter:UserParameter!,$value:
 class Form2 extends React.Component {
 	state = {
 		email: this.props.state.email,
-		mobile: this.props.state.mobile,
+		mobileNumber: this.props.state.mobileNumber,
 		nextDisabled: true
 	}
 
@@ -92,7 +92,7 @@ class Form2 extends React.Component {
 
 	async _validateForm() {
 		const validateEmail = await this.validateEmail(this.state.email);
-		const validateMobile = this.validateMobile(this.state.mobile);
+		const validateMobile = this.validateMobile(this.state.mobileNumber);
 
 		if (validateEmail.ok && validateMobile.ok) return true;
 		else return false;
@@ -113,7 +113,7 @@ class Form2 extends React.Component {
 				</Validator>
 
 				<Validator validationFunction={this.validateMobile} errorProps={errorProps()}>
-					<FormInput id='mobile' large value={this.state.mobile} onChange={this.onChange} label='Mobile'/>
+					<FormInput id='mobileNumber' large value={this.state.mobileNumber} onChange={this.onChange} label='Mobile'/>
 				</Validator>
 				
 				<Button onClick={this.props.next} className='pt-large' text='Next >' disabled={this.state.nextDisabled} intent={Intent.PRIMARY} style={{float:'right'}}/>

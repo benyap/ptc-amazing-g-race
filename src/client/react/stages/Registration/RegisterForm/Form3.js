@@ -1,19 +1,24 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
+import { withApollo, gql } from 'react-apollo';
 import { Button, Intent, ProgressBar, Icon } from '@blueprintjs/core';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import Validator from '../../../../../../lib/react/components/forms/validation/Validator';
 import NotEmpty from '../../../../../../lib/react/components/forms/validation/functions/NotEmpty';
 import HasLength from '../../../../../../lib/react/components/forms/validation/functions/HasLength';
 import IsMatch from '../../../../../../lib/react/components/forms/validation/functions/IsMatch';
-import { errorProps } from './lib';
+import { errorProps, pendingProps, successProps } from './lib';
 
 
+const QueryUsernameUnique = gql`query CheckUnique($parameter:UserParameter!,$value:String!){checkUnique(parameter:$parameter,value:$value){ok}}`;
+
+@withApollo
 @autobind
 class Form3 extends React.Component {
 	state = {
+		username: this.props.state.username,
 		password: this.props.state.password,
-		password2: this.props.state.password2,
+		confirmPassword: this.props.state.confirmPassword,
 		nextDisabled: true
 	}
 
@@ -31,6 +36,37 @@ class Form3 extends React.Component {
 		});
 	}
 
+	async validateUsername(value) {
+		if (NotEmpty(value)) {
+			if (HasLength(value, 5)) {
+				// Check username with server
+				return this.props.client.query({ 
+					query: QueryUsernameUnique,
+					variables: { parameter: 'username', value: value } 
+				})
+				.then((result) => {
+					if (result.data) {
+						if (result.data.checkUnique.ok) {
+							return { ok: true, helperText: 'You can use this username.'};
+						}
+						else {
+							return { ok: false, helperText: 'This username is already taken.' };
+						}
+					}
+					else {
+						return { ok: false, helperText: 'Could not verify the username with the server.' };
+					}
+				});
+			}
+			else {
+				return { ok: false, helperText: 'Username must be at least 5 characters long.' };
+			}
+		}
+		else {
+			return { ok: false, helperText: 'A username is required.'}
+		}
+	}
+
 	validatePassword(value) {
 		if (NotEmpty(value)) {
 			if (HasLength(value, 6)) {
@@ -45,7 +81,7 @@ class Form3 extends React.Component {
 		}
 	}
 
-	validatePassword2(value) {
+	validateConfirmPassword(value) {
 		if (NotEmpty(value)) {
 			if (IsMatch(value, this.state.password)) {
 				return { ok: true };
@@ -59,8 +95,8 @@ class Form3 extends React.Component {
 		}
 	}
 
-	_validateFormNext() {
-		if (this._validateForm()) {
+	async _validateFormNext() {
+		if (await this._validateForm()) {
 			if (this.state.nextDisabled) this.setState({nextDisabled: false});
 		}
 		else {
@@ -68,11 +104,12 @@ class Form3 extends React.Component {
 		}
 	}
 
-	_validateForm() {
-		let validatePassword = this.validatePassword(this.state.password);
-		let validatePassword2 = this.validatePassword2(this.state.password2);
+	async _validateForm() {
+		const validateUsername = await this.validateUsername(this.state.username);
+		const validatePassword = this.validatePassword(this.state.password);
+		const validateConfirmPassword = this.validateConfirmPassword(this.state.confirmPassword);
 
-		if (validatePassword.ok && validatePassword2.ok) return true;
+		if (validateUsername.ok && validatePassword.ok && validateConfirmPassword.ok) return true;
 		else return false;
 	}
 
@@ -81,16 +118,20 @@ class Form3 extends React.Component {
 			<div>
 				<div className='pt-callout pt-intent-warning' style={{marginBottom: '0.3rem'}}>
 					<h5>Step 3 of 4</h5>
-					Each member of the Amazing GRace will have an account which they will use to log in on the day.
+					Each member of the Amazing (G)race will have an account which they will use to log in on the day.
 					Part of the race will involve entering answers online so make sure you choose a secure but memorable password!
 				</div>
+
+				<Validator validationFunction={this.validateUsername} errorProps={errorProps()} pendingProps={pendingProps()} showPending successProps={successProps()} showSuccess>
+					<FormInput id='username' large value={this.state.username} onChange={this.onChange} label='Username'/>
+				</Validator>
 
 				<Validator validationFunction={this.validatePassword} errorProps={errorProps()}>
 					<FormInput id='password' large type='password' value={this.state.password} onChange={this.onChange} label='Password'/>
 				</Validator>
 
-				<Validator validationFunction={this.validatePassword2} errorProps={errorProps()}>
-					<FormInput id='password2' large type='password' value={this.state.password2} onChange={this.onChange} label='Confirm password'/>
+				<Validator validationFunction={this.validateConfirmPassword} errorProps={errorProps()}>
+					<FormInput id='confirmPassword' large type='password' value={this.state.confirmPassword} onChange={this.onChange} label='Confirm password'/>
 				</Validator>
 				
 				<Button onClick={this.props.next} className='pt-large' text='Next >' disabled={this.state.nextDisabled} intent={Intent.PRIMARY} style={{float:'right'}}/>

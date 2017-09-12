@@ -4,7 +4,7 @@
 	border-radius: 10px 0 0 10px;
 	color: white;
 	font-weight: 100;
-	margin-top: 3rem;
+	margin-top: 1rem;
 	padding: 1rem;
 	float: right;
 	width: 80%;
@@ -17,6 +17,24 @@
 
 	.progress {
 		margin: 0.5rem 0;
+	}
+
+	.success {
+		max-width: 35rem;
+		margin-top: 1rem;
+		font-size: 1rem;
+		line-height: 1.6rem;
+
+		.success-title {
+			font-size: 1.4rem;
+			font-weight: 400;
+			margin-bottom: 0.5rem;
+			color: lightgreen;
+		}
+
+		a {
+			color: yellow;
+		}
 	}
 
 	#registerform {
