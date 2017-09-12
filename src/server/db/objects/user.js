@@ -263,7 +263,7 @@ const _modifyProperty = async function(modifyAction, modifyProperty, user, usern
  * Register a new user to the databse.
  * Must have a unique username and email.
  */
-const registerUser = async function(user, {firstname, lastname, username, studentID, university, email, mobileNumber, password, confirmPassword, publicTransport, smartphone, friends}) {
+const registerUser = async function(user, {firstname, lastname, username, studentID, university, email, mobileNumber, password, confirmPassword, PTProficiency, hasSmartphone, friends}) {
 	if (user) {
 		return new Error('User cannot be logged in');
 	}
@@ -329,7 +329,7 @@ const registerUser = async function(user, {firstname, lastname, username, studen
 			isAdmin: false,
 			paid: false,
 			raceDetails: {
-				publicTransport, smartphone, friends
+				PTProficiency, hasSmartphone, friends
 			},
 			permissions: [],
 			roles: [],

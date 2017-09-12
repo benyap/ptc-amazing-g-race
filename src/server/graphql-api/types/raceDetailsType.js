@@ -13,11 +13,11 @@ const raceDetailsType = new GraphQLObjectType({
 	name: 'RaceDetails',
 	description: 'A user\'s race details',
 	fields: {
-		publicTransport: {
+		PTProficiency: {
 			type: new GraphQLNonNull(GraphQLInt),
 			description: 'How confident are you in taking public transport and using maps?'
 		},
-		smartphone: {
+		hasSmartphone: {
 			type: new GraphQLNonNull(GraphQLBoolean),
 			description: 'Do you have a smartphone that you can use on the day?',
 		},
