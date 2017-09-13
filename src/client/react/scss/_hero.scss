@@ -1,3 +1,5 @@
+@import './_variables.scss';
+
 .hero {
 	height: 100%;
 	width: 100%;
@@ -5,7 +7,7 @@
 	&.image {
 		background-position: 30% 20%;
 		background-size: cover;
-		background-attachment: fixed;
+		background-attachment: scroll;
 		top: 0;
 		position: fixed;
 		z-index: -1;
@@ -38,17 +40,17 @@
 			font-weight: 300;
 		}
 
-		@media (max-width: 900px) {
+		@media (max-width: $bp-l) {
 			font-size: 5rem;
 			margin-top: 4rem;
 		}
 
-		@media (max-width: 770px) {
+		@media (max-width: $bp-m) {
 			font-size: 4rem;
 			margin-top: 4rem;
 		}
 
-		@media (max-width: 640px) {
+		@media (max-width: $bp-s) {
 			margin-left: 1rem;
 			font-size: 3rem;
 			margin-top: 3rem;
@@ -59,15 +61,15 @@
 		color: white;
 		font-size: 3rem;
 
-		@media (max-width: 900px) {
+		@media (max-width: $bp-l) {
 			font-size: 2.8rem;
 		}
 
-		@media (max-width: 770px) {
+		@media (max-width: $bp-m) {
 			font-size: 2.4rem;
 		}
 
-		@media (max-width: 640px) {
+		@media (max-width: $bp-s) {
 			font-size: 1.8rem;
 		}
 	}
@@ -81,7 +83,7 @@
 
 .registration {
 	font-size: 2rem;
-	margin-top: 5rem;
+	margin-top: 3rem;
 	font-weight: 400;
 	color: #E6AA00;
 	background: rgba(18, 18, 18, 0.50);
@@ -91,17 +93,17 @@
 		color: #FCD45F;
 	}
 
-	@media (max-width: 900px) {
+	@media (max-width: $bp-l) {
 		font-size: 2rem;
 		max-width: 60%;
 	}
 
-	@media (max-width: 770px) {
+	@media (max-width: $bp-m) {
 		font-size: 1.7rem;
 		max-width: 60%;
 	}
 
-	@media (max-width: 640px) {
+	@media (max-width: $bp-s) {
 		font-size: 1.4rem;
 		max-width: 70%;
 	}
@@ -110,7 +112,7 @@
 .padding {
 	margin-left: 3rem;
 
-	@media (max-width: 640px) {
+	@media (max-width: $bp-s) {
 		margin-left: 1rem;
 	}
 }
