@@ -61,7 +61,7 @@ if (DEBUG) {
 	store = createStore(reducersWithStorage, composeWithDevTools(middleware));
 }
 else {
-	middleware = applyMiddleware(loadStorageMiddleware, promise(), thunk, saveStorageMiddleware);
+	middleware = applyMiddleware(apolloClient.middleware(), loadStorageMiddleware, promise(), thunk, saveStorageMiddleware);
 	store = createStore(reducersWithStorage, middleware);
 }
 
