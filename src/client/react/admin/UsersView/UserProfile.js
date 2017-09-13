@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
+import { connect } from 'react-redux';
 import { Button, EditableText, Spinner, Icon, Intent } from '@blueprintjs/core';
-import { gql, graphql } from 'react-apollo';
+import { gql, graphql, compose } from 'react-apollo';
 import DateFormat from 'dateformat';
+import { saveState } from '../../../actions/stateActions';
 import '../../scss/admin/_user-profile.scss';
 
 
@@ -27,8 +29,24 @@ const QueryUserOptions = {
 	})
 }
 
+const MutationSetUserPaidAmount = gql`
+mutation SetPaidAmount($username:String!, $amount:Float!){
+  setUserPaidAmount(username:$username, amount:$amount){
+    ok
+    failureMessage
+  }
+}`;
 
-@graphql(QueryUser, QueryUserOptions)
+const MutationSetUserPaidAmountOptions = {
+	name: 'MutationSetUserPaidAmount'
+}
+
+
+@compose(
+	graphql(QueryUser, QueryUserOptions),
+	graphql(MutationSetUserPaidAmount, MutationSetUserPaidAmountOptions)
+)
+@connect()
 @autobind
 class UserProfile extends React.Component {
 	static propTypes = {
@@ -38,31 +56,13 @@ class UserProfile extends React.Component {
 	}
 
 	state = {
-		mobileNumber: null,
 		paidAmount: null,
+		saving: false,
+		error: null
 	}
 	
 	closeProfile() {
 		this.props.closeProfile();
-	}
-
-	saveProfile() {
-
-	}
-
-	editMobile(value) {
-		this.setState({mobileNumber: value});
-	}
-	
-	confirmMobile(value) {
-		if (value.length > 0) {
-			const regex = /^(\+\d{1,3}[- ]?)?\d{10}$/;
-			if (regex.exec(value)) {
-				// TODO: Save changes
-				return;
-			}
-		}
-		this.setState({mobileNumber: this.props.QueryUser.getUserByEmail.mobileNumber});
 	}
 
 	editPaid(value) {
@@ -73,17 +73,43 @@ class UserProfile extends React.Component {
 		if (value.length > 0) {
 			const regex = /^[0-9]+(\.|)[0-9]{0,2}$/;
 			if (regex.exec(value)) {
-				// TODO: save changes
+				this.savePaid();
 				return;
 			}
 		}
-		this.setState({paidAmount: this.props.QueryUser.getUserByEmail.paidAmount});		
+		this.setState({paidAmount: this.props.QueryUser.getUserByEmail.paidAmount});
+	}
+
+	savePaid() {
+		this.setState({ saving: true });
+
+		let variables = {
+			username: this.props.QueryUser.getUserByEmail.username,
+			amount: this.state.paidAmount
+		};
+		
+		this.props.MutationSetUserPaidAmount({ variables })
+			.then((result) => {
+				if (result.data.setUserPaidAmount.ok) {
+					this.props.QueryUser.refetch()
+						.then(() => {
+							this.setState({saving: false});
+							this.props.dispatch(saveState());
+						});
+				}
+				else {
+					this.setState({saving: false, error: result.data.setUserPaidAmount.failureMessage});
+				}
+			})
+			.catch((err) => {
+				this.setState({saving: false, error: err.toString()});
+			});
 	}
 
 	render() {
 		let { firstname, lastname, email, university } = this.props.user;
 		let content;
-		let savable;
+		let savingIndicator;
 		
 		if (this.props.QueryUser.loading) {
 			content = <Spinner className='pt-small'/>
@@ -91,9 +117,9 @@ class UserProfile extends React.Component {
 		else {
 			let { username, mobileNumber, studentID, registerDate, paidAmount, raceDetails: { PTProficiency, hasSmartphone, friends} } = this.props.QueryUser.getUserByEmail;
 
-			if (!this.state.mobileNumber && !this.state.paidAmount) {
+			if (!this.state.paidAmount) {
 				setTimeout(() => {
-					this.setState({mobileNumber, paidAmount});
+					this.setState({paidAmount});
 				}, 0);
 			}
 
@@ -101,9 +127,14 @@ class UserProfile extends React.Component {
 			if (parseFloat(this.state.paidAmount) >= this.props.paymentAmount) {
 				paidIcon = <Icon iconName='tick' intent={Intent.SUCCESS}/>;
 			}
-			
-			savable = parseFloat(this.state.paidAmount) !== parseFloat(paidAmount) || 
-				parseFloat(this.state.mobileNumber) !== parseFloat(mobileNumber);
+
+			if (this.state.saving) {
+				savingIndicator = (
+					<div style={{float:'right'}}>
+						<Button className='pt-minimal' loading/>
+					</div>
+				);
+			}
 
 			content = (
 				<div>
@@ -119,11 +150,7 @@ class UserProfile extends React.Component {
 							</tr>
 							<tr>
 								<td>Mobile</td>
-								<td>
-									<EditableText value={this.state.mobileNumber} 
-										onChange={this.editMobile} selectAllOnFocus
-										onConfirm={this.confirmMobile}/>
-								</td>
+								<td>{mobileNumber}</td>
 							</tr>
 							<tr>
 								<td>Paid {paidIcon}</td>
@@ -134,7 +161,7 @@ class UserProfile extends React.Component {
 								</td>
 							</tr>
 							<tr>
-								<td>StudentID</td>
+								<td>Student ID</td>
 								<td>{studentID}</td>
 							</tr>
 							<tr>
@@ -162,7 +189,7 @@ class UserProfile extends React.Component {
 		return (
 			<div className='pt-card user-profile'>
 				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
-				<Button intent={Intent.PRIMARY} disabled={!savable} text='Save' onClick={this.saveProfile} style={{float:'right', marginRight: '0.1rem'}}/>
+				{savingIndicator}
 				<h4><b>{firstname + ' ' + lastname}</b></h4>
 				<p className='pt-text-muted'>{university}</p>
 				{content}
