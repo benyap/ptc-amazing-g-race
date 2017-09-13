@@ -74,6 +74,10 @@ class Settings extends React.Component {
 							<p>Fetched: {this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
 							<Button text='Refresh' iconName='refresh' onClick={this.refetchSettings} loading={this.loading}/>
 						</div>
+						<div className='pt-callout pt-intent-warning pt-icon-warning-sign' style={{marginBottom: '0.5rem'}}>
+							<h5>Warning</h5>
+							Do not modify these settings unless you know what you are doing.
+						</div>
 						<div className='view-list'>
 							{getSettings.map((setting) => {
 								return <Setting key={setting.key} name={setting.key} value={setting.value} values={setting.values} 
@@ -88,10 +92,6 @@ class Settings extends React.Component {
 		return (
 			<div id='dashboard-settings' className='dashboard-tab'>
 				<h4>Server State Settings</h4>
-				<div className='pt-callout pt-intent-warning pt-icon-warning-sign'>
-					<h5>Warning</h5>
-					Do not modify these settings unless you know what you are doing.
-				</div>
 				{content}
 			</div>
 		);
