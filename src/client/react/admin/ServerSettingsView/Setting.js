@@ -27,7 +27,7 @@ class Setting extends React.Component {
 		modified: PropTypes.string.isRequired,
 		modifiedBy: PropTypes.string.isRequired,
 		valueType: PropTypes.oneOf([
-			'string', 'integer', 'stringList', 'integerList'
+			'string', 'integer', 'float', 'stringList', 'integerList', 'floatList'
 		])
 	}
 
@@ -78,6 +78,15 @@ class Setting extends React.Component {
 	async submitChange(e) {
 		if (this.state.editValueType === 'integer') {
 			if (isNaN(parseInt(this.state.editValue))) {
+				this.setState({
+					editError: true,
+					editErrorText: 'Invalid value.'
+				});
+				return;
+			}
+		}
+		if (this.state.editValueType === 'float') {
+			if (isNaN(parseFloat(this.state.editValue))) {
 				this.setState({
 					editError: true,
 					editErrorText: 'Invalid value.'

@@ -2,6 +2,8 @@ import React from 'react';
 import { autobind } from 'core-decorators';
 import { gql, graphql } from 'react-apollo';
 import { Spinner, Button } from '@blueprintjs/core';
+import { connect } from 'react-redux';
+import { saveState } from '../../../actions/stateActions';
 import DateFormat from 'dateformat';
 import Setting from './Setting';
 import ViewError from '../ViewError';
@@ -29,6 +31,7 @@ const QuerySettingsOptions = {
 }
 
 @graphql(QuerySettings, QuerySettingsOptions)
+@connect()
 @autobind
 class ServerSettingsView extends React.Component {
 	state = {
@@ -40,6 +43,7 @@ class ServerSettingsView extends React.Component {
 		this.props.QuerySettings.refetch()
 			.then(() => {
 				this.setState({loading: false});
+				this.props.dispatch(saveState());
 			})
 			.catch(() => {
 				this.setState({loading: false});

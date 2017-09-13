@@ -1,33 +1,40 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
-import { gql, graphql } from 'react-apollo';
+import { connect } from 'react-redux';
+import { gql, graphql, compose } from 'react-apollo';
 import { Spinner, Button } from '@blueprintjs/core';
 import DateFormat from 'dateformat';
+import { saveState } from '../../../actions/stateActions';
 import ViewError from '../ViewError';
 import UserCard from './UserCard';
+import UserProfile from './UserProfile';
 
+
+const QueryPaymentAmount = gql`
+query GetSetting($key:String!){
+  getSetting(key:$key) {
+    value
+  }
+}`;
+
+const QueryPaymentAmountOptions = {
+	name: 'QueryPaymentAmount',
+	options: {
+		variables: {
+			key: 'payment_amount'
+		}
+	}
+}
 
 const QueryUsers = gql`
 query ListAll($limit:Int, $skip:Int){
   listAll(limit:$limit, skip:$skip) {
-    _id
     firstname
-    lastname
-    username
-    email
+		lastname
+		email
     university
-    studentID
-    mobileNumber
     enabled
-    registerDate
     paidAmount
-    raceDetails{
-      hasSmartphone
-      friends
-      PTProficiency
-    }
-    roles
-    permissions
   }
 }`;
 
@@ -42,29 +49,53 @@ const QueryUsersOptions = {
 }
 
 
-@graphql(QueryUsers, QueryUsersOptions)
+@compose(
+	graphql(QueryUsers, QueryUsersOptions),
+	graphql(QueryPaymentAmount, QueryPaymentAmountOptions),
+)
+@connect()
 @autobind
 class UsersView extends React.Component {
 	state = {
-		loading: false
+		loading: false,
+		viewProfile: null
 	}
 
 	refetchUsers() {
 		this.setState({loading: true});
-		this.props.QueryUsers.refetch()
-			.then(() => {
-				this.setState({loading: false});
-			})
-			.catch(() => {
-				this.setState({loading: false});
-			});
+		if (this.state.viewProfile) {
+			//TODO: Update user profile
+			this.setState({loading: false});
+		}
+		else {
+			Promise.all([
+				this.props.QueryPaymentAmount.refetch(),
+				this.props.QueryUsers.refetch()
+			])
+				.then(() => {
+					this.setState({loading: false});
+					this.props.dispatch(saveState());
+				})
+				.catch(() => {
+					this.setState({loading: false});
+				});
+		}
+	}
+
+	renderProfile(user) {
+		this.setState({ viewProfile: user });
+	}
+
+	closeProfile() {
+		this.setState({ viewProfile: null });
 	}
 
 	render() {
 		let content = null;
 		let { loading, error, listAll } = this.props.QueryUsers;
+		let loadingPayment = this.props.QueryPaymentAmount.loading;
 
-		if (loading || this.state.loading) {
+		if (loading || loadingPayment || this.state.loading) {
 			content = (
 				<div className='loading-spinner'>
 					<Spinner/>
@@ -77,16 +108,26 @@ class UsersView extends React.Component {
 				this.lastFetch = new Date();
 				this.loading = false;
 			}
-			
+
 			if (error) {
 				content = <ViewError error={error}/>
+			}
+			else if (this.state.viewProfile) {
+				content = (
+					<UserProfile user={this.state.viewProfile} closeProfile={this.closeProfile}
+					
+					/>
+				);
 			}
 			else {
 				content = (
 					<div className='view-list'>
 						{listAll.map((user) => {
 							return (
-								<UserCard key={user.email} user={user}/>
+								<UserCard 
+									key={user.email} user={user} 
+									paymentAmount={parseFloat(this.props.QueryPaymentAmount.getSetting.value)}
+									renderProfile={this.renderProfile}/>
 							);
 						})}
 					</div>
