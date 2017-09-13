@@ -1,5 +1,3 @@
-
-
 // Breakpoints
 $bp-xxs: 359px;
 $bp-xs: 480px;
@@ -8,3 +6,12 @@ $bp-m: 768px; // iPad portrait
 $bp-l: 1024px; // iPad landscape
 $bp-xl: 1244px;
 $bp-xxl: 1410px;
+
+// Fonts
+$fallback-font: sans-serif;
+$brand-font: 'Coture', $fallback-font;
+$theme-font: 'Encode Sans', $fallback-font;
+
+// Colours
+$theme-orange: #E6AA00;
+$theme-orange-light: #FCD45F;
