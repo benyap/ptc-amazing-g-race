@@ -80,7 +80,7 @@ const setSetting = async function(user, key, value) {
 		if (!setting) return new Error('Setting not found');
 
 		// Check that it is a single value setting
-		if (!setting.value) return new Error('Cannot set the value of a multi-value setting');
+		if (setting.value === null) return new Error('Cannot set the value of a multi-value setting');
 
 		// Ensure user has the correct role
 		const hasRole = await permission.checkRole(user, setting.modifiableRoles);
