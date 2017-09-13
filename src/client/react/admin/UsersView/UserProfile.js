@@ -20,7 +20,7 @@ class UserProfile extends React.Component {
 
 		return (
 			<div className='pt-card'>
-				<Button onClick={this.closeProfile} style={{float:'right'}}>Close</Button>
+				<Button className='pt-minimal pt-intent-danger' text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
 				<h5>{firstname + ' ' + lastname}</h5>
 				<p className='pt-text-muted'>
 					{university}

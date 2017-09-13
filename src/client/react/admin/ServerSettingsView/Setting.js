@@ -141,7 +141,7 @@ class Setting extends React.Component {
 						</div>
 						<div className='pt-dialog-footer'>
 							<div className='pt-dialog-footer-actions'>
-								<Button onClick={this.toggleDialog} text='Cancel' disabled={this.state.editLoading}/>
+								<Button onClick={this.toggleDialog} text='Cancel' className='pt-minimal' disabled={this.state.editLoading}/>
 								<Button onClick={this.submitChange} text='Save' intent={Intent.PRIMARY} loading={this.state.editLoading}/>
 							</div>
 						</div>
