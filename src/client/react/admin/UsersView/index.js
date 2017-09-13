@@ -98,7 +98,7 @@ class UsersView extends React.Component {
 			<div id='dashboard-users' className='dashboard-tab'>
 				<h4>Users</h4>
 				<div className='view-header'>
-					<p>Fetched: {this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
+					<p className='fetched'>Last fetched:<br/>{this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
 					<Button text='Refresh' iconName='refresh' onClick={this.refetchUsers} loading={this.loading}/>
 				</div>
 				{content}
