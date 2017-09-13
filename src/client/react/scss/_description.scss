@@ -1,7 +1,9 @@
+@import './_variables.scss';
+
 .event-description {
 	width: 100%;
 	text-align: right;
-	margin-top: 4rem;
+	margin-top: 2rem;
 
 	@media (max-width: 640px) {
 		margin-top: 3rem;
@@ -14,23 +16,56 @@
 		font-size: 3rem;
 		text-shadow: 2px 2px 8px rgba(0,0,0,0.9);
 
-		@media (max-width: 640px) {
+		.em {
+			font-weight: 400;
+
+			@media (max-width: $bp-s) {
+				font-weight: 600;
+			}
+		}
+
+		@media (max-width: $bp-s) {
+			font-weight: 400;
 			font-size: 2rem;
+			line-height: 2.5rem;
 		}
 	}
 
-	$detail-height: 40rem;
+	$detail-height-s: 36rem;
+	$detail-height-xs: 42rem;
+	$detail-height-xxs: 45rem;
 
 	.details {
-		height: $detail-height;
+		@media (max-width: $bp-m) {
+			font-weight: 400;
+		}
+		
+		height: $detail-height-s;
+
+		@media (max-width: $bp-xs) {
+			height: $detail-height-xs;
+		}
+
+		@media (max-width: $bp-xxs) {
+			height: $detail-height-xxs;
+		}
+
 		&::before {
 			content: '';
 			position: absolute;
 			left: 0;
 			width: 100%;
-			height: $detail-height;
-			background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0, 0, 0, 0.80) 90%); ;
+			background: linear-gradient(to bottom, transparent 0%, black 100%);
 			z-index: -1;
+			height: $detail-height-s;
+
+			@media (max-width: $bp-xs) {
+				height: $detail-height-xs;
+			}
+	
+			@media (max-width: $bp-xxs) {
+				height: $detail-height-xxs;
+			}
 		}
 
 		div {
@@ -46,6 +81,7 @@
 			@media (max-width: 640px) {
 				max-width: 100%;
 				font-size: 1.3rem;
+				color: white;
 			}
 		}
 	}

@@ -10,7 +10,7 @@ class Description extends React.Component {
 			<div className='event-description'>
 				<div className='details'>
 					<ScrollAnimation animateOnce animateIn='fadeInUp' offset={0}>
-						<h2>What is the<br/>Amazing (G)<span style={{fontWeight:400}}>Race</span>?</h2>
+						<h2>What is the<br/>Amazing (G)<span className='em'>Race</span>?</h2>
 					</ScrollAnimation>
 					<ScrollAnimation animateOnce animateIn='fadeInUp' offset={0}>
 						The End of Year event run by students from Power To Change: <br/>
