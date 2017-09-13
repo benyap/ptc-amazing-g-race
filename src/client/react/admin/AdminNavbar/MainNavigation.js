@@ -9,7 +9,7 @@ class MainNavigation extends React.Component {
 	render() {
 		return (
 			<div>
-				<a className={linkStyle + ' pt-icon pt-icon-key-escape'} href='/'>Visit site</a>
+				<a className={linkStyle + ' pt-icon pt-icon-key-escape'} href='/' target='_blank'>Visit site</a>
 			</div>
 		);
 	}
