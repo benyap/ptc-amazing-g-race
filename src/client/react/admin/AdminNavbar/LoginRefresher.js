@@ -41,6 +41,7 @@ class LoginRefresh extends React.Component {
 
 	componentDidMount() {
 		// Start timer
+		this.refresh();
 		this.interval = setInterval(this.refresh, this.props.interval);
 	}
 
