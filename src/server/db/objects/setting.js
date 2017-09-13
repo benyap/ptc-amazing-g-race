@@ -94,6 +94,10 @@ const setSetting = async function(user, key, value) {
 				value = parseInt(value);
 				if (isNaN(value)) return new Error('Invalid value passed for setting of type integer');
 				break;
+			case 'float':
+				value = parseFloat(value);
+				if (isNaN(value)) return new Error('Invalid value passed for setting of type float');
+				break;
 		}
 
 		// Make sure there is a modification to update
@@ -199,6 +203,10 @@ const _modifySettingList = async function(modifyAction, user, key, value) {
 			case 'integerList':
 				value = parseInt(value);
 				if (isNaN(value)) return new Error('Invalid value passed for setting of type integer');
+				break;
+			case 'floatList':
+				value = parseFloat(value);
+				if (isNaN(value)) return new Error('Invalid value passed for setting of type float');
 				break;
 		}
 
