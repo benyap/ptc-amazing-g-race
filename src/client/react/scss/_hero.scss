@@ -30,29 +30,96 @@
 	}
 
 	.title {
-		font-size: 6rem;
+		$left-margin: 3rem;
+		$left-margin-s: 1rem;
+
+		$logo-size-xs: 70px;
+		$logo-size-s: 90px;
+		$logo-size-m: 130px;
+		$logo-size-l: 160px;
+		$logo-size-xl: 200px;
+
 		background: rgba(0,0,0,0.5);
-		color: white;
-		margin-left: 3rem;
+		color: #E6AA00;
+		margin-left: $left-margin;
 		margin-top: 5rem;
+		padding: 0.8rem 0 0.8rem 0;
+
+		img {
+			float: left;
+			margin-left: 0.5rem;
+			width: $logo-size-xl;
+			height: $logo-size-xl;
+
+			@media (max-width: $bp-l) {
+				width: $logo-size-l;
+				height: $logo-size-l;
+			}
+
+			@media (max-width: $bp-m) {
+				width: $logo-size-m;
+				height: $logo-size-m;
+			}
+
+			@media (max-width: $bp-s) {
+				width: $logo-size-s;
+				height: $logo-size-s;
+			}
+	
+			@media (max-width: $bp-xs) {
+				margin-left: 0;
+				width: $logo-size-xs;
+				height: $logo-size-xs;
+			}
+
+			&::after {
+				clear: both;
+			}
+		}
+
+		p {
+			font-weight: 200;
+			font-family: Coture, sans-serif;
+			font-size: 5rem;
+			line-height: 6rem;
+			margin: 0.8rem 0 0.4rem 0;
+
+			@media (max-width: $bp-l) {
+				font-size: 4rem;
+				line-height: 5rem;
+			}
+
+			@media (max-width: $bp-m) {
+				font-size: 3rem;
+				line-height: 4rem;
+			}
+
+			@media (max-width: $bp-s) {
+				font-size: 2.4rem;
+				line-height: 2.5rem;
+			}
+			
+			@media (max-width: $bp-xs) {
+				margin: 0.4rem 0 0.2rem 0;
+				font-size: 2rem;
+				line-height: 2.2rem;
+			}
+		}
 
 		.em {
-			font-weight: 300;
+			color: white;
 		}
 
 		@media (max-width: $bp-l) {
-			font-size: 5rem;
 			margin-top: 4rem;
 		}
 
 		@media (max-width: $bp-m) {
-			font-size: 4rem;
 			margin-top: 4rem;
 		}
 
 		@media (max-width: $bp-s) {
-			margin-left: 1rem;
-			font-size: 3rem;
+			margin-left: $left-margin-s;
 			margin-top: 3rem;
 		}
 	}
@@ -70,7 +137,7 @@
 		}
 
 		@media (max-width: $bp-s) {
-			font-size: 1.8rem;
+			font-size: 1.5rem;
 		}
 	}
 }
@@ -79,6 +146,10 @@
 	text-shadow: 5px 5px 10px rgba(0,0,0,1);
 	font-weight: 100;
 	padding: 1rem;
+
+	@media (max-width: $bp-s) {
+		padding: 0.7rem;
+	}
 }
 
 .registration {
@@ -95,17 +166,16 @@
 
 	@media (max-width: $bp-l) {
 		font-size: 2rem;
-		max-width: 60%;
 	}
 
 	@media (max-width: $bp-m) {
 		font-size: 1.7rem;
-		max-width: 60%;
+		max-width: 50%;
 	}
 
 	@media (max-width: $bp-s) {
 		font-size: 1.4rem;
-		max-width: 70%;
+		max-width: 60%;
 	}
 }
 

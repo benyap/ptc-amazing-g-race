@@ -9,8 +9,11 @@ const Title = () => {
 		<div className='hero'>
 			<div className='hero image'></div>
 			<ScrollAnimation animateOnce animateIn='fadeInDown' offset={0}>
-				<div className='title text padding'>
-					The Amazing (G)<span className='em'>Race</span>
+				<div className='title text'>
+					<img src='/images/logo/logo_white.png' alt='The Amazing Grace'></img>
+					<p>
+						The Amazing <br/><span className='em'>G</span>Race
+					</p>
 				</div>
 				<div className='date text padding'>
 					7th December, 2017
