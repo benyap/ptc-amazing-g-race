@@ -30,7 +30,7 @@ const QuerySettingsOptions = {
 
 @graphql(QuerySettings, QuerySettingsOptions)
 @autobind
-class Settings extends React.Component {
+class ServerSettingsView extends React.Component {
 	state = {
 		loading: false
 	}
@@ -70,10 +70,6 @@ class Settings extends React.Component {
 			else {
 				content = (
 					<div>
-						<div className='view-header'>
-							<p>Fetched: {this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
-							<Button text='Refresh' iconName='refresh' onClick={this.refetchSettings} loading={this.loading}/>
-						</div>
 						<div className='pt-callout pt-intent-warning pt-icon-warning-sign' style={{marginBottom: '0.5rem'}}>
 							<h5>Warning</h5>
 							Do not modify these settings unless you know what you are doing.
@@ -92,6 +88,10 @@ class Settings extends React.Component {
 		return (
 			<div id='dashboard-settings' className='dashboard-tab'>
 				<h4>Server State Settings</h4>
+				<div className='view-header'>
+					<p>Fetched: {this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
+					<Button text='Refresh' iconName='refresh' onClick={this.refetchSettings} loading={this.loading}/>
+				</div>
 				{content}
 			</div>
 		);
@@ -99,4 +99,4 @@ class Settings extends React.Component {
 }
 
 
-export default Settings;
+export default ServerSettingsView;

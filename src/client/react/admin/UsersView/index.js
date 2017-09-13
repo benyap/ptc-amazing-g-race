@@ -83,18 +83,12 @@ class UsersView extends React.Component {
 			}
 			else {
 				content = (
-					<div>
-						<div className='view-header'>
-							<p>Fetched: {this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
-							<Button text='Refresh' iconName='refresh' onClick={this.refetchUsers} loading={this.loading}/>
-						</div>
-						<div className='view-list'>
-							{listAll.map((user) => {
-								return (
-									<UserCard key={user.email} user={user}/>
-								);
-							})}
-						</div>
+					<div className='view-list'>
+						{listAll.map((user) => {
+							return (
+								<UserCard key={user.email} user={user}/>
+							);
+						})}
 					</div>
 				);
 			}
@@ -103,6 +97,10 @@ class UsersView extends React.Component {
 		return (
 			<div id='dashboard-users' className='dashboard-tab'>
 				<h4>Users</h4>
+				<div className='view-header'>
+					<p>Fetched: {this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
+					<Button text='Refresh' iconName='refresh' onClick={this.refetchUsers} loading={this.loading}/>
+				</div>
 				{content}
 			</div>
 		);

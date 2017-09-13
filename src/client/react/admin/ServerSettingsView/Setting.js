@@ -99,8 +99,7 @@ class Setting extends React.Component {
 			this.setState({editLoading: false, editError: true, editErrorText: e.toString()});
 			return;
 		}
-
-
+		
 		this.setState({editLoading: false, editError: false});
 		this.toggleDialog();
 	}
