@@ -1,5 +1,8 @@
 @import './_variables.scss';
 
+$left-margin: 3rem;
+$left-margin-s: 1rem;
+
 .hero {
 	height: 100%;
 	width: 100%;
@@ -30,9 +33,6 @@
 	}
 
 	.title {
-		$left-margin: 3rem;
-		$left-margin-s: 1rem;
-
 		$logo-size-xs: 70px;
 		$logo-size-s: 90px;
 		$logo-size-m: 130px;
@@ -41,7 +41,6 @@
 
 		background: rgba(0,0,0,0.5);
 		color: #E6AA00;
-		margin-left: $left-margin;
 		margin-top: 5rem;
 		padding: 0.8rem 0 0.8rem 0;
 
@@ -79,7 +78,7 @@
 
 		p {
 			font-weight: 200;
-			font-family: Coture, sans-serif;
+			font-family: $brand-font;
 			font-size: 5rem;
 			line-height: 6rem;
 			margin: 0.8rem 0 0.4rem 0;
@@ -119,9 +118,9 @@
 		}
 
 		@media (max-width: $bp-s) {
-			margin-left: $left-margin-s;
 			margin-top: 3rem;
 		}
+
 	}
 
 	.date {
@@ -156,12 +155,12 @@
 	font-size: 2rem;
 	margin-top: 3rem;
 	font-weight: 400;
-	color: #E6AA00;
+	color: $theme-orange;
 	background: rgba(18, 18, 18, 0.50);
 	max-width: 40%;
 
 	.em {
-		color: #FCD45F;
+		color: $theme-orange-light;
 	}
 
 	@media (max-width: $bp-l) {
@@ -177,12 +176,26 @@
 		font-size: 1.4rem;
 		max-width: 60%;
 	}
+
+	@media (max-width: $bp-xs) {
+		font-size: 1.4rem;
+		max-width: 80%;
+	}
+	
+	@media (max-width: $bp-xxs) {
+		font-size: 1.4rem;
+		max-width: 100%;
+	}
 }
 
 .padding {
-	margin-left: 3rem;
+	margin-left: $left-margin;
 
 	@media (max-width: $bp-s) {
-		margin-left: 1rem;
+		margin-left: $left-margin-s;
+	}
+
+	@media (max-width: $bp-xxs) {
+		margin-left: 0;
 	}
 }

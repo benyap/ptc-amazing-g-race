@@ -9,7 +9,7 @@ const Title = () => {
 		<div className='hero'>
 			<div className='hero image'></div>
 			<ScrollAnimation animateOnce animateIn='fadeInDown' offset={0}>
-				<div className='title text'>
+				<div className='title text padding'>
 					<img src='/images/logo/logo_white.png' alt='The Amazing Grace'></img>
 					<p>
 						The Amazing <br/><span className='em'>G</span>Race
