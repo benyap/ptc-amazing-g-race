@@ -36,7 +36,7 @@ class SecondaryNavigation extends React.Component {
 		const config = {
 			url: API.api,
 			method: 'POST',
-			params: {
+			data: {
 				variables: { refreshToken: this.props.refresh },
 				query: 
 				`mutation LogoutUser($refreshToken:String!) { 
