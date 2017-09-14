@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
-import { Button, EditableText, Spinner, Icon, Intent } from '@blueprintjs/core';
+import { Button, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import { gql, graphql, compose } from 'react-apollo';
 import DateFormat from 'dateformat';
 import { saveState } from '../../../actions/stateActions';
@@ -49,6 +49,7 @@ const MutationSetUserPaidAmountOptions = {
 )
 @connect()
 @autobind
+@HotkeysTarget
 class UserProfile extends React.Component {
 	static propTypes = {
 		user: PropTypes.object.isRequired,
@@ -114,6 +115,19 @@ class UserProfile extends React.Component {
 				if (this._mounted) this.setState({saving: false, error: err.toString()});
 				else console.warn(err);
 			});
+	}
+
+	renderHotkeys() {
+		return (
+			<Hotkeys>
+				<Hotkey
+					global={true}
+					combo='esc'
+					label='Close profile'
+					onKeyDown={this.closeProfile}
+				/>
+			</Hotkeys>
+		);
 	}
 
 	render() {

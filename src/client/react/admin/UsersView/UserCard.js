@@ -32,7 +32,7 @@ class UserCard extends React.Component {
 				<div className='pt-card pt-elevation-0 pt-interactive user-card' onClick={this.openProfile}>
 					<h5>
 						{firstname + ' ' + lastname + ' '}
-						<span className={'pt-icon ' + (paymentAmount < this.props.user.paidAmount ? 'pt-icon-tick pt-intent-success' : 'pt-icon-dollar pt-intent-danger') }> </span>
+						<span className={'pt-icon ' + (this.props.user.paidAmount >= paymentAmount ? 'pt-icon-tick pt-intent-success' : 'pt-icon-dollar pt-intent-danger') }> </span>
 						{enabled ? null : <span className='pt-icon pt-icon-ban-circle pt-intent-danger'> </span>}
 					</h5>
 					<p className='pt-text-muted'>
