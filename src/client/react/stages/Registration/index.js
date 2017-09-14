@@ -4,6 +4,7 @@ import AppContainer from '../../../../../lib/react/components/AppContainer';
 import { NotFoundPage } from '../../pages';
 import Home from './Home';
 import Register from './Register';
+import Pay from '../Pay';
 
 
 class Registration extends React.Component {
@@ -15,6 +16,7 @@ class Registration extends React.Component {
 						
 						<Route exact path='/' component={Home}/>
 						<Route exact path='/register' component={Register}/>
+						<Route exact path='/pay' component={Pay}/>
 
 						<Route component={NotFoundPage}/>
 
