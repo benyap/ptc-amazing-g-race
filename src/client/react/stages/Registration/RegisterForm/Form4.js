@@ -19,7 +19,12 @@ class Form4 extends React.Component {
 	}
 
 	componentDidMount() {
+		this.mounted = true;
 		this._validateFormNext();
+	}
+
+	componentWillUnmount() {
+		this.mounted = false;
 	}
 	
 	onChange({ target }) {
@@ -43,10 +48,10 @@ class Form4 extends React.Component {
 
 	_validateFormNext() {
 		if (this._validateForm()) {
-			if (this.state.nextDisabled) this.setState({nextDisabled: false});
+			if (this.mounted && this.state.nextDisabled) this.setState({nextDisabled: false});
 		}
 		else {
-			if (!this.state.nextDisabled) this.setState({nextDisabled: true});
+			if (this.mounted && !this.state.nextDisabled) this.setState({nextDisabled: true});
 		}
 	}
 
