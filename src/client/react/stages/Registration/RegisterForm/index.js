@@ -137,7 +137,7 @@ class RegisterForm extends React.Component {
 					<p>
 						Thanks for registering, {this.state.firstname}!
 						Stay tuned for more updates and instructions for the event.
-						Please not that your place is <em>NOT</em> secured until you have <Link to='/pay'>paid</Link>.
+						Please note that your place is <em>NOT</em> secured until you have <Link to='/pay'>paid</Link>.
 					</p>
 				</div>
 			)
