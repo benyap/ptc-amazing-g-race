@@ -1,4 +1,10 @@
+@import '../_variables.scss';
+
 #admin-dashboard {
+	@media (min-width: $bp-s) {
+		margin-right: 1rem;
+	}
+
 	.mobile-tabs {
 		.pt-tab-list {
 			margin: 0.6rem;
@@ -43,8 +49,8 @@
 
 		.view-list {
 			.pt-card {
-				margin-bottom: 1rem;
-				padding: 1rem;
+				margin-bottom: 0.5rem;
+				padding: 0.8rem;
 				background-color: #FAFAFA;
 			}
 		}
@@ -53,8 +59,9 @@
 			display: flex;
 			margin: 0.5rem 0;
 			justify-content: space-between;
-	
-			p {
+			
+			.fetched {
+				font-size: 0.8rem;
 				margin: auto 0;
 				color: gray;
 			}

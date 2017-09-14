@@ -9,6 +9,7 @@ import MenuButton from '../../../../../lib/react/components/MenuButton';
 import SettingsMenu from './SettingsMenu';
 import { withRouter } from 'react-router-dom';
 import { logout } from '../../../actions/authActions';
+import LoginRefresher from './LoginRefresher';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -57,6 +58,17 @@ class SecondaryNavigation extends React.Component {
 		}
 	}
 
+	setRefreshing(isRefreshing, error) {
+		if (this.state.loading !== isRefreshing) {
+			this.setState({ loading: isRefreshing });
+		}
+
+		if (error) {
+			// TODO: maybe - add notification that refresh failed?
+			console.warn(error);
+		}
+	}
+
 	render() {
 		if (this.props.authenticated) {
 			return (
@@ -64,6 +76,7 @@ class SecondaryNavigation extends React.Component {
 					<MenuButton minimal loading={this.state.loading} iconName='cog' menu={
 						<SettingsMenu handleLogout={this.logout}/>
 					}/>
+					<LoginRefresher refreshToken={this.props.refresh} setRefreshing={this.setRefreshing}/>
 				</div>
 			);
 		}

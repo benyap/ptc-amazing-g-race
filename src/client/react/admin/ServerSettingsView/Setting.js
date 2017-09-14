@@ -27,7 +27,7 @@ class Setting extends React.Component {
 		modified: PropTypes.string.isRequired,
 		modifiedBy: PropTypes.string.isRequired,
 		valueType: PropTypes.oneOf([
-			'string', 'integer', 'stringList', 'integerList'
+			'string', 'integer', 'float', 'stringList', 'integerList', 'floatList'
 		])
 	}
 
@@ -85,6 +85,15 @@ class Setting extends React.Component {
 				return;
 			}
 		}
+		if (this.state.editValueType === 'float') {
+			if (isNaN(parseFloat(this.state.editValue))) {
+				this.setState({
+					editError: true,
+					editErrorText: 'Invalid value.'
+				});
+				return;
+			}
+		}
 
 		this.setState({editLoading: true});
 		try {
@@ -99,8 +108,7 @@ class Setting extends React.Component {
 			this.setState({editLoading: false, editError: true, editErrorText: e.toString()});
 			return;
 		}
-
-
+		
 		this.setState({editLoading: false, editError: false});
 		this.toggleDialog();
 	}
@@ -133,7 +141,7 @@ class Setting extends React.Component {
 						</div>
 						<div className='pt-dialog-footer'>
 							<div className='pt-dialog-footer-actions'>
-								<Button onClick={this.toggleDialog} text='Cancel' disabled={this.state.editLoading}/>
+								<Button onClick={this.toggleDialog} text='Cancel' className='pt-minimal' disabled={this.state.editLoading}/>
 								<Button onClick={this.submitChange} text='Save' intent={Intent.PRIMARY} loading={this.state.editLoading}/>
 							</div>
 						</div>
