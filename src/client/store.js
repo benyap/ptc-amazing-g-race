@@ -4,13 +4,11 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { ApolloClient, createNetworkInterface } from 'react-apollo';
 import promise from 'redux-promise-middleware';
 import thunk from 'redux-thunk';
-
 import * as storage from 'redux-storage';
 import createEngine from 'redux-storage-engine-localforage';
 import { saveWhitelist, loadWhitelist } from './actions/whitelist';
 import API from './API';
 import reducers from './reducers';
-import { DEBUG } from './global.config';
 
 
 // ======================
@@ -55,14 +53,14 @@ const loadStorageMiddleware = store => next => async action => {
 let middleware;
 let store;
 
-if (DEBUG) {
-	// Add logger and redux dev tools in debug mode
-	middleware = applyMiddleware(apolloClient.middleware(), loadStorageMiddleware, promise(), thunk, createLogger(), saveStorageMiddleware);
-	store = createStore(reducersWithStorage, composeWithDevTools(middleware));
-}
-else {
+if (process.env.NODE_ENV === 'production') {
 	middleware = applyMiddleware(apolloClient.middleware(), loadStorageMiddleware, promise(), thunk, saveStorageMiddleware);
 	store = createStore(reducersWithStorage, middleware);
+}
+else {
+		// Add logger and redux dev tools when not in production
+		middleware = applyMiddleware(apolloClient.middleware(), loadStorageMiddleware, promise(), thunk, createLogger(), saveStorageMiddleware);
+		store = createStore(reducersWithStorage, composeWithDevTools(middleware));	
 }
 
 // Load store
