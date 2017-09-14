@@ -21,7 +21,7 @@ class LoginPage extends React.Component {
 			url: API.api,
 			method: 'POST',
 			timeout: 10000,
-			params: {
+			data: {
 				variables: { email, password },
 				query: 
 				`mutation AdminLogin($email: String!, $password: String!) {

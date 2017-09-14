@@ -41,6 +41,11 @@ module.exports = {
 	},
 	plugins: [
 		new webpack.optimize.OccurrenceOrderPlugin(),
-		new webpack.optimize.UglifyJsPlugin({ mangle: false, sourceMap: false})
+		new webpack.optimize.UglifyJsPlugin({ mangle: false, sourceMap: false}),
+		new webpack.DefinePlugin({
+			'process.env':{
+				'NODE_ENV': JSON.stringify('production')
+			}
+		})
 	]
 };

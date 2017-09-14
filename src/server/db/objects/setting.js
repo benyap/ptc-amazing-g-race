@@ -80,7 +80,7 @@ const setSetting = async function(user, key, value) {
 		if (!setting) return new Error('Setting not found');
 
 		// Check that it is a single value setting
-		if (!setting.value) return new Error('Cannot set the value of a multi-value setting');
+		if (setting.value === null) return new Error('Cannot set the value of a multi-value setting');
 
 		// Ensure user has the correct role
 		const hasRole = await permission.checkRole(user, setting.modifiableRoles);
@@ -93,6 +93,10 @@ const setSetting = async function(user, key, value) {
 			case 'integer':
 				value = parseInt(value);
 				if (isNaN(value)) return new Error('Invalid value passed for setting of type integer');
+				break;
+			case 'float':
+				value = parseFloat(value);
+				if (isNaN(value)) return new Error('Invalid value passed for setting of type float');
 				break;
 		}
 
@@ -199,6 +203,10 @@ const _modifySettingList = async function(modifyAction, user, key, value) {
 			case 'integerList':
 				value = parseInt(value);
 				if (isNaN(value)) return new Error('Invalid value passed for setting of type integer');
+				break;
+			case 'floatList':
+				value = parseFloat(value);
+				if (isNaN(value)) return new Error('Invalid value passed for setting of type float');
 				break;
 		}
 
