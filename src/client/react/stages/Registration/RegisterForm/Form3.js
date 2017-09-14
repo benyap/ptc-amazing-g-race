@@ -7,6 +7,7 @@ import Validator from '../../../../../../lib/react/components/forms/validation/V
 import NotEmpty from '../../../../../../lib/react/components/forms/validation/functions/NotEmpty';
 import HasLength from '../../../../../../lib/react/components/forms/validation/functions/HasLength';
 import IsMatch from '../../../../../../lib/react/components/forms/validation/functions/IsMatch';
+import RegexCheck from '../../../../../../lib/react/components/forms/validation/functions/RegexCheck';
 import { errorProps, pendingProps, successProps } from './lib';
 
 
@@ -39,24 +40,30 @@ class Form3 extends React.Component {
 	async validateUsername(value) {
 		if (NotEmpty(value)) {
 			if (HasLength(value, 5)) {
-				// Check username with server
-				return this.props.client.query({ 
-					query: QueryUsernameUnique,
-					variables: { parameter: 'username', value: value } 
-				})
-				.then((result) => {
-					if (result.data) {
-						if (result.data.checkUnique.ok) {
-							return { ok: true, helperText: 'You can use this username.'};
+				const regex = /^[A-Za-z0-9-_]+$/;
+				if (RegexCheck(value, regex)) { 
+					// Check username with server
+					return this.props.client.query({ 
+						query: QueryUsernameUnique,
+						variables: { parameter: 'username', value: value } 
+					})
+					.then((result) => {
+						if (result.data) {
+							if (result.data.checkUnique.ok) {
+								return { ok: true, helperText: 'You can use this username.'};
+							}
+							else {
+								return { ok: false, helperText: 'This username is already taken.' };
+							}
 						}
 						else {
-							return { ok: false, helperText: 'This username is already taken.' };
+							return { ok: false, helperText: 'Could not verify the username with the server.' };
 						}
-					}
-					else {
-						return { ok: false, helperText: 'Could not verify the username with the server.' };
-					}
-				});
+					});
+				}
+				else {
+					return { ok: false, helperText: 'Please only use letters, numbers, dashes or underscores.'};
+				}
 			}
 			else {
 				return { ok: false, helperText: 'Username must be at least 5 characters long.' };
