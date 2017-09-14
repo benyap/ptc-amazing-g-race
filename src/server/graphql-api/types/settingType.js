@@ -35,6 +35,8 @@ const settingType = new GraphQLObjectType({
 				values: {
 					integer: { value: 'integer' },
 					integerList: { value: 'integerList' },
+					float: { value: 'float' },
+					floatList: { value: 'floatList' },
 					string: { value: 'string' },
 					stringList: { value: 'stringList' }
 				}
