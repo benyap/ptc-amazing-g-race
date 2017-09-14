@@ -25,7 +25,8 @@ query GetUserByEmail($email:String!) {
 const QueryUserOptions = {
 	name: 'QueryUser',
 	options: (props) => ({
-		variables: { email: props.user.email }
+		variables: { email: props.user.email },
+		fetchPolicy: 'cache-and-network'
 	})
 }
 
@@ -60,6 +61,14 @@ class UserProfile extends React.Component {
 		saving: false,
 		error: null
 	}
+
+	componentDidMount() {
+		this._mounted = true;
+	}
+
+	componentWillUnmount() {
+		this._mounted = false;
+	}
 	
 	closeProfile() {
 		this.props.closeProfile();
@@ -87,37 +96,39 @@ class UserProfile extends React.Component {
 			username: this.props.QueryUser.getUserByEmail.username,
 			amount: this.state.paidAmount
 		};
-		
+
 		this.props.MutationSetUserPaidAmount({ variables })
 			.then((result) => {
 				if (result.data.setUserPaidAmount.ok) {
 					this.props.QueryUser.refetch()
 						.then(() => {
-							this.setState({saving: false});
 							this.props.dispatch(saveState());
+							if (this._mounted) this.setState({saving: false});
 						});
 				}
 				else {
-					this.setState({saving: false, error: result.data.setUserPaidAmount.failureMessage});
+					if (this._mounted) this.setState({saving: false, error: result.data.setUserPaidAmount.failureMessage});
 				}
 			})
 			.catch((err) => {
-				this.setState({saving: false, error: err.toString()});
+				if (this._mounted) this.setState({saving: false, error: err.toString()});
+				else console.warn(err);
 			});
 	}
 
 	render() {
 		let { firstname, lastname, email, university } = this.props.user;
 		let content;
-		let savingIndicator;
+		let showLoadingIndicator = false;
 		
 		if (this.props.QueryUser.loading) {
-			content = <Spinner className='pt-small'/>
+			showLoadingIndicator = true;
 		}
-		else {
+
+		if (this.props.QueryUser.getUserByEmail) {
 			let { username, mobileNumber, studentID, registerDate, paidAmount, raceDetails: { PTProficiency, hasSmartphone, friends} } = this.props.QueryUser.getUserByEmail;
 
-			if (!this.state.paidAmount) {
+			if (this.state.paidAmount === null) {
 				setTimeout(() => {
 					this.setState({paidAmount});
 				}, 0);
@@ -129,11 +140,7 @@ class UserProfile extends React.Component {
 			}
 
 			if (this.state.saving) {
-				savingIndicator = (
-					<div style={{float:'right'}}>
-						<Button className='pt-minimal' loading/>
-					</div>
-				);
+				showLoadingIndicator = true;
 			}
 
 			content = (
@@ -189,7 +196,11 @@ class UserProfile extends React.Component {
 		return (
 			<div className='pt-card user-profile'>
 				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
-				{savingIndicator}
+				{showLoadingIndicator ? 
+					<div style={{float:'right'}}>
+						<Spinner className='pt-small'/>
+					</div>
+				: null }
 				<h4><b>{firstname + ' ' + lastname}</b></h4>
 				<p className='pt-text-muted'>{university}</p>
 				{content}

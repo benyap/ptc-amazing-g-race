@@ -58,22 +58,23 @@ const QueryUsersOptions = {
 class UsersView extends React.Component {
 	state = {
 		loading: false,
+		refetching: false,
 		viewProfile: null
 	}
 
-	refetchUsers() {
+	refetchUsers(refetching = false, loading = true) {
 		if (!this.state.viewProfile) {
-			this.setState({loading: true});
+			this.setState({loading, refetching: refetching?true:false});
 			Promise.all([
 				this.props.QueryPaymentAmount.refetch(),
 				this.props.QueryUsers.refetch()
 			])
 				.then(() => {
-					this.setState({loading: false});
+					this.setState({loading: false, refetching: false});
 					this.props.dispatch(saveState());
 				})
 				.catch(() => {
-					this.setState({loading: false});
+					this.setState({loading: false, refetching: false});
 				});
 		}
 	}
@@ -83,7 +84,9 @@ class UsersView extends React.Component {
 	}
 
 	closeProfile() {
-		this.setState({ viewProfile: null });
+		this.setState({ viewProfile: null }, () => {
+			this.refetchUsers(true, false);
+		});
 	}
 
 	render() {
@@ -140,7 +143,8 @@ class UsersView extends React.Component {
 				<h4>Users</h4>
 				<div className='view-header'>
 					<p className='fetched'>Last fetched:<br/>{this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
-					<Button text='Refresh' iconName='refresh' onClick={this.refetchUsers} loading={this.loading} disabled={this.state.viewProfile}/>
+					<Button text='Refresh' iconName='refresh' onClick={this.refetchUsers} 
+						loading={this.state.refetching&&!this.loading} disabled={this.state.viewProfile||this.loading}/>
 				</div>
 				{content}
 			</div>
