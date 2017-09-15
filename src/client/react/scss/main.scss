@@ -6,7 +6,14 @@ $icon-font-path: "~@blueprintjs/core/resources/icons";
 // Import blueprintjs styles
 @import "~@blueprintjs/core/src/blueprint.scss";
 
+// Import animate.css
+@import '../../../../node_modules/animate.css/animate.min.css';
+
+@import 'variables';
+@import 'fonts';
+
 html, body {
+	font-family: $theme-font, sans-serif;
 	min-width: 320px;
 	font-weight: 200;
 
