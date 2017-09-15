@@ -31,9 +31,9 @@ class UserCard extends React.Component {
 			<ScrollAnimation animateOnce animateIn='fadeInUp' offset={0} duration={0.1}>
 				<div className='pt-card pt-elevation-0 pt-interactive user-card' onClick={this.openProfile}>
 					<h5>
-						{firstname + ' ' + lastname + ' '}
 						<span className={'pt-icon ' + (this.props.user.paidAmount >= paymentAmount ? 'pt-icon-tick pt-intent-success' : 'pt-icon-dollar pt-intent-danger') }> </span>
 						{enabled ? null : <span className='pt-icon pt-icon-ban-circle pt-intent-danger'> </span>}
+						{' ' + firstname + ' ' + lastname}
 					</h5>
 					<p className='pt-text-muted'>
 						{university}
