@@ -3,16 +3,16 @@ import {
 	GraphQLNonNull,
 	GraphQLString,
 	GraphQLID,
-	GraphQLInt,
 	GraphQLFloat,
-	GraphQLBoolean,
-	GraphQLList
+	GraphQLList,
+	GraphQLBoolean
 } from 'graphql';
 
 import {
 	GraphQLDateTime
 } from 'graphql-iso-date';
 
+import locationType from './locationType';
 import raceDetailsType from './raceDetailsType';
 
 
@@ -74,6 +74,14 @@ const userType = new GraphQLObjectType({
 		permissions: {
 			type: new GraphQLList(GraphQLString),
 			description: 'List of permissions assigned to the user'
+		},
+		teamId: {
+			type: GraphQLID,
+			description: 'The id of the team the user has been assigned to'
+		},
+		location: {
+			type: locationType,
+			description: 'The location of a user'
 		}
 	}
 });
