@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { autobind } from 'core-decorators';
-import { withRouter, Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { withRouter, Link, Redirect } from 'react-router-dom';
 import { ProgressBar, Intent, Icon } from '@blueprintjs/core';
 import API from '../../../../API';
 import Form1 from './Form1';
@@ -21,6 +22,14 @@ const MutationRegisterUser =
 }`;
 
 
+const mapStateToProps = (state, ownProps) => {
+	return { 
+		authenticated: state.auth.login.authenticated
+	}
+}
+
+
+@connect(mapStateToProps)
 @withRouter
 @autobind
 class RegisterForm extends React.Component {
@@ -99,7 +108,20 @@ class RegisterForm extends React.Component {
 	}
 
 	render() {
-		if (!this.state.complete) {
+		if (this.props.authenticated) {
+			return (
+				<div className='info'>
+					<div className='fail title'>
+						You are already registered.
+					</div>
+					<p>
+						Hey! You're logged in at the moment which means already have an account.
+						If someone else is registering, please log out first. 
+					</p>
+				</div>
+			);
+		}
+		else if (!this.state.complete) {
 			let form = null;
 			switch (this.state.currentStage) {
 				case 1: form = <Form1 onChange={this.handleInputChange} state={this.state} next={this.changeStage(2)}/>; break;
@@ -130,8 +152,8 @@ class RegisterForm extends React.Component {
 		}
 		else {
 			return (
-				<div className='success'>
-					<div className='success-title'>
+				<div className='info'>
+					<div className='success title'>
 						Registration successful!
 					</div>
 					<p>
