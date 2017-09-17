@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Button, Intent } from '@blueprintjs/core';
 import { graphql, gql } from 'react-apollo';
 import ScrollAnimation from 'react-animate-on-scroll';
 import Title from './Title';
+
+import '../scss/_pay.scss';
 
 
 const mapStateToProps = (state, ownProps) => {
