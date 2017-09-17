@@ -4,6 +4,7 @@ import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { ProgressBar, Intent, Icon } from '@blueprintjs/core';
+import { logout } from '../../../../actions/authActions';
 import API from '../../../../API';
 import Form1 from './Form1';
 import Form2 from './Form2';
@@ -106,6 +107,10 @@ class RegisterForm extends React.Component {
 		}
 	}
 
+	logout() {
+		this.props.dispatch(logout(new Date()));
+	}
+
 	render() {
 		if (this.props.authenticated) {
 			return (
@@ -115,7 +120,8 @@ class RegisterForm extends React.Component {
 					</div>
 					<p>
 						Hey! You're logged in at the moment which means already have an account.
-						If someone else is registering, please log out first. 
+						If someone else is trying to registering, please&nbsp;
+						<a style={{color: 'yellow'}}onClick={this.logout}>log out</a> first. 
 					</p>
 				</div>
 			);
