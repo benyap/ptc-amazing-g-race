@@ -159,6 +159,18 @@ $left-margin-s: 1rem;
 	background: rgba(18, 18, 18, 0.50);
 	max-width: 40%;
 
+	.small {
+		font-size: 1rem;
+
+		@media (max-width: $bp-m) {
+			font-size: 0.8rem;
+		}
+		
+		@media (max-width: $bp-xs) {
+			font-size: 0.8rem;
+		}
+	}
+
 	.em {
 		color: $theme-orange-light;
 	}

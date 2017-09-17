@@ -21,6 +21,12 @@ class Home extends React.Component {
 								Register now
 							</Button>
 						</Link>
+						<span className='small'>
+							If you're already registered,&nbsp;
+							<Link to='/login' style={{color: 'yellow'}}>
+								login here
+							</Link>.
+						</span>
 					</div>
 				</ScrollAnimation>
 				<Description/>
