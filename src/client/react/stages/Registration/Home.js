@@ -1,13 +1,44 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Intent } from '@blueprintjs/core';
+import { connect } from 'react-redux';
 import ScrollAnimation from 'react-animate-on-scroll';
 import Title from '../Title';
 import Description from '../Promotion/Description';
 
 
+const mapStateToProps = (state, ownProps) => {
+	return { 
+		authenticated: state.auth.login.authenticated
+	}
+}
+
+@connect(mapStateToProps)
 class Home extends React.Component {
 	render() {
+		let link;
+		
+		if (this.props.authenticated) {
+			link = (
+				<span className='small'>
+					You're already registered. &nbsp;
+					<Link to='/dashboard' style={{color: 'yellow'}}>
+						Go to your dashboard
+					</Link>.
+				</span>
+			);
+		}
+		else {
+			link = (
+				<span className='small'>
+					If you're already registered,&nbsp;
+					<Link to='/login' style={{color: 'yellow'}}>
+						login here
+					</Link>.
+				</span>
+			);
+		}
+
 		return (
 			<main>
 				<Title/>
@@ -23,12 +54,7 @@ class Home extends React.Component {
 								Register now
 							</Button>
 						</Link>
-						<span className='small'>
-							If you're already registered,&nbsp;
-							<Link to='/login' style={{color: 'yellow'}}>
-								login here
-							</Link>.
-						</span>
+						{link}
 					</div>
 				</ScrollAnimation>
 				<Description/>

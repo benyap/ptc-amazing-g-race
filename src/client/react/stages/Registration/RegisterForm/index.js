@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
-import { withRouter, Link, Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { ProgressBar, Intent, Icon } from '@blueprintjs/core';
 import API from '../../../../API';
 import Form1 from './Form1';
@@ -30,7 +30,6 @@ const mapStateToProps = (state, ownProps) => {
 
 
 @connect(mapStateToProps)
-@withRouter
 @autobind
 class RegisterForm extends React.Component {
 	state = {
