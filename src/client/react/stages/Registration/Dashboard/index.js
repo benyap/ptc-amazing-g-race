@@ -5,6 +5,7 @@ import { graphql, gql } from 'react-apollo';
 import { withRouter, Link, Redirect } from 'react-router-dom';
 import { Spinner, Button, Intent } from '@blueprintjs/core';
 import { logout } from '../../../../actions/authActions';
+import ScrollAnimation from 'react-animate-on-scroll';
 import Title from '../../Title';
 
 import '../../../scss/_dashboard.scss';
@@ -78,8 +79,10 @@ class Dashboard extends React.Component {
 			
 			return (
 				<main id='dashboard'>
-					<Title notAnimated/>
-					{content}
+					<Title/>
+					<ScrollAnimation animateOnce animateIn='zoomIn' offset={0} duration={0.5}>
+						{content}
+					</ScrollAnimation>
 				</main>
 			);
 		}
