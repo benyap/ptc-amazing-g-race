@@ -96,7 +96,7 @@ const refresh = async function(user, refreshToken) {
 	
 	// Clear all expired tokens
 	const result = await db.collection('refreshtokens').remove({expiry: {$lt: Date.now()/1000}});
-	if (result.result.n > 0) console.log('Removed ' + result.result.n + ' expired refresh token(s)');
+	if (result.result.n > 0) console.log(`Removed ${result.result.n} expired refresh token(s)`);
 
 	try {
 		// Verify refresh token

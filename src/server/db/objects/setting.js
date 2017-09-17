@@ -101,7 +101,7 @@ const setSetting = async function(user, key, value) {
 		}
 
 		// Make sure there is a modification to update
-		if (setting.value === value) return new Error('Setting \'' + key + '\' already has that value');
+		if (setting.value === value) return new Error(`Setting \'${key}\' already has that value`);
 
 		// Set the setting
 		const result = await db.collection('settings').update(
@@ -138,7 +138,7 @@ const setSetting = async function(user, key, value) {
 			}
 		}
 		else {
-			return new Error('Unable to modify setting \'' + key + '\'');
+			return new Error(`Unable to modify setting \'${key}\'`);
 		}
 	}
 }
@@ -187,10 +187,10 @@ const _modifySettingList = async function(modifyAction, user, key, value) {
 		// Ensure setting exists	
 		const db = await connect();
 		const setting = await db.collection('settings').findOne({ key });
-		if (!setting) return new Error('Setting \'' + key + '\' not found');
+		if (!setting) return new Error(`Setting \'${key}\' not found`);
 
 		// Check that it is a multi-value setting
-		if (!setting.values) return new Error('Cannot ' + errorString + ' a single-value setting');
+		if (!setting.values) return new Error(`Cannot ${errorString} a single-value setting`);
 
 		// Ensure user has the correct role
 		const hasRole = await permission.checkRole(user, setting.modifiableRoles);
@@ -212,10 +212,10 @@ const _modifySettingList = async function(modifyAction, user, key, value) {
 
 		// Make sure there is a modification to update
 		if (modifyAction === 'add') {
-			if (setting.values.indexOf(value) >= 0) return new Error('Value \'' + value + '\' already exists in setting');
+			if (setting.values.indexOf(value) >= 0) return new Error(`Value \'${value}\' already exists in setting`);
 		}
 		else if (modifyAction === 'remove') {
-			if (setting.values.indexOf(value) < 0) return new Error('Value \'' + value + '\' does not exist in setting');
+			if (setting.values.indexOf(value) < 0) return new Error(`Value \'${value}\' does not exist in setting`);
 		}
 
 		// Modify the setting
@@ -255,7 +255,7 @@ const _modifySettingList = async function(modifyAction, user, key, value) {
 			}
 		}
 		else {
-			return new Error('Unable to modify setting \'' + key + '\'');
+			return new Error(`Unable to modify setting \'${key}\'`);
 		}
 	}
 }

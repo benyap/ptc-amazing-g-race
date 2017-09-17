@@ -121,7 +121,7 @@ const checkUserPermission = async function(user, username, permission) {
 		const userToCheck = await db.collection('users').findOne({ username });
 
 		if (!userToCheck) {
-			return new Error('User \'' + username + '\' not found');
+			return new Error(`User \'${username}\' not found`);
 		}
 		else {
 			if (userToCheck.permissions.indexOf(permission) < 0) {
@@ -199,7 +199,7 @@ const _modifyProperty = async function(modifyAction, modifyProperty, user, usern
 		const userToModify = await db.collection('users').findOne({ username });
 
 		if (!userToModify) {
-			return new Error('User \'' + username + '\' not found');
+			return new Error(`User \'${username}\' not found`);
 		}
 		else {
 			let proceed;
@@ -217,11 +217,11 @@ const _modifyProperty = async function(modifyAction, modifyProperty, user, usern
 				updateAction = '$pull';
 				errorPhrase = 'does not have';
 			}
-			else throw new Error('Invalid argument in modify ' + modifyProperty + ' function: ' + action);
+			else throw new Error(`Invalid argument in modify ${modifyProperty} function: ${action}`);
 
 			// Modify the user's properties accordingly
 			if (!proceed) {
-				return new Error('User \'' + username + '\' ' + errorPhrase + ' the ' + modifyProperty + ' <' + property + '>');			
+				return new Error(`User \'${username}\' ${errorPhrase} the ${modifyProperty} <${property}>'`);
 			}
 			else {
 				// Update user
@@ -251,7 +251,7 @@ const _modifyProperty = async function(modifyAction, modifyProperty, user, usern
 					}
 				}
 				else {
-					return new Error('Unable to modify user ' + modifyProperty);
+					return new Error(`Unable to modify user ${modifyProperty}`);
 				}
 			}
 		}
@@ -310,10 +310,10 @@ const registerUser = async function(user, {firstname, lastname, username, studen
 		const db = await connect();
 		
 		const usernameCheck = await db.collection('userauthentications').findOne({ username: username.toLowerCase() });
-		if (usernameCheck) return new Error('Username \'' + username + '\' already taken');
+		if (usernameCheck) return new Error(`Username \'${username}\' already taken`);
 
 		const emailCheck = await db.collection('userauthentications').findOne({ email: email.toLowerCase() });
-		if (emailCheck) return new Error('Email \'' + email + '\' already taken');
+		if (emailCheck) return new Error(`Email \'${email}\' already taken`);
 
 
 		// Create user
@@ -367,10 +367,10 @@ const getUserActions = async function(user, action, skip = 0, limit = 0) {
 	else {
 		let findParams = { who: user.username };
 
-		if (limit < 0) return new Error('Limit value must be non-negative, but received: ' + limit);
+		if (limit < 0) return new Error(`Limit value must be non-negative, but received: ${limit}`);
 		
 		if (action) {
-			const escapedAction = action.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');			
+			const escapedAction = action.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
 			const actionRegex = new RegExp(['^', escapedAction, '$'].join(''), 'i');
 			findParams.action = actionRegex;
 		}
@@ -403,13 +403,13 @@ const getActions = async function(user, username, action, skip = 0, limit = 0) {
 			findParams.action = actionRegex;
 		}
 		
-		if (limit < 0) return new Error('Limit value must be non-negative, but received: ' + limit);
+		if (limit < 0) return new Error(`Limit value must be non-negative, but received: ${limit}`);
 		
 		const db = await connect();
 
 		if (username) {
 			let userCheck = await db.collection('users').findOne({username});
-			if (!userCheck) return new Error('User \'' + username + '\' not found');
+			if (!userCheck) return new Error(`User \'${username}\' not found`);
 			else findParams.who = username;
 		}
 		
@@ -439,7 +439,7 @@ const setUserEnabled = async function(user, username, enabled) {
 			const db = await connect();
 			const userToModify = await db.collection('users').findOne({username: username});
 			
-			if (!userToModify) return new Error('User \'' + username + '\' not found');
+			if (!userToModify) return new Error(`User \'${username}\' not found`);
 
 			if (enabled === userToModify.enabled) return new Error('User already ' + (enabled ? 'enabled' : 'disabled'));
 
@@ -452,7 +452,7 @@ const setUserEnabled = async function(user, username, enabled) {
 					{ $set: { valid: false, invalidatedOn: Date.now() } }
 				,
 				(err, result) => {
-					console.log('Revoked ' + result.result.nModified + ' refresh token(s)');
+					console.log(`Revoked ${result.result.nModified} refresh token(s)`);
 				});
 			}
 
