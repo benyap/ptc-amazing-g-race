@@ -12,11 +12,11 @@ class Home extends React.Component {
 			<main>
 				<Title/>
 				<ScrollAnimation animateOnce animateIn='fadeInDown' offset={0}>
-					<div className='registration text padding'>
+					<div className='infobox text padding'>
 						Registration closes
 						<br/>
 						<span className='em'>Sunday 12th November</span>
-						<Link className='register' to='/register'>
+						<Link to='/register'>
 							<Button className='pt-large pt-fill' intent={Intent.PRIMARY}>
 								Register now
 							</Button>
