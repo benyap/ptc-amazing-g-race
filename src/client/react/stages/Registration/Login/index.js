@@ -68,7 +68,7 @@ class Login extends React.Component {
 				<main>
 					<Title/>
 	
-					<ScrollAnimation animateOnce animateIn='fadeInUp' offset={0}>
+					<ScrollAnimation animateOnce animateIn='fadeInUp' offset={0} duration={0.5}>
 						<div style={{paddingBottom: '2rem', background: 'rgba(255,255,255,0.5)', maxWidth: '30rem', margin: 'auto', borderRadius: '0.3rem'}}>
 							<h2 style={{paddingTop: '2rem', paddingBottom: '1rem', textAlign: 'center'}}>
 								Login

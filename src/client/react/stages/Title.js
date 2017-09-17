@@ -28,7 +28,7 @@ const Title = ({notAnimated}) => {
 					{title}
 				</div>
 				:
-				<ScrollAnimation animateOnce animateIn='fadeInDown' offset={0}>
+				<ScrollAnimation animateOnce animateIn='fadeInDown' offset={0} duration={0.5}>
 					{title}
 				</ScrollAnimation>
 			}
