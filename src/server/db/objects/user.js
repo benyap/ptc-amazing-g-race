@@ -538,6 +538,26 @@ const setUserPaidAmount = async function(user, username, amount) {
 }
 
 
+const getUsersByTeam = async function(user, teamId) {
+	if (!user) return new Error('No user logged in');
+	else {
+		const authorized = await permission.checkPermission(user, ['user:view-users']);
+		if (authorized !== true) return authorized;
+
+		// Verify that teamId exists
+		const db = await connect();
+		const teamCheck = await db.collection('teams').findOne({_id: teamId});
+		if (!teamCheck) {
+			return new Error(`Team with id \'${teamId}\' not found.`);
+		}
+		else {
+			return db.collection('users').find({teamId: Mongo.ObjectID(teamId)}).toArray();
+		}
+	}
+}
+
+
+
 export default {
 	getUserById,
 	getUserByUsername,
@@ -554,5 +574,6 @@ export default {
 	getUserActions,
 	getActions,
 	setUserEnabled,
-	setUserPaidAmount
+	setUserPaidAmount,
+	getUsersByTeam
 }

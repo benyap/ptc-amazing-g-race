@@ -80,6 +80,10 @@ const setUserPaidAmount = async function(root, params, ctx, options) {
 	return database.user.setUserPaidAmount(ctx.user, params.username, params.amount);
 }
 
+const getUsersByTeam = async function(root, params, ctx, options) {
+	return database.user.getUsersByTeam(ctx.user, params.teamId);
+}
+
 
 export default {
 	getUserById,
@@ -97,5 +101,6 @@ export default {
 	getUserActions,
 	getActions,
 	setUserEnabled,
-	setUserPaidAmount
+	setUserPaidAmount,
+	getUsersByTeam
 };
