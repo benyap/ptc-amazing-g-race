@@ -78,7 +78,8 @@ class Login extends React.Component {
 								authenticationHandler={this.loginHandler}
 								email={this.props.remember&&this.props.email ? this.props.email : null}
 								remember={this.props.remember}
-								next='/dashboard'/>
+								next={this.props.next}
+							/>
 						</div>
 					</ScrollAnimation>
 	

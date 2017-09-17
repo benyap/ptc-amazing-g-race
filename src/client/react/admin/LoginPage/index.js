@@ -1,11 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import axios from 'axios';
 import API from '../../../API';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { loginAdmin } from '../../../actions/authActions';
 import LoginForm from '../../../../../lib/react/components/forms/LoginForm';
 import Authenticated from '../../../../../lib/react/components/utility/Authenticated';
-import Redirector from './Redirector';
 
 
 const titleStyle = {
@@ -14,8 +16,26 @@ const titleStyle = {
 	textAlign: 'center'
 }
 
+const mapStateToProps = (state, ownProps) => {
+	return { 
+		authenticated: state.auth.login.authenticated,
+		remember: state.auth.login.remember,
+		email: state.auth.login.email
+	}
+}
+
+@connect(mapStateToProps)
 @autobind
 class LoginPage extends React.Component {
+	static propTypes = {
+		remember: PropTypes.bool,
+		next: PropTypes.string
+	}
+
+	static defaultProps = {
+		next: '/admin/dashboard'
+	}
+
 	async adminLoginHandler(email, password) {
 		const config = {
 			url: API.api,
@@ -43,23 +63,27 @@ class LoginPage extends React.Component {
 	}
 
 	render() {
-		return (
-			<div>
-				<main id='admin-login'>
-					<p style={{margin: '1rem'}}>The Amazing GRace</p>
-					<h2 style={titleStyle}>Administrator Login</h2>
+		if (this.props.authenticated) {
+			return <Redirect to={this.props.next}/>
+		}
+		else {
+			return (
+				<div>
+					<main id='admin-login'>
+						<p style={{margin: '1rem'}}>The Amazing GRace</p>
+						<h2 style={titleStyle}>Administrator Login</h2>
 
-					<Authenticated>
-						<Redirector/>
-					</Authenticated>
-
-					<LoginForm 
-						loginAction={loginAdmin} 
-						authenticationHandler={this.adminLoginHandler}
-						next='/admin/dashboard'/>
-				</main>
-			</div>
-		);
+						<LoginForm 
+							loginAction={loginAdmin} 
+							authenticationHandler={this.adminLoginHandler}
+							email={this.props.remember&&this.props.email ? this.props.email : null}
+							remember={this.props.remember}
+							next={this.props.next}
+						/>
+					</main>
+				</div>
+			);
+		}
 	}
 }
 
