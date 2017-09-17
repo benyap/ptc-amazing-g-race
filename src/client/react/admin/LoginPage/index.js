@@ -19,6 +19,7 @@ const titleStyle = {
 const mapStateToProps = (state, ownProps) => {
 	return { 
 		authenticated: state.auth.login.authenticated,
+		admin: state.auth.login.admin,
 		remember: state.auth.login.remember,
 		email: state.auth.login.email
 	}
@@ -63,7 +64,7 @@ class LoginPage extends React.Component {
 	}
 
 	render() {
-		if (this.props.authenticated) {
+		if (this.props.authenticated && this.props.admin) {
 			return <Redirect to={this.props.next}/>
 		}
 		else {
