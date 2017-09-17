@@ -6,6 +6,7 @@ import Home from './Home';
 import Register from './Register';
 import Login from './Login';
 import Pay from '../Pay';
+import Dashboard from './Dashboard';
 
 
 class Registration extends React.Component {
@@ -19,6 +20,7 @@ class Registration extends React.Component {
 						<Route exact path='/register' component={Register}/>
 						<Route exact path='/login' component={Login}/>
 						<Route exact path='/pay' component={Pay}/>
+						<Route exact path='/dashboard' component={Dashboard}/>
 
 						<Route component={NotFoundPage}/>
 
