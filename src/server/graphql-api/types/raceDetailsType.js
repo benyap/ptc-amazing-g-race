@@ -24,6 +24,10 @@ const raceDetailsType = new GraphQLObjectType({
 		friends: {
 			type: GraphQLString,
 			description: 'List two other people you want on your team'
+		},
+		dietaryRequirements: {
+			type: GraphQLString,
+			description: 'Do you have any dietary requirements?'
 		}
 	}
 });

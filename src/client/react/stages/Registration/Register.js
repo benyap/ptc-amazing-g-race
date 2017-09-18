@@ -11,7 +11,7 @@ class Register extends React.Component {
 		return (
 			<main>
 				<Title/>
-				<ScrollAnimation animateOnce animateIn='zoomIn' offset={0}>
+				<ScrollAnimation animateOnce animateIn='zoomIn' offset={0} duration={0.5}>
 					<div className='registerform'>
 						Register
 						<RegisterForm/>

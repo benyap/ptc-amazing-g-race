@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { gql, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
-import { refresh, logout } from '../../../actions/authActions';
+import { refresh, logout } from '../../actions/authActions';
 
 const MutationAccessRefresh = gql`
 mutation GetRefresh($refreshToken: String!){
@@ -25,7 +25,7 @@ class LoginRefresh extends React.Component {
 	static propTypes = {
 		interval: PropTypes.number,
 		refreshToken: PropTypes.string.isRequired,
-		setRefreshing: PropTypes.func.isRequired
+		setRefreshing: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -46,7 +46,7 @@ class LoginRefresh extends React.Component {
 	}
 
 	async refresh() {
-		this.props.setRefreshing(true);
+		if (this.props.setRefreshing) this.props.setRefreshing(true);
 
 		// Send refresh request
 		try {
@@ -56,16 +56,16 @@ class LoginRefresh extends React.Component {
 
 			if (result.data.refresh.ok) {
 				// Refresh successful
-				this.props.setRefreshing(false);
+				if (this.props.setRefreshing) this.props.setRefreshing(false);
 				this._dispatchRefresh(result.data.refresh.access_token);
 			}
 			else {
-				this.props.setRefreshing(false, result.data.refresh.message);
+				if (this.props.setRefreshing) this.props.setRefreshing(false, result.data.refresh.message);
 				this._dispatchLogout();
 			}
 		}
 		catch (e) {
-			this.props.setRefreshing(false, e);
+			if (this.props.setRefreshing) this.props.setRefreshing(false, e);
 			this._dispatchLogout();
 		}
 	}

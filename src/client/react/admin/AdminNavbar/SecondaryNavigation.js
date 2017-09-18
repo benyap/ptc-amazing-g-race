@@ -9,7 +9,7 @@ import MenuButton from '../../../../../lib/react/components/MenuButton';
 import SettingsMenu from './SettingsMenu';
 import { withRouter } from 'react-router-dom';
 import { logout } from '../../../actions/authActions';
-import LoginRefresher from './LoginRefresher';
+import LoginRefresher from '../../sharedComponents/LoginRefresher';
 
 
 const mapStateToProps = (state, ownProps) => {
