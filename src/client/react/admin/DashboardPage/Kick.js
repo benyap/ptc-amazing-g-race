@@ -1,12 +1,12 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
 
 class Kick extends React.Component {
 	render() {
 		if (!this.props.authenticated) {
-			return <Redirect to='/admin'/>
+			return <Redirect to='/admin'/>;
 		}
 		else return null;
 	}

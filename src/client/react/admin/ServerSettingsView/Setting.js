@@ -114,19 +114,21 @@ class Setting extends React.Component {
 	}
 
 	render() {
-		let { name, value, valueType, modified, modifiedBy } = this.props;
+		let { name, value, values, valueType, modified, modifiedBy } = this.props;
 
 		return (
 			<div id={name} className='pt-card pt-elevation-0 pt-interactive' onClick={this.handleClick(name, value, valueType)}>
 				<h5><code>{name}</code></h5>
 				{value ? 
 					<p><b>Value: </b> {value}</p>:
-					<ul>
-						Values: 
-						{values.map((value) => {
-							return <li>{value}</li>
-						})}
-					</ul>
+					<div>
+						<b>Values: </b>
+						<ul>
+							{values.map((value) => {
+								return <li key={value}>{value}</li>
+							})}
+						</ul>
+					</div>
 				}
 				<p><b>Modified: </b> {DateFormat(new Date(modified), 'mmm dd yyyy hh:MM:ssTT')}</p>
 				<p><b>Modified by: </b> {modifiedBy}</p>

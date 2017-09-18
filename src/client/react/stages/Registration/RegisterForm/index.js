@@ -1,8 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 import { autobind } from 'core-decorators';
-import { withRouter, Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
 import { ProgressBar, Intent, Icon } from '@blueprintjs/core';
+import { logout } from '../../../../actions/authActions';
 import API from '../../../../API';
 import Form1 from './Form1';
 import Form2 from './Form2';
@@ -11,8 +13,8 @@ import Form4 from './Form4';
 
 
 const MutationRegisterUser = 
-`mutation Register($firstname:String!, $lastname:String!, $username:String!, $email:String!, $mobileNumber:String!, $password:String!, $confirmPassword:String!, $university:String!, $studentID:String!, $PTProficiency: Int!, $hasSmartphone:Boolean!, $friends:String) {
-  registerUser(firstname:$firstname, lastname:$lastname, username:$username, email:$email, mobileNumber:$mobileNumber, password: $password, confirmPassword:$confirmPassword, university:$university, studentID:$studentID, PTProficiency:$PTProficiency, hasSmartphone:$hasSmartphone, friends:$friends){
+`mutation Register($firstname:String!, $lastname:String!, $username:String!, $email:String!, $mobileNumber:String!, $password:String!, $confirmPassword:String!, $university:String!, $studentID:String!, $PTProficiency: Int!, $hasSmartphone:Boolean!, $friends:String, $dietaryRequirements:String) {
+  registerUser(firstname:$firstname, lastname:$lastname, username:$username, email:$email, mobileNumber:$mobileNumber, password: $password, confirmPassword:$confirmPassword, university:$university, studentID:$studentID, PTProficiency:$PTProficiency, hasSmartphone:$hasSmartphone, friends:$friends, dietaryRequirements:$dietaryRequirements){
     firstname
     lastname
     username
@@ -21,7 +23,14 @@ const MutationRegisterUser =
 }`;
 
 
-@withRouter
+const mapStateToProps = (state, ownProps) => {
+	return { 
+		authenticated: state.auth.login.authenticated
+	}
+}
+
+
+@connect(mapStateToProps)
 @autobind
 class RegisterForm extends React.Component {
 	state = {
@@ -37,6 +46,7 @@ class RegisterForm extends React.Component {
 		PTProficiency: '2',
 		hasSmartphone: 'yes',
 		friends: '',
+		dietaryRequirements: '',
 		currentStage: 1,
 		loading: false,
 		error: false,
@@ -79,7 +89,8 @@ class RegisterForm extends React.Component {
 					studentID: this.state.studentID, 
 					PTProficiency: this.state.PTProficiency, 
 					hasSmartphone: this.state.hasSmartphone, 
-					friends: this.state.friends
+					friends: this.state.friends,
+					dietaryRequirements: this.state.dietaryRequirements
 				}
 			}
 		}
@@ -98,8 +109,26 @@ class RegisterForm extends React.Component {
 		}
 	}
 
+	logout() {
+		this.props.dispatch(logout(new Date()));
+	}
+
 	render() {
-		if (!this.state.complete) {
+		if (this.props.authenticated) {
+			return (
+				<div className='info'>
+					<div className='fail title'>
+						You are already registered.
+					</div>
+					<p>
+						Hey! You're logged in at the moment which means already have an account.
+						If someone else is trying to registering, please&nbsp;
+						<a style={{color: 'yellow'}}onClick={this.logout}>log out</a> first. 
+					</p>
+				</div>
+			);
+		}
+		else if (!this.state.complete) {
 			let form = null;
 			switch (this.state.currentStage) {
 				case 1: form = <Form1 onChange={this.handleInputChange} state={this.state} next={this.changeStage(2)}/>; break;
@@ -130,14 +159,14 @@ class RegisterForm extends React.Component {
 		}
 		else {
 			return (
-				<div className='success'>
-					<div className='success-title'>
+				<div className='info'>
+					<div className='success title'>
 						Registration successful!
 					</div>
 					<p>
 						Thanks for registering, {this.state.firstname}!
 						Stay tuned for more updates and instructions for the event.
-						Please not that your place is <em>NOT</em> secured until you have <Link to='/pay'>paid</Link>.
+						Please note that your place is <em>NOT</em> secured until you have <Link to='/pay'>paid</Link>.
 					</p>
 				</div>
 			)
