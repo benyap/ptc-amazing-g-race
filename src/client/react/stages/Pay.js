@@ -38,8 +38,8 @@ const QueryMeOptions = {
 }
 
 const QuerySetting = gql`
-query GetSetting($key:String!){
-  getSetting(key:$key){
+query GetProtectedSetting($key:String!){
+  getProtectedSetting(key:$key){
 		value
 	}
 }`;
@@ -76,9 +76,9 @@ class Pay extends React.Component {
 			payment = (
 				<div className='payment-details'>
 					<p>
-						BSB: {this.props.QueryBsb.loading ? 'Loading...' : this.props.QueryBsb.getSetting.value}
+						BSB: {this.props.QueryBsb.loading ? 'Loading...' : this.props.QueryBsb.getProtectedSetting.value}
 						<br/>
-						ACC: {this.props.QueryAcc.loading ? 'Loading...' : this.props.QueryAcc.getSetting.value}
+						ACC: {this.props.QueryAcc.loading ? 'Loading...' : this.props.QueryAcc.getProtectedSetting.value}
 					</p>
 						Please use <span className='highlight'>{reference}</span> as the payee reference.
 				</div>
