@@ -11,13 +11,14 @@ import ViewError from '../ViewError';
 
 const QuerySettings = gql`
 query GetSettings($skip:Int,$limit:Int){
-  getSettings(skip:$skip,limit:$limit){
-    key
-    valueType
-    value
-    modified
-    modifiedBy
-  }
+	getSettings(skip:$skip,limit:$limit){
+		key
+		valueType
+		value
+		values
+		modified
+		modifiedBy
+	}
 }`;
 
 const QuerySettingsOptions = {

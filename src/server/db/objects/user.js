@@ -315,8 +315,9 @@ const registerUser = async function(user, {firstname, lastname, username, studen
 		const emailCheck = await db.collection('userauthentications').findOne({ email: email.toLowerCase() });
 		if (emailCheck) return new Error('Email \'' + email + '\' already taken');
 
-
 		// Create user
+		const defaultPermissions = await db.collection('settings').findOne({key: 'user_permissions_default'});
+		
 		const newUser = {
 			firstname,
 			lastname,
@@ -331,7 +332,7 @@ const registerUser = async function(user, {firstname, lastname, username, studen
 			raceDetails: {
 				PTProficiency, hasSmartphone, friends
 			},
-			permissions: [],
+			permissions: defaultPermissions.values,
 			roles: [],
 			registerDate: new Date()
 		};
@@ -370,7 +371,7 @@ const getUserActions = async function(user, action, skip = 0, limit = 0) {
 		if (limit < 0) return new Error('Limit value must be non-negative, but received: ' + limit);
 		
 		if (action) {
-			const escapedAction = action.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');			
+			const escapedAction = action.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');	
 			const actionRegex = new RegExp(['^', escapedAction, '$'].join(''), 'i');
 			findParams.action = actionRegex;
 		}
