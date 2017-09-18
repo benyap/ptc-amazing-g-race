@@ -81,5 +81,6 @@ const getProtectedSetting = {
 export default {
 	getSetting,
 	getPublicSetting,
+	getProtectedSetting,
 	getSettings
 };
