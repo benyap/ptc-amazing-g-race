@@ -5,6 +5,7 @@ import MediaQuery from 'react-responsive';
 import bp from '../../../../../lib/react/components/utility/bp';
 import ServerSettingsView from '../ServerSettingsView';
 import UsersView from '../UsersView';
+import GameStateView from '../GameStateView';
 
 
 @autobind
@@ -22,6 +23,7 @@ class AdminDashboard extends React.Component {
 			<Tabs2 id='dashboard' className={vertical?'':'mobile-tabs'} onChange={this.handleTabChange} 
 				selectedTabId={this.state.selectedTabId} vertical={vertical}>
 				<Tab2 id='users' title='Users' panel={<UsersView/>}/>
+				<Tab2 id='game' title='Game State' panel={<GameStateView/>}/>
 				<Tab2 id='state' title='Server' panel={<ServerSettingsView/>}/>
 			</Tabs2>
 		);

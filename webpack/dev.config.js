@@ -1,4 +1,3 @@
-var DEBUG = process.env.NODE_ENV !== 'production';
 var webpack = require('webpack');
 
 module.exports = {
@@ -40,8 +39,11 @@ module.exports = {
 		filename: '[name].min.js',
 		publicPath: '/'
 	},
-	plugins: DEBUG ? [] : [
-		new webpack.optimize.OccurrenceOrderPlugin(),
-		new webpack.optimize.UglifyJsPlugin({ mangle: false, sourceMap: false})
+	plugins: [
+		new webpack.DefinePlugin({
+			'process.env':{
+				'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+			}
+		})
 	]
 };

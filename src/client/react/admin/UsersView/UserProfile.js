@@ -17,7 +17,7 @@ query GetUserByEmail($email:String!) {
     university studentID
     mobileNumber enabled
     registerDate paidAmount
-    raceDetails{ hasSmartphone friends PTProficiency }
+    raceDetails{ hasSmartphone friends PTProficiency dietaryRequirements }
     roles permissions
   }
 }`;
@@ -140,7 +140,7 @@ class UserProfile extends React.Component {
 		}
 
 		if (this.props.QueryUser.getUserByEmail) {
-			let { username, mobileNumber, studentID, registerDate, paidAmount, raceDetails: { PTProficiency, hasSmartphone, friends} } = this.props.QueryUser.getUserByEmail;
+			let { username, mobileNumber, studentID, registerDate, paidAmount, raceDetails: { PTProficiency, hasSmartphone, friends, dietaryRequirements } } = this.props.QueryUser.getUserByEmail;
 
 			if (this.state.paidAmount === null) {
 				setTimeout(() => {
@@ -200,6 +200,10 @@ class UserProfile extends React.Component {
 							<tr>
 								<td>Friends</td>
 								<td>{friends ? friends : 'None'}</td>
+							</tr>
+							<tr>
+								<td>Dietary Requirements</td>
+								<td>{dietaryRequirements ? dietaryRequirements : 'None'}</td>
 							</tr>
 						</tbody>
 					</table>

@@ -28,14 +28,40 @@ const getSetting = async function(user, key) {
 
 
 /**
- * Get a setting value
+ * Get a setting value that is public and unprotected
  * @param {*} user 
  * @param {String} key
  */
 const getPublicSetting = async function(key) {
+	return _getPublicSetting(key, false);
+}
+
+
+/**
+ * Get a setting value that is public and protected
+ * @param {*} key 
+ */
+const getProtectedSetting = async function(user, key) {
+	if (!user) return new Error('No user logged in');
+	else {
+		const authorized = await permission.checkPermission(user, ['user:view-protectedSettings']);
+		if (authorized !== true) return authorized;
+
+		return _getPublicSetting(key, true);
+	}
+}
+
+
+/**
+ * Get a setting value
+ * @param {*} key 
+ * @param {Boolean} isProtected 
+ */
+const _getPublicSetting = async function(key, isProtected) {
+	console.log(key, isProtected)
 	// Get setting value
 	const db = await connect();
-	const setting = await db.collection('settings').findOne({ key, public: true });
+	const setting = await db.collection('settings').findOne({ key, public: true, 'protected': isProtected });
 
 	if (!setting) return new Error('Setting not found');
 
@@ -264,6 +290,7 @@ const _modifySettingList = async function(modifyAction, user, key, value) {
 export default {
 	getSetting,
 	getPublicSetting,
+	getProtectedSetting,
 	getSettings,
 	setSetting,
 	addSetting,

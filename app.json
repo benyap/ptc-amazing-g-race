@@ -1,0 +1,42 @@
+{
+  "name": "ptc-amazing-g-race",
+  "description": "",
+  "scripts": {
+  },
+  "env": {
+    "AWS_S3_ID": {
+      "required": true
+    },
+    "AWS_S3_SECRET": {
+      "required": true
+    },
+    "EXPRESS_SESSION_SECRET": {
+      "required": true
+    },
+    "JWT_SECRET": {
+      "required": true
+    },
+    "MONGO_ADMIN_KEY": {
+      "required": true
+    },
+    "MONGO_ADMIN_USER": {
+      "required": true
+    },
+    "MONGO_DB": {
+      "required": true
+    },
+    "NODE_ENV": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}

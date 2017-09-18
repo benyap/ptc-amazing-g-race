@@ -15,11 +15,17 @@ class Form4 extends React.Component {
 		PTProficiency: this.props.state.PTProficiency,
 		hasSmartphone: this.props.state.hasSmartphone,
 		friends: this.props.state.friends,
+		dietaryRequirements: this.props.state.dietaryRequirements,
 		nextDisabled: true
 	}
 
 	componentDidMount() {
+		this.mounted = true;
 		this._validateFormNext();
+	}
+
+	componentWillUnmount() {
+		this.mounted = false;
 	}
 	
 	onChange({ target }) {
@@ -43,10 +49,10 @@ class Form4 extends React.Component {
 
 	_validateFormNext() {
 		if (this._validateForm()) {
-			if (this.state.nextDisabled) this.setState({nextDisabled: false});
+			if (this.mounted && this.state.nextDisabled) this.setState({nextDisabled: false});
 		}
 		else {
-			if (!this.state.nextDisabled) this.setState({nextDisabled: true});
+			if (this.mounted && !this.state.nextDisabled) this.setState({nextDisabled: true});
 		}
 	}
 
@@ -92,7 +98,9 @@ class Form4 extends React.Component {
 				</RadioGroup>
 
 				<FormInput id='friends' large value={this.state.friends} onChange={this.onChange} label='Name a friend or two you would like on your team.' sublabel='(no promises)' disabled={this.props.loading}/>
-				
+
+				<FormInput id='dietaryRequirements' large value={this.state.dietaryRequirements} onChange={this.onChange} label='Any dietary requirements?' disabled={this.props.loading}/>
+
 				<Button onClick={this.props.submitForm} className='pt-large' text='Register' disabled={this.state.nextDisabled} loading={this.props.loading} intent={Intent.SUCCESS} style={{float:'right'}}/>
 				<Button onClick={this.props.back} className='pt-large pt-minimal' text='< Back' intent={Intent.PRIMARY} style={{float:'left'}} disabled={this.props.loading}/>
 			</div>

@@ -1,0 +1,31 @@
+@import 'variables';
+
+
+#pay {
+	.infobox {
+		background: rgba(18, 18, 18, 0.80);
+		margin: auto;
+		margin-top: 2rem;
+		color: white;
+		font-size: 1.2rem;
+		padding: 1.3rem;
+		border-radius: 0.4rem;
+		
+		.highlight, a {
+			color: yellow;
+		}
+		
+		h2 {
+			color: $theme-orange;
+		}
+	
+		@media  (max-width: $bp-s) {
+			font-size: 1rem;
+		}
+
+		.payment-details {
+			padding: 1rem;
+			background: black;
+		}
+	}
+}

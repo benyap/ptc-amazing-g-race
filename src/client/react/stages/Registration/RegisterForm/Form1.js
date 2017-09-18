@@ -4,7 +4,7 @@ import { Button, Intent } from '@blueprintjs/core';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import Validator from '../../../../../../lib/react/components/forms/validation/Validator';
 import NotEmpty from '../../../../../../lib/react/components/forms/validation/functions/NotEmpty';
-
+import RegexCheck from '../../../../../../lib/react/components/forms/validation/functions/RegexCheck';
 import { errorProps } from './lib';
 
 
@@ -34,7 +34,13 @@ class Form1 extends React.Component {
 	_validateName(name) {
 		return (value) => {
 			if (NotEmpty(value)) {
-				return { ok: true };
+				const regex = /^[A-Za-z- ]+$/;
+				if (RegexCheck(value, regex)) {
+					return { ok: true };
+				}
+				else {
+					return { ok: false, helperText: 'Please only use letters, spaces or dashes.' };
+				}
 			}
 			else {
 				return { ok: false, helperText: name + ' is required.' };

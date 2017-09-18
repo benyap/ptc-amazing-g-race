@@ -158,6 +158,11 @@ const registerUser = {
 			name: 'friends',
 			type: GraphQLString,
 			description: 'List one or two friends that you want on your team'
+		},
+		dietaryRequirements: {
+			name: 'dietaryRequirements',
+			type: GraphQLString,
+			description: 'Do you have any dietary requirements?'
 		}
 	},
 	resolve(root, params, ctx, options) {
