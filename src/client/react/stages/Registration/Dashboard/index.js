@@ -7,29 +7,31 @@ import { Spinner, Button, Intent } from '@blueprintjs/core';
 import { logout } from '../../../../actions/authActions';
 import ScrollAnimation from 'react-animate-on-scroll';
 import Title from '../../Title';
-
+import LoginRefresher from '../../../sharedComponents/LoginRefresher';
 import '../../../scss/_dashboard.scss';
 
 
 const mapStateToProps = (state, ownProps) => {
 	return { 
-		authenticated: state.auth.login.authenticated
+		authenticated: state.auth.login.authenticated,
+		email: state.auth.login.email,
+		refresh: state.auth.tokens.refresh
 	}
 }
 
 const QueryMe = gql`
-query GetMe {
-  getMe {
+query GetUserByEmail($email:String!) {
+  getUserByEmail(email:$email) {
 		firstname
 		lastname
-    username 
+		username 
   }
 }`;
 
 const QueryMeOptions = {
 	name: 'QueryMe',
-	options: (props) => ({
-		variables: { email: props.email }
+	options: ({email}) => ({
+		variables: {email}
 	}),
 	skip: (ownProps) => {
 		return !ownProps.authenticated;
@@ -58,7 +60,7 @@ class Dashboard extends React.Component {
 			);
 
 			if (!this.props.QueryMe.loading) {
-				let { firstname } = this.props.QueryMe.getMe;
+				let { firstname } = this.props.QueryMe.getUserByEmail;
 
 				content = (
 					<div className='dashboard'>
@@ -79,6 +81,7 @@ class Dashboard extends React.Component {
 			
 			return (
 				<main id='dashboard'>
+					<LoginRefresher refreshToken={this.props.refresh}/>
 					<Title/>
 					<ScrollAnimation animateOnce animateIn='zoomIn' offset={0} duration={0.5}>
 						{content}

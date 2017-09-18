@@ -9,6 +9,10 @@ const getPublicSetting = async function(root, params, ctx, options) {
 	return database.setting.getPublicSetting(params.key);
 }
 
+const getProtectedSetting = async function(root, params, ctx, options) {
+	return database.setting.getProtectedSetting(ctx.user, params.key);
+}
+
 const getSettings = async function(root, params, ctx, options) {
 	return database.setting.getSettings(ctx.user, params.skip, params.limit);
 }
@@ -29,6 +33,7 @@ const removeSetting = async function(root, params, ctx, options) {
 export default {
 	getSetting,
 	getPublicSetting,
+	getProtectedSetting,
 	getSettings,
 	setSetting,
 	addSetting,

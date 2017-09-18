@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { graphql, gql } from 'react-apollo';
+import { Spinner } from '@blueprintjs/core';
+import { compose, graphql, gql } from 'react-apollo';
 import ScrollAnimation from 'react-animate-on-scroll';
 import Title from './Title';
+import LoginRefresher from '../sharedComponents/LoginRefresher';
 
 import '../scss/_pay.scss';
 
@@ -11,46 +13,72 @@ import '../scss/_pay.scss';
 const mapStateToProps = (state, ownProps) => {
 	return { 
 		authenticated: state.auth.login.authenticated,
-		email: state.auth.login.email
+		email: state.auth.login.email,
+		refresh: state.auth.tokens.refresh
 	}
 }
 
-
 const QueryMe = gql`
-query GetMe {
-  getMe {
-    username 
+query GetUserByEmail($email:String!) {
+  getUserByEmail(email:$email) {
+		firstname
+		lastname
+		username 
   }
 }`;
 
 const QueryMeOptions = {
 	name: 'QueryMe',
-	options: (props) => ({
-		variables: { email: props.email }
+	options: ({email}) => ({
+		variables: {email}
 	}),
 	skip: (ownProps) => {
 		return !ownProps.authenticated;
 	}
 }
 
+const QuerySetting = gql`
+query GetSetting($key:String!){
+  getSetting(key:$key){
+		value
+	}
+}`;
+
+const PaymentQueryOptions = (name, key) => {
+	return {
+		name,
+		options: (props) => ({
+			variables: { key }
+		}),
+		skip: (ownProps) => {
+			return !ownProps.authenticated;
+		}
+	}
+}
+
 @connect(mapStateToProps)
-@graphql(QueryMe, QueryMeOptions)
+@compose(
+	graphql(QueryMe, QueryMeOptions),
+	graphql(QuerySetting, PaymentQueryOptions('QueryBsb', 'payment_bsb')),
+	graphql(QuerySetting, PaymentQueryOptions('QueryAcc', 'payment_acc'))
+)
 class Pay extends React.Component {
 	
 	render() {
 		let payment; 
+
 		if (this.props.authenticated) {
 			let reference = 'AGR-<your username>';
 			if (!this.props.QueryMe.loading) {
-				reference = `AGR-${this.props.QueryMe.getMe.username}`;
+				reference = `AGR-${this.props.QueryMe.getUserByEmail.username}`;
 			}
 
 			payment = (
 				<div className='payment-details'>
 					<p>
-						BSB: 000-000
+						BSB: {this.props.QueryBsb.loading ? 'Loading...' : this.props.QueryBsb.getSetting.value}
 						<br/>
-						ACC: 0000-0000
+						ACC: {this.props.QueryAcc.loading ? 'Loading...' : this.props.QueryAcc.getSetting.value}
 					</p>
 					<p>
 						Please use <span className='highlight'>{reference}</span> as the payee reference.
@@ -75,6 +103,7 @@ class Pay extends React.Component {
 
 		return (
 			<main id='pay'>
+				<LoginRefresher refreshToken={this.props.refresh}/>
 				<Title/>
 					<ScrollAnimation animateOnce animateIn='fadeInUp' offset={0} duration={0.5}>
 					<div className='infobox'>
