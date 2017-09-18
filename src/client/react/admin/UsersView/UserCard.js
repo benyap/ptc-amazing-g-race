@@ -10,6 +10,7 @@ class UserCard extends React.Component {
 		user: PropTypes.shape({
 			firstname: PropTypes.string,
 			lastname: PropTypes.string,
+			username: PropTypes.string,
 			email: PropTypes.string,
 			university: PropTypes.string,
 			enabled: PropTypes.bool,
@@ -24,7 +25,7 @@ class UserCard extends React.Component {
 	}
 
 	render() {
-		let { firstname, lastname, email, university, enabled } = this.props.user;
+		let { firstname, lastname, username, email, university, enabled } = this.props.user;
 		let { paymentAmount } = this.props;
 
 		return (
@@ -33,7 +34,7 @@ class UserCard extends React.Component {
 					<h5>
 						<span className={'pt-icon ' + (this.props.user.paidAmount >= paymentAmount ? 'pt-icon-tick pt-intent-success' : 'pt-icon-dollar pt-intent-danger') }> </span>
 						{enabled ? null : <span className='pt-icon pt-icon-ban-circle pt-intent-danger'> </span>}
-						{' ' + firstname + ' ' + lastname}
+						{` ${firstname} ${lastname} (${username})`}
 					</h5>
 					<p className='pt-text-muted'>
 						{university}

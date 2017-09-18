@@ -31,6 +31,7 @@ query ListAll($limit:Int, $skip:Int){
   listAll(limit:$limit, skip:$skip) {
     firstname
 		lastname
+		username
 		email
     university
     enabled
