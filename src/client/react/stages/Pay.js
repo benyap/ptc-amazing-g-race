@@ -68,7 +68,7 @@ class Pay extends React.Component {
 		let payment; 
 
 		if (this.props.authenticated) {
-			let reference = 'AGR-<your username>';
+			let reference = <Spinner className='pt-small'/>;
 			if (!this.props.QueryMe.loading) {
 				reference = `AGR-${this.props.QueryMe.getUserByEmail.username}`;
 			}
@@ -80,9 +80,7 @@ class Pay extends React.Component {
 						<br/>
 						ACC: {this.props.QueryAcc.loading ? 'Loading...' : this.props.QueryAcc.getSetting.value}
 					</p>
-					<p>
 						Please use <span className='highlight'>{reference}</span> as the payee reference.
-					</p>
 				</div>
 			);
 		}
