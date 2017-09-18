@@ -125,7 +125,7 @@ class Setting extends React.Component {
 						<b>Values: </b>
 						<ul>
 							{values.map((value) => {
-								return <li>{value}</li>
+								return <li key={value}>{value}</li>
 							})}
 						</ul>
 					</div>
