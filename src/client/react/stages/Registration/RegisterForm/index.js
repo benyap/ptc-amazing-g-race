@@ -13,8 +13,8 @@ import Form4 from './Form4';
 
 
 const MutationRegisterUser = 
-`mutation Register($firstname:String!, $lastname:String!, $username:String!, $email:String!, $mobileNumber:String!, $password:String!, $confirmPassword:String!, $university:String!, $studentID:String!, $PTProficiency: Int!, $hasSmartphone:Boolean!, $friends:String) {
-  registerUser(firstname:$firstname, lastname:$lastname, username:$username, email:$email, mobileNumber:$mobileNumber, password: $password, confirmPassword:$confirmPassword, university:$university, studentID:$studentID, PTProficiency:$PTProficiency, hasSmartphone:$hasSmartphone, friends:$friends){
+`mutation Register($firstname:String!, $lastname:String!, $username:String!, $email:String!, $mobileNumber:String!, $password:String!, $confirmPassword:String!, $university:String!, $studentID:String!, $PTProficiency: Int!, $hasSmartphone:Boolean!, $friends:String, $dietaryRequirements:String) {
+  registerUser(firstname:$firstname, lastname:$lastname, username:$username, email:$email, mobileNumber:$mobileNumber, password: $password, confirmPassword:$confirmPassword, university:$university, studentID:$studentID, PTProficiency:$PTProficiency, hasSmartphone:$hasSmartphone, friends:$friends, dietaryRequirements:$dietaryRequirements){
     firstname
     lastname
     username
@@ -46,6 +46,7 @@ class RegisterForm extends React.Component {
 		PTProficiency: '2',
 		hasSmartphone: 'yes',
 		friends: '',
+		dietaryRequirements: '',
 		currentStage: 1,
 		loading: false,
 		error: false,
@@ -88,7 +89,8 @@ class RegisterForm extends React.Component {
 					studentID: this.state.studentID, 
 					PTProficiency: this.state.PTProficiency, 
 					hasSmartphone: this.state.hasSmartphone, 
-					friends: this.state.friends
+					friends: this.state.friends,
+					dietaryRequirements: this.state.dietaryRequirements
 				}
 			}
 		}
