@@ -24,64 +24,62 @@ const _login = async function(user, email, password, isAdmin) {
 	if (user) {
 		return new Error('Already logged in');
 	}
+
+	email = email.toLowerCase();
+	
+	// Connect to MongoDB and verify authentication
+	const db = await connect();
+	let userauthentication;
+	if (isAdmin) {
+		userauthentication = await db.collection('userauthentications').findOne({email, isAdmin});
+	}
 	else {
-		email = email.toLowerCase();
-		
-		// Connect to MongoDB and verify authentication
-		const db = await connect();
-		let userauthentication;
-		if (isAdmin) {
-			userauthentication = await db.collection('userauthentications').findOne({email, isAdmin});
-		}
-		else {
-			userauthentication = await db.collection('userauthentications').findOne({email});
-		}
+		userauthentication = await db.collection('userauthentications').findOne({email});
+	}
 
-		if (!userauthentication) {
-			return {
-				ok: false,
-				message: 'User not found',
-				email: email
-			};
-		}
+	if (!userauthentication) {
+		return {
+			ok: false,
+			message: 'User not found',
+			email: email
+		};
+	}
 
-		const isMatch = await bcrypt.compare(password, userauthentication.password);
+	const isMatch = await bcrypt.compare(password, userauthentication.password);
 
-		if (!isMatch) {
-			return {
-				ok: false,
-				message: 'Invalid credentials',
-				email: email
-			};
-		}
-		else {
-			// Retrieve user
-			const user = await db.collection('users').findOne({email});
+	if (!isMatch) {
+		return {
+			ok: false,
+			message: 'Invalid credentials',
+			email: email
+		};
+	}
 
-			// Check that the user is enabled
-			if (!user.enabled) {
-				return {
-					ok: false,
-					message: 'User is not enabled',
-					email: email
-				};
-			}
-			else {
-				// Generate tokens
-				const access_token = _generateAccessToken(user);
-				const refresh_token = _generateRefreshToken(user);
+	// Retrieve user
+	const retrievedUser = await db.collection('users').findOne({email});
 
-				return {
-					ok: true,
-					message: 'Log in successful',
-					email: user.email,
-					userId: user._id,
-					username: user.username,
-					access_token: access_token,
-					refresh_token: refresh_token
-				};
-			}
-		}
+	// Check that the user is enabled
+	if (!retrievedUser.enabled) {
+		return {
+			ok: false,
+			message: 'User is not enabled',
+			email: email
+		};
+	}
+	else {
+		// Generate tokens
+		const access_token = _generateAccessToken(retrievedUser);
+		const refresh_token = _generateRefreshToken(retrievedUser);
+
+		return {
+			ok: true,
+			message: 'Log in successful',
+			email: retrievedUser.email,
+			userId: retrievedUser._id,
+			username: retrievedUser.username,
+			access_token: access_token,
+			refresh_token: refresh_token
+		};
 	}
 }
 
@@ -298,80 +296,76 @@ const changePassword = async function(user, currentPassword, newPassword, confir
 	if (!user) {
 		return new Error('Not logged in');
 	}
-	else {
-		const db = await connect();
-		const userauthentication = await db.collection('userauthentications').findOne({email: user.email});
-		
-		if (!userauthentication) {
-			return new Error('User not found');
-		}
+
+	const db = await connect();
+	const userauthentication = await db.collection('userauthentications').findOne({email: user.email});
 	
-		const isMatch = await bcrypt.compare(currentPassword, userauthentication.password);
-		
-		if (!isMatch) {
-			return {
-				ok: false,
-				failureMessage: 'Invalid credentials'
-			};
-		}
-		else {
-			// Password validation
-			
-			// Verify length
-			const minLength_raw = await db.collection('settings').findOne({key:'auth_password_min_length'});
-			const minLength = minLength_raw.value;
+	if (!userauthentication) return new Error('User not found');
 
-			if (currentPassword.length < minLength) {
-				return {
-					ok: false,
-					failureMessage: 'Password must be at least 6 characters'
-				};
-			}
-			
-			if (newPassword === currentPassword) {
-				return {
-					ok: false,
-					failureMessage: 'New password must be different from old password'
-				};
-			}
-			
-			if (newPassword !== confirmPassword) {
-				return {
-					ok: false,
-					failureMessage: 'New passwords do not match'
-				};
-			}
+	const isMatch = await bcrypt.compare(currentPassword, userauthentication.password);
+	
+	if (!isMatch) {
+		return {
+			ok: false,
+			failureMessage: 'Invalid credentials'
+		};
+	}
 
-			// Password validated
-			const salt = await bcrypt.genSalt(10);
-			const hash = await bcrypt.hash(newPassword, salt);
+	// Password validation
+	
+	// Verify length
+	const minLength_raw = await db.collection('settings').findOne({key:'auth_password_min_length'});
+	const minLength = minLength_raw.value;
 
-			// Update password
-			const result = await db.collection('userauthentications').update(
-				{ email: user.email },
-				{ $set: { password: hash } }
-			);
+	if (currentPassword.length < minLength) {
+		return {
+			ok: false,
+			failureMessage: 'Password must be at least 6 characters'
+		};
+	}
+	
+	if (newPassword === currentPassword) {
+		return {
+			ok: false,
+			failureMessage: 'New password must be different from old password'
+		};
+	}
+	
+	if (newPassword !== confirmPassword) {
+		return {
+			ok: false,
+			failureMessage: 'New passwords do not match'
+		};
+	}
 
-			if (result.result.nModified === 1) {
-				// Log change password action
-				const action = {
-					action: 'Change password',
-					target: user.username,
-					targetCollection: 'userauthentications',
-					date: new Date(),
-					who: user.username
-				};
+	// Password validated
+	const salt = await bcrypt.genSalt(10);
+	const hash = await bcrypt.hash(newPassword, salt);
 
-				db.collection('actions').insert(action);
+	// Update password
+	const result = await db.collection('userauthentications').update(
+		{ email: user.email },
+		{ $set: { password: hash } }
+	);
 
-				return { 
-					ok: true,
-					action: action
-				}
-			}
-			else return new Error('Unable to change password: database error');
+	if (result.result.nModified === 1) {
+		// Log change password action
+		const action = {
+			action: 'Change password',
+			target: user.username,
+			targetCollection: 'userauthentications',
+			date: new Date(),
+			who: user.username
+		};
+
+		db.collection('actions').insert(action);
+
+		return { 
+			ok: true,
+			action: action
 		}
 	}
+	else return new Error('Unable to change password: database error');
 }
 
 

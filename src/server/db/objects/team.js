@@ -10,20 +10,18 @@ import permission from '../permission';
  */
 const getTeam = async function(user, teamId) {
 	if (!user) return new Error('No user logged in');
-	else {
-		const authorized = await permission.checkPermission(user, ['user:view-teams']);
-		if (authorized !== true) return authorized;
-		
-		const db = await connect();
-		const team = await db.collection('teams').findOne({_id: Mongo.ObjectID(teamId)});
-		
-		if (!team) {
-			return Error(`Team with id \'${teamId}\' not found.`);
-		}
-		else {
-			return team;
-		}
+
+	const authorized = await permission.checkPermission(user, ['user:view-teams']);
+	if (authorized !== true) return authorized;
+	
+	const db = await connect();
+	const team = await db.collection('teams').findOne({_id: Mongo.ObjectID(teamId)});
+	
+	if (!team) {
+		return Error(`Team with id \'${teamId}\' not found.`);
 	}
+
+	return team;
 }
 
 
@@ -34,13 +32,12 @@ const getTeam = async function(user, teamId) {
  */
 const getTeams = async function(user, skip = 0, limit = 0) {
 	if (!user) return new Error('No user logged in');
-	else {
-		const authorized = await permission.checkPermission(user, ['user:view-teams']);
-		if (authorized !== true) return authorized;
-		
-		const db = await connect();
-		return db.collection('teams').find({}).skip(skip).limit(limit).toArray();
-	}
+
+	const authorized = await permission.checkPermission(user, ['user:view-teams']);
+	if (authorized !== true) return authorized;
+	
+	const db = await connect();
+	return db.collection('teams').find({}).skip(skip).limit(limit).toArray();
 }
 
 
@@ -51,48 +48,46 @@ const getTeams = async function(user, skip = 0, limit = 0) {
  */
 const addTeam = async function(user, teamName) {
 	if (!user) return new Error('No user logged in');
-	else {
-		const authorized = await permission.checkPermission(user, ['admin:add-team']);
-		if (authorized !== true) return authorized;
 
-		if (!teamName) {
-			return new Erorr('Team name is required.');
-		}
+	const authorized = await permission.checkPermission(user, ['admin:add-team']);
+	if (authorized !== true) return authorized;
 
-		const db = await connect();
-		
-		// Check that team name is unique
-		const teamNameCheck = await db.collection('teams').findOne({teamName});
-		if (teamNameCheck) {
-			return new Error(`A team with the name \'${teamName}\' already exists.`);
-		}
-		else {
-			// Create team
-			const team = {
-				_id: new Mongo.ObjectID(),
-				teamName,
-				points: 0
-			}
+	if (!teamName) {
+		return new Erorr('Team name is required.');
+	}
 
-			db.collection('teams').insert(team);
+	const db = await connect();
+	
+	// Check that team name is unique
+	const teamNameCheck = await db.collection('teams').findOne({teamName});
+	if (teamNameCheck) {
+		return new Error(`A team with the name \'${teamName}\' already exists.`);
+	}
 
-			// Log action
-			const action = {
-				action: 'Create team',
-				target: 'teamName',
-				targetCollection: 'teams',
-				date: new Date(),
-				who: user.username,
-				infoJSONString: JSON.stringify({ teamName: team.teamName, teamId: team._id })
-			};
+	// Create team
+	const team = {
+		_id: new Mongo.ObjectID(),
+		teamName,
+		points: 0
+	}
 
-			db.collection('actions').insert(action);
-			
-			return { 
-				ok: true,
-				action: action
-			}
-		}
+	db.collection('teams').insert(team);
+
+	// Log action
+	const action = {
+		action: 'Create team',
+		target: 'teamName',
+		targetCollection: 'teams',
+		date: new Date(),
+		who: user.username,
+		infoJSONString: JSON.stringify({ teamName: team.teamName, teamId: team._id })
+	};
+
+	db.collection('actions').insert(action);
+	
+	return { 
+		ok: true,
+		action: action
 	}
 }
 
