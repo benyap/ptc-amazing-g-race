@@ -26,6 +26,10 @@ class RefreshBar extends React.Component {
 		if (this.props.setLoading) this.props.setLoading(loading);
 	}
 
+	componentDidMount() {
+		this.refetch();
+	}
+
 	refetch() {
 		this._setLoadingState(true);
 

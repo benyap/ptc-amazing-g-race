@@ -65,6 +65,10 @@ class UsersView extends React.Component {
 		filter: ''
 	}
 
+	componentDidMount() {
+		this.refetchUsers(true, false);
+	}
+
 	refetchUsers(refetching = false, loading = true) {
 		if (!this.state.viewProfile) {
 			this.setState({loading, refetching: refetching?true:false});
