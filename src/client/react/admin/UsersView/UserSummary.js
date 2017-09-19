@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { autobind } from 'core-decorators';
+import FormInput from '../../../../../lib/react/components/forms/FormInput';
+
+import '../../scss/admin/_user-summary.scss';
 
 
+@autobind
 class UserSummary extends React.Component {
 	static propTypes = {
 		users: PropTypes.arrayOf(PropTypes.shape({
@@ -13,7 +18,12 @@ class UserSummary extends React.Component {
 			enabled: PropTypes.bool,
 			paidAmount: PropTypes.number,
 		})).isRequired,
-		paymentAmount: PropTypes.number.isRequired
+		paymentAmount: PropTypes.number.isRequired,
+		filterUsers: PropTypes.func.isRequired
+	}
+
+	onChange(e) {
+		this.props.filterUsers(e.target.value);
 	}
 
 	render() {
@@ -31,8 +41,12 @@ class UserSummary extends React.Component {
 		if (paidCount === userCount) intent = 'pt-intent-success';
 		
 		return (
-			<div className={'pt-callout ' + intent}>
+			<div id='user-summary' className={'pt-callout ' + intent}>
 				{paidCount} out of {userCount} registered users have paid.
+				<div class='pt-input-group'>
+					<span class='pt-icon pt-icon-search'></span>
+					<input class='pt-input' type="search" placeholder='Filter...' onChange={this.onChange}/>
+				</div>
 			</div>
 		);
 	}

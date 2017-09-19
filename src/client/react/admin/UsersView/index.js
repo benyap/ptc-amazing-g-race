@@ -61,7 +61,8 @@ class UsersView extends React.Component {
 	state = {
 		loading: false,
 		refetching: false,
-		viewProfile: null
+		viewProfile: null,
+		filter: ''
 	}
 
 	refetchUsers(refetching = false, loading = true) {
@@ -89,6 +90,10 @@ class UsersView extends React.Component {
 		this.setState({ viewProfile: null }, () => {
 			this.refetchUsers(true, false);
 		});
+	}
+
+	filterUsers(filter) {
+		this.setState({filter});
 	}
 
 	render() {
@@ -124,17 +129,29 @@ class UsersView extends React.Component {
 				);
 			}
 			else {
-				summary = <UserSummary users={listAll} paymentAmount={paymentAmount}/>;
+				summary = <UserSummary users={listAll} paymentAmount={paymentAmount} filterUsers={this.filterUsers}/>;
 				content = (
 					<div>
 						<div className='view-list'>
 							{listAll.map((user) => {
-								return (
+								let userCard = (
 									<UserCard 
 										key={user.email} user={user} 
 										paymentAmount={paymentAmount}
 										renderProfile={this.renderProfile}/>
 								);
+								if (this.state.filter.length > 0) {
+									let filter = this.state.filter.toLowerCase();
+									let matchFirst = user.firstname.toLowerCase().indexOf(filter) >= 0;
+									let matchLast = user.lastname.toLowerCase().indexOf(filter) >= 0;
+									let matchUser = user.username.toLowerCase().indexOf(filter) >= 0;
+									let matchUni = user.university.toLowerCase().indexOf(filter) >= 0;
+
+									if (matchFirst || matchLast || matchUser || matchUni) {
+										return userCard;
+									}
+								}
+								else return userCard;
 							})}
 						</div>
 					</div>

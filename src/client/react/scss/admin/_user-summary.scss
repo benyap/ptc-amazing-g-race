@@ -1,0 +1,13 @@
+#user-summary {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+
+	.pt-input-group {
+		@media(max-width: 640px) {
+			margin-top: 0.4rem;
+			width: 100%;
+		}
+	}
+}
