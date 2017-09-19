@@ -66,22 +66,27 @@ class UsersView extends React.Component {
 	}
 
 	componentDidMount() {
+		this.mounted = true;
 		this.refetchUsers(true, false);
+	}
+
+	componentWillUnmount() {
+		this.mounted = false;
 	}
 
 	refetchUsers(refetching = false, loading = true) {
 		if (!this.state.viewProfile) {
-			this.setState({loading, refetching: refetching?true:false});
+			if (this.mounted) this.setState({loading, refetching: refetching?true:false});
 			Promise.all([
 				this.props.QueryPaymentAmount.refetch(),
 				this.props.QueryUsers.refetch()
 			])
 				.then(() => {
-					this.setState({loading: false, refetching: false});
+					if (this.mounted) this.setState({loading: false, refetching: false});
 					this.props.dispatch(saveState());
 				})
 				.catch(() => {
-					this.setState({loading: false, refetching: false});
+					if (this.mounted) this.setState({loading: false, refetching: false});
 				});
 		}
 	}

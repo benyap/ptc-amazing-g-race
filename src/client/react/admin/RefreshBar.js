@@ -28,18 +28,23 @@ class RefreshBar extends React.Component {
 
 	componentDidMount() {
 		this.refetch();
+		this.mounted = true;
+	}
+
+	componentWillUnmount() {
+		this.mounted = false;
 	}
 
 	refetch() {
-		this._setLoadingState(true);
+		if (this.mounted) this._setLoadingState(true);
 
 		this.props.query.refetch()
 			.then(() => {
-				this._setLoadingState(false);
+				if (this.mounted) this._setLoadingState(false);
 				this.props.dispatch(saveState());
 			})
 			.catch(() => {
-				this._setLoadingState(false);
+				if (this.mounted) this._setLoadingState(false);
 			});
 	}
 
