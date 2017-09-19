@@ -67,7 +67,9 @@ class UsersView extends React.Component {
 
 	componentDidMount() {
 		this.mounted = true;
-		this.refetchUsers(true, false);
+		this.setState({ loading: false }, () => {
+			this.refetchUsers(true, false);
+		});
 	}
 
 	componentWillUnmount() {

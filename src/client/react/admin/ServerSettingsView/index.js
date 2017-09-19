@@ -65,8 +65,11 @@ class ServerSettingsView extends React.Component {
 						</div>
 						<div className='view-list'>
 							{getSettings.map((setting) => {
-								return <Setting key={setting.key} name={setting.key} value={setting.value} values={setting.values} 
-								modified={setting.modified} modifiedBy={setting.modifiedBy} valueType={setting.valueType}/>;
+								return (
+									<Setting key={setting.key} name={setting.key} value={setting.value} values={setting.values} 
+										modified={setting.modified} modifiedBy={setting.modifiedBy} valueType={setting.valueType}
+										reload={this.props.QuerySettings.refetch}/>
+								);
 							})}
 						</div>
 					</div>

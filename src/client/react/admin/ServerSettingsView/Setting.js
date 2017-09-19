@@ -27,7 +27,8 @@ class Setting extends React.Component {
 		modifiedBy: PropTypes.string.isRequired,
 		valueType: PropTypes.oneOf([
 			'string', 'integer', 'float', 'stringList', 'integerList', 'floatList'
-		])
+		]),
+		reload: PropTypes.func
 	}
 
 	state = { 
@@ -110,6 +111,7 @@ class Setting extends React.Component {
 		
 		this.setState({editLoading: false, editError: false});
 		this.toggleDialog();
+		if (this.props.reload) this.props.reload();
 	}
 
 	render() {
