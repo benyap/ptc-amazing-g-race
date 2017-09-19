@@ -8,6 +8,7 @@ import { saveState } from '../../../actions/stateActions';
 import ViewError from '../ViewError';
 import UserCard from './UserCard';
 import UserProfile from './UserProfile';
+import UserSummary from './UserSummary';
 
 
 const QueryPaymentAmount = gql`
@@ -92,6 +93,7 @@ class UsersView extends React.Component {
 
 	render() {
 		let content = null;
+		let summary = null;
 		let { loading, error, listAll } = this.props.QueryUsers;
 		let loadingPayment = this.props.QueryPaymentAmount.loading;
 
@@ -122,6 +124,7 @@ class UsersView extends React.Component {
 				);
 			}
 			else {
+				summary = <UserSummary users={listAll} paymentAmount={paymentAmount}/>;
 				content = (
 					<div>
 						<div className='view-list'>
@@ -142,6 +145,7 @@ class UsersView extends React.Component {
 		return (
 			<div id='dashboard-users' className='dashboard-tab'>
 				<h4>Users</h4>
+				{summary}
 				<div className='view-header'>
 					<p className='fetched'>Last fetched:<br/>{this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
 					<Button text='Refresh' iconName='refresh' onClick={this.refetchUsers} 
