@@ -23,6 +23,23 @@ const addTeam = {
 }
 
 
+const removeTeam = {
+	type: types.confirmType,
+	description: 'Remove an existing team',
+	args: {
+		teamName: {
+			name: 'teanName',
+			description: 'The name of the team',
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.teamResolver.removeTeam(root, params, ctx, options);
+	}
+}
+
+
 export default {
-	addTeam
+	addTeam,
+	removeTeam
 };

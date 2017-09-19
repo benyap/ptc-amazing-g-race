@@ -13,9 +13,14 @@ const addTeam = async function(root, params, ctx, options) {
 	return database.team.addTeam(ctx.user, params.teamName);
 }
 
+const removeTeam = async function(root, params, ctx, options) {
+	return database.team.removeTeam(ctx.user, params.teamName);
+}
+
 
 export default {
 	getTeam,
 	getTeams,
-	addTeam
+	addTeam,
+	removeTeam
 };
