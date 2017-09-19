@@ -60,12 +60,12 @@ class GameStateView extends React.Component {
 							The current game state is <code>{currentState}</code>.
 						</div>
 						<div className='state-list'>
-							<State currentState={currentState} state={GameState.rego_not_open}/>
-							<State currentState={currentState} state={GameState.rego_open}/>
-							<State currentState={currentState} state={GameState.rego_closed}/>
-							<State currentState={currentState} state={GameState.race}/>
-							<State currentState={currentState} state={GameState.post_race}/>
-							<State currentState={currentState} state={GameState.closed}/>
+							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.rego_not_open}/>
+							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.rego_open}/>
+							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.rego_closed}/>
+							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.race}/>
+							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.post_race}/>
+							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.closed}/>
 						</div>
 					</div>
 				);

@@ -18,7 +18,6 @@ const MutationSetSettingOptions = {
 	name: 'MutationSetSetting'
 }
 
-
 @graphql(MutationSetSetting, MutationSetSettingOptions)
 @autobind
 class Setting extends React.Component {
