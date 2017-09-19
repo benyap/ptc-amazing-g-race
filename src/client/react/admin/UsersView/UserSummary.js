@@ -19,11 +19,12 @@ class UserSummary extends React.Component {
 			paidAmount: PropTypes.number,
 		})).isRequired,
 		paymentAmount: PropTypes.number.isRequired,
-		filterUsers: PropTypes.func.isRequired
+		onFilterChange: PropTypes.func.isRequired,
+		filterValue: PropTypes.string.isRequired
 	}
 
 	onChange(e) {
-		this.props.filterUsers(e.target.value);
+		this.props.onFilterChange(e.target.value);
 	}
 
 	render() {
@@ -45,7 +46,7 @@ class UserSummary extends React.Component {
 				{paidCount} out of {userCount} registered users have paid.
 				<div class='pt-input-group'>
 					<span class='pt-icon pt-icon-search'></span>
-					<input class='pt-input' type="search" placeholder='Filter...' onChange={this.onChange}/>
+					<input class='pt-input' type="search" placeholder='Filter...' value={this.props.filterValue} onChange={this.onChange}/>
 				</div>
 			</div>
 		);

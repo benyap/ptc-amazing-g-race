@@ -129,7 +129,11 @@ class UsersView extends React.Component {
 				);
 			}
 			else {
-				summary = <UserSummary users={listAll} paymentAmount={paymentAmount} filterUsers={this.filterUsers}/>;
+				summary = (
+					<UserSummary users={listAll} paymentAmount={paymentAmount} 
+						filterValue={this.state.filter} onFilterChange={this.filterUsers}/>
+				);
+				
 				content = (
 					<div>
 						<div className='view-list'>
