@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { saveState } from '../../../actions/stateActions';
 import DateFormat from 'dateformat';
 import Setting from './Setting';
+import RefreshBar from '../RefreshBar';
 import ViewError from '../ViewError';
 
 
@@ -39,18 +40,6 @@ class ServerSettingsView extends React.Component {
 		loading: false
 	}
 
-	refetchSettings() {
-		this.setState({loading: true});
-		this.props.QuerySettings.refetch()
-			.then(() => {
-				this.setState({loading: false});
-				this.props.dispatch(saveState());
-			})
-			.catch(() => {
-				this.setState({loading: false});
-			});
-	}
-
 	render() {
 		let content = null;
 		let { loading, error, getSettings } = this.props.QuerySettings;
@@ -64,11 +53,6 @@ class ServerSettingsView extends React.Component {
 			this.loading = true;
 		}
 		else {
-			if (this.loading) {
-				this.lastFetch = new Date();
-				this.loading = false;
-			}
-
 			if (error) {
 				content = <ViewError error={error}/>
 			}
@@ -81,8 +65,11 @@ class ServerSettingsView extends React.Component {
 						</div>
 						<div className='view-list'>
 							{getSettings.map((setting) => {
-								return <Setting key={setting.key} name={setting.key} value={setting.value} values={setting.values} 
-								modified={setting.modified} modifiedBy={setting.modifiedBy} valueType={setting.valueType}/>;
+								return (
+									<Setting key={setting.key} name={setting.key} value={setting.value} values={setting.values} 
+										modified={setting.modified} modifiedBy={setting.modifiedBy} valueType={setting.valueType}
+										reload={this.props.QuerySettings.refetch}/>
+								);
 							})}
 						</div>
 					</div>
@@ -93,10 +80,7 @@ class ServerSettingsView extends React.Component {
 		return (
 			<div id='dashboard-settings' className='dashboard-tab'>
 				<h4>Server State Settings</h4>
-				<div className='view-header'>
-					<p className='fetched'>Last fetched:<br/> {this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
-					<Button text='Refresh' iconName='refresh' onClick={this.refetchSettings} loading={this.loading}/>
-				</div>
+				<RefreshBar query={this.props.QuerySettings} setLoading={(loading)=>{this.setState({loading})}}/>
 				{content}
 			</div>
 		);
