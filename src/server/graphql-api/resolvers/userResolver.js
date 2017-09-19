@@ -58,7 +58,8 @@ const registerUser = async function(root, params, ctx, options) {
 		confirmPassword: params.confirmPassword, 
 		PTProficiency: params.PTProficiency, 
 		hasSmartphone: params.hasSmartphone, 
-		friends: params.friends
+		friends: params.friends,
+		dietaryRequirements: params.dietaryRequirements
 	});
 }
 

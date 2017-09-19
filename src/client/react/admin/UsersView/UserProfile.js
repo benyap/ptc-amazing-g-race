@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Button, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import { gql, graphql, compose } from 'react-apollo';
 import DateFormat from 'dateformat';
+import ScrollAnimation from 'react-animate-on-scroll';
 import { saveState } from '../../../actions/stateActions';
 import '../../scss/admin/_user-profile.scss';
 
@@ -17,7 +18,7 @@ query GetUserByEmail($email:String!) {
     university studentID
     mobileNumber enabled
     registerDate paidAmount
-    raceDetails{ hasSmartphone friends PTProficiency }
+    raceDetails{ hasSmartphone friends PTProficiency dietaryRequirements }
     roles permissions
   }
 }`;
@@ -140,7 +141,7 @@ class UserProfile extends React.Component {
 		}
 
 		if (this.props.QueryUser.getUserByEmail) {
-			let { username, mobileNumber, studentID, registerDate, paidAmount, raceDetails: { PTProficiency, hasSmartphone, friends} } = this.props.QueryUser.getUserByEmail;
+			let { username, mobileNumber, studentID, registerDate, paidAmount, raceDetails: { PTProficiency, hasSmartphone, friends, dietaryRequirements } } = this.props.QueryUser.getUserByEmail;
 
 			if (this.state.paidAmount === null) {
 				setTimeout(() => {
@@ -201,6 +202,10 @@ class UserProfile extends React.Component {
 								<td>Friends</td>
 								<td>{friends ? friends : 'None'}</td>
 							</tr>
+							<tr>
+								<td>Dietary Requirements</td>
+								<td>{dietaryRequirements ? dietaryRequirements : 'None'}</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -208,17 +213,19 @@ class UserProfile extends React.Component {
 		}
 
 		return (
-			<div className='pt-card user-profile'>
-				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
-				{showLoadingIndicator ? 
-					<div style={{float:'right'}}>
-						<Spinner className='pt-small'/>
-					</div>
-				: null }
-				<h4><b>{firstname + ' ' + lastname}</b></h4>
-				<p className='pt-text-muted'>{university}</p>
-				{content}
-			</div>
+			<ScrollAnimation animateOnce animateIn='fadeInUp' offset={0} duration={0.1}>
+				<div className='pt-card user-profile'>
+					<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
+					{showLoadingIndicator ? 
+						<div style={{float:'right'}}>
+							<Spinner className='pt-small'/>
+						</div>
+					: null }
+					<h4><b>{firstname + ' ' + lastname}</b></h4>
+					<p className='pt-text-muted'>{university}</p>
+					{content}
+				</div>
+			</ScrollAnimation>
 		);
 	}
 }

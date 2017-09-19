@@ -62,9 +62,25 @@ const getPublicSetting = {
 	}
 }
 
+const getProtectedSetting = {
+	type: types.settingType,
+	description: 'Get a protected setting',
+	args: {
+		key: {
+			name: 'key',
+			description: 'The setting key (name)',
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.settingResolver.getProtectedSetting(root, params, ctx, options);
+	}
+}
+
 
 export default {
 	getSetting,
 	getPublicSetting,
+	getProtectedSetting,
 	getSettings
 };

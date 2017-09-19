@@ -9,8 +9,8 @@ class Home extends React.Component {
 		return (
 			<main>
 				<Title/>
-				<ScrollAnimation animateOnce animateIn='fadeInDown' offset={0}>
-					<div className='registration text padding'>
+				<ScrollAnimation animateOnce animateIn='fadeInDown' offset={0} duration={0.5}>
+					<div className='infobox text padding'>
 						Registration opens
 						<br/>
 						<span className='em'>Monday 18th September</span>
