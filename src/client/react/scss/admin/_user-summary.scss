@@ -3,7 +3,8 @@
 	flex-wrap: wrap;
 	justify-content: space-between;
 	align-items: center;
-
+	margin-bottom: 0.5rem;
+	
 	.pt-input-group {
 		@media(max-width: 640px) {
 			margin-top: 0.4rem;
