@@ -3,9 +3,10 @@ import { Tab2, Tabs2 } from '@blueprintjs/core';
 import { autobind } from 'core-decorators';
 import MediaQuery from 'react-responsive';
 import bp from '../../../../../lib/react/components/utility/bp';
-import ServerSettingsView from '../ServerSettingsView';
 import UsersView from '../UsersView';
+import TeamsView from '../TeamsView';
 import GameStateView from '../GameStateView';
+import ServerSettingsView from '../ServerSettingsView';
 
 
 @autobind
@@ -23,6 +24,7 @@ class AdminDashboard extends React.Component {
 			<Tabs2 id='dashboard' className={vertical?'':'mobile-tabs'} onChange={this.handleTabChange} 
 				selectedTabId={this.state.selectedTabId} vertical={vertical}>
 				<Tab2 id='users' title='Users' panel={<UsersView/>}/>
+				<Tab2 id='teams' title='Teams' panel={<TeamsView/>}/>
 				<Tab2 id='game' title='Game State' panel={<GameStateView/>}/>
 				<Tab2 id='state' title='Server' panel={<ServerSettingsView/>}/>
 			</Tabs2>
