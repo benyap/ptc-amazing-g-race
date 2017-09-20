@@ -85,6 +85,14 @@ const getUsersByTeam = async function(root, params, ctx, options) {
 	return database.user.getUsersByTeam(ctx.user, params.teamId);
 }
 
+const setUserTeam = async function(root, params, ctx, options) {
+	return database.user.setUserTeam(ctx.user, params.username, params.teamId);
+}
+
+const removeUserTeam = async function(root, params, ctx, options) {
+	return database.user.removeUserTeam(ctx.user, params.username);
+}
+
 
 export default {
 	getUserById,
@@ -103,5 +111,7 @@ export default {
 	getActions,
 	setUserEnabled,
 	setUserPaidAmount,
-	getUsersByTeam
+	getUsersByTeam,
+	setUserTeam,
+	removeUserTeam
 };

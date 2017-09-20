@@ -520,6 +520,11 @@ const setUserPaidAmount = async function(user, username, amount) {
 }
 
 
+/**
+ * Get the users in a specified team
+ * @param {*} user 
+ * @param {String} teamId 
+ */
 const getUsersByTeam = async function(user, teamId) {
 	if (!user) return new Error('No user logged in');
 
@@ -528,7 +533,7 @@ const getUsersByTeam = async function(user, teamId) {
 
 	// Verify that teamId exists
 	const db = await connect();
-	const teamCheck = await db.collection('teams').findOne({_id: teamId});
+	const teamCheck = await db.collection('teams').findOne({_id: Mongo.ObjectID(teamId)});
 	if (!teamCheck) {
 		return new Error(`Team with id \'${teamId}\' not found.`);
 	}
@@ -536,6 +541,87 @@ const getUsersByTeam = async function(user, teamId) {
 	return db.collection('users').find({teamId: Mongo.ObjectID(teamId)}).toArray();
 }
 
+
+/**
+ * Set the team of a user
+ * @param {*} user 
+ * @param {String} username 
+ * @param {String} teamId 
+ */
+const _setUserTeam = async function(user, username, teamId) {
+	if (!user) return new Error('No user logged in');
+
+	const authorized = await permission.checkPermission(user, ['admin:modifyteam-user']);
+	if (authorized !== true) return authorized;
+
+	const db = await connect();
+
+	if (teamId) {
+		// Verify that team exists
+		const teamCheck = await db.collection('teams').findOne({_id: Mongo.ObjectID(teamId)});
+		if (!teamCheck) {
+			return new Error(`Team with id \'${teamId}\' not found.`);
+		}
+	}
+
+	// Modify user
+	let result;
+	if (teamId) {
+		result = await db.collection('users').update({username: username}, {$set: {teamId: Mongo.ObjectID(teamId)} });
+	}
+	else {
+		result = await db.collection('users').update({username: username}, {$set: {teamId: null} });
+	}
+
+	if (result.result.nModified === 1) {
+		// Log action
+		let modifyaction = teamId ? 'Set' : 'Remove';
+		const action = {
+			action: `${modifyaction} user team`,
+			target: username,
+			targetCollection: 'users',
+			date: new Date(),
+			who: user.username,
+			infoJSONString: JSON.stringify({ username, teamId: teamId ? Mongo.ObjectID(teamId) : null })
+		};
+
+		db.collection('actions').insert(action);
+		
+		return { 
+			ok: true,
+			action: action
+		}
+	}
+	else {
+		if (teamId) {
+			return new Error(`User already in team with id \'${teamId}\'`);
+		}
+		else {
+			return new Error(`User not in team.`);			
+		}
+	}
+}
+
+
+/**
+ * Set the team of a user
+ * @param {*} user 
+ * @param {String} username 
+ * @param {String} teamId 
+ */
+const setUserTeam = async function(user, username, teamId) {
+	return _setUserTeam(user, username, teamId);	
+}
+
+
+/**
+ * Remove the user from any team
+ * @param {*} user 
+ * @param {String} username 
+ */
+const removeUserTeam = async function(user, username) {
+	return _setUserTeam(user, username);
+}
 
 
 export default {
@@ -555,5 +641,7 @@ export default {
 	getActions,
 	setUserEnabled,
 	setUserPaidAmount,
-	getUsersByTeam
+	getUsersByTeam,
+	setUserTeam,
+	removeUserTeam
 }
