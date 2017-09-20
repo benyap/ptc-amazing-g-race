@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { gql, graphql } from 'react-apollo';
 import { Spinner, Button } from '@blueprintjs/core';
@@ -36,6 +37,10 @@ const QuerySettingsOptions = {
 @connect()
 @autobind
 class ServerSettingsView extends React.Component {
+	static propTypes = {
+		visible: PropTypes.bool
+	}
+
 	state = {
 		loading: false
 	}
@@ -80,7 +85,7 @@ class ServerSettingsView extends React.Component {
 		return (
 			<div id='dashboard-settings' className='dashboard-tab'>
 				<h4>Server State Settings</h4>
-				<RefreshBar query={this.props.QuerySettings}/>
+				<RefreshBar query={this.props.QuerySettings} visible={this.props.visible}/>
 				{content}
 			</div>
 		);

@@ -46,10 +46,10 @@ class AdminDashboard extends React.Component {
 		return (
 			<Tabs2 id='dashboard' className={vertical?'':'mobile-tabs'} onChange={this.handleTabChange} 
 				selectedTabId={this.state.selectedTabId} vertical={vertical}>
-				<Tab2 id='users' title='Users' panel={<UsersView/>}/>
-				<Tab2 id='teams' title='Teams' panel={<TeamsView/>}/>
-				<Tab2 id='state' title='Game State' panel={<GameStateView/>}/>
-				<Tab2 id='server' title='Server' panel={<ServerSettingsView/>}/>
+				<Tab2 id='users' title='Users' panel={<UsersView visible={this.state.selectedTabId==='users'}/>}/>
+				<Tab2 id='teams' title='Teams' panel={<TeamsView visible={this.state.selectedTabId==='teams'}/>}/>
+				<Tab2 id='state' title='Game State' panel={<GameStateView visible={this.state.selectedTabId==='state'}/>}/>
+				<Tab2 id='server' title='Server' panel={<ServerSettingsView visible={this.state.selectedTabId==='server'}/>}/>
 			</Tabs2>
 		);
 	}

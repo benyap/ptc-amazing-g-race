@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { gql, graphql } from 'react-apollo';
 import { Spinner } from '@blueprintjs/core';
@@ -30,6 +31,10 @@ const QueryRaceStateOptions = {
 @connect()
 @autobind
 class GameStateView extends React.Component {
+	static propTypes = {
+		visible: PropTypes.bool
+	}
+
 	state = {
 		loading: false
 	}
@@ -75,7 +80,7 @@ class GameStateView extends React.Component {
 		return (
 			<div id='dashboard-state' className='dashboard-tab'>
 				<h4>Game State</h4>
-				<RefreshBar query={this.props.QueryRaceState}/>
+				<RefreshBar query={this.props.QueryRaceState} visible={this.props.visible}/>
 				{content}
 			</div>
 		);

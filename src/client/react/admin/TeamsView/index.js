@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { gql, graphql } from 'react-apollo';
 import { Spinner } from '@blueprintjs/core';
@@ -34,6 +35,10 @@ const QueryGetTeamsOptions = {
 @graphql(QueryGetTeams, QueryGetTeamsOptions)
 @autobind
 class TeamsView extends React.Component {
+	static propTypes = {
+		visible: PropTypes.bool
+	}
+
 	state = {
 		loading: false
 	}
@@ -70,7 +75,7 @@ class TeamsView extends React.Component {
 		return (
 			<div id='dashboard-teams' className='dashboard-tab'>
 				<h4>Teams</h4>
-				<RefreshBar query={this.props.QueryGetTeams}/>
+				<RefreshBar query={this.props.QueryGetTeams} visible={this.props.visible}/>
 				{content}
 			</div>
 		);

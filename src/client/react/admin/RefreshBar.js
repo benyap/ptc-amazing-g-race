@@ -3,17 +3,19 @@ import PropTypes from 'prop-types';
 import DateFormat from 'dateformat';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
-import { Button, Spinner } from '@blueprintjs/core';
+import { Button, Spinner, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import { saveState } from '../../actions/stateActions';
 
 
 @connect()
 @autobind
+@HotkeysTarget
 class RefreshBar extends React.Component {
 	static propTypes = {
 		query: PropTypes.shape({
 			refetch: PropTypes.func.isRequired
 		}).isRequired,
+		visible: PropTypes.bool,
 		setLoading: PropTypes.func,
 	}
 
@@ -30,7 +32,7 @@ class RefreshBar extends React.Component {
 	}
 
 	componentDidMount() {
-		this.refetch();
+		this.refetch(true);
 		this.mounted = true;
 	}
 
@@ -38,17 +40,33 @@ class RefreshBar extends React.Component {
 		this.mounted = false;
 	}
 
-	refetch() {
-		if (this.mounted) this._setLoadingState(true);
+	refetch(force = false) {
+		if (this.props.visible || force) {
+			console.log('REFRESHING')
+			if (this.mounted) this._setLoadingState(true);
+	
+			this.props.query.refetch()
+				.then(() => {
+					if (this.mounted) this._setLoadingState(false, new Date());
+					this.props.dispatch(saveState());
+				})
+				.catch(() => {
+					if (this.mounted) this._setLoadingState(false);
+				});
+		}
+	}
 
-		this.props.query.refetch()
-			.then(() => {
-				if (this.mounted) this._setLoadingState(false, new Date());
-				this.props.dispatch(saveState());
-			})
-			.catch(() => {
-				if (this.mounted) this._setLoadingState(false);
-			});
+	renderHotkeys() {
+		return (
+			<Hotkeys>
+				<Hotkey
+					global={true}
+					combo='r'
+					label='Refresh'
+					onKeyDown={this.refetch}
+				/>
+			</Hotkeys>
+		);
 	}
 
 	render() {

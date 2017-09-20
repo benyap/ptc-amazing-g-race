@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { gql, graphql, compose } from 'react-apollo';
-import { Spinner, Button } from '@blueprintjs/core';
+import { Spinner, Button, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import DateFormat from 'dateformat';
 import { saveState } from '../../../actions/stateActions';
 import ViewError from '../ViewError';
@@ -57,7 +58,12 @@ const QueryUsersOptions = {
 )
 @connect()
 @autobind
+@HotkeysTarget
 class UsersView extends React.Component {
+	static propTypes = {
+		visible: PropTypes.bool
+	}
+
 	state = {
 		loading: false,
 		refetching: false,
@@ -106,6 +112,19 @@ class UsersView extends React.Component {
 
 	filterUsers(filter) {
 		this.setState({filter});
+	}
+
+	renderHotkeys() {
+		return (
+			<Hotkeys>
+				<Hotkey
+					global={true}
+					combo='r'
+					label='Refresh'
+					onKeyDown={() => { if (this.props.visible) this.refetchUsers(false) }}
+				/>
+			</Hotkeys>
+		);
 	}
 
 	render() {
