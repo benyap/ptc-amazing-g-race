@@ -10,12 +10,13 @@ class TeamCard extends React.Component {
 			_id: PropTypes.string,
 			teamName: PropTypes.string,
 			members: PropTypes.array,
-			memberCount: PropTypes.number
+			memberCount: PropTypes.number,
+			points: PropTypes.number
 		}).isRequired
 	};
 
 	render() {
-		let { teamName, memberCount } = this.props.team;
+		let { teamName, memberCount, points } = this.props.team;
 
 		return (
 			<div className='pt-card pt-elevation-0 pt-interactive user-card'>
@@ -23,7 +24,7 @@ class TeamCard extends React.Component {
 					{`${teamName}`}
 				</h5>
 				<p className='pt-text-muted'>
-					This team has {memberCount} members.
+					{points} points ({memberCount} members)
 				</p>
 			</div>
 		);

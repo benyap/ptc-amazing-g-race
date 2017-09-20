@@ -15,7 +15,8 @@ query GetTeams($skip:Int,$limit:Int) {
     members{
       firstname
       lastname
-    }
+		}
+		points
     memberCount
   }
 }`;
