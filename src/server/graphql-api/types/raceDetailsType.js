@@ -2,10 +2,8 @@ import {
 	GraphQLObjectType,
 	GraphQLNonNull,
 	GraphQLString,
-	GraphQLID,
 	GraphQLInt,
-	GraphQLBoolean,
-	GraphQLList
+	GraphQLBoolean
 } from 'graphql';
 
 
