@@ -6,7 +6,10 @@ import { Redirect } from 'react-router-dom';
 class Kick extends React.Component {
 	render() {
 		if (!this.props.authenticated) {
-			return <Redirect to='/admin'/>;
+			return <Redirect to={{
+				pathname:'/admin',
+				state: { origin: this.props.origin }
+			}}/>;
 		}
 		else return null;
 	}
