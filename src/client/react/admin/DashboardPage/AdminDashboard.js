@@ -23,11 +23,13 @@ class AdminDashboard extends React.Component {
 
 	componentDidMount() {
 		let path = 'users';
-		const regex = /(view=)([a-zA-Z0-9]+)/;
-		const result = regex.exec(this.props.location.state.origin.search);
-
-		if (result && this.views.indexOf(result[2]) >= 0) {
-			path = result[2];
+		if (this.props.location.state) {
+			const regex = /(view=)([a-zA-Z0-9]+)/;
+			const result = regex.exec(this.props.location.state.origin.search);
+	
+			if (result && this.views.indexOf(result[2]) >= 0) {
+				path = result[2];
+			}
 		}
 
 		this.setState({selectedTabId: path}, () => {
