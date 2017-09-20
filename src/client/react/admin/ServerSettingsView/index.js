@@ -80,7 +80,7 @@ class ServerSettingsView extends React.Component {
 		return (
 			<div id='dashboard-settings' className='dashboard-tab'>
 				<h4>Server State Settings</h4>
-				<RefreshBar query={this.props.QuerySettings} setLoading={(loading)=>{this.setState({loading})}}/>
+				<RefreshBar query={this.props.QuerySettings}/>
 				{content}
 			</div>
 		);

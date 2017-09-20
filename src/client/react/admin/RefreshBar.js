@@ -18,11 +18,14 @@ class RefreshBar extends React.Component {
 	}
 
 	state = {
-		loading: false
+		loading: false,
+		lastFetch: new Date()
 	}
 
-	_setLoadingState(loading) {
-		this.setState({loading: loading});
+	_setLoadingState(loading, lastFetch) {
+		let options = { loading: loading };
+		if (lastFetch) options.lastFetch = lastFetch;
+		this.setState(options);
 		if (this.props.setLoading) this.props.setLoading(loading);
 	}
 
@@ -40,7 +43,7 @@ class RefreshBar extends React.Component {
 
 		this.props.query.refetch()
 			.then(() => {
-				if (this.mounted) this._setLoadingState(false);
+				if (this.mounted) this._setLoadingState(false, new Date());
 				this.props.dispatch(saveState());
 			})
 			.catch(() => {
@@ -50,21 +53,11 @@ class RefreshBar extends React.Component {
 
 	render() {
 		let { loading, error } = this.props.query;
-		
-		if (loading || this.state.loading) {
-			this.loading = true;
-		}
-		else {
-			if (this.loading) {
-				this.lastFetch = new Date();
-				this.loading = false;
-			}
-		}
 
 		return (
 			<div className='view-header'>
-				<p className='fetched'>Last fetched:<br/> {this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
-				<Button text='Refresh' iconName='refresh' onClick={this.refetch} loading={this.loading}/>
+				<p className='fetched'>Last fetched:<br/> {DateFormat(new Date(this.state.lastFetch), 'mmm dd yyyy hh:MM:ss TT')}</p>
+				<Button text='Refresh' iconName='refresh' onClick={this.refetch} loading={loading || this.state.loading}/>
 			</div>
 		);
 	}

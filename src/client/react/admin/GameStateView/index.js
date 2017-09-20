@@ -75,7 +75,7 @@ class GameStateView extends React.Component {
 		return (
 			<div id='dashboard-state' className='dashboard-tab'>
 				<h4>Game State</h4>
-				<RefreshBar query={this.props.QueryRaceState} setLoading={(loading)=>{this.setState({loading})}}/>
+				<RefreshBar query={this.props.QueryRaceState}/>
 				{content}
 			</div>
 		);

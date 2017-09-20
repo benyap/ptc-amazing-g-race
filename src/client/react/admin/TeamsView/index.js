@@ -70,7 +70,7 @@ class TeamsView extends React.Component {
 		return (
 			<div id='dashboard-teams' className='dashboard-tab'>
 				<h4>Teams</h4>
-				<RefreshBar query={this.props.QueryGetTeams} setLoading={(loading)=>{this.setState({loading})}}/>
+				<RefreshBar query={this.props.QueryGetTeams}/>
 				{content}
 			</div>
 		);
