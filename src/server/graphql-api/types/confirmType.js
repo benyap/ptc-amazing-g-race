@@ -2,8 +2,7 @@ import {
 	GraphQLObjectType,
 	GraphQLNonNull,
 	GraphQLBoolean,
-	GraphQLString,
-	GraphQLID	
+	GraphQLString
 } from 'graphql';
 
 import actionType from './actionType';

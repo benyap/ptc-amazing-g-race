@@ -4,6 +4,7 @@ import settingType from './settingType';
 import userType from './userType';
 import authType from './authType';
 import permissionCheckType from './permissionCheckType';
+import teamType from './teamType';
 
 
 export default {
@@ -12,5 +13,6 @@ export default {
 	settingType,
 	userType,
 	authType,
-	permissionCheckType
+	permissionCheckType,
+	teamType
 };

@@ -3,6 +3,7 @@ import permission from './permission';
 import setting from './objects/setting';
 import user from './objects/user';
 import auth from './objects/auth';
+import team from './objects/team';
 
 
 /**
@@ -14,5 +15,6 @@ export default {
 	permission,
 	setting,
 	user,
-	auth
+	auth,
+	team
 };
