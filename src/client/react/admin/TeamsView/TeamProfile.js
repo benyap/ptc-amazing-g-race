@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
-import { gql, graphql } from 'react-apollo';
+import { compose, gql, graphql } from 'react-apollo';
 import { Button, Intent, Spinner, EditableText } from '@blueprintjs/core';
+import { saveState } from '../../../actions/stateActions';
+import { connect } from 'react-redux';
 
 import '../../scss/admin/_team-profile.scss';
 
@@ -30,7 +32,28 @@ const QueryTeamOptions = {
 	})
 }
 
-@graphql(QueryTeam, QueryTeamOptions)
+const MutationSetTeamName = gql`
+mutation SetTeamName($teamId:ID!, $name:String!) {
+	setTeamName(teamId:$teamId, name:$name) {
+		ok
+		failureMessage
+	}
+}`;
+
+const MutationSetTeamPoints = gql`
+mutation SetTeamPoints($teamId:ID!, $points:Float!) {
+	setTeamPoints(teamId:$teamId, points:$points) {
+		ok
+		failureMessage
+	}
+}`;
+
+@compose(
+	graphql(QueryTeam, QueryTeamOptions),
+	graphql(MutationSetTeamName, {name: 'MutationSetTeamName'}),
+	graphql(MutationSetTeamPoints, {name: 'MutationSetTeamPoints'})
+)
+@connect()
 @autobind
 class TeamProfile extends React.Component {
 	static propTypes = {
@@ -47,9 +70,18 @@ class TeamProfile extends React.Component {
 	
 	state = {
 		points: null,
-		saving: false
+		saving: false,
+		error: null
 	}
 
+	componentDidMount() {
+		this._mounted = true;
+	}
+
+	componentWillUnmount() {
+		this._mounted = false;
+	}
+	
 	closeProfile() {
 		this.props.reload();
 		this.props.closeProfile();
@@ -71,11 +103,28 @@ class TeamProfile extends React.Component {
 	}
 
 	savePoints() {
-		this.setState({saving: true});
+		this.setState({saving: true, error: null});
+
+		const variables = { 
+			teamId: this.props.team._id,
+			points: this.state.points 
+		};
 
 		// Save points
-
-		this.setState({saving: false});
+		this.props.MutationSetTeamPoints({ variables })
+			.then((result) => {
+				if (result.data.setTeamPoints.ok) {
+					this.props.QueryTeam.refetch()
+						.then(() => {
+							this.props.dispatch(saveState());
+							if (this._mounted) this.setState({saving: false});
+						});
+				}
+			})
+			.catch((err) => {
+				if (this._mounted) this.setState({saving: false, error: err.toString()});
+				else console.warn(err);
+			});
 	}
 
 	render() {
