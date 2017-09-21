@@ -14,9 +14,9 @@ import UsersSummary from './UsersSummary';
 
 const QueryPaymentAmount = gql`
 query GetSetting($key:String!){
-  getSetting(key:$key) {
-    value
-  }
+	getSetting(key:$key) {
+		value
+	}
 }`;
 
 const QueryPaymentAmountOptions = {
@@ -30,15 +30,16 @@ const QueryPaymentAmountOptions = {
 
 const QueryUsers = gql`
 query ListAll($limit:Int, $skip:Int){
-  listAll(limit:$limit, skip:$skip) {
-    firstname
+	listAll(limit:$limit, skip:$skip) {
+		firstname
 		lastname
 		username
 		email
-    university
-    enabled
-    paidAmount
-  }
+		university
+		enabled
+		paidAmount
+		teamId
+	}
 }`;
 
 const QueryUsersOptions = {
