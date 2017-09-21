@@ -6,20 +6,17 @@ import { Spinner } from '@blueprintjs/core';
 import ViewError from '../ViewError';
 import RefreshBar from '../RefreshBar';
 import TeamCard from './TeamCard';
+import TeamProfile from './TeamProfile';
 
 
 const QueryGetTeams = gql`
 query GetTeams($skip:Int,$limit:Int) {
-  getTeams(skip:$skip, limit:$limit) {
-    _id
-    teamName
-    members{
-      firstname
-      lastname
-		}
+	getTeams(skip:$skip, limit:$limit) {
+		_id
+		teamName
 		points
-    memberCount
-  }
+		memberCount
+	}
 }`;
 
 const QueryGetTeamsOptions = {
@@ -40,42 +37,58 @@ class TeamsView extends React.Component {
 	}
 
 	state = {
-		loading: false
+		viewProfile: null
+	}
+
+	renderProfile(team) {
+		this.setState({ viewProfile: team });
+	}
+
+	closeProfile() {
+		this.setState({ viewProfile: null }, () => {
+			this.props.QueryGetTeams.refetch();
+		});
 	}
 
 	render() {
 		let content = null;
 		let { loading, error, getTeams } = this.props.QueryGetTeams;
 
-		if (loading || this.state.loading) {
+		if (loading) {
 			content = (
 				<div className='loading-spinner'>
 					<Spinner/>
 				</div>
 			);
-			this.loading = true;
 		}
 		else {
 			if (error) {
 				content = <ViewError error={error}/>
 			}
 			else {
-				content = (
-					<div className='view-list'>
-						{getTeams.map((team) => {
-							return (
-								<TeamCard key={team._id} team={team}/>
-							);
-						})}
-					</div>
-				);
+				if (this.state.viewProfile) {
+					content = (
+						<TeamProfile team={this.state.viewProfile} closeProfile={this.closeProfile} reload={this.props.QueryGetTeams.refetch}/>
+					);
+				}
+				else {
+					content = (
+						<div className='view-list'>
+							{getTeams.map((team) => {
+								return (
+									<TeamCard key={team._id} team={team} renderProfile={this.renderProfile}/>
+								);
+							})}
+						</div>
+					);
+				}
 			}
 		}
 
 		return (
 			<div id='dashboard-teams' className='dashboard-tab'>
 				<h4>Teams</h4>
-				<RefreshBar query={this.props.QueryGetTeams} visible={this.props.visible}/>
+				<RefreshBar query={this.props.QueryGetTeams} visible={this.props.visible} disabled={this.state.viewProfile}/>
 				{content}
 			</div>
 		);

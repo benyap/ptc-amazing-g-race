@@ -17,6 +17,7 @@ class RefreshBar extends React.Component {
 		}).isRequired,
 		visible: PropTypes.bool,
 		setLoading: PropTypes.func,
+		disabled: PropTypes.any
 	}
 
 	state = {
@@ -42,7 +43,7 @@ class RefreshBar extends React.Component {
 
 	refetch(force = false) {
 		if (this.props.visible || force) {
-			console.log('REFRESHING')
+
 			if (this.mounted) this._setLoadingState(true);
 	
 			this.props.query.refetch()
@@ -75,7 +76,7 @@ class RefreshBar extends React.Component {
 		return (
 			<div className='view-header'>
 				<p className='fetched'>Last fetched:<br/> {DateFormat(new Date(this.state.lastFetch), 'mmm dd yyyy hh:MM:ss TT')}</p>
-				<Button text='Refresh' iconName='refresh' onClick={this.refetch} loading={loading || this.state.loading}/>
+				<Button text='Refresh' iconName='refresh' onClick={this.refetch} loading={loading || this.state.loading} disabled={this.props.disabled}/>
 			</div>
 		);
 	}

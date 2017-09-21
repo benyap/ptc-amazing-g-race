@@ -12,14 +12,19 @@ class TeamCard extends React.Component {
 			members: PropTypes.array,
 			memberCount: PropTypes.number,
 			points: PropTypes.number
-		}).isRequired
+		}).isRequired,
+		renderProfile: PropTypes.func.isRequired
 	};
+
+	openProfile() {
+		this.props.renderProfile(this.props.team);
+	}
 
 	render() {
 		let { teamName, memberCount, points } = this.props.team;
 
 		return (
-			<div className='pt-card pt-elevation-0 pt-interactive user-card'>
+			<div className='pt-card pt-elevation-0 pt-interactive user-card' onClick={this.openProfile}>
 				<h5>
 					{`${teamName}`}
 				</h5>
