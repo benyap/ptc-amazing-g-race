@@ -44,9 +44,10 @@ class TeamProfile extends React.Component {
 		closeProfile: PropTypes.func.isRequired,
 		reload: PropTypes.func.isRequired
 	}
-
+	
 	state = {
-		points: null
+		points: null,
+		saving: false
 	}
 
 	closeProfile() {
@@ -59,14 +60,29 @@ class TeamProfile extends React.Component {
 	}
 
 	confirmPoints(value) {
-		console.log("value", value);
+		if (value.length > 0) {
+			const regex = /^[-0-9]+(\.|)[0-9]{0,2}$/;
+			if (regex.exec(value)) {
+				this.savePoints();
+				return;
+			}
+		}
+		this.setState({points: this.props.QueryTeam.getTeam.points});
+	}
+
+	savePoints() {
+		this.setState({saving: true});
+
+		// Save points
+
+		this.setState({saving: false});
 	}
 
 	render() {
 		let content = null;
 		let showLoadingIndicator = false;
 		
-		if (this.props.QueryTeam.loading) {
+		if (this.saving || this.props.QueryTeam.loading) {
 			showLoadingIndicator = true;
 		}
 
@@ -101,7 +117,8 @@ class TeamProfile extends React.Component {
 						})
 						:
 						<div>
-							There are no users in this team.
+							<br/>
+							<em>There are no users in this team.</em>
 						</div>
 					}
 				</div>
