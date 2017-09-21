@@ -9,7 +9,7 @@ import { saveState } from '../../../actions/stateActions';
 import ViewError from '../ViewError';
 import UserCard from './UserCard';
 import UserProfile from './UserProfile';
-import UserSummary from './UserSummary';
+import UsersSummary from './UsersSummary';
 
 
 const QueryPaymentAmount = gql`
@@ -153,7 +153,7 @@ class UsersView extends React.Component {
 			}
 			else {
 				summary = (
-					<UserSummary users={listAll} paymentAmount={paymentAmount} 
+					<UsersSummary users={listAll} paymentAmount={paymentAmount} 
 						filterValue={this.state.filter} onFilterChange={this.filterUsers}/>
 				);
 				
