@@ -59,6 +59,10 @@ const userType = new GraphQLObjectType({
 			type: new GraphQLNonNull(GraphQLBoolean),
 			description: 'True if the user is enabled (disabled users cannot log in)'
 		},
+		isAdmin: {
+			type: new GraphQLNonNull(GraphQLBoolean),
+			description: 'True if the user is has access to the admin backend'
+		},
 		paidAmount: {
 			type: new GraphQLNonNull(GraphQLFloat),
 			description: 'The amount the user has paid'
