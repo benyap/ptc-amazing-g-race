@@ -122,7 +122,7 @@ class RegisterForm extends React.Component {
 					</div>
 					<p>
 						Hey! You're logged in at the moment which means already have an account.
-						If someone else is trying to registering, please&nbsp;
+						If someone else is trying to register, please&nbsp;
 						<a style={{color: 'yellow'}}onClick={this.logout}>log out</a> first. 
 					</p>
 				</div>
