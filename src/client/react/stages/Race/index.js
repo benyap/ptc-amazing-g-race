@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { NotFoundPage } from '../../pages';
 import AppContainer from '../../../../../lib/react/components/AppContainer';
 import Login from '../Login';
+import Dashboard from './Dashboard';
 
 
 class Race extends React.Component {
@@ -15,6 +16,7 @@ class Race extends React.Component {
 						<Route exact path='/'>
 							<Login notAnimated/>
 						</Route>
+						<Route path='/dashboard' component={Dashboard}/>
 						
 						<Route component={NotFoundPage}/>
 
