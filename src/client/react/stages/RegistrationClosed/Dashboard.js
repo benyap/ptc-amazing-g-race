@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Base from '../Base';
-import Help from '../Help';
+import HelpMenu from '../HelpMenu';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -25,7 +25,7 @@ class Dashboard extends React.Component {
 		return (
 			<div>
 				<Base/>
-				<Help/>
+				<HelpMenu/>
 			</div>
 		);
 	}
