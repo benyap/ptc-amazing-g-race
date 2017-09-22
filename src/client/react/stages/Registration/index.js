@@ -4,7 +4,7 @@ import AppContainer from '../../../../../lib/react/components/AppContainer';
 import { NotFoundPage } from '../../pages';
 import Home from './Home';
 import Register from './Register';
-import Login from './Login';
+import Login from '../Login';
 import Pay from '../Pay';
 import Dashboard from './Dashboard';
 
