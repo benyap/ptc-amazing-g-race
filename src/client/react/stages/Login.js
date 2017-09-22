@@ -26,11 +26,13 @@ const mapStateToProps = (state, ownProps) => {
 class Login extends React.Component {
 	static propTypes = {
 		remember: PropTypes.bool,
-		next: PropTypes.string
+		next: PropTypes.string,
+		notAnimated: PropTypes.bool
 	}
 
 	static defaultProps = {
-		next: '/dashboard'
+		next: '/dashboard',
+		notAnimated: false
 	}
 
 	async loginHandler(email, password) {
@@ -64,25 +66,32 @@ class Login extends React.Component {
 			return <Redirect to={this.props.next}/>
 		}
 		else {
+			const content = (
+				<div style={{paddingBottom: '2rem', background: 'rgba(255,255,255,0.5)', maxWidth: '30rem', margin: 'auto', marginBottom: '4rem', marginTop: '2rem', borderRadius: '0.3rem'}}>
+					<h2 style={{paddingTop: '2rem', paddingBottom: '1rem', textAlign: 'center'}}>
+						Login
+					</h2>
+					<LoginForm 
+						loginAction={login} 
+						authenticationHandler={this.loginHandler}
+						email={this.props.remember&&this.props.email ? this.props.email : null}
+						remember={this.props.remember}
+						next={this.props.next}
+					/>
+				</div>
+			);
+
 			return (
 				<main>
-					<Title/>
-	
-					<ScrollAnimation animateOnce animateIn='fadeInUp' offset={0} duration={0.5}>
-						<div style={{paddingBottom: '2rem', background: 'rgba(255,255,255,0.5)', maxWidth: '30rem', margin: 'auto', marginBottom: '4rem', borderRadius: '0.3rem'}}>
-							<h2 style={{paddingTop: '2rem', paddingBottom: '1rem', textAlign: 'center'}}>
-								Login
-							</h2>
-							<LoginForm 
-								loginAction={login} 
-								authenticationHandler={this.loginHandler}
-								email={this.props.remember&&this.props.email ? this.props.email : null}
-								remember={this.props.remember}
-								next={this.props.next}
-							/>
-						</div>
-					</ScrollAnimation>
-	
+					<Title notAnimated={this.props.notAnimated}/>
+
+					{this.props.notAnimated ? 
+						content
+						:
+						<ScrollAnimation animateOnce animateIn='fadeInUp' offset={0} duration={0.5}>
+							{content}
+						</ScrollAnimation>
+					}
 				</main>
 			);
 		}
