@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { compose, gql, graphql } from 'react-apollo';
-import { Button, Intent, Spinner, EditableText } from '@blueprintjs/core';
+import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core';
 import { saveState } from '../../../actions/stateActions';
 import { connect } from 'react-redux';
 
@@ -32,6 +32,24 @@ const QueryTeamOptions = {
 	})
 }
 
+const QueryUsers = gql`
+query ListAll($limit:Int, $skip:Int){
+	listAll(limit:$limit, skip:$skip) {
+		firstname
+		lastname
+		username
+		teamId
+	}
+}`;
+
+const QueryUsersOptions = {
+	name: 'QueryUsers',
+	options: { 
+		variables: { skip: 0, limit: 0 },
+		fetchPolicy: 'network-only'
+	}
+}
+
 const MutationSetTeamName = gql`
 mutation SetTeamName($teamId:ID!, $name:String!) {
 	setTeamName(teamId:$teamId, name:$name) {
@@ -48,10 +66,27 @@ mutation SetTeamPoints($teamId:ID!, $points:Float!) {
 	}
 }`;
 
+const MutationSetUserTeam = gql`
+mutation SetUserTeam($username:String!,$teamId:ID!){
+	setUserTeam(username:$username,teamId:$teamId){
+		ok
+	}
+}`;
+
+const MutationRemoveUserTeam = gql`
+mutation RemoveUserTeam($username:String!){
+  removeUserTeam(username:$username){
+		ok
+	}
+}`;
+
 @compose(
 	graphql(QueryTeam, QueryTeamOptions),
+	graphql(QueryUsers, QueryUsersOptions),
 	graphql(MutationSetTeamName, {name: 'MutationSetTeamName'}),
-	graphql(MutationSetTeamPoints, {name: 'MutationSetTeamPoints'})
+	graphql(MutationSetTeamPoints, {name: 'MutationSetTeamPoints'}),
+	graphql(MutationSetUserTeam, {name: 'MutationSetUserTeam'}),
+	graphql(MutationRemoveUserTeam, {name: 'MutationRemoveUserTeam'})
 )
 @connect()
 @autobind
@@ -72,7 +107,11 @@ class TeamProfile extends React.Component {
 		teamName: null,
 		points: null,
 		saving: false,
-		error: null
+		error: null,
+		addUsersDialogOpen: false,
+		addUserLoading: false,
+		userToAdd: null,
+		addUserError: null
 	}
 
 	componentDidMount() {
@@ -140,20 +179,69 @@ class TeamProfile extends React.Component {
 		
 		// Execute mutation
 		mutation({ variables })
-			.then((result) => {
+			.then(async (result) => {
 				if (result.data[mutationName].ok) {
-					this.props.QueryTeam.refetch()
-						.then(() => {
-							console.log('dispatch')
-							this.props.dispatch(saveState());
-							if (this._mounted) this.setState({saving: false});
-						});
+					await this.props.QueryTeam.refetch();
+					this.props.dispatch(saveState());
+					if (this._mounted) this.setState({saving: false});
 				}
 			})
 			.catch((err) => {
 				if (this._mounted) this.setState({saving: false, error: err.toString()});
 				else console.warn(err);
 			});
+	}
+
+	toggleAddUsers() {
+		this.setState((prevState) => {
+			let state = { addUsersDialogOpen: !prevState.addUsersDialogOpen, addUserError: false };
+			if (state.addUsersDialogOpen) state.userToAdd = 'NONE';
+			else state.userToAdd = null;
+			return state;
+		});
+	}
+
+	submitAddUser() {
+		this.setState({ addUserLoading: true });
+
+		const variables = { 
+			teamId: this.props.team._id,
+			username: this.state.userToAdd 
+		};
+
+		// Save points
+		this.props.MutationSetUserTeam({ variables })
+			.then(async (result) => {
+				await this.props.QueryUsers.refetch();
+				await this.props.QueryTeam.refetch()
+				this.props.dispatch(saveState());
+				if (this._mounted) this.setState({addUserLoading: false, addUsersDialogOpen: false, addUserError: null});
+			})
+			.catch((err) => {
+				if (this._mounted) this.setState({addUserLoading: false, addUserError: err.toString()});
+				else console.warn(err);
+			});
+	}
+
+	changeUserToAdd({ target: { value } }) {
+		this.setState({ userToAdd: value });
+	}
+
+	removeUser(username) {
+		return () => {
+			this.setState({['remove-'+username]: true});
+			this.props.MutationRemoveUserTeam({ variables: { username }})
+				.then(async (result) => {
+					await this.props.QueryUsers.refetch()
+					await this.props.QueryTeam.refetch() 
+					this.props.dispatch(saveState());
+					if (this._mounted) this.setState({['remove-'+username]: false});
+				})
+				.catch((err) => {
+					if (this._mounted) this.setState({['remove-'+username]: false});
+					console.warn(err);
+				});
+		}
 	}
 
 	render() {
@@ -194,7 +282,9 @@ class TeamProfile extends React.Component {
 										{`${member.firstname} ${member.lastname}`}
 									</div>
 									<div className='actions'>
-										<Button className='pt-minimal' iconName='remove'/>
+										<Button className='pt-minimal' iconName='remove' 
+											onClick={this.removeUser(member.username)}
+											loading={this.state['remove-'+member.username]}/>
 									</div>
 								</div>
 							);
@@ -239,7 +329,42 @@ class TeamProfile extends React.Component {
 							onConfirm={this.confirmPoints}/>
 					</div>
 					<div className='add'>
-						<Button className='pt-minimal' iconName='new-person' text='Add users to this team' intent={Intent.PRIMARY}/>
+						<Button className='pt-minimal' iconName='new-person' text='Add users to this team' intent={Intent.PRIMARY} onClick={this.toggleAddUsers}/>
+						<Dialog isOpen={this.state.addUsersDialogOpen} onClose={this.toggleAddUsers} title='Add users'>
+							<div style={{padding: '1rem'}}>
+								<div className='pt-dialog-body'>
+									{this.state.addUserError ? 
+										<div className='pt-callout pt-intent-danger pt-icon-error'>
+											{this.state.addUserError}
+										</div>
+										:null}
+									<label className='pt-label'>
+										User: 
+										<div className='pt-select'>
+											<select onChange={this.changeUserToAdd} disabled={this.state.addUserLoading}>
+												{this.props.QueryUsers.loading ? 
+													<option value='NONE'>Loading...</option>:
+													<option value='NONE'>Select a user...</option>
+												}
+												{this.props.QueryUsers.loading ? 
+												null:
+												this.props.QueryUsers.listAll.map((user) => {
+													if (!user.teamId) {	// Only add users without a team
+														return <option key={user.username} value={user.username}>{`${user.firstname} ${user.lastname}`}</option>
+													}
+												})}
+											</select>
+										</div>
+									</label>
+								</div>
+								<div className='pt-dialog-footer'>
+									<div className='pt-dialog-footer-actions'>
+										<Button onClick={this.toggleAddUsers} text='Cancel' className='pt-minimal' disabled={this.state.addUserLoading}/>
+										<Button onClick={this.submitAddUser} text='Add' intent={Intent.PRIMARY} loading={this.state.addUserLoading}/>
+									</div>
+								</div>
+							</div>
+						</Dialog>
 					</div>
 				</div>
 				{content}
