@@ -2,11 +2,12 @@ import React from 'react';
 import { FocusStyleManager } from "@blueprintjs/core";
 import { gql, graphql } from 'react-apollo';
 import { LoadingPage, FallbackPage } from './pages';
+import AppContainer from '../../../lib/react/components/AppContainer';
 import Promotion from './stages/Promotion';
 import Registration from './stages/Registration';
+import RegistrationClosed from './stages/RegistrationClosed';
 
 import './scss/main.scss';
-import AppContainer from '../../../lib/react/components/AppContainer';
 
 
 FocusStyleManager.onlyShowFocusOnTabs();
@@ -39,10 +40,7 @@ class Root extends React.Component {
 					return <Registration/>;
 				}
 				case 'rego_closed': {
-
-				}
-				case 'pre_race': {
-
+					return <RegistrationClosed/>;
 				}
 				case 'race': {
 
