@@ -6,6 +6,7 @@ import AppContainer from '../../../lib/react/components/AppContainer';
 import Promotion from './stages/Promotion';
 import Registration from './stages/Registration';
 import RegistrationClosed from './stages/RegistrationClosed';
+import Race from './stages/Race';
 
 import './scss/main.scss';
 
@@ -43,7 +44,7 @@ class Root extends React.Component {
 					return <RegistrationClosed/>;
 				}
 				case 'race': {
-
+					return <Race/>;
 				}
 				case 'post_race': {
 
