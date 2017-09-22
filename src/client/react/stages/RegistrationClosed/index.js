@@ -5,6 +5,7 @@ import AppContainer from '../../../../../lib/react/components/AppContainer';
 import Login from '../Login';
 import Pay from '../Pay';
 import Home from './Home';
+import Dashboard from './Dashboard';
 
 
 class RegistrationClosed extends React.Component {
@@ -17,6 +18,7 @@ class RegistrationClosed extends React.Component {
 						<Route exact path='/' component={Home}/>
 						<Route exact path='/login' component={Login}/>
 						<Route exact path='/pay' component={Pay}/>
+						<Route path='/dashboard' component={Dashboard}/>
 
 						<Route component={NotFoundPage}/>
 

@@ -1,0 +1,67 @@
+@import 'variables';
+
+.hero {
+	#base {
+		.title {
+			margin: 0;
+	
+			$logo-size-xs: 50px;
+			$logo-size-s: 70px;
+			$logo-size-m: 80px;
+			$logo-size-l: 90px;
+			$logo-size-xl: 110px;
+			
+			img {
+				width: $logo-size-xl;
+				height: $logo-size-xl;
+	
+				@media (max-width: $bp-l) {
+					width: $logo-size-l;
+					height: $logo-size-l;
+				}
+	
+				@media (max-width: $bp-m) {
+					width: $logo-size-m;
+					height: $logo-size-m;
+				}
+	
+				@media (max-width: $bp-s) {
+					width: $logo-size-s;
+					height: $logo-size-s;
+				}
+		
+				@media (max-width: $bp-xs) {
+					margin: -0.25rem 0.2rem 0 0.5rem;
+					width: $logo-size-xs;
+					height: $logo-size-xs;
+				}
+			}
+	
+			p {
+				font-size: 3rem;
+				line-height: 3.3rem;
+	
+				@media (max-width: $bp-l) {
+					font-size: 2.5rem;
+					line-height: 2.5rem;
+				}
+	
+				@media (max-width: $bp-m) {
+					font-size: 2rem;
+					line-height: 2.2rem;
+				}
+	
+				@media (max-width: $bp-s) {
+					font-size: 1.8rem;
+					line-height: 1.8rem;
+				}
+				
+				@media (max-width: $bp-xs) {
+					margin: 0;
+					font-size: 1.4rem;
+					line-height: 1.5rem;
+				}
+			}
+		}
+	}
+}
