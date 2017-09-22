@@ -4,7 +4,7 @@ import { Button, Intent } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import ScrollAnimation from 'react-animate-on-scroll';
 import Title from '../Title';
-import Description from '../Promotion/Description';
+import Description from '../Description';
 
 
 const mapStateToProps = (state, ownProps) => {

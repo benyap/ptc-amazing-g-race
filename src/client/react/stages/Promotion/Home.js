@@ -1,6 +1,6 @@
 import React from 'react';
 import Title from '../Title';
-import Description from './Description';
+import Description from '../Description';
 import ScrollAnimation from 'react-animate-on-scroll';
 
 
