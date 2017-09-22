@@ -6,11 +6,11 @@ import { autobind } from 'core-decorators';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import ScrollAnimation from 'react-animate-on-scroll';
-import { login } from '../../actions/authActions';
-import LoginForm from '../../../../lib/react/components/forms/LoginForm';
-import Authenticated from '../../../../lib/react/components/utility/Authenticated';
+import { login } from '../../../actions/authActions';
+import LoginForm from '../../../../../lib/react/components/forms/LoginForm';
+import Authenticated from '../../../../../lib/react/components/utility/Authenticated';
 import Title from './Title';
-import API from '../../API';
+import API from '../../../API';
 
 
 const mapStateToProps = (state, ownProps) => {

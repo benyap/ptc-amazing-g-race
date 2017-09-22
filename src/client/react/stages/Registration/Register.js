@@ -1,6 +1,6 @@
 import React from 'react';
 import RegisterForm from './RegisterForm';
-import Title from '../Title';
+import Title from '../components/Title';
 import ScrollAnimation from 'react-animate-on-scroll';
 
 import '../../scss/_register.scss';

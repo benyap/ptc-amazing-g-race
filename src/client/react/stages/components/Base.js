@@ -1,7 +1,7 @@
 import React from 'react';
 import ScrollAnimation from 'react-animate-on-scroll';
 
-import '../scss/_base.scss';
+import '../../scss/_base.scss';
 
 
 const Base = () => {

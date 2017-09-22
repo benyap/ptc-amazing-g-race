@@ -6,7 +6,7 @@ import { withRouter, Link, Redirect } from 'react-router-dom';
 import { Spinner, Button, Intent } from '@blueprintjs/core';
 import { logout } from '../../../../actions/authActions';
 import ScrollAnimation from 'react-animate-on-scroll';
-import Title from '../../Title';
+import Title from '../../components/Title';
 import LoginRefresher from '../../../sharedComponents/LoginRefresher';
 import '../../../scss/_dashboard.scss';
 

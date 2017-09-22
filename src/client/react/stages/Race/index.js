@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { NotFoundPage } from '../../pages';
 import AppContainer from '../../../../../lib/react/components/AppContainer';
-import Login from '../Login';
+import Login from '../components/Login';
 import Dashboard from './Dashboard';
 
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import Base from '../Base';
-import HelpMenu from '../HelpMenu';
+import Base from '../components/Base';
+import HelpMenu from '../components/HelpMenu';
 
 
 const mapStateToProps = (state, ownProps) => {

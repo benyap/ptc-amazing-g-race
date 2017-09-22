@@ -1,8 +1,8 @@
 import React from 'react';
 import { Position, Menu, MenuItem } from '@blueprintjs/core';
-import MenuButton from '../../../../lib/react/components/MenuButton';
+import MenuButton from '../../../../../lib/react/components/MenuButton';
 
-import '../scss/_help.scss';
+import '../../scss/_help.scss';
 
 
 class HelpMenu extends React.Component {

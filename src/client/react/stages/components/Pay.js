@@ -5,9 +5,9 @@ import { Spinner } from '@blueprintjs/core';
 import { compose, graphql, gql } from 'react-apollo';
 import ScrollAnimation from 'react-animate-on-scroll';
 import Title from './Title';
-import LoginRefresher from '../sharedComponents/LoginRefresher';
+import LoginRefresher from '../../sharedComponents/LoginRefresher';
 
-import '../scss/_pay.scss';
+import '../../scss/_pay.scss';
 
 
 const mapStateToProps = (state, ownProps) => {

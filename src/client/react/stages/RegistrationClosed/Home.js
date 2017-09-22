@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { graphql, gql } from 'react-apollo';
 import { Link } from 'react-router-dom';
-import Title from '../Title';
-import Description2 from '../Description2';
+import Title from '../components/Title';
+import Description2 from '../components/Description2';
 import ScrollAnimation from 'react-animate-on-scroll';
 
 import '../../scss/_registration-closed.scss';
