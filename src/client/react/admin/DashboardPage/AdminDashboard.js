@@ -23,7 +23,7 @@ class AdminDashboard extends React.Component {
 
 	componentDidMount() {
 		let path = 'users';
-		if (this.props.location.state) {
+		if (this.props.location.state && this.props.location.state.origin) {
 			const regex = /(view=)([a-zA-Z0-9]+)/;
 			const result = regex.exec(this.props.location.state.origin.search);
 	
