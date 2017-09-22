@@ -15,7 +15,7 @@ class DashboardPage extends React.Component {
 			<div>
 				{/* Kick the user if an admin is not logged in */}
 				<Authenticated adminOnly>
-					<Kick/>
+					<Kick origin={this.props.location}/>
 				</Authenticated>
 
 				<AdminNavbar/>

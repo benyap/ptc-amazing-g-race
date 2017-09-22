@@ -15,6 +15,7 @@ class UserCard extends React.Component {
 			university: PropTypes.string,
 			enabled: PropTypes.bool,
 			paidAmount: PropTypes.number,
+			teamId: PropTypes.any
 		}),
 		paymentAmount: PropTypes.number.isRequired,
 		renderProfile: PropTypes.func.isRequired
@@ -31,7 +32,8 @@ class UserCard extends React.Component {
 		return (
 			<div className='pt-card pt-elevation-0 pt-interactive user-card' onClick={this.openProfile}>
 				<h5>
-					<span className={'pt-icon ' + (this.props.user.paidAmount >= paymentAmount ? 'pt-icon-tick pt-intent-success' : 'pt-icon-dollar pt-intent-danger') }> </span>
+					<span className={'pt-icon pt-icon-dollar' + (this.props.user.paidAmount >= paymentAmount ? ' pt-intent-success' : ' pt-intent-danger') }> </span>
+					<span className={'pt-icon ' + (this.props.user.teamId ? 'pt-icon-confirm pt-intent-success' : 'pt-icon-circle pt-intent-warning') }> </span>
 					{enabled ? null : <span className='pt-icon pt-icon-ban-circle pt-intent-danger'> </span>}
 					{` ${firstname} ${lastname} (${username})`}
 				</h5>

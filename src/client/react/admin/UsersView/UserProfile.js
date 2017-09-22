@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { Button, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import { gql, graphql, compose } from 'react-apollo';
 import DateFormat from 'dateformat';
-import ScrollAnimation from 'react-animate-on-scroll';
 import { saveState } from '../../../actions/stateActions';
 import '../../scss/admin/_user-profile.scss';
 
@@ -92,7 +91,7 @@ class UserProfile extends React.Component {
 	}
 
 	savePaid() {
-		this.setState({ saving: true });
+		this.setState({ saving: true, error: null });
 
 		let variables = {
 			username: this.props.QueryUser.getUserByEmail.username,
@@ -213,19 +212,17 @@ class UserProfile extends React.Component {
 		}
 
 		return (
-			<ScrollAnimation animateOnce animateIn='fadeInUp' offset={0} duration={0.1}>
-				<div className='pt-card user-profile'>
-					<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
-					{showLoadingIndicator ? 
-						<div style={{float:'right'}}>
-							<Spinner className='pt-small'/>
-						</div>
-					: null }
-					<h4><b>{firstname + ' ' + lastname}</b></h4>
-					<p className='pt-text-muted'>{university}</p>
-					{content}
-				</div>
-			</ScrollAnimation>
+			<div className='pt-card user-profile'>
+				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
+				{showLoadingIndicator ? 
+					<div style={{float:'right'}}>
+						<Spinner className='pt-small'/>
+					</div>
+				: null }
+				<h4><b>{firstname + ' ' + lastname}</b></h4>
+				<p className='pt-text-muted'>{university}</p>
+				{content}
+			</div>
 		);
 	}
 }

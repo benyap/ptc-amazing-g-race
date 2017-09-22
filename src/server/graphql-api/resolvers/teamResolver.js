@@ -14,7 +14,15 @@ const addTeam = async function(root, params, ctx, options) {
 }
 
 const removeTeam = async function(root, params, ctx, options) {
-	return database.team.removeTeam(ctx.user, params.teamName);
+	return database.team.removeTeam(ctx.user, params.teamId);
+}
+
+const setTeamName = async function(root, params, ctx, options) {
+	return database.team.setTeamName(ctx.user, params.teamId, params.name);
+}
+
+const setTeamPoints = async function(root, params, ctx, options) {
+	return database.team.setTeamPoints(ctx.user, params.teamId, params.points);
 }
 
 
@@ -22,5 +30,7 @@ export default {
 	getTeam,
 	getTeams,
 	addTeam,
-	removeTeam
+	removeTeam,
+	setTeamName,
+	setTeamPoints
 };
