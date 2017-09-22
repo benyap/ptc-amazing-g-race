@@ -317,6 +317,7 @@ class TeamProfile extends React.Component {
 							onConfirm={this.confirmName}/> :
 						this.props.team.teamName
 					}
+					<Button className='pt-minimal add-user' iconName='new-person' onClick={this.toggleAddUsers}/>
 				</b></h4>
 
 				<div className='manage'>
@@ -329,8 +330,7 @@ class TeamProfile extends React.Component {
 							onConfirm={this.confirmPoints}/>
 					</div>
 					<div className='add'>
-						<Button className='pt-minimal' iconName='new-person' text='Add users to this team' intent={Intent.PRIMARY} onClick={this.toggleAddUsers}/>
-						<Dialog isOpen={this.state.addUsersDialogOpen} onClose={this.toggleAddUsers} title='Add users'>
+						<Dialog isOpen={this.state.addUsersDialogOpen} onClose={this.toggleAddUsers} title='Add user' iconName='new-person'>
 							<div style={{padding: '1rem'}}>
 								<div className='pt-dialog-body'>
 									{this.state.addUserError ? 
@@ -339,7 +339,7 @@ class TeamProfile extends React.Component {
 										</div>
 										:null}
 									<label className='pt-label'>
-										User: 
+										Add user: 
 										<div className='pt-select'>
 											<select onChange={this.changeUserToAdd} disabled={this.state.addUserLoading}>
 												{this.props.QueryUsers.loading ? 
