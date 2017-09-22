@@ -213,6 +213,43 @@ const setUserPaidAmount = {
 }
 
 
+const setUserTeam = {
+	type: types.confirmType,
+	description: 'Set the team the user is in',
+	args: {
+		username: {
+			name: 'username', 
+			description: 'The username of the user to set the team of',
+			type: new GraphQLNonNull(GraphQLString)
+		},
+		teamId: {
+			name: 'teamId',
+			description: 'The id of the team',
+			type: new GraphQLNonNull(GraphQLID)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.userResolver.setUserTeam(root, params, ctx, options);
+	}
+}
+
+
+const removeUserTeam = {
+	type: types.confirmType,
+	description: 'Remove the user from a team',
+	args: {
+		username: {
+			name: 'username', 
+			description: 'The username of the user to remove the team from',
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.userResolver.removeUserTeam(root, params, ctx, options);
+	}
+}
+
+
 export default {
 	addPermission,
 	removePermission,
@@ -220,5 +257,7 @@ export default {
 	removeRole,
 	registerUser,
 	setUserEnabled,
-	setUserPaidAmount
+	setUserPaidAmount,
+	setUserTeam,
+	removeUserTeam
 };

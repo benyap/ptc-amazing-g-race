@@ -1,25 +1,29 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { gql, graphql } from 'react-apollo';
-import { Spinner, Button } from '@blueprintjs/core';
+import { Spinner } from '@blueprintjs/core';
 import { connect } from 'react-redux';
-import { saveState } from '../../../actions/stateActions';
-import DateFormat from 'dateformat';
+import * as GameState from './gameStates';
+import State from './State';
+import ViewError from '../ViewError';
+import RefreshBar from '../RefreshBar';
+
+import '../../scss/admin/_gamestate-view.scss';
 
 
 const QueryRaceState = gql`
-query GetSetting($key:String!){
-  getSetting(key:$key){
-		value
-	}
-}`;
+query GetPublicSetting($key:String!){
+  getPublicSetting(key:$key) {
+    value
+  }
+}`
 
 const QueryRaceStateOptions = {
 	name: 'QueryRaceState',
 	options: {
-		variables: {
-			key: 'race_state'
-		}
+		fetchPolicy: 'network-only',
+		variables: { key: 'race_state' }
 	}
 }
 
@@ -27,43 +31,56 @@ const QueryRaceStateOptions = {
 @connect()
 @autobind
 class GameStateView extends React.Component {
+	static propTypes = {
+		visible: PropTypes.bool
+	}
+
 	state = {
 		loading: false
 	}
 
 	render() {
 		let content = null;
+		let currentState = '...';
 		let { loading, error, getSettings } = this.props.QueryRaceState;
-
+		
 		if (loading || this.state.loading) {
 			content = (
 				<div className='loading-spinner'>
 					<Spinner/>
 				</div>
 			);
-			this.loading = true;
 		}
 		else {
-			if (this.loading) {
-				this.lastFetch = new Date();
-				this.loading = false;
-			}
-
 			if (error) {
-
+				content = <ViewError error={error}/>
 			}
 			else {
-
+				currentState = this.props.QueryRaceState.getPublicSetting.value;
+				content = (
+					<div>
+						<div className='pt-callout pt-intent-warning pt-icon-warning-sign' style={{marginBottom: '0.5rem'}}>
+							<h5>Warning</h5>
+							Clicking on one of the following states will change the game state.
+							The current game state is <code>{currentState}</code>.
+						</div>
+						<div className='state-list'>
+							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.rego_not_open}/>
+							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.rego_open}/>
+							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.rego_closed}/>
+							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.race}/>
+							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.post_race}/>
+							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.closed}/>
+						</div>
+					</div>
+				);
 			}
 		}
 
 		return (
-			<div id='dashboard-settings' className='dashboard-tab'>
+			<div id='dashboard-state' className='dashboard-tab'>
 				<h4>Game State</h4>
-				<div className='view-header'>
-					<p className='fetched'>Last fetched:<br/> {this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
-					<Button text='Refresh' iconName='refresh' onClick={this.refetchSettings} loading={this.loading}/>
-				</div>
+				<RefreshBar query={this.props.QueryRaceState} visible={this.props.visible}/>
 				{content}
 			</div>
 		);

@@ -91,7 +91,7 @@ class UserProfile extends React.Component {
 	}
 
 	savePaid() {
-		this.setState({ saving: true });
+		this.setState({ saving: true, error: null });
 
 		let variables = {
 			username: this.props.QueryUser.getUserByEmail.username,
