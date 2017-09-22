@@ -69,6 +69,7 @@ class TeamProfile extends React.Component {
 	}
 	
 	state = {
+		teamName: null,
 		points: null,
 		saving: false,
 		error: null
@@ -91,6 +92,10 @@ class TeamProfile extends React.Component {
 		this.setState({points: value});
 	}
 
+	editName(value) {
+		this.setState({teamName: value});
+	}
+
 	confirmPoints(value) {
 		if (value.length > 0) {
 			const regex = /^[-0-9]+(\.|)[0-9]{0,2}$/;
@@ -102,20 +107,44 @@ class TeamProfile extends React.Component {
 		this.setState({points: this.props.QueryTeam.getTeam.points});
 	}
 
-	savePoints() {
-		this.setState({saving: true, error: null});
+	confirmName(value) {
+		if (value.length > 0) {
+			this.saveName();
+			return;
+		}
+		this.setState({points: this.props.QueryTeam.getTeam.teamName});
+	}
 
+	savePoints() {
 		const variables = { 
 			teamId: this.props.team._id,
 			points: this.state.points 
 		};
 
 		// Save points
-		this.props.MutationSetTeamPoints({ variables })
+		this._save(this.props.MutationSetTeamPoints, 'setTeamPoints', variables);
+	}
+
+	saveName() {
+		const variables = { 
+			teamId: this.props.team._id,
+			name: this.state.teamName 
+		};
+
+		// Save name
+		this._save(this.props.MutationSetTeamName, 'setTeamName', variables);
+	}
+
+	_save(mutation, mutationName, variables) {
+		this.setState({saving: true, error: null});
+		
+		// Execute mutation
+		mutation({ variables })
 			.then((result) => {
-				if (result.data.setTeamPoints.ok) {
+				if (result.data[mutationName].ok) {
 					this.props.QueryTeam.refetch()
 						.then(() => {
+							console.log('dispatch')
 							this.props.dispatch(saveState());
 							if (this._mounted) this.setState({saving: false});
 						});
@@ -146,6 +175,12 @@ class TeamProfile extends React.Component {
 			if (this.state.points === null) {
 				setTimeout(() => {
 					this.setState({points});
+				}, 0);
+			}
+
+			if (this.state.teamName === null) {
+				setTimeout(() => {
+					this.setState({teamName});
 				}, 0);
 			}
 
@@ -182,7 +217,18 @@ class TeamProfile extends React.Component {
 						<Spinner className='pt-small'/>
 					</div>
 				: null }
-				<h4><b>{this.props.team.teamName}</b></h4>
+
+				<h4><b>
+					{
+						this.state.teamName ? 
+						<EditableText selectAllOnFocus 
+							value={this.state.teamName} 
+							onChange={this.editName} 
+							onConfirm={this.confirmName}/> :
+						this.props.team.teamName
+					}
+				</b></h4>
+
 				<div className='manage'>
 					<div className='points'>
 						<span>Points:&nbsp;</span>
