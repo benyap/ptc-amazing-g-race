@@ -5,7 +5,7 @@ import { gql, graphql } from 'react-apollo';
 import { Spinner } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import * as GameState from './gameStates';
-import State from './state';
+import State from './State';
 import ViewError from '../ViewError';
 import RefreshBar from '../RefreshBar';
 
