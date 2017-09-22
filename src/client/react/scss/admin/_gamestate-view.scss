@@ -1,0 +1,18 @@
+#dashboard-state {
+	.state-list {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+
+		.pt-card {
+			margin: 0.4rem 0;
+			min-width: 13rem;
+			width: 100%;
+
+			&.current-state {
+				background: #CAFBCA;
+				border: 1px solid gray;
+			}
+		}
+	}
+}
