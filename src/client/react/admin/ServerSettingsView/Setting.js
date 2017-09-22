@@ -18,7 +18,6 @@ const MutationSetSettingOptions = {
 	name: 'MutationSetSetting'
 }
 
-
 @graphql(MutationSetSetting, MutationSetSettingOptions)
 @autobind
 class Setting extends React.Component {
@@ -28,7 +27,8 @@ class Setting extends React.Component {
 		modifiedBy: PropTypes.string.isRequired,
 		valueType: PropTypes.oneOf([
 			'string', 'integer', 'float', 'stringList', 'integerList', 'floatList'
-		])
+		]),
+		reload: PropTypes.func
 	}
 
 	state = { 
@@ -103,14 +103,14 @@ class Setting extends React.Component {
 					value: this.state.editValue
 				}
 			});
+
+			this.setState({editLoading: false, editError: false});
+			this.toggleDialog();
+			if (this.props.reload) this.props.reload();
 		}
 		catch(e) {
 			this.setState({editLoading: false, editError: true, editErrorText: e.toString()});
-			return;
 		}
-		
-		this.setState({editLoading: false, editError: false});
-		this.toggleDialog();
 	}
 
 	render() {

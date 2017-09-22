@@ -1,20 +1,22 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { gql, graphql, compose } from 'react-apollo';
-import { Spinner, Button } from '@blueprintjs/core';
+import { Spinner, Button, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import DateFormat from 'dateformat';
 import { saveState } from '../../../actions/stateActions';
 import ViewError from '../ViewError';
 import UserCard from './UserCard';
 import UserProfile from './UserProfile';
+import UsersSummary from './UsersSummary';
 
 
 const QueryPaymentAmount = gql`
 query GetSetting($key:String!){
-  getSetting(key:$key) {
-    value
-  }
+	getSetting(key:$key) {
+		value
+	}
 }`;
 
 const QueryPaymentAmountOptions = {
@@ -28,14 +30,16 @@ const QueryPaymentAmountOptions = {
 
 const QueryUsers = gql`
 query ListAll($limit:Int, $skip:Int){
-  listAll(limit:$limit, skip:$skip) {
-    firstname
+	listAll(limit:$limit, skip:$skip) {
+		firstname
 		lastname
+		username
 		email
-    university
-    enabled
-    paidAmount
-  }
+		university
+		enabled
+		paidAmount
+		teamId
+	}
 }`;
 
 const QueryUsersOptions = {
@@ -55,26 +59,44 @@ const QueryUsersOptions = {
 )
 @connect()
 @autobind
+@HotkeysTarget
 class UsersView extends React.Component {
+	static propTypes = {
+		visible: PropTypes.bool
+	}
+
 	state = {
 		loading: false,
 		refetching: false,
-		viewProfile: null
+		viewProfile: null,
+		filter: '',
+		lastFetch: new Date()
 	}
 
-	refetchUsers(refetching = false, loading = true) {
+	componentDidMount() {
+		this.mounted = true;
+		this.setState({ loading: false }, () => {
+			this.refetchUsers(true);
+		});
+	}
+
+	componentWillUnmount() {
+		this.mounted = false;
+	}
+
+	refetchUsers(loading = false) {
 		if (!this.state.viewProfile) {
-			this.setState({loading, refetching: refetching?true:false});
+			if (this.mounted) this.setState({loading, refetching: true});
 			Promise.all([
 				this.props.QueryPaymentAmount.refetch(),
 				this.props.QueryUsers.refetch()
 			])
 				.then(() => {
-					this.setState({loading: false, refetching: false});
+					if (this.mounted) this.setState({loading: false, refetching: false, lastFetch: new Date()});
 					this.props.dispatch(saveState());
 				})
 				.catch(() => {
-					this.setState({loading: false, refetching: false});
+					if (this.mounted) this.setState({loading: false, refetching: false});
 				});
 		}
 	}
@@ -85,31 +107,41 @@ class UsersView extends React.Component {
 
 	closeProfile() {
 		this.setState({ viewProfile: null }, () => {
-			this.refetchUsers(true, false);
+			this.refetchUsers(false);
 		});
+	}
+
+	filterUsers(filter) {
+		this.setState({filter});
+	}
+
+	renderHotkeys() {
+		return (
+			<Hotkeys>
+				<Hotkey
+					global={true}
+					combo='r'
+					label='Refresh'
+					onKeyDown={() => { if (this.props.visible) this.refetchUsers(false) }}
+				/>
+			</Hotkeys>
+		);
 	}
 
 	render() {
 		let content = null;
+		let summary = null;
 		let { loading, error, listAll } = this.props.QueryUsers;
 		let loadingPayment = this.props.QueryPaymentAmount.loading;
 
 		if (loading || loadingPayment || this.state.loading) {
 			content = (
-				<div>
-					<div className='loading-spinner'>
-						<Spinner/>
-					</div>
+				<div className='loading-spinner'>
+					<Spinner/>
 				</div>
 			);
-			this.loading = true;
 		}
 		else {
-			if (this.loading) {
-				this.lastFetch = new Date();
-				this.loading = false;
-			}
-
 			let paymentAmount = parseFloat(this.props.QueryPaymentAmount.getSetting.value);
 
 			if (error) {
@@ -121,16 +153,33 @@ class UsersView extends React.Component {
 				);
 			}
 			else {
+				summary = (
+					<UsersSummary users={listAll} paymentAmount={paymentAmount} 
+						filterValue={this.state.filter} onFilterChange={this.filterUsers}/>
+				);
+				
 				content = (
 					<div>
 						<div className='view-list'>
 							{listAll.map((user) => {
-								return (
+								let userCard = (
 									<UserCard 
 										key={user.email} user={user} 
 										paymentAmount={paymentAmount}
 										renderProfile={this.renderProfile}/>
 								);
+								if (this.state.filter.length > 0) {
+									let filter = this.state.filter.toLowerCase();
+									let matchFirst = user.firstname.toLowerCase().indexOf(filter) >= 0;
+									let matchLast = user.lastname.toLowerCase().indexOf(filter) >= 0;
+									let matchUser = user.username.toLowerCase().indexOf(filter) >= 0;
+									let matchUni = user.university.toLowerCase().indexOf(filter) >= 0;
+
+									if (matchFirst || matchLast || matchUser || matchUni) {
+										return userCard;
+									}
+								}
+								else return userCard;
 							})}
 						</div>
 					</div>
@@ -142,10 +191,11 @@ class UsersView extends React.Component {
 			<div id='dashboard-users' className='dashboard-tab'>
 				<h4>Users</h4>
 				<div className='view-header'>
-					<p className='fetched'>Last fetched:<br/>{this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
+					<p className='fetched'>Last fetched:<br/>{DateFormat(new Date(this.state.lastFetch), 'mmm dd yyyy hh:MM:ss TT')}</p>
 					<Button text='Refresh' iconName='refresh' onClick={this.refetchUsers} 
-						loading={this.state.refetching&&!this.loading} disabled={this.state.viewProfile||this.loading}/>
+						loading={this.state.refetching} disabled={this.state.viewProfile}/>
 				</div>
+				{summary}
 				{content}
 			</div>
 		);

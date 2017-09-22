@@ -13,7 +13,7 @@ const QueryUser = gql`
 query GetUserByEmail($email:String!) {
   getUserByEmail(email: $email) {
     firstname lastname
-    username email
+    username email isAdmin
     university studentID
     mobileNumber enabled
     registerDate paidAmount
@@ -91,7 +91,7 @@ class UserProfile extends React.Component {
 	}
 
 	savePaid() {
-		this.setState({ saving: true });
+		this.setState({ saving: true, error: null });
 
 		let variables = {
 			username: this.props.QueryUser.getUserByEmail.username,
@@ -140,7 +140,14 @@ class UserProfile extends React.Component {
 		}
 
 		if (this.props.QueryUser.getUserByEmail) {
-			let { username, mobileNumber, studentID, registerDate, paidAmount, raceDetails: { PTProficiency, hasSmartphone, friends, dietaryRequirements } } = this.props.QueryUser.getUserByEmail;
+			let { 
+				username, mobileNumber, studentID, isAdmin,
+				registerDate, paidAmount, permissions,
+				raceDetails: { 
+					PTProficiency, hasSmartphone, 
+					friends, dietaryRequirements 
+				} 
+			} = this.props.QueryUser.getUserByEmail;
 
 			if (this.state.paidAmount === null) {
 				setTimeout(() => {
@@ -204,6 +211,20 @@ class UserProfile extends React.Component {
 							<tr>
 								<td>Dietary Requirements</td>
 								<td>{dietaryRequirements ? dietaryRequirements : 'None'}</td>
+							</tr>
+							<tr>
+								<td>Admin</td>
+								<td><code>{isAdmin ? 'true':'false'}</code></td>
+							</tr>
+							<tr>
+								<td>Account Permissions</td>
+								<td>
+									<ul>
+										{ permissions.map((permission, index) => {
+												return <li key={index}>{permission}</li>;
+										}) }
+									</ul>
+								</td>
 							</tr>
 						</tbody>
 					</table>

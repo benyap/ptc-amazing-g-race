@@ -38,8 +38,15 @@ const QueryMeOptions = {
 }
 
 const QuerySetting = gql`
-query GetSetting($key:String!){
-  getSetting(key:$key){
+query GetProtectedSetting($key:String!){
+  getProtectedSetting(key:$key){
+		value
+	}
+}`;
+
+const QueryPublicSetting = gql`
+query GetPublicSetting($key:String!){
+  getPublicSetting(key:$key){
 		value
 	}
 }`;
@@ -56,16 +63,50 @@ const PaymentQueryOptions = (name, key) => {
 	}
 }
 
+const QueryPaymentPriceOptions = {
+	name: 'QueryPaymentPrice',
+	options: {
+		fetchPolicy: 'network-only',
+		variables: { key: 'payment_amount' }
+	}
+}
+
 @connect(mapStateToProps)
 @compose(
 	graphql(QueryMe, QueryMeOptions),
+	graphql(QueryPublicSetting, QueryPaymentPriceOptions),
 	graphql(QuerySetting, PaymentQueryOptions('QueryBsb', 'payment_bsb')),
 	graphql(QuerySetting, PaymentQueryOptions('QueryAcc', 'payment_acc'))
 )
 class Pay extends React.Component {
 	
 	render() {
-		let payment; 
+		let payment, price; 
+
+		let _price = this.props.QueryPaymentPrice.loading ? 
+			null : 
+			this.props.QueryPaymentPrice.getPublicSetting.value;
+		
+		if (_price <= 0 || isNaN(_price)) {
+			price = (
+				<p>
+					The cost for this event is yet to be determined, but it will cover registration and dinner.
+					We will announce it on Facebook when this has been finalised so keep an eye out for it.
+				</p>
+			);
+		}
+		else {
+			price = (
+				<p>
+					The cost for this event is&nbsp;
+					<span className='highlight'>
+						${_price}
+					</span>, 
+					which pays for registration and dinner.
+				</p>
+			);
+		}
+
 
 		if (this.props.authenticated) {
 			let reference = <Spinner className='pt-small'/>;
@@ -76,9 +117,9 @@ class Pay extends React.Component {
 			payment = (
 				<div className='payment-details'>
 					<p>
-						BSB: {this.props.QueryBsb.loading ? 'Loading...' : this.props.QueryBsb.getSetting.value}
+						BSB: {this.props.QueryBsb.loading ? 'Loading...' : this.props.QueryBsb.getProtectedSetting.value}
 						<br/>
-						ACC: {this.props.QueryAcc.loading ? 'Loading...' : this.props.QueryAcc.getSetting.value}
+						ACC: {this.props.QueryAcc.loading ? 'Loading...' : this.props.QueryAcc.getProtectedSetting.value}
 					</p>
 						Please use <span className='highlight'>{reference}</span> as the payee reference.
 				</div>
@@ -108,10 +149,7 @@ class Pay extends React.Component {
 						<h2>
 							Payment details
 						</h2>
-						<p>
-							The cost for this event is <span className='highlight'>$15</span>,
-							which pays for registration and dinner.
-						</p>
+						{price}
 						<p>
 							Please note that you will need to buy your own lunch and 
 							utilise Public Transport on the day,

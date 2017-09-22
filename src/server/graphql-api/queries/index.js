@@ -1,6 +1,7 @@
 import types from '../types';
 import settingQuery from './settingQuery';
 import userQuery from './userQuery';
+import teamQuery from './teamQuery';
 
 
 export default {
@@ -10,5 +11,6 @@ export default {
 		resolve() { return { ok : true } }
 	},
 	...settingQuery,
-	...userQuery
+	...userQuery,
+	...teamQuery
 };
