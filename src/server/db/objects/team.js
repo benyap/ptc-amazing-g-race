@@ -53,7 +53,7 @@ const addTeam = async function(user, teamName) {
 	if (authorized !== true) return authorized;
 
 	if (!teamName) {
-		return new Erorr('Team name is required.');
+		return new Error('Team name is required.');
 	}
 
 	const db = await connect();
@@ -104,7 +104,7 @@ const removeTeam = async function(user, teamId) {
 	if (authorized !== true) return authorized;
 
 	if (!teamId) {
-		return new Erorr('Team id is required.');
+		return new Error('Team id is required.');
 	}
 
 	const db = await connect();
@@ -160,7 +160,7 @@ const setTeamName = async function(user, teamId, name) {
 	}
 
 	if (!name || name.trim().length < 1) {
-		return new Erorr('Team name is required.');
+		return new Error('Team name is required.');
 	}
 
 	const db = await connect();
