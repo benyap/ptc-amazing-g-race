@@ -54,21 +54,29 @@ class Home extends React.Component {
 		teamError: null,
 		showHelp: false
 	}
-	
+
+	componentDidMount() {
+		this._mounted = true;
+	}
+
+	componentWillUnmount() {
+		this._mounted = false;
+	}
+
 	refetchTeam(teamId) {
-		setTimeout(() => { this.setState({ teamLoading: true }) }, 0);
+		setTimeout(() => { if (this._mounted) this.setState({ teamLoading: true }) }, 0);
 		this.props.client.query({
 			query: QueryGetTeam,
 			variables: { teamId },
 			fetchPolicy: 'network-only'
 		})
 		.then((result) => {
-			this.setState({ team: result.data, teamLoading: false });
+			if (this._mounted) this.setState({ team: result.data, teamLoading: false });
 			this.props.dispatch(saveTeamInfo(result.data.getTeam._id, result.data.getTeam.members));
 		})
 		.catch((err) => {
+			if (this._mounted) this.setState({ teamLoading: false, teamError: err.toString() });
 			console.warn(err);
-			this.setState({ teamLoading: false, teamError: err.toString() });
 		});
 	}
 
