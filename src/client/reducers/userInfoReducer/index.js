@@ -1,5 +1,6 @@
 const initialState = {
 	teamId: null,
+	teamName: null,
 	teamMembers: null
 };
 
@@ -9,6 +10,7 @@ export default function reducer(state = initialState, { type, payload }) {
 		case 'USER_SAVE_TEAM_INFO': {
 			return { ...state,
 				teamId: payload.teamId,
+				teamName: payload.teamName,
 				teamMembers: payload.teamMembers
 			}
 		}

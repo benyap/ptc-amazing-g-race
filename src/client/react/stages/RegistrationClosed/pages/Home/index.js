@@ -40,7 +40,10 @@ query GetTeam($teamId: ID!){
 }`;
 
 const mapStateToProps = (state, ownProps) => {
-	return { email: state.auth.login.email };
+	return { 
+		email: state.auth.login.email,
+		teamName: state.userInfo.teamName
+	};
 }
 
 @connect(mapStateToProps)
@@ -72,7 +75,11 @@ class Home extends React.Component {
 		})
 		.then((result) => {
 			if (this._mounted) this.setState({ team: result.data, teamLoading: false });
-			this.props.dispatch(saveTeamInfo(result.data.getTeam._id, result.data.getTeam.members));
+			this.props.dispatch(saveTeamInfo(
+				result.data.getTeam._id, 
+				result.data.getTeam.teamName, 
+				result.data.getTeam.members
+			));
 		})
 		.catch((err) => {
 			if (this._mounted) this.setState({ teamLoading: false, teamError: err.toString() });
@@ -99,14 +106,12 @@ class Home extends React.Component {
 		if (getUserByEmail && getUserByEmail.teamId && !this.state.team && !this.state.teamLoading) {
 			this.refetchTeam(getUserByEmail.teamId);
 		}
-
-		let teamName = this.state.team ? this.state.team.getTeam.teamName : null;
-
+		
 		return (
 			<main id='home' className='dashboard'>
 				<div className='content'>
 					<h2 style={{color: 'white'}}>
-						{ teamName ? teamName : 'Your Team' }
+						{ this.props.teamName ? this.props.teamName : 'Your Team' }
 						{ this.state.teamLoading ? <Spinner className='pt-small info-loading'/> : null }
 						<Button className='helper-button pt-small pt-minimal pt-intent-warning' iconName='refresh' onClick={this.refresh} disabled={this.state.teamLoading}/>
 						<Button className='helper-button pt-small pt-minimal pt-intent-primary' iconName='help' onClick={this.toggleShowHelp}/>
