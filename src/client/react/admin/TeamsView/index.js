@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
-import { gql, graphql } from 'react-apollo';
-import { Spinner } from '@blueprintjs/core';
+import { compose, gql, graphql } from 'react-apollo';
+import { Spinner, Button, Intent, Dialog } from '@blueprintjs/core';
+import FormInput from '../../../../../lib/react/components/forms/FormInput';
 import ViewError from '../ViewError';
 import RefreshBar from '../RefreshBar';
 import TeamCard from './TeamCard';
@@ -29,7 +30,17 @@ const QueryGetTeamsOptions = {
 	}
 }
 
-@graphql(QueryGetTeams, QueryGetTeamsOptions)
+const MutationCreateTeam = gql`
+mutation AddTeam($teamName:String!){
+	addTeam(teamName:$teamName){
+		ok
+	}
+}`;
+
+@compose(
+	graphql(QueryGetTeams, QueryGetTeamsOptions),
+	graphql(MutationCreateTeam, { name: 'MutationCreateTeam' })
+)
 @autobind
 class TeamsView extends React.Component {
 	static propTypes = {
@@ -37,7 +48,11 @@ class TeamsView extends React.Component {
 	}
 
 	state = {
-		viewProfile: null
+		viewProfile: null,
+		showCreateTeamDialog: false,
+		createTeamLoading: false,
+		createTeamError: null,
+		teamName: ''
 	}
 
 	renderProfile(team) {
@@ -48,6 +63,36 @@ class TeamsView extends React.Component {
 		this.setState({ viewProfile: null }, () => {
 			this.props.QueryGetTeams.refetch();
 		});
+	}
+
+	toggleCreateTeamDialog() {
+		this.setState((prevState) => {
+			return { 
+				showCreateTeamDialog: !prevState.showCreateTeamDialog,
+				createTeamError: null,
+				teamName: ''
+			};
+		});
+	}
+	
+	editTeamName(e) {
+		this.setState({ teamName: e.target.value });
+	}
+
+	async submitCreateTeam() {
+		this.setState({ createTeamLoading: true });
+		try {
+			let result = await this.props.MutationCreateTeam({ variables: { teamName: this.state.teamName.trim() } });
+			this.setState({createTeamLoading: false, createTeamError: null});
+			this.toggleCreateTeamDialog();
+			this.props.QueryGetTeams.refetch();
+		}
+		catch (e) {
+			this.setState({
+				createTeamLoading: false,
+				createTeamError: e.toString()
+			});
+		}
 	}
 
 	render() {
@@ -79,6 +124,28 @@ class TeamsView extends React.Component {
 									<TeamCard key={team._id} team={team} renderProfile={this.renderProfile}/>
 								);
 							})}
+							<Button text='Create new team' iconName='add' className='pt-fill pt-minimal' intent={Intent.PRIMARY} onClick={this.toggleCreateTeamDialog}/>
+							<Dialog isOpen={this.state.showCreateTeamDialog} iconName='add' title='Create a new team' onClose={this.toggleCreateTeamDialog}>
+								<div style={{padding: '1rem'}}>
+									<div className='pt-dialog-body'>
+										{this.state.createTeamError ? 
+											<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'0.5rem'}}>
+												{this.state.createTeamError}
+											</div>
+											:null}
+										<label className='pt-label'>
+											<b>Team name:</b> 
+											<FormInput id={'new-team'} value={this.state.teamName} onChange={this.editTeamName}/>
+										</label>
+									</div>
+									<div className='pt-dialog-footer'>
+										<div className='pt-dialog-footer-actions'>
+											<Button onClick={this.toggleCreateTeamDialog} text='Cancel' className='pt-minimal' disabled={this.state.createTeamLoading}/>
+											<Button onClick={this.submitCreateTeam} text='Create' intent={Intent.PRIMARY} loading={this.state.createTeamLoading}/>
+										</div>
+									</div>
+								</div>
+							</Dialog>
 						</div>
 					);
 				}

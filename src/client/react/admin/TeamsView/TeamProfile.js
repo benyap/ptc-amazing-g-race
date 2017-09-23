@@ -80,13 +80,21 @@ mutation RemoveUserTeam($username:String!){
 	}
 }`;
 
+const MutationRemoveTeam = gql`
+mutation RemoveTeam($teamId:ID!){
+	removeTeam(teamId:$teamId){
+		ok
+	}
+}`;
+
 @compose(
 	graphql(QueryTeam, QueryTeamOptions),
 	graphql(QueryUsers, QueryUsersOptions),
 	graphql(MutationSetTeamName, {name: 'MutationSetTeamName'}),
 	graphql(MutationSetTeamPoints, {name: 'MutationSetTeamPoints'}),
 	graphql(MutationSetUserTeam, {name: 'MutationSetUserTeam'}),
-	graphql(MutationRemoveUserTeam, {name: 'MutationRemoveUserTeam'})
+	graphql(MutationRemoveUserTeam, {name: 'MutationRemoveUserTeam'}),
+	graphql(MutationRemoveTeam, {name: 'MutationRemoveTeam'})
 )
 @connect()
 @autobind
@@ -111,7 +119,10 @@ class TeamProfile extends React.Component {
 		addUsersDialogOpen: false,
 		addUserLoading: false,
 		userToAdd: null,
-		addUserError: null
+		addUserError: null,
+		removeTeamDialogOpen: false,
+		removeTeamError: null,
+		removeTeamLoading: false
 	}
 
 	componentDidMount() {
@@ -194,7 +205,7 @@ class TeamProfile extends React.Component {
 
 	toggleAddUsers() {
 		this.setState((prevState) => {
-			let state = { addUsersDialogOpen: !prevState.addUsersDialogOpen, addUserError: false };
+			let state = { addUsersDialogOpen: !prevState.addUsersDialogOpen, addUserError: null };
 			if (state.addUsersDialogOpen) state.userToAdd = 'NONE';
 			else state.userToAdd = null;
 			return state;
@@ -242,6 +253,24 @@ class TeamProfile extends React.Component {
 					console.warn(err);
 				});
 		}
+	}
+
+	toggleRemoveTeam() {
+		this.setState((prevState) => {
+			return { removeTeamDialogOpen: !prevState.removeTeamDialogOpen, removTeamError: null };
+		});
+	}
+	
+	removeTeam() {
+		this.setState({removeTeamLoading: true, removeTeamError: null});
+		this.props.MutationRemoveTeam({ variables: { teamId: this.props.team._id }})
+			.then(() => {
+				this.props.closeProfile();
+			})
+			.catch((err) => {
+				if (this._mounted) this.setState({ removeTeamLoading: false, removeTeamError: err.toString() });
+				else console.warn(err);
+			});
 	}
 
 	render() {
@@ -317,7 +346,8 @@ class TeamProfile extends React.Component {
 							onConfirm={this.confirmName}/> :
 						this.props.team.teamName
 					}
-					<Button className='pt-minimal add-user' iconName='new-person' onClick={this.toggleAddUsers}/>
+					<Button className='pt-minimal action-button' iconName='new-person' intent={Intent.PRIMARY} onClick={this.toggleAddUsers}/>
+					<Button className='pt-minimal action-button' iconName='remove' intent={Intent.DANGER} onClick={this.toggleRemoveTeam}/>
 				</b></h4>
 
 				<div className='manage'>
@@ -329,43 +359,57 @@ class TeamProfile extends React.Component {
 							onChange={this.editPoints} 
 							onConfirm={this.confirmPoints}/>
 					</div>
-					<div className='add'>
-						<Dialog isOpen={this.state.addUsersDialogOpen} onClose={this.toggleAddUsers} title='Add user' iconName='new-person'>
-							<div style={{padding: '1rem'}}>
-								<div className='pt-dialog-body'>
-									{this.state.addUserError ? 
-										<div className='pt-callout pt-intent-danger pt-icon-error'>
-											{this.state.addUserError}
-										</div>
-										:null}
-									<label className='pt-label'>
-										Add user: 
-										<div className='pt-select'>
-											<select onChange={this.changeUserToAdd} disabled={this.state.addUserLoading}>
-												{this.props.QueryUsers.loading ? 
-													<option value='NONE'>Loading...</option>:
-													<option value='NONE'>Select a user...</option>
-												}
-												{this.props.QueryUsers.loading ? 
-												null:
-												this.props.QueryUsers.listAll.map((user) => {
-													if (!user.teamId) {	// Only add users without a team
-														return <option key={user.username} value={user.username}>{`${user.firstname} ${user.lastname}`}</option>
-													}
-												})}
-											</select>
-										</div>
-									</label>
+					<Dialog isOpen={this.state.addUsersDialogOpen} onClose={this.toggleAddUsers} title='Add user' iconName='new-person'>
+						<div className='pt-dialog-body'>
+							{this.state.addUserError ? 
+								<div className='pt-callout pt-intent-danger pt-icon-error'>
+									{this.state.addUserError}
 								</div>
-								<div className='pt-dialog-footer'>
-									<div className='pt-dialog-footer-actions'>
-										<Button onClick={this.toggleAddUsers} text='Cancel' className='pt-minimal' disabled={this.state.addUserLoading}/>
-										<Button onClick={this.submitAddUser} text='Add' intent={Intent.PRIMARY} loading={this.state.addUserLoading}/>
-									</div>
+								:null}
+							<label className='pt-label'>
+								Add user: 
+								<div className='pt-select'>
+									<select onChange={this.changeUserToAdd} disabled={this.state.addUserLoading}>
+										{this.props.QueryUsers.loading ? 
+											<option value='NONE'>Loading...</option>:
+											<option value='NONE'>Select a user...</option>
+										}
+										{this.props.QueryUsers.loading ? 
+										null:
+										this.props.QueryUsers.listAll.map((user) => {
+											if (!user.teamId) {	// Only add users without a team
+												return <option key={user.username} value={user.username}>{`${user.firstname} ${user.lastname}`}</option>
+											}
+										})}
+									</select>
 								</div>
+							</label>
+						</div>
+						<div className='pt-dialog-footer'>
+							<div className='pt-dialog-footer-actions'>
+								<Button onClick={this.toggleAddUsers} text='Cancel' className='pt-minimal' disabled={this.state.addUserLoading}/>
+								<Button onClick={this.submitAddUser} text='Add' intent={Intent.PRIMARY} loading={this.state.addUserLoading}/>
 							</div>
-						</Dialog>
-					</div>
+						</div>
+					</Dialog>
+					<Dialog isOpen={this.state.removeTeamDialogOpen} onClose={this.toggleRemoveTeam} title='Remove team' iconName='warning'>
+						<div className='pt-dialog-body'>
+							{this.state.removeTeamError ? 
+								<div className='pt-callout pt-intent-danger pt-icon-error'>
+									{this.state.removeTeamError}
+								</div>
+								:null}
+							<p>
+								Are you sure you want to remove this team?
+							</p>
+						</div>
+						<div className='pt-dialog-footer'>
+							<div className='pt-dialog-footer-actions'>
+								<Button onClick={this.toggleRemoveTeam} text='Cancel' className='pt-minimal' disabled={this.state.removeTeamLoading}/>
+								<Button onClick={this.removeTeam} text='Remove team' intent={Intent.PRIMARY} loading={this.state.removeTeamLoading}/>
+							</div>
+						</div>
+					</Dialog>
 				</div>
 				{content}
 			</div>

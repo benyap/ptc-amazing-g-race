@@ -11,9 +11,9 @@
 		padding: 0.5rem;
 	}
 
-	.add-user {
+	.action-button {
 		margin-top: -0.3rem;
-		margin-left: 1rem;
+		margin-left: 0.5rem;
 	}
 
 	.manage {
@@ -22,13 +22,13 @@
 		flex-direction: column;
 		justify-content: space-between;
 
-		.add {
-			margin: 0.3rem 0;
-		}
-
 		.points {
 			display: flex;
 			align-items: center;
 		}
 	}
+}
+
+.pt-dialog .pt-callout {
+	margin-bottom: 0.5rem;
 }
