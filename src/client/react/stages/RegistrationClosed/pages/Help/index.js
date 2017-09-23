@@ -27,9 +27,38 @@ class Help extends React.Component {
 		return (
 			<main id='help' className='dashboard'>
 				<div className='content'>
-					<h2 style={{color: 'white'}}>
+					<h2>
 						Help
 					</h2>
+					<div className='pt-callout pt-icon-info-sign'>
+						This page contains important contacts for you on the day.
+						Please note that pressing a phone number will CALL that number if you are viewing on mobile.
+					</div>
+
+					<h5>Emergency contacts</h5>
+					<table className='pt-table pt-striped contacts'>
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Mobile</th>
+							</tr>
+						</thead>
+						<tbody>
+								{/* 
+								TODO: Add contact numbers of important people here
+								 */}
+							<tr>
+								<td>Emergency</td>
+								<td><a href={`tel:000`}>000</a></td>
+							</tr>
+							<tr>
+								<td>Event coordinator</td>
+								<td><a href={`tel:`}></a></td>
+							</tr>
+						</tbody>
+					</table>
+					<br/>
+
 					<h5>Team contacts</h5>
 					<table className='pt-table pt-striped contacts'>
 						<thead>
