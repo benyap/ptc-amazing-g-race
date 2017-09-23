@@ -107,7 +107,7 @@ class Home extends React.Component {
 				<div className='content'>
 					<h2 style={{color: 'white'}}>
 						{ teamName ? teamName : 'Your Team' }
-						{ this.state.teamLoading ? <Spinner className='pt-small team-loading'/> : null }
+						{ this.state.teamLoading ? <Spinner className='pt-small info-loading'/> : null }
 						<Button className='helper-button pt-small pt-minimal pt-intent-warning' iconName='refresh' onClick={this.refresh} disabled={this.state.teamLoading}/>
 						<Button className='helper-button pt-small pt-minimal pt-intent-primary' iconName='help' onClick={this.toggleShowHelp}/>
 					</h2>
