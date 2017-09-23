@@ -5,3 +5,17 @@
 		float: right;
 	}
 }
+
+.pt-portal {
+	li:not(.pt-menu-divider) {
+		height: 2.5rem;
+		font-size: 1.2rem;
+	}
+	
+	a.pt-menu-item {
+		height: 2.5rem;
+		display: inline-flex;
+		align-items: center;
+		width: 100%;
+	}
+}

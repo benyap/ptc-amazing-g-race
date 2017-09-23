@@ -62,8 +62,7 @@ class Dashboard extends React.Component {
 				query: 
 				`mutation LogoutUser($refreshToken:String!) { 
 					logout(refreshToken:$refreshToken) {
-						ok
-						failureMessage
+						ok failureMessage
 					}
 				}`
 			}
