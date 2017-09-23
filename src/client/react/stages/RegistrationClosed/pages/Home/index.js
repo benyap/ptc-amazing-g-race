@@ -7,6 +7,7 @@ import { gql, graphql, withApollo } from 'react-apollo';
 import TeamPanel from './TeamPanel';
 import { saveTeamInfo } from '../../../../../actions/userInfoActions';
 
+import '../../../../scss/dashboard/_main.scss'
 import '../../../../scss/dashboard/_home.scss';
 
 
@@ -94,7 +95,7 @@ class Home extends React.Component {
 		let teamName = this.state.team ? this.state.team.getTeam.teamName : null;
 
 		return (
-			<main id='dashboard-home'>
+			<main id='home' className='dashboard'>
 				<div className='content'>
 					<h2 style={{color: 'white'}}>
 						{ teamName ? teamName : 'Your Team' }

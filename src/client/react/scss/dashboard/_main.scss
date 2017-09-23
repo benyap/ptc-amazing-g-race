@@ -1,0 +1,29 @@
+.dashboard {
+	max-width: 40rem;
+	margin: auto;
+
+	&, h5 {
+		color: white;
+	}
+
+	.pt-callout {
+		margin-bottom: 1rem;
+	}
+	
+	.content {
+		border-radius: 1rem;
+		padding: 1rem;
+		margin: 1rem;
+		color: white;
+		background: rgba(0,0,0,0.7);
+	}
+
+	.info-loading {
+		position: absolute;
+		margin-left: 0.5rem;
+	}
+
+	.helper-button {
+		float: right;
+	}
+}
