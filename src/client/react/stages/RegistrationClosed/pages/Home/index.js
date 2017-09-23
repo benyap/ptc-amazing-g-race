@@ -136,7 +136,8 @@ class Home extends React.Component {
 							<br/>
 							<br/>
 							Use the refresh button to refresh the data displayed.
-							Each refresh uses less than 500 bytes, which is 0.05% of 1mb! 
+							Don't stress about your data usage - 
+							each refresh uses less than 1000 bytes, which is 0.1% of 1mb! 
 						</div>
 						: null
 					}
