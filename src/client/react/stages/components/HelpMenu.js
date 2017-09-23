@@ -27,7 +27,7 @@ class HelpMenu extends React.Component {
 
 	menu = (
 		<Menu id='help-menu'>
-			<MenuItem text='Home' iconName='home' onClick={this.navigate('/dashboard')}/>
+			<MenuItem text='Home' iconName='people' onClick={this.navigate('/dashboard')}/>
 			<MenuItem text='Challenges' iconName='map' onClick={this.navigate('/dashboard/challenges')}/>
 			<MenuItem text='Completed' iconName='tick-circle' onClick={this.navigate('/dashboard/completed')}/>
 			<MenuItem text='Help' iconName='help' onClick={this.navigate('/dashboard/help')}/>
