@@ -39,6 +39,14 @@ class HelpMenu extends React.Component {
 		</Menu>
 	);
 
+	componentDidMount() {
+		this._mounted = true;
+	}
+
+	componentWillUnmoun() {
+		this._mounted = false;
+	}
+
 	navigate(to) {
 		return () => {
 			this.props.history.push(to);
@@ -77,9 +85,9 @@ class HelpMenu extends React.Component {
 	}
 
 	setRefreshing(refreshing) {
-		this.setState({refreshLoading: refreshing});
+		if (this._mounted) this.setState({refreshLoading: refreshing});
 	}
-
+	
 	render() {
 		return (
 			<div id='help'>
