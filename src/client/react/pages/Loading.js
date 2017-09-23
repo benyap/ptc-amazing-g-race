@@ -26,7 +26,7 @@ class Loading extends Page {
 					<h4 className='pt-non-ideal-state-title' style={titleStyle}>
 						Welcome to the 
 						<br/>
-						<em>Amazing (G)<span style={{fontWeight:600}}>Race</span></em>
+						<em>Amazing G<span style={{fontWeight:600}}>Race</span></em>
 					</h4>
 					<div className='pt-non-ideal-state-description'>
 					</div>
