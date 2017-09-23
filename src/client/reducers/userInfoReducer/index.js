@@ -7,7 +7,7 @@ const initialState = {
 export default function reducer(state = initialState, { type, payload }) {
 	switch(type) {
 
-		case 'USER_SAVE_TEAM_INFO': {
+		case 'USER_SET_TEAM_INFO': {
 			return { ...state,
 				teamId: payload.teamId,
 				teamName: payload.teamName,

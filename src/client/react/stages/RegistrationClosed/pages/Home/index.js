@@ -5,7 +5,7 @@ import { autobind } from 'core-decorators';
 import { Spinner, Button } from '@blueprintjs/core';
 import { gql, graphql, withApollo } from 'react-apollo';
 import TeamPanel from './TeamPanel';
-import { saveTeamInfo } from '../../../../../actions/userInfoActions';
+import { setTeamInfo } from '../../../../../actions/userInfoActions';
 
 import '../../../../scss/dashboard/_main.scss'
 import '../../../../scss/dashboard/_home.scss';
@@ -20,7 +20,10 @@ query GetUserByEmail($email:String!) {
 }`;
 
 const QueryGetUserByEmailOptions = {
-	name: 'QueryGetUserByEmail'
+	name: 'QueryGetUserByEmail',
+	options: {
+		fetchPolicy: 'cache-and-network'
+	}
 }
 
 const QueryGetTeam = gql`
@@ -67,24 +70,32 @@ class Home extends React.Component {
 	}
 
 	refetchTeam(teamId) {
-		setTimeout(() => { if (this._mounted) this.setState({ teamLoading: true }) }, 0);
-		this.props.client.query({
-			query: QueryGetTeam,
-			variables: { teamId },
-			fetchPolicy: 'network-only'
-		})
-		.then((result) => {
-			if (this._mounted) this.setState({ team: result.data, teamLoading: false });
-			this.props.dispatch(saveTeamInfo(
-				result.data.getTeam._id, 
-				result.data.getTeam.teamName, 
-				result.data.getTeam.members
-			));
-		})
-		.catch((err) => {
-			if (this._mounted) this.setState({ teamLoading: false, teamError: err.toString() });
-			console.warn(err);
-		});
+		if (!teamId) {
+			// Reset team info
+			this.props.dispatch(setTeamInfo(null, null, null));
+		}
+		else {
+			setTimeout(() => { if (this._mounted) this.setState({ teamLoading: true }) }, 0);
+			this.props.client.query({
+				query: QueryGetTeam,
+				variables: { teamId },
+				fetchPolicy: 'network-only'
+			})
+			.then((result) => {
+				if (this._mounted) this.setState({ team: result.data, teamLoading: false });
+				this.props.dispatch(setTeamInfo(
+					result.data.getTeam._id, 
+					result.data.getTeam.teamName, 
+					result.data.getTeam.members
+				));
+			})
+			.catch((err) => {
+				if (this._mounted) this.setState({ teamLoading: false, teamError: err.toString() });
+				console.warn(err);
+				// Reset team info
+				this.props.dispatch(setTeamInfo(null, null, null));
+			});
+		}
 	}
 
 	refresh() {

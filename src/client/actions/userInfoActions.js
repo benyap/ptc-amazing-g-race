@@ -3,9 +3,9 @@
  * @param {*} teamId
  * @param {*} teamMembers
  */
-export function saveTeamInfo(teamId, teamName, teamMembers) {
+export function setTeamInfo(teamId, teamName, teamMembers) {
 	return {
-		type: 'USER_SAVE_TEAM_INFO',
+		type: 'USER_SET_TEAM_INFO',
 		payload: {
 			teamId,
 			teamName,
