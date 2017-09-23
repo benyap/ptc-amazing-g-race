@@ -22,7 +22,9 @@ class TeamPanel extends React.Component {
 			return (
 				<div id='dashboard-team-panel'>
 					<div className='pt-callout'>
-						<h5>Points: {points}</h5>
+						<div className='points'>
+							Points: {points}
+						</div>
 					</div>
 				</div>
 			);

@@ -121,7 +121,7 @@ class Home extends React.Component {
 		return (
 			<main id='home' className='dashboard'>
 				<div className='content'>
-					<h2 style={{color: 'white'}}>
+					<h2>
 						{ this.props.teamName ? this.props.teamName : 'Your Team' }
 						{ this.state.teamLoading ? <Spinner className='pt-small info-loading'/> : null }
 						<Button className='helper-button pt-small pt-minimal pt-intent-warning' iconName='refresh' onClick={this.refresh} disabled={this.state.teamLoading}/>
@@ -141,7 +141,7 @@ class Home extends React.Component {
 						: null
 					}
 					<TeamPanel team={ this.state.team ? this.state.team.getTeam : null } loading={this.state.teamLoading}/>
-					<h5 style={{color: 'white'}}>
+					<h5>
 						Important contacts
 					</h5>
 					<p>

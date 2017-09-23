@@ -1,9 +1,12 @@
 .dashboard {
 	max-width: 40rem;
 	margin: auto;
+	color: white;
 
-	&, h5 {
-		color: white;
+	h2, h5 {
+		&, .pt-dark & {
+			color: #E6AA00;
+		}
 	}
 
 	.pt-callout {
