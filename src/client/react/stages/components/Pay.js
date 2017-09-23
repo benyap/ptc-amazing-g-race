@@ -7,7 +7,7 @@ import ScrollAnimation from 'react-animate-on-scroll';
 import Title from './Title';
 import LoginRefresher from '../../sharedComponents/LoginRefresher';
 
-import '../../scss/_pay.scss';
+import '../../scss/components/_pay.scss';
 
 
 const mapStateToProps = (state, ownProps) => {

@@ -9,7 +9,7 @@ import API from '../../../API';
 import MenuButton from '../../../../../lib/react/components/MenuButton';
 import LoginRefresher from '../../sharedComponents/LoginRefresher';
 
-import '../../scss/_help.scss';
+import '../../scss/components/_help.scss';
 
 
 const mapStateToProps = (state, ownProps) => {

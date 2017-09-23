@@ -1,3 +1,5 @@
+@import '../variables/colours';
+
 .dashboard {
 	max-width: 40rem;
 	margin: auto;
@@ -5,7 +7,7 @@
 
 	h2, h5 {
 		&, .pt-dark & {
-			color: #E6AA00;
+			color: $theme-orange;
 		}
 	}
 
