@@ -125,7 +125,7 @@ class Form3 extends React.Component {
 			<div>
 				<div className='pt-callout pt-intent-warning' style={{marginBottom: '0.3rem'}}>
 					<h5>Step 3 of 4</h5>
-					Each member of the Amazing (G)race will have an account which they will use to log in on the day.
+					Each member of the Amazing GRace will have an account which they will use to log in on the day.
 					Part of the race will involve entering answers online so make sure you choose a secure but memorable password!
 				</div>
 

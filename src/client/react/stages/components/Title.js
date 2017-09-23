@@ -1,7 +1,7 @@
 import React from 'react';
 import ScrollAnimation from 'react-animate-on-scroll';
 
-import '../scss/_hero.scss';
+import '../../scss/components/_hero.scss';
 
 
 const Title = ({notAnimated}) => {

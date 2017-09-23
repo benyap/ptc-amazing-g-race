@@ -103,15 +103,14 @@ class Setting extends React.Component {
 					value: this.state.editValue
 				}
 			});
+
+			this.setState({editLoading: false, editError: false});
+			this.toggleDialog();
+			if (this.props.reload) this.props.reload();
 		}
 		catch(e) {
 			this.setState({editLoading: false, editError: true, editErrorText: e.toString()});
-			return;
 		}
-		
-		this.setState({editLoading: false, editError: false});
-		this.toggleDialog();
-		if (this.props.reload) this.props.reload();
 	}
 
 	render() {
