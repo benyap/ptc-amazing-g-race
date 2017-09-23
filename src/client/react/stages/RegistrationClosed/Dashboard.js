@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import Base from '../components/Base';
 import HelpMenu from '../components/HelpMenu';
 import Home from './pages/Home';
+import Help from './pages/Help';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -42,7 +43,7 @@ class Dashboard extends React.Component {
 				<Route exact path={`${url}`} component={Home}/>
 				<Route path={`${url}/challenges`} component={null}/>
 				<Route path={`${url}/completed`} component={null}/>
-				<Route path={`${url}/help`} component={null}/>
+				<Route path={`${url}/help`} component={Help}/>
 				<Route path={`${url}/profile`} component={null}/>
 			</div>
 		);
