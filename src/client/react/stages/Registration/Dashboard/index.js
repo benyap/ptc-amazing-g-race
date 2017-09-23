@@ -5,9 +5,12 @@ import { graphql, gql } from 'react-apollo';
 import { withRouter, Link, Redirect } from 'react-router-dom';
 import { Spinner, Button, Intent } from '@blueprintjs/core';
 import { logout } from '../../../../actions/authActions';
+import axios from 'axios';
 import ScrollAnimation from 'react-animate-on-scroll';
 import Title from '../../components/Title';
 import LoginRefresher from '../../../sharedComponents/LoginRefresher';
+import API from '../../../../API';
+
 import '../../../scss/_dashboard.scss';
 
 
@@ -43,9 +46,40 @@ const QueryMeOptions = {
 @withRouter
 @autobind
 class Dashboard extends React.Component {
-	logout() {
-		this.props.dispatch(logout(new Date()));
-		this.props.history.push('/');
+	state = {
+		logoutLoading: false
+	}
+
+	async logout() {
+		this.setState({logoutLoading: true});
+
+		const config = {
+			url: API.api,
+			method: 'POST',
+			timeout: 10000,
+			data: {
+				variables: { refreshToken: this.props.refresh },
+				query: 
+				`mutation LogoutUser($refreshToken:String!) { 
+					logout(refreshToken:$refreshToken) {
+						ok
+						failureMessage
+					}
+				}`
+			}
+		}
+
+		// Send logout request to server
+		let result = await axios(config);
+
+		if (!result.data.data.logout.ok) {
+			console.warn(result.data.data.logout.failureMessage);
+		}
+
+		this.setState({logoutLoading: false}, () => {
+			this.props.dispatch(logout(new Date()));
+			this.props.history.push('/');
+		});
 	}
 
 	render() {
@@ -74,7 +108,8 @@ class Dashboard extends React.Component {
 						<p>
 							If you haven't paid yet, please go <Link to='/pay'>here</Link> to see payment details.
 						</p>
-						<Button text='Log out' style={{marginTop: '2rem'}} intent={Intent.WARNING} onClick={this.logout}/>
+						<Button text='Log out' style={{marginTop: '2rem'}} intent={Intent.WARNING} 
+							onClick={this.logout} loading={this.state.logoutLoading}/>
 					</div>
 				);
 			}
