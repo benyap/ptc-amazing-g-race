@@ -1,12 +1,13 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
 import { withRouter } from 'react-router-dom';
-import { Position, Menu, MenuItem, MenuDivider } from '@blueprintjs/core';
+import { Position, Spinner, Menu, MenuItem, MenuDivider } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import { logout } from '../../../actions/authActions';
 import axios from 'axios';
 import API from '../../../API';
 import MenuButton from '../../../../../lib/react/components/MenuButton';
+import LoginRefresher from '../../sharedComponents/LoginRefresher';
 
 import '../../scss/_help.scss';
 
@@ -22,7 +23,8 @@ const mapStateToProps = (state, ownProps) => {
 @autobind
 class HelpMenu extends React.Component {
 	state = {
-		logoutLoading: false
+		logoutLoading: false,
+		refreshLoading: false
 	}
 
 	menu = (
@@ -74,10 +76,21 @@ class HelpMenu extends React.Component {
 		});
 	}
 
+	setRefreshing(refreshing) {
+		this.setState({refreshLoading: refreshing});
+	}
+
 	render() {
 		return (
 			<div id='help'>
 				<div className='help-button'>
+					<LoginRefresher interval={10*60*1000} refreshToken={this.props.refresh} setRefreshing={this.setRefreshing}/>
+					{this.state.refreshLoading ? 
+						<div className='refresh-loading'>
+							<Spinner className='pt-small'/>
+						</div>
+						:null
+					}
 					<MenuButton buttonClass='pt-large' popoverClass='pt-dark' 
 						menu={this.menu} iconName='cog' position={Position.BOTTOM_RIGHT}
 						loading={this.state.logoutLoading}/>
