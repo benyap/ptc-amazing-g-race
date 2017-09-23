@@ -10,7 +10,7 @@ $icon-font-path: "~@blueprintjs/core/resources/icons";
 @import '../../../../node_modules/animate.css/animate.min.css';
 
 @import 'variables/fonts';
-@import 'fonts';
+@import 'fonts/fonts';
 
 html, body {
 	font-family: $theme-font, sans-serif;
