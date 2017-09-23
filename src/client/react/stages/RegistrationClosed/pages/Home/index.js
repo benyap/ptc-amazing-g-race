@@ -5,6 +5,7 @@ import { autobind } from 'core-decorators';
 import { Spinner, Button } from '@blueprintjs/core';
 import { gql, graphql, withApollo } from 'react-apollo';
 import TeamPanel from './TeamPanel';
+import { saveTeamInfo } from '../../../../../actions/userInfoActions';
 
 import '../../../../scss/dashboard/_home.scss';
 
@@ -24,6 +25,7 @@ const QueryGetUserByEmailOptions = {
 const QueryGetTeam = gql`
 query GetTeam($teamId: ID!){
 	getTeam(teamId: $teamId){
+		_id
 		teamName
 		points
 		memberCount
@@ -61,6 +63,7 @@ class Home extends React.Component {
 		})
 		.then((result) => {
 			this.setState({ team: result.data, teamLoading: false });
+			this.props.dispatch(saveTeamInfo(result.data.getTeam._id, result.data.getTeam.members));
 		})
 		.catch((err) => {
 			console.warn(err);
