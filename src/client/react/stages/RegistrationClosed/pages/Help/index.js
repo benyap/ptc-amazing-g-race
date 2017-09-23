@@ -37,12 +37,6 @@ class Help extends React.Component {
 
 					<h5>Emergency contacts</h5>
 					<table className='pt-table pt-striped contacts'>
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Mobile</th>
-							</tr>
-						</thead>
 						<tbody>
 								{/* 
 								TODO: Add contact numbers of important people here
@@ -61,12 +55,6 @@ class Help extends React.Component {
 
 					<h5>Team contacts</h5>
 					<table className='pt-table pt-striped contacts'>
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Mobile</th>
-							</tr>
-						</thead>
 						<tbody>
 							{ memberContacts }
 						</tbody>
