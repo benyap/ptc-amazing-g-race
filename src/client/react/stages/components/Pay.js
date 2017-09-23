@@ -144,7 +144,7 @@ class Pay extends React.Component {
 			<main id='pay'>
 				<LoginRefresher refreshToken={this.props.refresh}/>
 				<Title/>
-					<ScrollAnimation animateOnce animateIn='fadeInUp' offset={0} duration={0.5}>
+					<ScrollAnimation animateOnce animateIn='fadeInUp' offset={-500} duration={0.5}>
 					<div className='infobox'>
 						<h2>
 							Payment details

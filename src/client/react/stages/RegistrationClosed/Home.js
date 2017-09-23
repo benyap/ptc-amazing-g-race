@@ -55,6 +55,9 @@ class Home extends React.Component {
 							<Link to='/dashboard' className='pt-button pt-intent-primary pt-large pt-fill login-button'>
 								Go to my dashboard
 							</Link>
+							<Link to='/pay' className='pt-button pt-minimal pt-large pt-fill pt-intent-primary login-button'>
+								How do I pay?
+							</Link>
 						</div>
 						:
 						<div className='closed'>
