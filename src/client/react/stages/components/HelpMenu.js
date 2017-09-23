@@ -54,7 +54,7 @@ class HelpMenu extends React.Component {
 	}
 
 	async logout() {
-		this.setState({logoutLoading: true});
+		if (this._mounted) this.setState({logoutLoading: true});
 
 		const config = {
 			url: API.api,
@@ -78,10 +78,9 @@ class HelpMenu extends React.Component {
 			console.warn(result.data.data.logout.failureMessage);
 		}
 
-		this.setState({logoutLoading: false}, () => {
-			this.props.dispatch(logout(new Date()));
-			this.props.history.push('/');
-		});
+		if (this._mounted) this.setState({logoutLoading: false});
+		this.props.dispatch(logout(new Date()));
+		this.props.history.push('/');
 	}
 
 	setRefreshing(refreshing) {

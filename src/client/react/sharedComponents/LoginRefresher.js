@@ -24,7 +24,7 @@ const MutationAccessRefreshOptions = {
 class LoginRefresh extends React.Component {
 	static propTypes = {
 		interval: PropTypes.number,
-		refreshToken: PropTypes.string.isRequired,
+		refreshToken: PropTypes.string,
 		setRefreshing: PropTypes.func
 	}
 
@@ -46,6 +46,12 @@ class LoginRefresh extends React.Component {
 	}
 
 	async refresh() {
+		if (!this.props.refreshToken) {
+			// Don't try to refresh if there is no refresh token
+			this._dispatchLogout();
+			return;
+		}
+
 		if (this.props.setRefreshing) this.props.setRefreshing(true);
 
 		// Send refresh request
