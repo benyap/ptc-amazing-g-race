@@ -27,12 +27,12 @@ class HelpMenu extends React.Component {
 
 	menu = (
 		<Menu id='help-menu'>
-			<MenuItem text='Home' iconName='people' onClick={this.navigate('/dashboard')}/>
+			<MenuItem text='Team dashboard' iconName='people' onClick={this.navigate('/dashboard')}/>
+			<MenuItem text='Instructions' iconName='clipboard' onClick={this.navigate('/dashboard/instructions')}/>
 			<MenuItem text='Challenges' iconName='map' onClick={this.navigate('/dashboard/challenges')}/>
 			<MenuItem text='Completed' iconName='tick-circle' onClick={this.navigate('/dashboard/completed')}/>
-			<MenuItem text='Help' iconName='help' onClick={this.navigate('/dashboard/help')}/>
 			<MenuDivider/>
-			<MenuItem text='Profile' iconName='user' onClick={this.navigate('/dashboard/profile')}/>
+			<MenuItem text='Help' iconName='help' onClick={this.navigate('/dashboard/help')}/>
 			<MenuItem text='Logout' iconName='log-out' onClick={this.logout}/>
 		</Menu>
 	);
