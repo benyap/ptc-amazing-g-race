@@ -181,7 +181,7 @@ class UserProfile extends React.Component {
 			 };
 		});
 	}
-	
+
 	addPermissionChange({ target: { value }}) {
 		this.setState({addPermissionText: value});
 	}
@@ -196,7 +196,7 @@ class UserProfile extends React.Component {
 
 	_submitPermissionChange(type, Type, permission) {
 		this.setState({[`${type}PermissionLoading`]: true, [`${type}PermissionError`]: null});
-		this.props.MutationAddPermission
+
 		this.props[`Mutation${Type}Permission`]({
 			variables: {
 				username: this.props.user.username,
