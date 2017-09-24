@@ -78,6 +78,8 @@ class UserProfile extends React.Component {
 		addPermissionText: '',
 		addPermissionLoading: false,
 		addPermissionError: null,
+		showRemovePermissionDialog: false,
+		permissionToRemove: null
 	}
 
 	componentDidMount() {
@@ -160,78 +162,69 @@ class UserProfile extends React.Component {
 	}
 
 	toggleAddPermission() {
+		this._toggleDialog('showAddPermissionDialog', 'addPermissionText', 'addPermissionError');
+	}
+
+	toggleRemovePermission(permissionToRemove) {
+		return () => {
+			this.setState({permissionToRemove})
+			this._toggleDialog('showRemovePermissionDialog', 'removePermissionText', 'removePermissionError');
+		}
+	}
+
+	_toggleDialog(name, text, error) {
 		this.setState((prevState) => {
 			return { 
-				showAddPermissionDialog: !prevState.showAddPermissionDialog,
-				addPermissionText: '',
-				addPermissionError: null
+				[name]: !prevState[name],
+				[text]: '',
+				[error]: null
 			 };
 		});
 	}
-
-	removePermission(permission) {
-		return () => {
-			this.setState({[permission+'RemoveLoading']: true});
-			this.props.MutationRemovePermission({
-				variables: {
-					username: this.props.user.username,
-					permission: permission
-				}
-			})
-			.then((result) => {
-				if (result.data.removePermission.ok) {
-					this.setState({[permission+'RemoveLoading']: false, saving: true});
-					this._refetchUser();
-				}
-				else {
-					if (this._mounted) this.setState({[permission+'RemoveLoading']: false});
-					NotificationToaster.show({
-						intent: Intent.DANGER,
-						message: result.data.removePermission.failureMessage
-					});
-				}
-			})
-			.catch((err) => {
-				this.setState({[permission+'RemoveLoading']: false});
-				NotificationToaster.show({
-					intent: Intent.DANGER,
-					message: err.toString()
-				});
-			});
-		};
-	}
-
+	
 	addPermissionChange({ target: { value }}) {
 		this.setState({addPermissionText: value});
 	}
-
+	
 	submitAddPermission() {
-		this.setState({addPermissionLoading: true, addPermissionError: null});
-		this.props.MutationAddPermission({
+		this._submitPermissionChange('add', 'Add', this.state.addPermissionText);
+	}
+	
+	submitRemovePermission() {
+		this._submitPermissionChange('remove', 'Remove', this.state.permissionToRemove);
+	}
+
+	_submitPermissionChange(type, Type, permission) {
+		this.setState({[`${type}PermissionLoading`]: true, [`${type}PermissionError`]: null});
+		this.props.MutationAddPermission
+		this.props[`Mutation${Type}Permission`]({
 			variables: {
 				username: this.props.user.username,
-				permission: this.state.addPermissionText
+				permission: permission
 			}
 		})
 		.then((result) => {
-			if (result.data.addPermission.ok) {
-				this.setState({addPermissionLoading: false, saving: true});
-				if (this.state.showAddPermissionDialog) this.toggleAddPermission();
+			if (result.data[`${type}Permission`].ok) {
+				this.setState({
+					[`${type}PermissionLoading`]: false, 
+					[`show${Type}PermissionDialog`]: false,
+					saving: true
+				});
 				this._refetchUser();
 			}
 			else {
 				if (this._mounted) {
 					this.setState({
-						addPermissionLoading: false, 
-						addPermissionError: result.data.addPermission.failureMessage
+						[`${type}PermissionLoading`]: false, 
+						[`${type}PermissionError`]: result.data[`${type}Permission`].failureMessage
 					});
 				}
 			}
 		})
 		.catch((err) => {
 			this.setState({
-				addPermissionLoading: false,
-				addPermissionError: err.toString()
+				[`${type}PermissionLoading`]: false, 
+				[`${type}PermissionError`]: err.toString()
 			});
 		});
 	}
@@ -334,7 +327,7 @@ class UserProfile extends React.Component {
 												return (
 													<li key={index}>
 														<Button iconName='remove' className='pt-small pt-minimal' 
-															intent={Intent.DANGER} onClick={this.removePermission(permission)}
+															intent={Intent.DANGER} onClick={this.toggleRemovePermission(permission)}
 															loading={this.state[permission+'RemoveLoading']}/>
 														{permission}
 													</li>
@@ -360,6 +353,8 @@ class UserProfile extends React.Component {
 				<h4><b>{firstname + ' ' + lastname}</b></h4>
 				<p className='pt-text-muted'>{university}</p>
 				{content}
+
+				{/* Add permission dialog */}
 				<Dialog title='Add new permission to user' 
 					isOpen={this.state.showAddPermissionDialog} onClose={this.toggleAddPermission}>
 					<div className='pt-dialog-body'>
@@ -380,6 +375,28 @@ class UserProfile extends React.Component {
 						</div>
 					</div>
 				</Dialog>
+
+				{/* Remove permission dialog */}
+				<Dialog title='Remove user permission' 
+					isOpen={this.state.showRemovePermissionDialog} onClose={this.toggleRemovePermission(null)}>
+					<div className='pt-dialog-body'>
+						{this.state.removePermissionError ? 
+							<div className='pt-callout pt-intent-danger pt-icon-error'>
+								{this.state.removePermissionError}
+							</div>
+							:null}
+							<p>
+								Are you sure yu want to remove the permission <code>{this.state.permissionToRemove}</code> from the user?
+							</p>
+					</div>
+					<div className='pt-dialog-footer'>
+						<div className='pt-dialog-footer-actions'>
+							<Button className='pt-minimal' onClick={this.toggleRemovePermission(null)} disabled={this.state.removePermissionLoading}>Cancel</Button>
+							<Button className='pt-intent-danger' onClick={this.submitRemovePermission} loading={this.state.removePermissionLoading}>Remove</Button>
+						</div>
+					</div>
+				</Dialog>
+
 			</div>
 		);
 	}
