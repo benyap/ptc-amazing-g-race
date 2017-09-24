@@ -270,7 +270,7 @@ class TeamProfile extends React.Component {
 
 	toggleRemoveTeam() {
 		this.setState((prevState) => {
-			return { removeTeamDialogOpen: !prevState.removeTeamDialogOpen, removTeamError: null };
+			return { removeTeamDialogOpen: !prevState.removeTeamDialogOpen, removeTeamError: null };
 		});
 	}
 	
@@ -371,6 +371,8 @@ class TeamProfile extends React.Component {
 							onChange={this.editPoints} 
 							onConfirm={this.confirmPoints}/>
 					</div>
+
+					{/* Add user dialog */}
 					<Dialog isOpen={this.state.addUsersDialogOpen} onClose={this.toggleAddUsers} title='Add user' iconName='new-person'>
 						<div className='pt-dialog-body'>
 							{this.state.addUserError ? 
@@ -404,7 +406,9 @@ class TeamProfile extends React.Component {
 							</div>
 						</div>
 					</Dialog>
-					<Dialog isOpen={this.state.removeTeamDialogOpen} onClose={this.toggleRemoveTeam} title='Remove team' iconName='warning'>
+
+					{/* Remove team dialog */}
+					<Dialog isOpen={this.state.removeTeamDialogOpen} onClose={this.toggleRemoveTeam} title='Remove team' iconName='warning-sign'>
 						<div className='pt-dialog-body'>
 							{this.state.removeTeamError ? 
 								<div className='pt-callout pt-intent-danger pt-icon-error'>
@@ -418,7 +422,7 @@ class TeamProfile extends React.Component {
 						<div className='pt-dialog-footer'>
 							<div className='pt-dialog-footer-actions'>
 								<Button onClick={this.toggleRemoveTeam} text='Cancel' className='pt-minimal' disabled={this.state.removeTeamLoading}/>
-								<Button onClick={this.removeTeam} text='Remove team' intent={Intent.PRIMARY} loading={this.state.removeTeamLoading}/>
+								<Button onClick={this.removeTeam} text='Remove team' intent={Intent.DANGER} loading={this.state.removeTeamLoading}/>
 							</div>
 						</div>
 					</Dialog>

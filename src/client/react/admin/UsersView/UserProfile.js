@@ -377,7 +377,7 @@ class UserProfile extends React.Component {
 				</Dialog>
 
 				{/* Remove permission dialog */}
-				<Dialog title='Remove user permission' 
+				<Dialog title='Remove user permission' iconName='warning-sign'
 					isOpen={this.state.showRemovePermissionDialog} onClose={this.toggleRemovePermission(null)}>
 					<div className='pt-dialog-body'>
 						{this.state.removePermissionError ? 
@@ -386,7 +386,7 @@ class UserProfile extends React.Component {
 							</div>
 							:null}
 							<p>
-								Are you sure yu want to remove the permission <code>{this.state.permissionToRemove}</code> from the user?
+								Are you sure you want to remove the permission <code>{this.state.permissionToRemove}</code> from the user?
 							</p>
 					</div>
 					<div className='pt-dialog-footer'>
