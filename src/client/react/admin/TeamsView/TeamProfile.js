@@ -371,63 +371,64 @@ class TeamProfile extends React.Component {
 							onChange={this.editPoints} 
 							onConfirm={this.confirmPoints}/>
 					</div>
-
-					{/* Add user dialog */}
-					<Dialog isOpen={this.state.addUsersDialogOpen} onClose={this.toggleAddUsers} title='Add user' iconName='new-person'>
-						<div className='pt-dialog-body'>
-							{this.state.addUserError ? 
-								<div className='pt-callout pt-intent-danger pt-icon-error'>
-									{this.state.addUserError}
-								</div>
-								:null}
-							<label className='pt-label'>
-								Add user: 
-								<div className='pt-select'>
-									<select onChange={this.changeUserToAdd} disabled={this.state.addUserLoading}>
-										{this.props.QueryUsers.loading ? 
-											<option value='NONE'>Loading...</option>:
-											<option value='NONE'>Select a user...</option>
-										}
-										{this.props.QueryUsers.loading ? 
-										null:
-										this.props.QueryUsers.listAll.map((user) => {
-											if (!user.teamId) {	// Only add users without a team
-												return <option key={user.username} value={user.username}>{`${user.firstname} ${user.lastname}`}</option>
-											}
-										})}
-									</select>
-								</div>
-							</label>
-						</div>
-						<div className='pt-dialog-footer'>
-							<div className='pt-dialog-footer-actions'>
-								<Button onClick={this.toggleAddUsers} text='Cancel' className='pt-minimal' disabled={this.state.addUserLoading}/>
-								<Button onClick={this.submitAddUser} text='Add' intent={Intent.PRIMARY} loading={this.state.addUserLoading}/>
-							</div>
-						</div>
-					</Dialog>
-
-					{/* Remove team dialog */}
-					<Dialog isOpen={this.state.removeTeamDialogOpen} onClose={this.toggleRemoveTeam} title='Remove team' iconName='warning-sign'>
-						<div className='pt-dialog-body'>
-							{this.state.removeTeamError ? 
-								<div className='pt-callout pt-intent-danger pt-icon-error'>
-									{this.state.removeTeamError}
-								</div>
-								:null}
-							<p>
-								Are you sure you want to remove this team?
-							</p>
-						</div>
-						<div className='pt-dialog-footer'>
-							<div className='pt-dialog-footer-actions'>
-								<Button onClick={this.toggleRemoveTeam} text='Cancel' className='pt-minimal' disabled={this.state.removeTeamLoading}/>
-								<Button onClick={this.removeTeam} text='Remove team' intent={Intent.DANGER} loading={this.state.removeTeamLoading}/>
-							</div>
-						</div>
-					</Dialog>
 				</div>
+				
 				{content}
+
+				{/* Add user dialog */}
+				<Dialog isOpen={this.state.addUsersDialogOpen} onClose={this.toggleAddUsers} title='Add user' iconName='new-person'>
+					<div className='pt-dialog-body'>
+						{this.state.addUserError ? 
+							<div className='pt-callout pt-intent-danger pt-icon-error'>
+								{this.state.addUserError}
+							</div>
+							:null}
+						<label className='pt-label'>
+							Add user: 
+							<div className='pt-select'>
+								<select onChange={this.changeUserToAdd} disabled={this.state.addUserLoading}>
+									{this.props.QueryUsers.loading ? 
+										<option value='NONE'>Loading...</option>:
+										<option value='NONE'>Select a user...</option>
+									}
+									{this.props.QueryUsers.loading ? 
+									null:
+									this.props.QueryUsers.listAll.map((user) => {
+										if (!user.teamId) {	// Only add users without a team
+											return <option key={user.username} value={user.username}>{`${user.firstname} ${user.lastname}`}</option>
+										}
+									})}
+								</select>
+							</div>
+						</label>
+					</div>
+					<div className='pt-dialog-footer'>
+						<div className='pt-dialog-footer-actions'>
+							<Button onClick={this.toggleAddUsers} text='Cancel' className='pt-minimal' disabled={this.state.addUserLoading}/>
+							<Button onClick={this.submitAddUser} text='Add' intent={Intent.PRIMARY} loading={this.state.addUserLoading}/>
+						</div>
+					</div>
+				</Dialog>
+
+				{/* Remove team dialog */}
+				<Dialog isOpen={this.state.removeTeamDialogOpen} onClose={this.toggleRemoveTeam} title='Remove team' iconName='warning-sign'>
+					<div className='pt-dialog-body'>
+						{this.state.removeTeamError ? 
+							<div className='pt-callout pt-intent-danger pt-icon-error'>
+								{this.state.removeTeamError}
+							</div>
+							:null}
+						<p>
+							Are you sure you want to remove this team?
+						</p>
+					</div>
+					<div className='pt-dialog-footer'>
+						<div className='pt-dialog-footer-actions'>
+							<Button onClick={this.toggleRemoveTeam} text='Cancel' className='pt-minimal' disabled={this.state.removeTeamLoading}/>
+							<Button onClick={this.removeTeam} text='Remove team' intent={Intent.DANGER} loading={this.state.removeTeamLoading}/>
+						</div>
+					</div>
+				</Dialog>
 			</div>
 		);
 	}
