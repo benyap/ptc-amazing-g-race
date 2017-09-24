@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import { compose, gql, graphql } from 'react-apollo';
 import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core';
 import { saveState } from '../../../actions/stateActions';
-import { connect } from 'react-redux';
+import NotificationToaster from '../NotificationToaster';
 
 import '../../scss/admin/_team-profile.scss';
 
@@ -115,7 +116,6 @@ class TeamProfile extends React.Component {
 		teamName: null,
 		points: null,
 		saving: false,
-		error: null,
 		addUsersDialogOpen: false,
 		addUserLoading: false,
 		userToAdd: null,
@@ -186,7 +186,7 @@ class TeamProfile extends React.Component {
 	}
 
 	_save(mutation, mutationName, variables) {
-		this.setState({saving: true, error: null});
+		this.setState({saving: true});
 		
 		// Execute mutation
 		mutation({ variables })
@@ -196,10 +196,20 @@ class TeamProfile extends React.Component {
 					this.props.dispatch(saveState());
 					if (this._mounted) this.setState({saving: false});
 				}
+				else {
+					if (this._mounted) this.setState({saving: false});
+					NotificationToaster.show({
+						intent: Intent.DANGER,
+						message: result.data[mutationName].failureMessage
+					});
+				}
 			})
 			.catch((err) => {
-				if (this._mounted) this.setState({saving: false, error: err.toString()});
-				else console.warn(err);
+				if (this._mounted) this.setState({saving: false});
+				NotificationToaster.show({
+					intent: Intent.DANGER,
+					message: err.toString()
+				});
 			});
 	}
 
@@ -250,7 +260,10 @@ class TeamProfile extends React.Component {
 				})
 				.catch((err) => {
 					if (this._mounted) this.setState({['remove-'+username]: false});
-					console.warn(err);
+					NotificationToaster.show({
+						intent: Intent.DANGER,
+						message: err.toString()
+					});
 				});
 		}
 	}
@@ -269,7 +282,6 @@ class TeamProfile extends React.Component {
 			})
 			.catch((err) => {
 				if (this._mounted) this.setState({ removeTeamLoading: false, removeTeamError: err.toString() });
-				else console.warn(err);
 			});
 	}
 
