@@ -325,9 +325,8 @@ class UserProfile extends React.Component {
 							<tr>
 								<td>
 									Account Permissions<br/>
-									<Button iconName='add' text='Add permission' 
-										className='pt-button pt-icon-add pt-small' 
-										onClick={this.toggleAddPermission}/>
+									<Button style={{marginTop: '0.5rem'}} onClick={this.toggleAddPermission}
+										iconName='add' text='Add permission' className='pt-button pt-icon-add pt-small'/>
 								</td>
 								<td>
 									<ul>
