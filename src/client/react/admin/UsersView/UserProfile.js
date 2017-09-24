@@ -363,11 +363,15 @@ class UserProfile extends React.Component {
 				<Dialog title='Add new permission to user' 
 					isOpen={this.state.showAddPermissionDialog} onClose={this.toggleAddPermission}>
 					<div className='pt-dialog-body'>
+						{this.state.addPermissionError ? 
+							<div className='pt-callout pt-intent-danger pt-icon-error'>
+								{this.state.addPermissionError}
+							</div>
+							:null}
 						<FormInput id='permission' value={this.state.addPermissionText} 
 							onChange={this.addPermissionChange}
 							label='Permission:' disabled={this.state.addPermissionLoading}
-							intent={this.state.addPermissionError?Intent.DANGER:Intent.NONE}
-							helperText={this.state.addPermissionError}/>
+							intent={this.state.addPermissionError?Intent.DANGER:Intent.NONE}/>
 					</div>
 					<div className='pt-dialog-footer'>
 						<div className='pt-dialog-footer-actions'>
