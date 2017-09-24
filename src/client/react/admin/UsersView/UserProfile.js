@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
-import { Button, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
+import { Button, Dialog, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTarget, Toaster, Position } from '@blueprintjs/core';
 import { gql, graphql, compose } from 'react-apollo';
 import DateFormat from 'dateformat';
 import { saveState } from '../../../actions/stateActions';
+import NotificationToaster from '../NotificationToaster';
+import FormInput from '../../../../../lib/react/components/forms/FormInput';
 import '../../scss/admin/_user-profile.scss';
 
 
@@ -38,14 +40,25 @@ mutation SetPaidAmount($username:String!, $amount:Float!){
   }
 }`;
 
-const MutationSetUserPaidAmountOptions = {
-	name: 'MutationSetUserPaidAmount'
-}
+const MutationAddPermission = gql`
+mutation AddPermission($permission:String!, $username:String!){
+	addPermission(permission:$permission, username:$username){
+		ok
+	}
+}`;
 
+const MutationRemovePermission = gql`
+mutation RemovePermission($permission:String!, $username:String!){
+	removePermission(permission:$permission, username:$username){
+		ok
+	}
+}`;
 
 @compose(
 	graphql(QueryUser, QueryUserOptions),
-	graphql(MutationSetUserPaidAmount, MutationSetUserPaidAmountOptions)
+	graphql(MutationSetUserPaidAmount, {name: 'MutationSetUserPaidAmount'}),
+	graphql(MutationAddPermission, {name: 'MutationAddPermission'}),
+	graphql(MutationRemovePermission, {name: 'MutationRemovePermission'})
 )
 @connect()
 @autobind
@@ -60,7 +73,11 @@ class UserProfile extends React.Component {
 	state = {
 		paidAmount: null,
 		saving: false,
-		error: null
+		error: null,
+		showAddPermissionDialog: false,
+		addPermissionText: '',
+		addPermissionLoading: false,
+		addPermissionError: null,
 	}
 
 	componentDidMount() {
@@ -99,22 +116,34 @@ class UserProfile extends React.Component {
 		};
 
 		this.props.MutationSetUserPaidAmount({ variables })
-			.then((result) => {
-				if (result.data.setUserPaidAmount.ok) {
-					this.props.QueryUser.refetch()
-						.then(() => {
-							this.props.dispatch(saveState());
-							if (this._mounted) this.setState({saving: false});
-						});
-				}
-				else {
-					if (this._mounted) this.setState({saving: false, error: result.data.setUserPaidAmount.failureMessage});
-				}
-			})
-			.catch((err) => {
-				if (this._mounted) this.setState({saving: false, error: err.toString()});
-				else console.warn(err);
+		.then((result) => {
+			if (result.data.setUserPaidAmount.ok) {
+				this._refetchUser();
+			}
+			else {
+				if (this._mounted) this.setState({saving: false});
+				NotificationToaster.show({
+					intent: Intent.DANGER,
+					message: result.data.setUserPaidAmount.failureMessage
+				});
+			}
+		})
+		.catch((err) => {
+			if (this._mounted) this.setState({saving: false});
+			NotificationToaster.show({
+				intent: Intent.DANGER,
+				message: err.toString()
 			});
+		});
+	}
+
+	_refetchUser() {
+		if (this._mounted) this.setState({saving: true});
+		this.props.QueryUser.refetch()
+		.then(() => {
+			this.props.dispatch(saveState());
+			if (this._mounted) this.setState({saving: false});
+		});
 	}
 
 	renderHotkeys() {
@@ -128,6 +157,83 @@ class UserProfile extends React.Component {
 				/>
 			</Hotkeys>
 		);
+	}
+
+	toggleAddPermission() {
+		this.setState((prevState) => {
+			return { 
+				showAddPermissionDialog: !prevState.showAddPermissionDialog,
+				addPermissionText: '',
+				addPermissionError: null
+			 };
+		});
+	}
+
+	removePermission(permission) {
+		return () => {
+			this.setState({[permission+'RemoveLoading']: true});
+			this.props.MutationRemovePermission({
+				variables: {
+					username: this.props.user.username,
+					permission: permission
+				}
+			})
+			.then((result) => {
+				if (result.data.removePermission.ok) {
+					this.setState({[permission+'RemoveLoading']: false, saving: true});
+					this._refetchUser();
+				}
+				else {
+					if (this._mounted) this.setState({[permission+'RemoveLoading']: false});
+					NotificationToaster.show({
+						intent: Intent.DANGER,
+						message: result.data.removePermission.failureMessage
+					});
+				}
+			})
+			.catch((err) => {
+				this.setState({[permission+'RemoveLoading']: false});
+				NotificationToaster.show({
+					intent: Intent.DANGER,
+					message: err.toString()
+				});
+			});
+		};
+	}
+
+	addPermissionChange({ target: { value }}) {
+		this.setState({addPermissionText: value});
+	}
+
+	submitAddPermission() {
+		this.setState({addPermissionLoading: true, addPermissionError: null});
+		this.props.MutationAddPermission({
+			variables: {
+				username: this.props.user.username,
+				permission: this.state.addPermissionText
+			}
+		})
+		.then((result) => {
+			if (result.data.addPermission.ok) {
+				this.setState({addPermissionLoading: false, saving: true});
+				if (this.state.showAddPermissionDialog) this.toggleAddPermission();
+				this._refetchUser();
+			}
+			else {
+				if (this._mounted) {
+					this.setState({
+						addPermissionLoading: false, 
+						addPermissionError: result.data.addPermission.failureMessage
+					});
+				}
+			}
+		})
+		.catch((err) => {
+			this.setState({
+				addPermissionLoading: false,
+				addPermissionError: err.toString()
+			});
+		});
 	}
 
 	render() {
@@ -217,11 +323,23 @@ class UserProfile extends React.Component {
 								<td><code>{isAdmin ? 'true':'false'}</code></td>
 							</tr>
 							<tr>
-								<td>Account Permissions</td>
+								<td>
+									Account Permissions<br/>
+									<Button iconName='add' text='Add permission' 
+										className='pt-button pt-icon-add pt-small' 
+										onClick={this.toggleAddPermission}/>
+								</td>
 								<td>
 									<ul>
 										{ permissions.map((permission, index) => {
-												return <li key={index}>{permission}</li>;
+												return (
+													<li key={index}>
+														<Button iconName='remove' className='pt-small pt-minimal' 
+															intent={Intent.DANGER} onClick={this.removePermission(permission)}
+															loading={this.state[permission+'RemoveLoading']}/>
+														{permission}
+													</li>
+												);
 										}) }
 									</ul>
 								</td>
@@ -243,6 +361,22 @@ class UserProfile extends React.Component {
 				<h4><b>{firstname + ' ' + lastname}</b></h4>
 				<p className='pt-text-muted'>{university}</p>
 				{content}
+				<Dialog title='Add new permission to user' 
+					isOpen={this.state.showAddPermissionDialog} onClose={this.toggleAddPermission}>
+					<div className='pt-dialog-body'>
+						<FormInput id='permission' value={this.state.addPermissionText} 
+							onChange={this.addPermissionChange}
+							label='Permission:' disabled={this.state.addPermissionLoading}
+							intent={this.state.addPermissionError?Intent.DANGER:Intent.NONE}
+							helperText={this.state.addPermissionError}/>
+					</div>
+					<div className='pt-dialog-footer'>
+						<div className='pt-dialog-footer-actions'>
+							<Button className='pt-minimal' onClick={this.toggleAddPermission} disabled={this.state.addPermissionLoading}>Cancel</Button>
+							<Button className='pt-intent-primary' onClick={this.submitAddPermission} loading={this.state.addPermissionLoading}>Add</Button>
+						</div>
+					</div>
+				</Dialog>
 			</div>
 		);
 	}
