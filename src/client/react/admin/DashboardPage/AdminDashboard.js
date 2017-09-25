@@ -8,6 +8,7 @@ import UsersView from '../UsersView';
 import TeamsView from '../TeamsView';
 import GameStateView from '../GameStateView';
 import ServerSettingsView from '../ServerSettingsView';
+import InstructionArticlesView from '../InstructionArticlesView';
 
 
 @withRouter
@@ -18,7 +19,7 @@ class AdminDashboard extends React.Component {
 	}
 
 	views = [
-		'users', 'teams', 'state', 'server'
+		'users', 'teams', 'instructions', 'state', 'server'
 	];
 
 	componentDidMount() {
@@ -48,6 +49,7 @@ class AdminDashboard extends React.Component {
 				selectedTabId={this.state.selectedTabId} vertical={vertical}>
 				<Tab2 id='users' title='Users' panel={<UsersView visible={this.state.selectedTabId==='users'}/>}/>
 				<Tab2 id='teams' title='Teams' panel={<TeamsView visible={this.state.selectedTabId==='teams'}/>}/>
+				<Tab2 id='instructions' title='Instructions' panel={<InstructionArticlesView visible={this.state.selectedTabId==='instructions'}/>}/>
 				<Tab2 id='state' title='Game State' panel={<GameStateView visible={this.state.selectedTabId==='state'}/>}/>
 				<Tab2 id='server' title='Server' panel={<ServerSettingsView visible={this.state.selectedTabId==='server'}/>}/>
 			</Tabs2>
