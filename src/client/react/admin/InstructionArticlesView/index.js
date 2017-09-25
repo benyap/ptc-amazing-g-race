@@ -23,7 +23,8 @@ query GetArticles($category:String!){
 const QueryGetArticlesOptions = {
 	name: 'QueryGetArticles',
 	options: {
-		variables: { category: 'instructions' }
+		variables: { category: 'instructions' },
+		fetchPolicy: 'network-and-cache'
 	}
 }
 
@@ -31,15 +32,19 @@ const QueryGetArticlesOptions = {
 @autobind
 class InstructionArticlesView extends React.Component {
 	state = {
-		viewProfile: null
+		viewProfile: null,
+		loading: false,
+		refetching: false
 	}
 
 	renderProfile(article) {
 		this.setState({ viewProfile: article });
 	}
 	
-	closeProfile() {
-		this.setState({ viewProfile: null });
+	async closeProfile() {
+		this.setState({ viewProfile: null, refetching: true });
+		await this.props.QueryGetArticles.refetch();
+		this.setState({ refetching: false });
 	}
 
 	render() {
@@ -88,7 +93,7 @@ class InstructionArticlesView extends React.Component {
 		return (
 			<div id='dashboard-instructions' className='dashboard-tab'>
 				<h4>Instruction Articles</h4>
-				<RefreshBar query={this.props.QueryGetArticles} disabled={false}/>
+				<RefreshBar query={this.props.QueryGetArticles} disabled={false} refetching={this.state.refetching}/>
 				{content}
 			</div>
 		);

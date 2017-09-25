@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
-import { graphql, gql } from 'react-apollo';
-import { Button, Intent, Spinner } from '@blueprintjs/core';
+import { compose, graphql, gql } from 'react-apollo';
+import { Button, Intent, Spinner, EditableText } from '@blueprintjs/core';
+import { saveState } from '../../../actions/stateActions';
 import MarkdownEditor from '../../../../../lib/react/components/MarkdownEditor';
-
 
 const QueryGetArticle = gql`
 query GetArticle($category:String!, $articleId:ID!){
@@ -30,7 +31,18 @@ const QueryGetArticleOptions = {
 	}
 }
 
-@graphql(QueryGetArticle, QueryGetArticleOptions)
+const MutationSetArticleTitle = gql`
+mutation SetArticleTitle($articleId:ID!,$category:String!, $newTitle:String!){
+	setArticleTitle(articleId:$articleId, category:$category, newTitle:$newTitle){
+		ok
+	}
+}`;
+
+@compose(
+	graphql(QueryGetArticle, QueryGetArticleOptions),
+	graphql(MutationSetArticleTitle, { name: 'MutationSetArticleTitle' })
+)
+@connect()
 @autobind
 class InstructionArticleProfile extends React.Component {
 	static propTypes = {
@@ -41,8 +53,58 @@ class InstructionArticleProfile extends React.Component {
 		closeProfile: PropTypes.func.isRequired
 	}
 
+	state = {
+		saving: false,
+		titleText: this.props.article.title
+	}
+
+	componentDidMount() {
+		this._mounted = true;
+	}
+
+	componentWillUnmount() {
+		this._mounted = false;
+	}
+
 	closeProfile() {
 		this.props.closeProfile();
+	}
+
+	editTitle(value) {
+		this.setState({ titleText: value });
+	}
+
+	confirmTitle(value) {
+		if (value.length < 1) {
+			this.setState({ titleText: this.props.article.title });
+			// TODO: error toast
+		}
+		else {
+			// Save title
+			this._saveTitle();
+		}
+	}
+
+	async _saveTitle() {
+		try {
+			this.setState({ saving: true });
+			await this.props.MutationSetArticleTitle({
+				variables: {
+					articleId: this.props.article._id,
+					category: 'instructions',
+					newTitle: this.state.titleText
+				}
+			});
+
+			await this.props.QueryGetArticle.refetch();
+			this.props.dispatch(saveState());
+			if (this._mounted) this.setState({saving: false});
+		}
+		catch (e) {
+			// TODO: error toast
+
+			if (this._mounted) this.setState({saving: false});
+		}
 	}
 
 	render() {
@@ -51,7 +113,15 @@ class InstructionArticleProfile extends React.Component {
 		return (
 			<div id='instruction-article-profile' className='pt-card instruction-article-profile'>
 				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
-				<h4>{this.props.article.title}</h4>
+				{loading || this.state.saving ? 
+					<div style={{float:'right'}}>
+						<Spinner className='pt-small'/>
+					</div>
+				: null }
+
+				<h4><b>
+					<EditableText value={this.state.titleText} onChange={this.editTitle} onConfirm={this.confirmTitle}/>
+				</b></h4>
 			</div>
 		);
 	}
