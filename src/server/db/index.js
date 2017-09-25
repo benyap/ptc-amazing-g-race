@@ -4,6 +4,7 @@ import setting from './objects/setting';
 import user from './objects/user';
 import auth from './objects/auth';
 import team from './objects/team';
+import article from './objects/article';
 
 
 /**
@@ -16,5 +17,6 @@ export default {
 	setting,
 	user,
 	auth,
-	team
+	team,
+	article
 };
