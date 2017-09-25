@@ -22,9 +22,9 @@ const addArticle = {
 			description: 'The category of the article',
 			type: new GraphQLNonNull(GraphQLString)
 		},
-		src: {
-			name: 'src',
-			description: 'The markdown source of the article',
+		content: {
+			name: 'content',
+			description: 'The markdown content of the article',
 			type: new GraphQLNonNull(GraphQLString)
 		}
 	},

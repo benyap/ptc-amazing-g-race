@@ -28,9 +28,9 @@ const articleType = new GraphQLObjectType({
 			type: new GraphQLNonNull(GraphQLString),
 			description: 'The category the article belongs to'
 		},
-		src: {
+		content: {
 			type: new GraphQLNonNull(GraphQLString),
-			description: 'The markdown source of the article'
+			description: 'The markdown content of the article'
 		},
 		created: {
 			type: new GraphQLNonNull(GraphQLDateTime),

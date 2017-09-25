@@ -7,9 +7,9 @@ import permission from '../permission';
  * @param {*} user 
  * @param {String} title 
  * @param {String} category 
- * @param {String} src 
+ * @param {String} content 
  */
-const addArticle = async function(user, title, category, src) {
+const addArticle = async function(user, title, category, content) {
 	if (!user) return new Error('No user logged in');
 
 	const authorized = await permission.checkPermission(user, ['admin:create-article']);
@@ -18,7 +18,7 @@ const addArticle = async function(user, title, category, src) {
 	// Validate paramters
 	if (!title) return new Error('Article title is required.');
 	if (!category) return new Error('Article category is required.');
-	if (!src) return new Error('Article source is required.');
+	if (!content) return new Error('Article content is required.');
 	
 	const db = await connect();
 	
@@ -31,7 +31,7 @@ const addArticle = async function(user, title, category, src) {
 	// Create the article
 	const article = {
 		title,
-		src,
+		content,
 		category,
 		createdBy: user.username,
 		created: new Date()
