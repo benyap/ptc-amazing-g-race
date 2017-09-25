@@ -6,6 +6,8 @@ import { compose, graphql, gql } from 'react-apollo';
 import { Button, Intent, Spinner, EditableText } from '@blueprintjs/core';
 import { saveState } from '../../../actions/stateActions';
 import MarkdownEditor from '../../../../../lib/react/components/MarkdownEditor';
+import NotificationToaster from '../NotificationToaster';
+
 
 const QueryGetArticle = gql`
 query GetArticle($category:String!, $articleId:ID!){
@@ -77,10 +79,12 @@ class InstructionArticleProfile extends React.Component {
 	confirmTitle(value) {
 		if (value.length < 1) {
 			this.setState({ titleText: this.props.article.title });
-			// TODO: error toast
+			NotificationToaster.show({
+				intent: Intent.DANGER,
+				message: 'Title cannot be empty.'
+			});
 		}
 		else {
-			// Save title
 			this._saveTitle();
 		}
 	}
@@ -100,9 +104,11 @@ class InstructionArticleProfile extends React.Component {
 			this.props.dispatch(saveState());
 			if (this._mounted) this.setState({saving: false});
 		}
-		catch (e) {
-			// TODO: error toast
-
+		catch (err) {
+			NotificationToaster.show({
+				intent: Intent.DANGER,
+				message: err.toString()
+			});
 			if (this._mounted) this.setState({saving: false});
 		}
 	}
