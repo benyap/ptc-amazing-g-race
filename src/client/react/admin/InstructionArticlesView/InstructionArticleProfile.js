@@ -128,6 +128,12 @@ class InstructionArticleProfile extends React.Component {
 				<h4><b>
 					<EditableText value={this.state.titleText} onChange={this.editTitle} onConfirm={this.confirmTitle}/>
 				</b></h4>
+				
+				{ loading ? 
+					null:
+					<MarkdownEditor src={getArticle.content}/>
+				}
+
 			</div>
 		);
 	}
