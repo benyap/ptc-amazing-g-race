@@ -305,11 +305,6 @@ class TeamProfile extends React.Component {
 
 	render() {
 		let content = null;
-		let showLoadingIndicator = false;
-		
-		if (this.saving || this.props.QueryTeam.loading) {
-			showLoadingIndicator = true;
-		}
 
 		if (this.props.QueryTeam.getTeam) {
 			let {
@@ -360,7 +355,7 @@ class TeamProfile extends React.Component {
 		return (
 			<div id='team-profile' className='pt-card team-profile'>
 				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
-				{showLoadingIndicator ? 
+				{this.props.QueryTeam.loading ? 
 					<div style={{float:'right'}}>
 						<Spinner className='pt-small'/>
 					</div>
