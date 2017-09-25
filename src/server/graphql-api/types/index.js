@@ -5,6 +5,7 @@ import userType from './userType';
 import authType from './authType';
 import permissionCheckType from './permissionCheckType';
 import teamType from './teamType';
+import articleType from './articleType';
 
 
 export default {
@@ -14,5 +15,6 @@ export default {
 	userType,
 	authType,
 	permissionCheckType,
-	teamType
+	teamType,
+	articleType
 };
