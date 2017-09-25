@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import AppContainer from '../../../../../lib/react/components/AppContainer';
 import { NotFoundPage } from '../../pages';
+import AppContainer from '../../../../../lib/react/components/AppContainer';
+import Login from '../components/Login';
+import Pay from '../components/Pay';
 import Home from './Home';
 import Register from './Register';
-import Login from './Login';
-import Pay from '../Pay';
 import Dashboard from './Dashboard';
 
 

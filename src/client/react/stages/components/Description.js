@@ -1,7 +1,7 @@
 import React from 'react';
 import ScrollAnimation from 'react-animate-on-scroll';
 
-import '../../scss/_description.scss';
+import '../../scss/components/_description.scss';
 
 
 class Description extends React.Component {

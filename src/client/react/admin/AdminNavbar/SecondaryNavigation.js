@@ -73,7 +73,7 @@ class SecondaryNavigation extends React.Component {
 		if (this.props.authenticated) {
 			return (
 				<div style={{marginRight: '0.5rem'}}>
-					<MenuButton minimal loading={this.state.loading} iconName='cog' menu={
+					<MenuButton buttonClass='pt-minimal' loading={this.state.loading} iconName='cog' menu={
 						<SettingsMenu handleLogout={this.logout}/>
 					}/>
 					<LoginRefresher refreshToken={this.props.refresh} setRefreshing={this.setRefreshing}/>

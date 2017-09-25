@@ -1,21 +1,22 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { gql, graphql, compose } from 'react-apollo';
-import { Spinner, Button } from '@blueprintjs/core';
+import { Spinner, Button, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import DateFormat from 'dateformat';
 import { saveState } from '../../../actions/stateActions';
 import ViewError from '../ViewError';
 import UserCard from './UserCard';
 import UserProfile from './UserProfile';
-import UserSummary from './UserSummary';
+import UsersSummary from './UsersSummary';
 
 
 const QueryPaymentAmount = gql`
 query GetSetting($key:String!){
-  getSetting(key:$key) {
-    value
-  }
+	getSetting(key:$key) {
+		value
+	}
 }`;
 
 const QueryPaymentAmountOptions = {
@@ -29,15 +30,16 @@ const QueryPaymentAmountOptions = {
 
 const QueryUsers = gql`
 query ListAll($limit:Int, $skip:Int){
-  listAll(limit:$limit, skip:$skip) {
-    firstname
+	listAll(limit:$limit, skip:$skip) {
+		firstname
 		lastname
 		username
 		email
-    university
-    enabled
-    paidAmount
-  }
+		university
+		enabled
+		paidAmount
+		teamId
+	}
 }`;
 
 const QueryUsersOptions = {
@@ -57,18 +59,24 @@ const QueryUsersOptions = {
 )
 @connect()
 @autobind
+@HotkeysTarget
 class UsersView extends React.Component {
+	static propTypes = {
+		visible: PropTypes.bool
+	}
+
 	state = {
 		loading: false,
 		refetching: false,
 		viewProfile: null,
-		filter: ''
+		filter: '',
+		lastFetch: new Date()
 	}
 
 	componentDidMount() {
 		this.mounted = true;
 		this.setState({ loading: false }, () => {
-			this.refetchUsers(true, false);
+			this.refetchUsers(true);
 		});
 	}
 
@@ -76,15 +84,15 @@ class UsersView extends React.Component {
 		this.mounted = false;
 	}
 
-	refetchUsers(refetching = false, loading = true) {
+	refetchUsers(loading = false) {
 		if (!this.state.viewProfile) {
-			if (this.mounted) this.setState({loading, refetching: refetching?true:false});
+			if (this.mounted) this.setState({loading, refetching: true});
 			Promise.all([
 				this.props.QueryPaymentAmount.refetch(),
 				this.props.QueryUsers.refetch()
 			])
 				.then(() => {
-					if (this.mounted) this.setState({loading: false, refetching: false});
+					if (this.mounted) this.setState({loading: false, refetching: false, lastFetch: new Date()});
 					this.props.dispatch(saveState());
 				})
 				.catch(() => {
@@ -99,12 +107,25 @@ class UsersView extends React.Component {
 
 	closeProfile() {
 		this.setState({ viewProfile: null }, () => {
-			this.refetchUsers(true, false);
+			this.refetchUsers(false);
 		});
 	}
 
 	filterUsers(filter) {
 		this.setState({filter});
+	}
+
+	renderHotkeys() {
+		return (
+			<Hotkeys>
+				<Hotkey
+					global={true}
+					combo='r'
+					label='Refresh'
+					onKeyDown={() => { if (this.props.visible) this.refetchUsers(false) }}
+				/>
+			</Hotkeys>
+		);
 	}
 
 	render() {
@@ -115,20 +136,12 @@ class UsersView extends React.Component {
 
 		if (loading || loadingPayment || this.state.loading) {
 			content = (
-				<div>
-					<div className='loading-spinner'>
-						<Spinner/>
-					</div>
+				<div className='loading-spinner'>
+					<Spinner/>
 				</div>
 			);
-			this.loading = true;
 		}
 		else {
-			if (this.loading) {
-				this.lastFetch = new Date();
-				this.loading = false;
-			}
-
 			let paymentAmount = parseFloat(this.props.QueryPaymentAmount.getSetting.value);
 
 			if (error) {
@@ -141,7 +154,7 @@ class UsersView extends React.Component {
 			}
 			else {
 				summary = (
-					<UserSummary users={listAll} paymentAmount={paymentAmount} 
+					<UsersSummary users={listAll} paymentAmount={paymentAmount} 
 						filterValue={this.state.filter} onFilterChange={this.filterUsers}/>
 				);
 				
@@ -177,12 +190,12 @@ class UsersView extends React.Component {
 		return (
 			<div id='dashboard-users' className='dashboard-tab'>
 				<h4>Users</h4>
-				{summary}
 				<div className='view-header'>
-					<p className='fetched'>Last fetched:<br/>{this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
+					<p className='fetched'>Last fetched:<br/>{DateFormat(new Date(this.state.lastFetch), 'mmm dd yyyy hh:MM:ss TT')}</p>
 					<Button text='Refresh' iconName='refresh' onClick={this.refetchUsers} 
-						loading={this.state.refetching&&!this.loading} disabled={this.state.viewProfile||this.loading}/>
+						loading={this.state.refetching} disabled={this.state.viewProfile}/>
 				</div>
+				{summary}
 				{content}
 			</div>
 		);

@@ -3,31 +3,37 @@ import PropTypes from 'prop-types';
 import DateFormat from 'dateformat';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
-import { Button, Spinner } from '@blueprintjs/core';
+import { Button, Spinner, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import { saveState } from '../../actions/stateActions';
 
 
 @connect()
 @autobind
+@HotkeysTarget
 class RefreshBar extends React.Component {
 	static propTypes = {
 		query: PropTypes.shape({
 			refetch: PropTypes.func.isRequired
 		}).isRequired,
+		visible: PropTypes.bool,
 		setLoading: PropTypes.func,
+		disabled: PropTypes.any
 	}
 
 	state = {
-		loading: false
+		loading: false,
+		lastFetch: new Date()
 	}
 
-	_setLoadingState(loading) {
-		this.setState({loading: loading});
+	_setLoadingState(loading, lastFetch) {
+		let options = { loading: loading };
+		if (lastFetch) options.lastFetch = lastFetch;
+		this.setState(options);
 		if (this.props.setLoading) this.props.setLoading(loading);
 	}
 
 	componentDidMount() {
-		this.refetch();
+		this.refetch(true);
 		this.mounted = true;
 	}
 
@@ -35,36 +41,42 @@ class RefreshBar extends React.Component {
 		this.mounted = false;
 	}
 
-	refetch() {
-		if (this.mounted) this._setLoadingState(true);
+	refetch(force = false) {
+		if (this.props.visible || force) {
 
-		this.props.query.refetch()
-			.then(() => {
-				if (this.mounted) this._setLoadingState(false);
-				this.props.dispatch(saveState());
-			})
-			.catch(() => {
-				if (this.mounted) this._setLoadingState(false);
-			});
+			if (this.mounted) this._setLoadingState(true);
+	
+			this.props.query.refetch()
+				.then(() => {
+					if (this.mounted) this._setLoadingState(false, new Date());
+					this.props.dispatch(saveState());
+				})
+				.catch(() => {
+					if (this.mounted) this._setLoadingState(false);
+				});
+		}
+	}
+
+	renderHotkeys() {
+		return (
+			<Hotkeys>
+				<Hotkey
+					global={true}
+					combo='r'
+					label='Refresh'
+					onKeyDown={this.refetch}
+				/>
+			</Hotkeys>
+		);
 	}
 
 	render() {
 		let { loading, error } = this.props.query;
-		
-		if (loading || this.state.loading) {
-			this.loading = true;
-		}
-		else {
-			if (this.loading) {
-				this.lastFetch = new Date();
-				this.loading = false;
-			}
-		}
 
 		return (
 			<div className='view-header'>
-				<p className='fetched'>Last fetched:<br/> {this.lastFetch ? DateFormat(new Date(this.lastFetch), 'mmm dd yyyy hh:MM:ss TT'): null}</p>
-				<Button text='Refresh' iconName='refresh' onClick={this.refetch} loading={this.loading}/>
+				<p className='fetched'>Last fetched:<br/> {DateFormat(new Date(this.state.lastFetch), 'mmm dd yyyy hh:MM:ss TT')}</p>
+				<Button text='Refresh' iconName='refresh' onClick={this.refetch} loading={loading || this.state.loading} disabled={this.props.disabled}/>
 			</div>
 		);
 	}

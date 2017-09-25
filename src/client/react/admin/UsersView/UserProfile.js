@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { Button, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import { gql, graphql, compose } from 'react-apollo';
 import DateFormat from 'dateformat';
-import ScrollAnimation from 'react-animate-on-scroll';
 import { saveState } from '../../../actions/stateActions';
 import '../../scss/admin/_user-profile.scss';
 
@@ -14,7 +13,7 @@ const QueryUser = gql`
 query GetUserByEmail($email:String!) {
   getUserByEmail(email: $email) {
     firstname lastname
-    username email
+    username email isAdmin
     university studentID
     mobileNumber enabled
     registerDate paidAmount
@@ -92,7 +91,7 @@ class UserProfile extends React.Component {
 	}
 
 	savePaid() {
-		this.setState({ saving: true });
+		this.setState({ saving: true, error: null });
 
 		let variables = {
 			username: this.props.QueryUser.getUserByEmail.username,
@@ -141,7 +140,14 @@ class UserProfile extends React.Component {
 		}
 
 		if (this.props.QueryUser.getUserByEmail) {
-			let { username, mobileNumber, studentID, registerDate, paidAmount, raceDetails: { PTProficiency, hasSmartphone, friends, dietaryRequirements } } = this.props.QueryUser.getUserByEmail;
+			let { 
+				username, mobileNumber, studentID, isAdmin,
+				registerDate, paidAmount, permissions,
+				raceDetails: { 
+					PTProficiency, hasSmartphone, 
+					friends, dietaryRequirements 
+				} 
+			} = this.props.QueryUser.getUserByEmail;
 
 			if (this.state.paidAmount === null) {
 				setTimeout(() => {
@@ -206,6 +212,20 @@ class UserProfile extends React.Component {
 								<td>Dietary Requirements</td>
 								<td>{dietaryRequirements ? dietaryRequirements : 'None'}</td>
 							</tr>
+							<tr>
+								<td>Admin</td>
+								<td><code>{isAdmin ? 'true':'false'}</code></td>
+							</tr>
+							<tr>
+								<td>Account Permissions</td>
+								<td>
+									<ul>
+										{ permissions.map((permission, index) => {
+												return <li key={index}>{permission}</li>;
+										}) }
+									</ul>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -213,19 +233,17 @@ class UserProfile extends React.Component {
 		}
 
 		return (
-			<ScrollAnimation animateOnce animateIn='fadeInUp' offset={0} duration={0.1}>
-				<div className='pt-card user-profile'>
-					<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
-					{showLoadingIndicator ? 
-						<div style={{float:'right'}}>
-							<Spinner className='pt-small'/>
-						</div>
-					: null }
-					<h4><b>{firstname + ' ' + lastname}</b></h4>
-					<p className='pt-text-muted'>{university}</p>
-					{content}
-				</div>
-			</ScrollAnimation>
+			<div className='pt-card user-profile'>
+				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
+				{showLoadingIndicator ? 
+					<div style={{float:'right'}}>
+						<Spinner className='pt-small'/>
+					</div>
+				: null }
+				<h4><b>{firstname + ' ' + lastname}</b></h4>
+				<p className='pt-text-muted'>{university}</p>
+				{content}
+			</div>
 		);
 	}
 }
