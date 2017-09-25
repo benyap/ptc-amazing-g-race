@@ -34,6 +34,82 @@ const addArticle = {
 };
 
 
+const removeArticle = {
+	type: types.confirmType,
+	description: 'Remove an article',
+	args: {
+		articleId: {
+			name: 'articleId',
+			description: 'The id of the article',
+			type: new GraphQLNonNull(GraphQLID)
+		},
+		category: {
+			name: 'category',
+			description: 'The category of the article',
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.articleResolver.removeArticle(root, params, ctx, options);
+	}
+};
+
+
+const setArticleTitle = {
+	type: types.confirmType,
+	description: 'Set the title of an article',
+	args: {
+		articleId: {
+			name: 'articleId',
+			description: 'The id of the article',
+			type: new GraphQLNonNull(GraphQLID)
+		},
+		category: {
+			name: 'category',
+			description: 'The category of the article',
+			type: new GraphQLNonNull(GraphQLString)
+		},
+		newTitle: {
+			name: 'content',
+			description: 'The new title of the article',
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.articleResolver.setArticleTitle(root, params, ctx, options);
+	}
+};
+
+
+const editArticle = {
+	type: types.confirmType,
+	description: 'Edit an article',
+	args: {
+		articleId: {
+			name: 'articleId',
+			description: 'The id of the article',
+			type: new GraphQLNonNull(GraphQLID)
+		},
+		category: {
+			name: 'category',
+			description: 'The category of the article',
+			type: new GraphQLNonNull(GraphQLString)
+		},
+		content: {
+			name: 'content',
+			description: 'The markdown content of the article',
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.articleResolver.editArticle(root, params, ctx, options);
+	}
+};
+
+
 export default {
-	addArticle
+	addArticle,
+	removeArticle,
+	setArticleTitle,
+	editArticle
 };
