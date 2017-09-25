@@ -25,7 +25,29 @@ const getArticles = {
 	}
 };
 
+const getArticle = { 
+	type: new GraphQLNonNull(types.articleType),
+	description: 'Get an article from a category',
+	args: {
+		category: {
+			name: 'category',
+			description: 'The category to find articles from',
+			type: new GraphQLNonNull(GraphQLString)
+		},
+		articleId: {
+			name: 'articleId',
+			description: 'The id of the article',
+			type: new GraphQLNonNull(GraphQLID)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.articleResolver.getArticle(root, params, ctx, options);
+	}
+
+}
+
 
 export default {
-	getArticles
+	getArticles,
+	getArticle
 };

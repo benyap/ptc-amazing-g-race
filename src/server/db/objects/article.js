@@ -84,6 +84,34 @@ const getArticles = async function(user, category) {
 
 
 /**
+ * Get the articles from a specified category
+ * @param {*} user 
+ * @param {String} category 
+ * @param {String} articleId 
+ */
+const getArticle = async function(user, category, articleId) {
+	if (!user) return new Error('No user logged in');
+	
+	const authorized = await permission.checkPermission(user, ['user:view-articles']);
+	if (authorized !== true) return authorized;
+
+	// Validate paramters
+	if (!category) return new Error('Article category is required.');
+	
+	const db = await connect();
+	
+	// Check that category exists
+	const article = await db.collection(`article_${category}`).findOne({_id: Mongo.ObjectID(articleId)});
+	if (!article) {
+		return new Error(`The article with the id '${articleId}' does not exist.`);
+	}
+
+	// Return the articles
+	return article;
+}
+
+
+/**
  * Remove an article
  * @param {*} user 
  * @param {String} category 
@@ -223,6 +251,7 @@ const _modifyArticle = async function(modifyType, user, category, articleId, dat
 export default {
 	addArticle,
 	getArticles,
+	getArticle,
 	removeArticle,
 	setArticleTitle,
 	editArticle

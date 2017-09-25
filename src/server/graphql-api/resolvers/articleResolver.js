@@ -11,6 +11,11 @@ const getArticles = function(root, params, ctx, options) {
 	return database.article.getArticles(ctx.user, params.category);
 }
 
+// Get an article from a category
+const getArticle = function(root, params, ctx, options) {
+	return database.article.getArticle(ctx.user, params.category, params.articleId);
+}
+
 // Remove an article
 const removeArticle = function(root, params, ctx, options) {
 	return database.article.removeArticle(ctx.user, params.category, params.articleId);
@@ -30,6 +35,7 @@ const editArticle = function(root, params, ctx, options) {
 export default {
 	addArticle,
 	getArticles,
+	getArticle,
 	removeArticle,
 	setArticleTitle,
 	editArticle
