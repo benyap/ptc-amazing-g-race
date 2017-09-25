@@ -93,7 +93,7 @@ class InstructionArticlesView extends React.Component {
 		return (
 			<div id='dashboard-instructions' className='dashboard-tab'>
 				<h4>Instruction Articles</h4>
-				<RefreshBar query={this.props.QueryGetArticles} disabled={false} refetching={this.state.refetching}/>
+				<RefreshBar query={this.props.QueryGetArticles} disabled={this.state.viewProfile} refetching={this.state.refetching}/>
 				{content}
 			</div>
 		);
