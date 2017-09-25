@@ -9,7 +9,7 @@ import permission from '../permission';
  * @param {String} category 
  * @param {String} src 
  */
-const createArticle = async function(user, title, category, src) {
+const addArticle = async function(user, title, category, src) {
 	if (!user) return new Error('No user logged in');
 
 	const authorized = await permission.checkPermission(user, ['admin:create-article']);
@@ -83,6 +83,7 @@ const getArticles = async function(user, category) {
 
 
 export default {
-	createArticle,
-	getArticles
+	addArticle,
+	getArticles,
+	
 }

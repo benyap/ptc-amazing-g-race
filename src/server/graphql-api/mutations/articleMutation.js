@@ -8,7 +8,7 @@ import types from '../types';
 import resolvers from '../resolvers';
 
 
-const createArticle = {
+const addArticle = {
 	type: types.articleType,
 	description: 'Create an article',
 	args: {
@@ -29,11 +29,11 @@ const createArticle = {
 		}
 	},
 	resolve(root, params, ctx, options) {
-		return resolvers.articleResolver.createArticle(root, params, ctx, options);
+		return resolvers.articleResolver.addArticle(root, params, ctx, options);
 	}
 };
 
 
 export default {
-	createArticle
+	addArticle
 };

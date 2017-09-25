@@ -2,8 +2,8 @@ import database from '../../db';
 
 
 // Create article 
-const createArticle = function(root, params, ctx, options) {
-	return database.article.createArticle(ctx.user, params.title, params.category, params.src);
+const addArticle = function(root, params, ctx, options) {
+	return database.article.addArticle(ctx.user, params.title, params.category, params.src);
 }
 
 // Get articles from a category
@@ -13,6 +13,6 @@ const getArticles = function(root, params, ctx, options) {
 
 
 export default {
-	createArticle,
+	addArticle,
 	getArticles
 };
