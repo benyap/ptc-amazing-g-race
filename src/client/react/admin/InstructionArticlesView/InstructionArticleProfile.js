@@ -57,7 +57,8 @@ class InstructionArticleProfile extends React.Component {
 
 	state = {
 		saving: false,
-		titleText: this.props.article.title
+		titleText: this.props.article.title,
+		content: null
 	}
 
 	componentDidMount() {
@@ -87,6 +88,16 @@ class InstructionArticleProfile extends React.Component {
 		else {
 			this._saveTitle();
 		}
+	}
+
+	componentDidUpdate() {
+		if (!this.state.content && this.props.QueryGetArticle.getArticle) {
+			this.setState({content: this.props.QueryGetArticle.getArticle.content});
+		}
+	}
+
+	editContent(event) {
+		this.setState({content: event.target.value});
 	}
 
 	async _saveTitle() {
@@ -129,11 +140,9 @@ class InstructionArticleProfile extends React.Component {
 					<EditableText value={this.state.titleText} onChange={this.editTitle} onConfirm={this.confirmTitle}/>
 				</b></h4>
 				
-				{ loading ? 
-					null:
-					<MarkdownEditor src={getArticle.content}/>
+				{ loading ? null:
+					<MarkdownEditor content={this.state.content || this.props.QueryGetArticle.getArticle.content} onChange={this.editContent}/>
 				}
-
 			</div>
 		);
 	}
