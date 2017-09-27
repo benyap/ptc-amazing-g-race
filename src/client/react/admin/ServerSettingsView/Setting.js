@@ -33,8 +33,7 @@ class Setting extends React.Component {
 
 	state = { 
 		editDialogOpen: false,
-		editError: false,
-		editErrorText: null,
+		editError: null,
 		editKey: 'null',
 		editValue: 'null',
 		editValueType: 'null',
@@ -79,8 +78,7 @@ class Setting extends React.Component {
 		if (this.state.editValueType === 'integer') {
 			if (isNaN(parseInt(this.state.editValue))) {
 				this.setState({
-					editError: true,
-					editErrorText: 'Invalid value.'
+					editError: 'Invalid value.'
 				});
 				return;
 			}
@@ -88,8 +86,7 @@ class Setting extends React.Component {
 		if (this.state.editValueType === 'float') {
 			if (isNaN(parseFloat(this.state.editValue))) {
 				this.setState({
-					editError: true,
-					editErrorText: 'Invalid value.'
+					editError: 'Invalid value.'
 				});
 				return;
 			}
@@ -104,12 +101,12 @@ class Setting extends React.Component {
 				}
 			});
 
-			this.setState({editLoading: false, editError: false});
+			this.setState({editLoading: false, editError: null});
 			this.toggleDialog();
 			if (this.props.reload) this.props.reload();
 		}
 		catch(e) {
-			this.setState({editLoading: false, editError: true, editErrorText: e.toString()});
+			this.setState({editLoading: false, editError: e.toString()});
 		}
 	}
 
@@ -137,9 +134,13 @@ class Setting extends React.Component {
 					onClose={this.toggleDialog}>
 					<div style={{padding: '1rem'}}>
 						<div className='pt-dialog-body'>
+							{this.state.editError ? 
+								<div className='pt-callout pt-intent-danger pt-icon-error'>
+									{this.state.editError}
+								</div>
+								:null}
 							<b>Value:</b> <FormInput id={this.state.editKey} value={this.state.editValue} onChange={this.handleChange} 
-								intent={this.state.editError ? Intent.DANGER : Intent.NONE} 
-								helperText={this.state.editError ? this.state.editErrorText : null }/>
+								intent={this.state.editError ? Intent.DANGER : Intent.NONE}/>
 						</div>
 						<div className='pt-dialog-footer'>
 							<div className='pt-dialog-footer-actions'>

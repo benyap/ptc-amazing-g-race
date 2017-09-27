@@ -6,6 +6,7 @@ import Base from '../components/Base';
 import HelpMenu from '../components/HelpMenu';
 import Home from './pages/Home';
 import Help from './pages/Help';
+import Instructions from './pages/Instructions';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -41,6 +42,7 @@ class Dashboard extends React.Component {
 					What you're seeing on this page is a template of how the app will look like on game day.
 				</div>
 				<Route exact path={`${url}`} component={Home}/>
+				<Route path={`${url}/instructions`} component={Instructions}/>
 				<Route path={`${url}/challenges`} component={null}/>
 				<Route path={`${url}/completed`} component={null}/>
 				<Route path={`${url}/help`} component={Help}/>

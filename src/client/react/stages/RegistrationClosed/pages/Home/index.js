@@ -132,7 +132,7 @@ class Home extends React.Component {
 							<h5>Welcome to your dashboard.</h5>
 							Here you can see an overview of your team's progress
 							and any important announcements.
-							Use the cog in the top right corner to navigate to other pages.
+							Open the menu in the top right corner to navigate to other pages.
 							<br/>
 							<br/>
 							Use the refresh button to refresh the data displayed.

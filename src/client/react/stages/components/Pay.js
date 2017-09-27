@@ -84,10 +84,16 @@ class Pay extends React.Component {
 		let payment, price; 
 
 		let _price = this.props.QueryPaymentPrice.loading ? 
-			null : 
-			this.props.QueryPaymentPrice.getPublicSetting.value;
+			null : this.props.QueryPaymentPrice.getPublicSetting.value;
 		
-		if (_price <= 0 || isNaN(_price)) {
+		if (_price === null || isNaN(_price)) {
+			price = (
+				<p>
+					Retrieving the latest payment information just for you...
+				</p>
+			);
+		}
+		else if (_price <= 0) {
 			price = (
 				<p>
 					The cost for this event is yet to be determined, but it will cover registration and dinner.
@@ -143,7 +149,7 @@ class Pay extends React.Component {
 		return (
 			<main id='pay'>
 				<LoginRefresher refreshToken={this.props.refresh}/>
-				<Title/>
+				<Title notAnimated/>
 					<ScrollAnimation animateOnce animateIn='fadeInUp' offset={-500} duration={0.5}>
 					<div className='infobox'>
 						<h2>
