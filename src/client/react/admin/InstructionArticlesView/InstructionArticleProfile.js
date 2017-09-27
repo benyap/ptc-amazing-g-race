@@ -40,9 +40,18 @@ mutation SetArticleTitle($articleId:ID!,$category:String!, $newTitle:String!){
 	}
 }`;
 
+const MutationEditArticle = gql`
+mutation EditArticle($articleId:ID!,$category:String!, $content:String!){
+	editArticle(articleId:$articleId, category:$category, content:$content){
+		ok
+	}
+}`;
+
+
 @compose(
 	graphql(QueryGetArticle, QueryGetArticleOptions),
-	graphql(MutationSetArticleTitle, { name: 'MutationSetArticleTitle' })
+	graphql(MutationSetArticleTitle, { name: 'MutationSetArticleTitle' }),
+	graphql(MutationEditArticle, { name: 'MutationEditArticle' })
 )
 @connect()
 @autobind
@@ -57,6 +66,7 @@ class InstructionArticleProfile extends React.Component {
 
 	state = {
 		saving: false,
+		modified: false,
 		titleText: this.props.article.title,
 		content: null
 	}
@@ -86,7 +96,14 @@ class InstructionArticleProfile extends React.Component {
 			});
 		}
 		else {
-			this._saveTitle();
+			const options = {
+				variables: {
+					articleId: this.props.article._id,
+					category: 'instructions',
+					newTitle: this.state.titleText
+				}
+			};
+			this._save(this.props.MutationSetArticleTitle, options);
 		}
 	}
 
@@ -97,25 +114,31 @@ class InstructionArticleProfile extends React.Component {
 	}
 
 	editContent(event) {
-		this.setState({content: event.target.value});
+		this.setState({content: event.target.value, modified: true});
 	}
 
-	async _saveTitle() {
-		try {
-			this.setState({ saving: true });
-			await this.props.MutationSetArticleTitle({
-				variables: {
-					articleId: this.props.article._id,
-					category: 'instructions',
-					newTitle: this.state.titleText
-				}
-			});
+	saveContent() {
+		this.setState({modified: false});
+		const options = {
+			variables: {
+				articleId: this.props.article._id,
+				category: 'instructions',
+				content: this.state.content
+			}
+		};
+		this._save(this.props.MutationEditArticle, options);
+	}
 
+	async _save(mutation, mutationOptions) {
+		try {
+			this.setState({saving: true});
+			await mutation(mutationOptions);
+	
 			await this.props.QueryGetArticle.refetch();
 			this.props.dispatch(saveState());
 			if (this._mounted) this.setState({saving: false});
 		}
-		catch (err) {
+		catch (e) {
 			NotificationToaster.show({
 				intent: Intent.DANGER,
 				message: err.toString()
@@ -129,6 +152,7 @@ class InstructionArticleProfile extends React.Component {
 
 		return (
 			<div id='instruction-article-profile' className='pt-card instruction-article-profile'>
+				<Button className='pt-minimal' intent={Intent.PRIMARY} text='Save' onClick={this.saveContent} style={{float:'right'}} disabled={!this.state.modified}/>
 				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
 				{loading || this.state.saving ? 
 					<div style={{float:'right'}}>
