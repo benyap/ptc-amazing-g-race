@@ -127,6 +127,7 @@ class InstructionArticlesView extends React.Component {
 								These instruction articles are displayed on the 'Instructions' tab on the app.
 								They should not contain any challenge-specific instructions, 
 								as they are not protected and are accessible to all teams at any time.
+								These articles will appear in the order they appear here.
 							</div>
 							<div className='view-list'>
 								{
