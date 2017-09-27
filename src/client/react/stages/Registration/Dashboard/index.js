@@ -101,7 +101,7 @@ class Dashboard extends React.Component {
 						<p>
 							Welcome to your dashboard.
 							This area will be updated with more information as the event approaches,
-							so watch this space!
+							so watch this space and get connected on <a href='https://www.facebook.com/events/131023924193281'>Facebook</a>!
 							Be sure to remember your login details as you will need to login on the day of the event.
 						</p>
 						<p>
