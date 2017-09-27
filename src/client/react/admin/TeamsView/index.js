@@ -43,12 +43,9 @@ mutation AddTeam($teamName:String!){
 )
 @autobind
 class TeamsView extends React.Component {
-	static propTypes = {
-		visible: PropTypes.bool
-	}
-
 	state = {
 		viewProfile: null,
+		refetching: false,
 		showCreateTeamDialog: false,
 		createTeamLoading: false,
 		createTeamError: null,
@@ -59,10 +56,10 @@ class TeamsView extends React.Component {
 		this.setState({ viewProfile: team });
 	}
 
-	closeProfile() {
-		this.setState({ viewProfile: null }, () => {
-			this.props.QueryGetTeams.refetch();
-		});
+	async closeProfile() {
+		this.setState({ viewProfile: null, refetching: true });
+		await this.props.QueryGetTeams.refetch();
+		this.setState({ refetching: false });
 	}
 
 	toggleCreateTeamDialog() {
@@ -155,7 +152,7 @@ class TeamsView extends React.Component {
 		return (
 			<div id='dashboard-teams' className='dashboard-tab'>
 				<h4>Teams</h4>
-				<RefreshBar query={this.props.QueryGetTeams} visible={this.props.visible} disabled={this.state.viewProfile}/>
+				<RefreshBar query={this.props.QueryGetTeams} disabled={this.state.viewProfile} refetching={this.state.refetching}/>
 				{content}
 			</div>
 		);

@@ -9,7 +9,7 @@ import API from '../../../API';
 import MenuButton from '../../../../../lib/react/components/MenuButton';
 import LoginRefresher from '../../sharedComponents/LoginRefresher';
 
-import '../../scss/components/_help.scss';
+import '../../scss/components/_help-menu.scss';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -28,7 +28,7 @@ class HelpMenu extends React.Component {
 	}
 
 	menu = (
-		<Menu id='help-menu'>
+		<Menu>
 			<MenuItem text='Team dashboard' iconName='people' onClick={this.navigate('/dashboard')}/>
 			<MenuItem text='Instructions' iconName='clipboard' onClick={this.navigate('/dashboard/instructions')}/>
 			<MenuItem text='Challenges' iconName='map' onClick={this.navigate('/dashboard/challenges')}/>
@@ -89,7 +89,7 @@ class HelpMenu extends React.Component {
 	
 	render() {
 		return (
-			<div id='help'>
+			<div id='help-menu'>
 				<div className='help-button'>
 					<LoginRefresher interval={10*60*1000} refreshToken={this.props.refresh} setRefreshing={this.setRefreshing}/>
 					{this.state.refreshLoading ? 
@@ -98,8 +98,8 @@ class HelpMenu extends React.Component {
 						</div>
 						:null
 					}
-					<MenuButton buttonClass='pt-large' popoverClass='pt-dark' 
-						menu={this.menu} iconName='cog' position={Position.BOTTOM_RIGHT}
+					<MenuButton buttonClass='pt-large' 
+						menu={this.menu} iconName='menu' position={Position.BOTTOM_RIGHT}
 						loading={this.state.logoutLoading}/>
 				</div>
 			</div>

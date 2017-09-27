@@ -26,8 +26,7 @@ const mapStateToProps = (state, ownProps) => {
 class Login extends React.Component {
 	static propTypes = {
 		remember: PropTypes.bool,
-		next: PropTypes.string,
-		notAnimated: PropTypes.bool
+		next: PropTypes.string
 	}
 
 	static defaultProps = {
@@ -83,7 +82,7 @@ class Login extends React.Component {
 
 			return (
 				<main>
-					<Title notAnimated={this.props.notAnimated}/>
+					<Title notAnimated/>
 
 					{this.props.notAnimated ? 
 						content
