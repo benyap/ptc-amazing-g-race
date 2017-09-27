@@ -4,7 +4,7 @@ import { Button, Intent } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import ScrollAnimation from 'react-animate-on-scroll';
 import Title from '../components/Title';
-import Description from '../components/Description';
+import Description2 from '../components/Description2';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -57,7 +57,7 @@ class Home extends React.Component {
 						{link}
 					</div>
 				</ScrollAnimation>
-				<Description/>
+				<Description2/>
 			</main>
 		);
 	}
