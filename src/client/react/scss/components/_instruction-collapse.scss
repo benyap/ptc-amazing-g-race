@@ -4,39 +4,4 @@
 	button {
 		margin-bottom: 0.5rem;
 	}
-
-	.markdown.output {
-		background: rgba(0,0,0,0.5);
-		border-radius: 0.5rem;
-		padding: 0.5rem;
-
-		&:first-child h1, h2, h3, h4, h5, h6 {
-			margin-top: 0.5rem;
-		}
-
-		h1, h2, h3, h4, h5, h6 {
-			margin-top: 1rem;
-			margin-bottom: 0.4rem;
-		}
-		
-		h1, h2, h3, h4, h5 {
-			color: $theme-orange-light;
-		}
-
-		h1 {
-			font-size: xx-large;
-		}
-
-		h2 {
-			font-size: x-large;
-		}
-
-		h3 {
-			font-size: large;
-		}
-
-		h4 {
-			font-size: larger;
-		}
-	}
 }
