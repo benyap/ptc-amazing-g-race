@@ -47,11 +47,18 @@ mutation EditArticle($articleId:ID!,$category:String!, $content:String!){
 	}
 }`;
 
+const MutationRemoveArticle = gql`
+mutation RemoveArticle($articleId:ID!,$category:String!){
+	removeArticle(articleId:$articleId, category:$category){
+		ok
+	}
+}`;
 
 @compose(
 	graphql(QueryGetArticle, QueryGetArticleOptions),
 	graphql(MutationSetArticleTitle, { name: 'MutationSetArticleTitle' }),
-	graphql(MutationEditArticle, { name: 'MutationEditArticle' })
+	graphql(MutationEditArticle, { name: 'MutationEditArticle' }),
+	graphql(MutationRemoveArticle, { name: 'MutationRemoveArticle' })
 )
 @connect()
 @autobind
@@ -69,7 +76,9 @@ class InstructionArticleProfile extends React.Component {
 		modified: false,
 		titleText: this.props.article.title,
 		content: null,
-		showConfirmClose: false
+		showConfirmClose: false,
+		showConfirmDelete: false,
+		deleteLoading: false
 	}
 
 	componentDidMount() {
@@ -95,6 +104,32 @@ class InstructionArticleProfile extends React.Component {
 			else {
 				this.closeProfile();
 			}
+		}
+	}
+
+	toggleConfirmDelete() {
+		this.setState((prevState) => {
+			return { showConfirmDelete: !prevState.showConfirmDelete };
+		});
+	}
+
+	async submitDeleteArticle() {
+		this.setState({ deleteLoading: true });
+		try {
+			await this.props.MutationRemoveArticle({
+				variables: {
+					articleId: this.props.article._id,
+					category: 'instructions'
+				}
+			});
+			this.props.closeProfile();
+		}
+		catch(e) {
+			this.setState({ deleteLoading: false });
+			NotificationToaster.show({
+				intent: Intent.DANGER,
+				message: e.toString()
+			});
 		}
 	}
 
@@ -167,8 +202,9 @@ class InstructionArticleProfile extends React.Component {
 
 		return (
 			<div id='instruction-article-profile' className='pt-card instruction-article-profile'>
+				<Button className='pt-minimal' intent={Intent.NONE} text='Close' onClick={this.toggleConfirmClose} style={{float:'right'}}/>
 				<Button className='pt-minimal' intent={Intent.PRIMARY} text='Save' onClick={this.saveContent} style={{float:'right'}} disabled={!this.state.modified}/>
-				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.toggleConfirmClose} style={{float:'right'}}/>
+				<Button className='pt-minimal' intent={Intent.DANGER} text='Delete' onClick={this.toggleConfirmDelete} style={{float:'right'}}/>
 				{loading || this.state.saving ? 
 					<div style={{float:'right'}}>
 						<Spinner className='pt-small'/>
@@ -183,6 +219,7 @@ class InstructionArticleProfile extends React.Component {
 					<MarkdownEditor content={this.state.content || this.props.QueryGetArticle.getArticle.content} onChange={this.editContent}/>
 				}
 
+				{/* Confirm close dialog */}
 				<Dialog isOpen={this.state.showConfirmClose} onClose={this.toggleConfirmClose} title='Unsaved changes'>
 					<div className='pt-dialog-body'>
 						Are you sure you want to close without saving?
@@ -191,6 +228,19 @@ class InstructionArticleProfile extends React.Component {
 						<div className='pt-dialog-footer-actions'>
 							<Button intent={Intent.DANGER} className='pt-minimal' text='Close' onClick={this.closeProfile}/>
 							<Button intent={Intent.PRIMARY} text='Cancel' onClick={this.toggleConfirmClose}/>
+						</div>
+					</div>
+				</Dialog>
+
+				{/* Confirm delete dialog */}
+				<Dialog isOpen={this.state.showConfirmDelete} onClose={this.toggleConfirmDelete} title='Delete article'>
+					<div className='pt-dialog-body'>
+						Are you sure you want to delete this article? This action is irreversible.
+					</div>
+					<div className='pt-dialog-footer'>
+						<div className='pt-dialog-footer-actions'>
+							<Button text='Close' onClick={this.toggleConfirmDelete} className='pt-minimal' disabled={this.state.deleteLoading}/>
+							<Button text='Delete' onClick={this.submitDeleteArticle} intent={Intent.DANGER} loading={this.state.deleteLoading}/>
 						</div>
 					</div>
 				</Dialog>
