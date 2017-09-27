@@ -116,7 +116,7 @@ class Dashboard extends React.Component {
 			return (
 				<main id='dashboard'>
 					<LoginRefresher refreshToken={this.props.refresh}/>
-					<Title/>
+					<Title notAnimated/>
 					<ScrollAnimation animateOnce animateIn='zoomIn' offset={0} duration={0.5}>
 						{content}
 					</ScrollAnimation>
