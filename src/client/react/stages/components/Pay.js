@@ -88,7 +88,7 @@ class Pay extends React.Component {
 		
 		if (_price === null || isNaN(_price)) {
 			price = (
-				<p>
+				<p style={{color:'gray'}}>
 					Retrieving the latest payment information just for you...
 				</p>
 			);
@@ -123,9 +123,9 @@ class Pay extends React.Component {
 			payment = (
 				<div className='payment-details'>
 					<p>
-						BSB: {this.props.QueryBsb.loading ? 'Loading...' : this.props.QueryBsb.getProtectedSetting.value}
+						BSB: {this.props.QueryBsb.loading ? <span style={{color:'gray'}}>Loading...</span> : this.props.QueryBsb.getProtectedSetting.value}
 						<br/>
-						ACC: {this.props.QueryAcc.loading ? 'Loading...' : this.props.QueryAcc.getProtectedSetting.value}
+						ACC: {this.props.QueryAcc.loading ? <span style={{color:'gray'}}>Loading...</span> : this.props.QueryAcc.getProtectedSetting.value}
 					</p>
 						Please use <span className='highlight'>{reference}</span> as the payee reference.
 				</div>
