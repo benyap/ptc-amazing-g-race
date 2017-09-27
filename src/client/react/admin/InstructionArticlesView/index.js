@@ -1,11 +1,12 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
-import { Button, Intent, Spinner } from '@blueprintjs/core';
-import { gql, graphql } from 'react-apollo'
+import { Button, Intent, Spinner, Dialog } from '@blueprintjs/core';
+import { compose, gql, graphql } from 'react-apollo'
 import RefreshBar from '../RefreshBar';
 import ViewError from '../ViewError';
 import InstructionArticleCard from './InstructionArticleCard';
 import InstructionArticleProfile from './InstructionArticleProfile';
+import FormInput from '../../../../../lib/react/components/forms/FormInput';
 
 
 const QueryGetArticles = gql`
@@ -13,10 +14,10 @@ query GetArticles($category:String!){
 	getArticles(category:$category){
 		_id
 		title
+		created
+		createdBy { username }
 		modified
-		modifiedBy{
-			username
-		}
+		modifiedBy{ username }
 	}
 }`;
 
@@ -28,13 +29,27 @@ const QueryGetArticlesOptions = {
 	}
 }
 
-@graphql(QueryGetArticles, QueryGetArticlesOptions)
+const MutationAddArticle = gql`
+mutation AddArticle($title:String!,$category:String!,$content:String!){
+  addArticle(title:$title,category:$category,content:$content){
+    _id
+  }
+}`;
+
+@compose(
+	graphql(QueryGetArticles, QueryGetArticlesOptions),
+	graphql(MutationAddArticle, { name: 'MutationAddArticle' })
+)
 @autobind
 class InstructionArticlesView extends React.Component {
 	state = {
 		viewProfile: null,
 		loading: false,
-		refetching: false
+		refetching: false,
+		showAddArticle: false,
+		addArticleTitle: '',
+		addArticleLoading: false,
+		addArticleError: null
 	}
 
 	renderProfile(article) {
@@ -45,6 +60,45 @@ class InstructionArticlesView extends React.Component {
 		this.setState({ viewProfile: null, refetching: true });
 		await this.props.QueryGetArticles.refetch();
 		this.setState({ refetching: false });
+	}
+
+	toggleAddArticle() {
+		this.setState((prevState) => {
+			return { 
+				showAddArticle: !prevState.showAddArticle, 
+				addArticleTitle: '',
+				addArticleError: null
+			};
+		});
+	}
+
+	addArticleTitleEdit(e) {
+		this.setState({ addArticleTitle: e.target.value });
+	}
+
+	async submitAddArticle() {
+		if (this.state.addArticleTitle.length < 1) {
+			this.setState({ addArticleError: 'Article title is required.' });
+		}
+		else {
+			this.setState({ addArticleLoading: true, addArticleError: false });
+			try {
+				await this.props.MutationAddArticle({
+					variables: {
+						title: this.state.addArticleTitle,
+						category: 'instructions',
+						content: `# ${this.state.addArticleTitle}\n`
+					}
+				});
+
+				this.setState({ addArticleLoading: false, showAddArticle: false, refetching: true });
+				await this.props.QueryGetArticles.refetch();
+				this.setState({ refetching: false });
+			}
+			catch (e) {
+				this.setState({ addArticleError: e.toString(), addArticleLoading: false });
+			}
+		}
 	}
 
 	render() {
@@ -82,8 +136,27 @@ class InstructionArticlesView extends React.Component {
 										);
 									})
 								}
-								<Button text='Create Article' intent={Intent.PRIMARY} iconName='clipboard' className='pt-minimal pt-fill'/>
+								<Button text='Create Article' onClick={this.toggleAddArticle} intent={Intent.PRIMARY} iconName='clipboard' className='pt-minimal pt-fill'/>
 							</div>
+
+							{/* Add article dialog */}
+							<Dialog title='Create a new article' isOpen={this.state.showAddArticle} onClose={this.toggleAddArticle}>
+								<div className='pt-dialog-body'>
+									{this.state.addArticleError ? 
+										<div className='pt-callout pt-intent-danger pt-icon-error'>
+											{this.state.addArticleError}
+										</div>
+										:null}
+									<b>Article title:</b> <FormInput id='addArticle' value={this.state.addArticleTitle} onChange={this.addArticleTitleEdit} 
+									intent={this.state.addArticleError ? Intent.DANGER : Intent.NONE}/>
+								</div>
+								<div className='pt-dialog-footer'>
+									<div className='pt-dialog-footer-actions'>
+										<Button className='pt-minimal' text='Cancel' onClick={this.toggleAddArticle} disabled={this.state.addArticleLoading}/>
+										<Button intent={Intent.PRIMARY} text='Create' onClick={this.submitAddArticle} loading={this.state.addArticleLoading}/>
+									</div>
+								</div>
+							</Dialog>
 						</div>
 					);
 				}

@@ -3,7 +3,7 @@ import database from '../../db';
 
 // Create article 
 const addArticle = function(root, params, ctx, options) {
-	return database.article.addArticle(ctx.user, params.title, params.category, params.src);
+	return database.article.addArticle(ctx.user, params.title, params.category, params.content);
 }
 
 // Get articles from a category
