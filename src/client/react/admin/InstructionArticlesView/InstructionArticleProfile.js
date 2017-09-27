@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import { compose, graphql, gql } from 'react-apollo';
-import { Button, Intent, Spinner, EditableText } from '@blueprintjs/core';
+import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core';
 import { saveState } from '../../../actions/stateActions';
 import MarkdownEditor from '../../../../../lib/react/components/MarkdownEditor';
 import NotificationToaster from '../NotificationToaster';
@@ -68,7 +68,8 @@ class InstructionArticleProfile extends React.Component {
 		saving: false,
 		modified: false,
 		titleText: this.props.article.title,
-		content: null
+		content: null,
+		showConfirmClose: false
 	}
 
 	componentDidMount() {
@@ -81,6 +82,20 @@ class InstructionArticleProfile extends React.Component {
 
 	closeProfile() {
 		this.props.closeProfile();
+	}
+
+	toggleConfirmClose() {
+		if (this.state.showConfirmClose) {
+			this.setState({ showConfirmClose: false });
+		}
+		else {
+			if (this.state.modified) {
+				this.setState({ showConfirmClose: true });
+			}
+			else {
+				this.closeProfile();
+			}
+		}
 	}
 
 	editTitle(value) {
@@ -153,7 +168,7 @@ class InstructionArticleProfile extends React.Component {
 		return (
 			<div id='instruction-article-profile' className='pt-card instruction-article-profile'>
 				<Button className='pt-minimal' intent={Intent.PRIMARY} text='Save' onClick={this.saveContent} style={{float:'right'}} disabled={!this.state.modified}/>
-				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
+				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.toggleConfirmClose} style={{float:'right'}}/>
 				{loading || this.state.saving ? 
 					<div style={{float:'right'}}>
 						<Spinner className='pt-small'/>
@@ -167,6 +182,18 @@ class InstructionArticleProfile extends React.Component {
 				{ loading ? null:
 					<MarkdownEditor content={this.state.content || this.props.QueryGetArticle.getArticle.content} onChange={this.editContent}/>
 				}
+
+				<Dialog isOpen={this.state.showConfirmClose} onClose={this.toggleConfirmClose} title='Unsaved changes'>
+					<div className='pt-dialog-body'>
+						Are you sure you want to close without saving?
+					</div>
+					<div className='pt-dialog-footer'>
+						<div className='pt-dialog-footer-actions'>
+							<Button intent={Intent.DANGER} className='pt-minimal' text='Close' onClick={this.closeProfile}/>
+							<Button intent={Intent.PRIMARY} text='Cancel' onClick={this.toggleConfirmClose}/>
+						</div>
+					</div>
+				</Dialog>
 			</div>
 		);
 	}
