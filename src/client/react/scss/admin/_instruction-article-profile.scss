@@ -1,0 +1,14 @@
+@import '../fonts/remote-fonts';
+@import '../variables/fonts';
+
+#instruction-article-profile {
+	.instruction-panel {
+		.markdown.output.markdown-content {
+			margin: auto;
+			max-width: 30rem;
+			font-weight: 200;
+			background: rgba(0,0,0,0.8);
+			font-family: $theme-font, sans-serif;
+		}
+	}
+}

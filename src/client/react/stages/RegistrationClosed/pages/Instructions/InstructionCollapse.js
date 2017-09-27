@@ -28,7 +28,7 @@ class InstructionCollapse extends React.Component {
 					iconName={this.state.isOpen?'remove':'add'} onClick={this.toggleOpen}/>
 				<Collapse isOpen={this.state.isOpen}>
 					<div className='instruction-panel'>
-						<MarkdownRenderer src={content}/>
+						<MarkdownRenderer className='markdown-content' src={content}/>
 					</div>
 				</Collapse>
 			</div>

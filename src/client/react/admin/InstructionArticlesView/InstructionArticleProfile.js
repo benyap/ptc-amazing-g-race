@@ -8,6 +8,9 @@ import { saveState } from '../../../actions/stateActions';
 import MarkdownEditor from '../../../../../lib/react/components/MarkdownEditor';
 import NotificationToaster from '../NotificationToaster';
 
+import '../../scss/admin/_instruction-article-profile.scss';
+import '../../scss/components/_instruction-panel.scss';
+
 
 const QueryGetArticle = gql`
 query GetArticle($category:String!, $articleId:ID!){
@@ -215,9 +218,11 @@ class InstructionArticleProfile extends React.Component {
 					<EditableText value={this.state.titleText} onChange={this.editTitle} onConfirm={this.confirmTitle}/>
 				</b></h4>
 				
-				{ loading ? null:
-					<MarkdownEditor content={this.state.content || this.props.QueryGetArticle.getArticle.content} onChange={this.editContent}/>
-				}
+					{ loading ? null:
+						<div className='instruction-panel'>
+							<MarkdownEditor content={this.state.content || this.props.QueryGetArticle.getArticle.content} onChange={this.editContent}/>
+						</div>
+					}
 
 				{/* Confirm close dialog */}
 				<Dialog isOpen={this.state.showConfirmClose} onClose={this.toggleConfirmClose} title='Unsaved changes'>
