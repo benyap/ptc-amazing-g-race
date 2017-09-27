@@ -1,13 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '@blueprintjs/core';
 import { autobind } from 'core-decorators';
+import { gql, graphql } from 'react-apollo';
+import { Button, Spinner } from '@blueprintjs/core';
 import InstructionCollapse from './InstructionCollapse';
 
 import '../../../../scss/dashboard/_main.scss'
 import '../../../../scss/components/_instructions.scss';
 
 
+const QueryGetArticles = gql`
+query GetArticles($category:String!){
+	getArticles(category:$category){
+		_id
+		title
+		content
+	}
+}`;
+
+const QueryGetArticlesOptions = {
+	name: 'QueryGetArticles',
+	options: {
+		variables: { category: 'instructions' }
+	}
+}
+
+@graphql(QueryGetArticles, QueryGetArticlesOptions)
 @autobind
 class Instructions extends React.Component {
 	state = {
@@ -35,23 +53,14 @@ class Instructions extends React.Component {
 						</div>
 						: null
 					}
-
-					<InstructionCollapse article={{
-						title: 'Test article',
-						text: `
-# This is my title\n
-Here is some text\n
-## Title number two\n
-Here is some more text\n
-### Title number three\n
-Here is even more text, just for testing\n
-#### Title number four\n
-**Here is even more text, just for testing**\n
-##### Title number five\n
-*Here is even more text, just for testing*\n
-###### Title number six\n
-Here is even more text, [and a link.](#)\n`
-					}}/>
+					{ this.props.QueryGetArticles.loading ? 
+						<div style={{textAlign:'center', margin: '2rem'}}>
+							<Spinner/>
+						</div> :
+						this.props.QueryGetArticles.getArticles.map((article) => {
+							return <InstructionCollapse key={article._id} article={article}/>;
+						})
+					}
 				</div>
 			</main>
 		);

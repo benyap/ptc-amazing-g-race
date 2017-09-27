@@ -19,7 +19,7 @@ class InstructionCollapse extends React.Component {
 	}
 
 	render() {
-		let { title, text } = this.props.article;
+		let { title, content } = this.props.article;
 
 		return (
 			<div className='instruction-collapse'>
@@ -27,7 +27,7 @@ class InstructionCollapse extends React.Component {
 					iconName={this.state.isOpen?'remove':'add'} onClick={this.toggleOpen}/>
 				<Collapse isOpen={this.state.isOpen}>
 					<div>
-						<MarkdownRenderer src={text}/>
+						<MarkdownRenderer src={content}/>
 					</div>
 				</Collapse>
 			</div>
