@@ -21,6 +21,7 @@ query GetArticles($category:String!){
 const QueryGetArticlesOptions = {
 	name: 'QueryGetArticles',
 	options: {
+		fetchPolicy: 'cache-and-network',
 		variables: { category: 'instructions' }
 	}
 }
@@ -53,13 +54,14 @@ class Instructions extends React.Component {
 						</div>
 						: null
 					}
-					{ this.props.QueryGetArticles.loading ? 
-						<div style={{textAlign:'center', margin: '2rem'}}>
-							<Spinner/>
-						</div> :
+					{ this.props.QueryGetArticles.getArticles ? 
 						this.props.QueryGetArticles.getArticles.map((article) => {
 							return <InstructionCollapse key={article._id} article={article}/>;
 						})
+						: 
+						<div style={{textAlign:'center', margin: '2rem'}}>
+							<Spinner/>
+						</div>
 					}
 				</div>
 			</main>
