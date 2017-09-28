@@ -27,6 +27,7 @@
   "homepage": "https://github.com/bwyap/ptc-amazing-g-race#readme",
   "dependencies": {
     "@blueprintjs/core": "^1.26.0",
+    "@xkeshi/image-compressor": "^0.5.1",
     "animate.css": "^3.5.2",
     "aws-sdk": "^2.101.0",
     "axios": "^0.16.2",
