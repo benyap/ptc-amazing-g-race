@@ -51,8 +51,8 @@ class ImageUploaderTest extends React.Component {
 		}
 	}
 
-	setFile(files) {
-		this.setState({image: files[0]});
+	setImage(image) {
+		this.setState({image: image});
 	}
 
 	uploadFile() {
@@ -80,7 +80,7 @@ class ImageUploaderTest extends React.Component {
 			<main id='image-uploader-test' className='dashboard'>
 				<div className='content'>
 					<h2>Image uploader test</h2>
-					<ImageUploader preview showFilesize compress onChange={this.setFile} disabled={this.state.uploading}/>
+					<ImageUploader preview showFilesize compress onChange={this.setImage} disabled={this.state.uploading}/>
 					<Button className='pt-fill pt-intent-primary' text={unavailable?'Loading...':'Upload'} onClick={this.uploadFile} 
 						loading={this.state.uploading} disabled={unavailable||!this.state.image}/>
 				</div>
