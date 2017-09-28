@@ -31,10 +31,13 @@ const app = express();
 db.connect();
 
 // Use morgan to log requests to console
-if (process.env.NODE_ENV === 'development') {
-	console.log('Using morgan.');
-	app.use(morgan('dev'));
-}
+console.log('Using morgan.');
+app.use(morgan('dev'));
+
+// if (process.env.NODE_ENV === 'development') {
+// 	console.log('Using morgan.');
+// 	app.use(morgan('dev'));
+// }
 
 // Busboy body parser middleware
 let busboyBodyParser = require('busboy-body-parser');

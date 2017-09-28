@@ -72,14 +72,8 @@ const getArticles = async function(user, category) {
 	
 	const db = await connect();
 	
-	// Check that category exists
-	const articles = await db.collection(`article_${category}`).find().toArray();
-	if (articles.length < 1) {
-		return new Error(`The category '${category}' does not exist.`);
-	}
-
 	// Return the articles
-	return articles;
+	return db.collection(`article_${category}`).find().toArray();
 }
 
 
