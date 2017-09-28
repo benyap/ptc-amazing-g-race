@@ -10,7 +10,7 @@ class ImageUploaderTest extends React.Component {
 			<main id='image-uploader-test' className='dashboard'>
 				<div className='content'>
 					<h2>Image uploader test</h2>
-					<ImageUploader preview showFilesize/>
+					<ImageUploader preview showFilesize compress/>
 				</div>
 			</main>
 		);
