@@ -7,6 +7,7 @@ import HelpMenu from '../components/HelpMenu';
 import Home from './pages/Home';
 import Help from './pages/Help';
 import Instructions from './pages/Instructions';
+import ImageUploaderTest from './pages/ImageUploaderTest';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -47,6 +48,7 @@ class Dashboard extends React.Component {
 				<Route path={`${url}/completed`} component={null}/>
 				<Route path={`${url}/help`} component={Help}/>
 				<Route path={`${url}/profile`} component={null}/>
+				<Route path={`${url}/image`} component={ImageUploaderTest}/>
 			</div>
 		);
 	}
