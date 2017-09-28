@@ -375,10 +375,12 @@ class TeamProfile extends React.Component {
 				</b></h4>
 
 				<div className='manage'>
-					<div className='points'>
+					<div className='manage-item'>
+						Team ID: {this.props.team._id}
+					</div>
+					<div className='manage-item'>
 						<span>Points:&nbsp;</span>
 						<EditableText selectAllOnFocus 
-							className='points'
 							value={this.state.points} 
 							onChange={this.editPoints} 
 							onConfirm={this.confirmPoints}/>

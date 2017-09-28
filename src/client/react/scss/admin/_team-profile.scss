@@ -22,9 +22,10 @@
 		flex-direction: column;
 		justify-content: space-between;
 
-		.points {
+		.manage-item {
 			display: flex;
 			align-items: center;
+			margin-bottom: 0.3rem;
 		}
 	}
 }
