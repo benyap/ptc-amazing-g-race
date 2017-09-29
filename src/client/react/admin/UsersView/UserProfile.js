@@ -5,24 +5,17 @@ import { connect } from 'react-redux';
 import { Button, Dialog, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTarget, Toaster, Position } from '@blueprintjs/core';
 import { gql, graphql, compose } from 'react-apollo';
 import DateFormat from 'dateformat';
+import { getUserByEmail, setUserPaidAmount, addPermission, removePermission } from '../../../graphql/user';
 import { saveState } from '../../../actions/stateActions';
 import NotificationToaster from '../NotificationToaster';
 import FormInput from '../../../../../lib/react/components/forms/FormInput';
 import '../../scss/admin/_user-profile.scss';
 
 
-const QueryUser = gql`
-query GetUserByEmail($email:String!) {
-  getUserByEmail(email: $email) {
-    firstname lastname
-    username email isAdmin
-    university studentID
-    mobileNumber enabled
-    registerDate paidAmount
-    raceDetails{ hasSmartphone friends PTProficiency dietaryRequirements }
-    roles permissions
-  }
-}`;
+const QueryUserParams = 
+	'firstname lastname username email isAdmin university studentID ' + 
+	'mobileNumber enabled registerDate paidAmount roles permissions ' + 
+	'raceDetails{hasSmartphone friends PTProficiency dietaryRequirements}';
 
 const QueryUserOptions = {
 	name: 'QueryUser',
@@ -32,33 +25,11 @@ const QueryUserOptions = {
 	})
 }
 
-const MutationSetUserPaidAmount = gql`
-mutation SetPaidAmount($username:String!, $amount:Float!){
-  setUserPaidAmount(username:$username, amount:$amount){
-    ok
-    failureMessage
-  }
-}`;
-
-const MutationAddPermission = gql`
-mutation AddPermission($permission:String!, $username:String!){
-	addPermission(permission:$permission, username:$username){
-		ok
-	}
-}`;
-
-const MutationRemovePermission = gql`
-mutation RemovePermission($permission:String!, $username:String!){
-	removePermission(permission:$permission, username:$username){
-		ok
-	}
-}`;
-
 @compose(
-	graphql(QueryUser, QueryUserOptions),
-	graphql(MutationSetUserPaidAmount, {name: 'MutationSetUserPaidAmount'}),
-	graphql(MutationAddPermission, {name: 'MutationAddPermission'}),
-	graphql(MutationRemovePermission, {name: 'MutationRemovePermission'})
+	graphql(getUserByEmail(QueryUserParams), QueryUserOptions),
+	graphql(setUserPaidAmount('ok failureMessage'), {name: 'MutationSetUserPaidAmount'}),
+	graphql(addPermission('ok'), {name: 'MutationAddPermission'}),
+	graphql(removePermission('ok'), {name: 'MutationRemovePermission'})
 )
 @connect()
 @autobind

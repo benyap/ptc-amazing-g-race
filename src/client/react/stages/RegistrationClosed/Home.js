@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { graphql, gql } from 'react-apollo';
 import { Link } from 'react-router-dom';
+import { getUserByEmail } from '../../../graphql/user';
 import Title from '../components/Title';
 import Description2 from '../components/Description2';
 import ScrollAnimation from 'react-animate-on-scroll';
@@ -16,27 +17,14 @@ const mapStateToProps = (state, ownProps) => {
 	}
 }
 
-const QueryMe = gql`
-query GetUserByEmail($email:String!) {
-  getUserByEmail(email:$email) {
-		firstname
-		lastname
-		username 
-  }
-}`;
-
 const QueryMeOptions = {
 	name: 'QueryMe',
-	options: ({email}) => ({
-		variables: {email}
-	}),
-	skip: (ownProps) => {
-		return !ownProps.authenticated;
-	}
+	options: ({email}) => ({ variables: {email} }),
+	skip: (ownProps) => !ownProps.authenticated
 }
 
 @connect(mapStateToProps)
-@graphql(QueryMe, QueryMeOptions)
+@graphql(getUserByEmail('firstname lastname username'), QueryMeOptions)
 class Home extends React.Component {
 	render() {
 		let name;

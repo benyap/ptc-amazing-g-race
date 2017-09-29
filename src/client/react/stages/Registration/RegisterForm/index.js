@@ -22,13 +22,11 @@ const MutationRegisterUser =
   }
 }`;
 
-
 const mapStateToProps = (state, ownProps) => {
 	return { 
 		authenticated: state.auth.login.authenticated
 	}
 }
-
 
 @connect(mapStateToProps)
 @autobind

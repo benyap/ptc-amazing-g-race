@@ -1,9 +1,10 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
-import { graphql, gql } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import { withRouter, Link, Redirect } from 'react-router-dom';
 import { Spinner, Button, Intent } from '@blueprintjs/core';
+import { getUserByEmail } from '../../../../graphql/user';
 import { logout } from '../../../../actions/authActions';
 import axios from 'axios';
 import ScrollAnimation from 'react-animate-on-scroll';
@@ -22,27 +23,14 @@ const mapStateToProps = (state, ownProps) => {
 	}
 }
 
-const QueryMe = gql`
-query GetUserByEmail($email:String!) {
-  getUserByEmail(email:$email) {
-		firstname
-		lastname
-		username 
-  }
-}`;
-
 const QueryMeOptions = {
 	name: 'QueryMe',
-	options: ({email}) => ({
-		variables: {email}
-	}),
-	skip: (ownProps) => {
-		return !ownProps.authenticated;
-	}
+	options: ({email}) => ({ variables: {email} }),
+	skip: (ownProps) => !ownProps.authenticated
 }
 
 @connect(mapStateToProps)
-@graphql(QueryMe, QueryMeOptions)
+@graphql(getUserByEmail('firstname lastname username'), QueryMeOptions)
 @withRouter
 @autobind
 class Dashboard extends React.Component {

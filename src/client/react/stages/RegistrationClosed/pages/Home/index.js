@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import { Spinner, Button } from '@blueprintjs/core';
 import { gql, graphql, withApollo } from 'react-apollo';
+import { getUserByEmail } from '../../../../../graphql/user';
 import TeamPanel from './TeamPanel';
 import { setTeamInfo } from '../../../../../actions/userInfoActions';
 
@@ -11,19 +12,9 @@ import '../../../../scss/dashboard/_main.scss'
 import '../../../../scss/dashboard/_home.scss';
 
 
-const QueryGetUserByEmail = gql`
-query GetUserByEmail($email:String!) {
-	getUserByEmail(email:$email) {
-		username
-		teamId
-  }
-}`;
-
 const QueryGetUserByEmailOptions = {
 	name: 'QueryGetUserByEmail',
-	options: {
-		fetchPolicy: 'cache-and-network'
-	}
+	options: { fetchPolicy: 'cache-and-network' }
 }
 
 const QueryGetTeam = gql`
@@ -50,7 +41,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 @connect(mapStateToProps)
-@graphql(QueryGetUserByEmail, QueryGetUserByEmailOptions)
+@graphql(getUserByEmail('username teamId'), QueryGetUserByEmailOptions)
 @withApollo
 @autobind
 class Home extends React.Component {

@@ -2,30 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
-import { gql, graphql, compose } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import { Spinner, Button, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import DateFormat from 'dateformat';
 import { saveState } from '../../../actions/stateActions';
 import { getSetting } from '../../../graphql/setting';
+import { getUsers } from '../../../graphql/user';
 import ViewError from '../ViewError';
 import UserCard from './UserCard';
 import UserProfile from './UserProfile';
 import UsersSummary from './UsersSummary';
 
 
-const QueryUsers = gql`
-query GetUsers($limit:Int, $skip:Int){
-	getUsers(limit:$limit, skip:$skip) {
-		firstname
-		lastname
-		username
-		email
-		university
-		enabled
-		paidAmount
-		teamId
-	}
-}`;
+const QueryUserParams = 'firstname lastname username email university enabled paidAmount teamId';
 
 const QueryUsersOptions = {
 	name: 'QueryUsers',
@@ -42,8 +31,8 @@ const QueryPaymentAmountOptions = {
 }
 
 @compose(
-	graphql(QueryUsers, QueryUsersOptions),
-	graphql(getSetting('value'), QueryPaymentAmountOptions),
+	graphql(getUsers(QueryUserParams), QueryUsersOptions),
+	graphql(getSetting('value'), QueryPaymentAmountOptions)
 )
 @connect()
 @autobind
