@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import { Spinner, Button } from '@blueprintjs/core';
-import { gql, graphql, withApollo } from 'react-apollo';
+import { graphql, withApollo } from 'react-apollo';
 import { getUserByEmail } from '../../../../../graphql/user';
+import { getTeam } from '../../../../../graphql/team';
 import TeamPanel from './TeamPanel';
 import { setTeamInfo } from '../../../../../actions/userInfoActions';
 
@@ -17,21 +18,7 @@ const QueryGetUserByEmailOptions = {
 	options: { fetchPolicy: 'cache-and-network' }
 }
 
-const QueryGetTeam = gql`
-query GetTeam($teamId: ID!){
-	getTeam(teamId: $teamId){
-		_id
-		teamName
-		points
-		memberCount
-		members {
-			username
-			firstname
-			lastname
-			mobileNumber
-		}
-	}
-}`;
+const QueryGetTeamParams = '_id teamName points memberCount members{username firstname lastname mobileNumber}';
 
 const mapStateToProps = (state, ownProps) => {
 	return { 
@@ -68,7 +55,7 @@ class Home extends React.Component {
 		else {
 			setTimeout(() => { if (this._mounted) this.setState({ teamLoading: true }) }, 0);
 			this.props.client.query({
-				query: QueryGetTeam,
+				query: getTeam(QueryGetTeamParams),
 				variables: { teamId },
 				fetchPolicy: 'network-only'
 			})
