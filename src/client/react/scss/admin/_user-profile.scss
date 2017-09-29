@@ -1,7 +1,14 @@
+@import '../variables/bp';
+
 .user-profile.pt-card {
 	padding: 0.8rem;
 	margin-bottom: 1rem;
+	overflow: scroll;
 	
+	@media(max-width: $bp-s) {
+		padding: 0.5rem;
+	}
+
 	h5 {
 		margin-bottom: 0.4rem;
 	}

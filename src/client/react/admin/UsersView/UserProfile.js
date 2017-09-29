@@ -290,17 +290,17 @@ class UserProfile extends React.Component {
 								<td>
 									Account Permissions<br/>
 									<Button style={{marginTop: '0.5rem'}} onClick={this.toggleAddPermission}
-										iconName='add' text='Add permission' className='pt-button pt-icon-add pt-small'/>
+										text='Add permission' className='pt-button pt-small'/>
 								</td>
 								<td>
 									<ul>
 										{ permissions.map((permission, index) => {
 												return (
-													<li key={index}>
+													<li key={index} style={{whiteSpace:'nowrap'}}>
 														<Button iconName='remove' className='pt-small pt-minimal' 
 															intent={Intent.DANGER} onClick={this.toggleRemovePermission(permission)}
 															loading={this.state[permission+'RemoveLoading']}/>
-														{permission}
+														<code>{permission.replace('-', '‑')}</code>
 													</li>
 												);
 										}) }
