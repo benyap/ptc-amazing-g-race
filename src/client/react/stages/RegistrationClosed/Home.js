@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { graphql, gql } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import { Link } from 'react-router-dom';
 import { getUserByEmail } from '../../../graphql/user';
 import Title from '../components/Title';

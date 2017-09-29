@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { Button, Dialog, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTarget, Toaster, Position } from '@blueprintjs/core';
-import { gql, graphql, compose } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import DateFormat from 'dateformat';
 import { getUserByEmail, setUserPaidAmount, addPermission, removePermission } from '../../../graphql/user';
 import { saveState } from '../../../actions/stateActions';

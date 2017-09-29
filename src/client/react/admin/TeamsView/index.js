@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
-import { compose, gql, graphql } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import { Spinner, Button, Intent, Dialog } from '@blueprintjs/core';
+import { getTeams, addTeam } from '../../../graphql/team';
 import FormInput from '../../../../../lib/react/components/forms/FormInput';
 import ViewError from '../ViewError';
 import RefreshBar from '../RefreshBar';
@@ -10,36 +11,16 @@ import TeamCard from './TeamCard';
 import TeamProfile from './TeamProfile';
 
 
-const QueryGetTeams = gql`
-query GetTeams($skip:Int,$limit:Int) {
-	getTeams(skip:$skip, limit:$limit) {
-		_id
-		teamName
-		points
-		memberCount
-	}
-}`;
-
 const QueryGetTeamsOptions = {
 	name: 'QueryGetTeams',
 	options: {
-		variables: {
-			skip: 0,
-			limit: 0
-		}
+		variables: { skip: 0, limit: 0 }
 	}
 }
 
-const MutationCreateTeam = gql`
-mutation AddTeam($teamName:String!){
-	addTeam(teamName:$teamName){
-		ok
-	}
-}`;
-
 @compose(
-	graphql(QueryGetTeams, QueryGetTeamsOptions),
-	graphql(MutationCreateTeam, { name: 'MutationCreateTeam' })
+	graphql(getTeams('_id teamName points memberCount'), QueryGetTeamsOptions),
+	graphql(addTeam('ok'), { name: 'MutationCreateTeam' })
 )
 @autobind
 class TeamsView extends React.Component {

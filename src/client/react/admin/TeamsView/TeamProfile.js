@@ -2,28 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
-import { compose, gql, graphql } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core';
 import { saveState } from '../../../actions/stateActions';
+import { getTeam, setTeamName, setTeamPoints, removeTeam } from '../../../graphql/team';
+import { getUsers, setUserTeam, removeUserTeam } from '../../../graphql/user';
 import NotificationToaster from '../NotificationToaster';
 
 import '../../scss/admin/_team-profile.scss';
 
 
-const QueryTeam = gql`
-query GetTeam($teamId: ID!){
-	getTeam(teamId: $teamId){
-		_id
-		teamName
-		members{
-			username
-			firstname
-			lastname
-		}
-		memberCount
-		points
-	}
-}`;
+const QueryTeamParams = '_id teamName members{username firstname lastname} memberCount points';
 
 const QueryTeamOptions = {
 	name: 'QueryTeam',
@@ -33,16 +22,6 @@ const QueryTeamOptions = {
 	})
 }
 
-const QueryUsers = gql`
-query GetUsers($limit:Int, $skip:Int){
-	getUsers(limit:$limit, skip:$skip) {
-		firstname
-		lastname
-		username
-		teamId
-	}
-}`;
-
 const QueryUsersOptions = {
 	name: 'QueryUsers',
 	options: { 
@@ -51,51 +30,14 @@ const QueryUsersOptions = {
 	}
 }
 
-const MutationSetTeamName = gql`
-mutation SetTeamName($teamId:ID!, $name:String!) {
-	setTeamName(teamId:$teamId, name:$name) {
-		ok
-		failureMessage
-	}
-}`;
-
-const MutationSetTeamPoints = gql`
-mutation SetTeamPoints($teamId:ID!, $points:Float!) {
-	setTeamPoints(teamId:$teamId, points:$points) {
-		ok
-		failureMessage
-	}
-}`;
-
-const MutationSetUserTeam = gql`
-mutation SetUserTeam($username:String!,$teamId:ID!){
-	setUserTeam(username:$username,teamId:$teamId){
-		ok
-	}
-}`;
-
-const MutationRemoveUserTeam = gql`
-mutation RemoveUserTeam($username:String!){
-  removeUserTeam(username:$username){
-		ok
-	}
-}`;
-
-const MutationRemoveTeam = gql`
-mutation RemoveTeam($teamId:ID!){
-	removeTeam(teamId:$teamId){
-		ok
-	}
-}`;
-
 @compose(
-	graphql(QueryTeam, QueryTeamOptions),
-	graphql(QueryUsers, QueryUsersOptions),
-	graphql(MutationSetTeamName, {name: 'MutationSetTeamName'}),
-	graphql(MutationSetTeamPoints, {name: 'MutationSetTeamPoints'}),
-	graphql(MutationSetUserTeam, {name: 'MutationSetUserTeam'}),
-	graphql(MutationRemoveUserTeam, {name: 'MutationRemoveUserTeam'}),
-	graphql(MutationRemoveTeam, {name: 'MutationRemoveTeam'})
+	graphql(getTeam(QueryTeamParams), QueryTeamOptions),
+	graphql(getUsers('firstname lastname username teamId'), QueryUsersOptions),
+	graphql(setTeamName('ok failureMessage'), {name: 'MutationSetTeamName'}),
+	graphql(setTeamPoints('ok failureMessage'), {name: 'MutationSetTeamPoints'}),
+	graphql(removeTeam('ok'), {name: 'MutationRemoveTeam'}),
+	graphql(setUserTeam('ok'), {name: 'MutationSetUserTeam'}),
+	graphql(removeUserTeam('ok'), {name: 'MutationRemoveUserTeam'})
 )
 @connect()
 @autobind

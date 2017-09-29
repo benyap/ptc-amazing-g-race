@@ -45,11 +45,27 @@ const removePermission = (params) => {
 	}`;
 }
 
+const setUserTeam = (params) => {
+	return gql`
+	mutation SetUserTeam($username:String!,$teamId:ID!){
+		setUserTeam(username:$username,teamId:$teamId){ ${params} }
+	}`;
+}
+
+const removeUserTeam = (params) => {
+	return gql`
+	mutation RemoveUserTeam($username:String!){
+		removeUserTeam(username:$username){ ${params} }
+	}`;
+}
+
 
 export {
 	getUsers,
 	getUserByEmail,
 	setUserPaidAmount,
 	addPermission,
-	removePermission
+	removePermission,
+	setUserTeam,
+	removeUserTeam
 };
