@@ -1,22 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { autobind } from 'core-decorators';
-import { gql, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import { Button, Spinner } from '@blueprintjs/core';
+import { getArticles } from '../../../../../graphql/article';
 import InstructionCollapse from './InstructionCollapse';
 
 import '../../../../scss/dashboard/_main.scss'
 import '../../../../scss/components/_instructions.scss';
 
-
-const QueryGetArticles = gql`
-query GetArticles($category:String!){
-	getArticles(category:$category){
-		_id
-		title
-		content
-	}
-}`;
 
 const QueryGetArticlesOptions = {
 	name: 'QueryGetArticles',
@@ -26,7 +18,7 @@ const QueryGetArticlesOptions = {
 	}
 }
 
-@graphql(QueryGetArticles, QueryGetArticlesOptions)
+@graphql(getArticles('_id title content'), QueryGetArticlesOptions)
 @autobind
 class Instructions extends React.Component {
 	state = {

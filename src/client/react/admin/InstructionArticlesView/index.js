@@ -1,7 +1,8 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
 import { Button, Intent, Spinner, Dialog } from '@blueprintjs/core';
-import { compose, gql, graphql } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
+import { getArticles, addArticle } from '../../../graphql/article';
 import RefreshBar from '../RefreshBar';
 import ViewError from '../ViewError';
 import InstructionArticleCard from './InstructionArticleCard';
@@ -9,17 +10,7 @@ import InstructionArticleProfile from './InstructionArticleProfile';
 import FormInput from '../../../../../lib/react/components/forms/FormInput';
 
 
-const QueryGetArticles = gql`
-query GetArticles($category:String!){
-	getArticles(category:$category){
-		_id
-		title
-		created
-		createdBy { username }
-		modified
-		modifiedBy{ username }
-	}
-}`;
+const QueryGetArticlesParams = '_id title created createdBy{username} modified modifiedBy{username}';
 
 const QueryGetArticlesOptions = {
 	name: 'QueryGetArticles',
@@ -29,16 +20,9 @@ const QueryGetArticlesOptions = {
 	}
 }
 
-const MutationAddArticle = gql`
-mutation AddArticle($title:String!,$category:String!,$content:String!){
-  addArticle(title:$title,category:$category,content:$content){
-    _id
-  }
-}`;
-
 @compose(
-	graphql(QueryGetArticles, QueryGetArticlesOptions),
-	graphql(MutationAddArticle, { name: 'MutationAddArticle' })
+	graphql(getArticles(QueryGetArticlesParams), QueryGetArticlesOptions),
+	graphql(addArticle('_id'), { name: 'MutationAddArticle' })
 )
 @autobind
 class InstructionArticlesView extends React.Component {
