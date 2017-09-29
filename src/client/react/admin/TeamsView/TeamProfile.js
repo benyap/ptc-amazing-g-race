@@ -34,8 +34,8 @@ const QueryTeamOptions = {
 }
 
 const QueryUsers = gql`
-query ListAll($limit:Int, $skip:Int){
-	listAll(limit:$limit, skip:$skip) {
+query GetUsers($limit:Int, $skip:Int){
+	getUsers(limit:$limit, skip:$skip) {
 		firstname
 		lastname
 		username
@@ -407,7 +407,7 @@ class TeamProfile extends React.Component {
 									}
 									{this.props.QueryUsers.loading ? 
 									null:
-									this.props.QueryUsers.listAll.map((user) => {
+									this.props.QueryUsers.getUsers.map((user) => {
 										if (!user.teamId) {	// Only add users without a team
 											return <option key={user.username} value={user.username}>{`${user.firstname} ${user.lastname}`}</option>
 										}

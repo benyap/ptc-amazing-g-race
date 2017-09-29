@@ -14,8 +14,8 @@ import UsersSummary from './UsersSummary';
 
 
 const QueryUsers = gql`
-query ListAll($limit:Int, $skip:Int){
-	listAll(limit:$limit, skip:$skip) {
+query GetUsers($limit:Int, $skip:Int){
+	getUsers(limit:$limit, skip:$skip) {
 		firstname
 		lastname
 		username
@@ -119,7 +119,7 @@ class UsersView extends React.Component {
 	render() {
 		let content = null;
 		let summary = null;
-		let { loading, error, listAll } = this.props.QueryUsers;
+		let { loading, error, getUsers } = this.props.QueryUsers;
 		let loadingPayment = this.props.QueryPaymentAmount.loading;
 
 		if (loading || loadingPayment || this.state.loading) {
@@ -142,14 +142,14 @@ class UsersView extends React.Component {
 			}
 			else {
 				summary = (
-					<UsersSummary users={listAll} paymentAmount={paymentAmount} 
+					<UsersSummary users={getUsers} paymentAmount={paymentAmount} 
 						filterValue={this.state.filter} onFilterChange={this.filterUsers}/>
 				);
 				
 				content = (
 					<div>
 						<div className='view-list'>
-							{listAll.map((user) => {
+							{getUsers.map((user) => {
 								let userCard = (
 									<UserCard 
 										key={user.email} user={user} 

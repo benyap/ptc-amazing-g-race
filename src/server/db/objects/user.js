@@ -92,7 +92,7 @@ const checkUnique = async function(user, parameter, value) {
  * Get a list of all users
  * @param {*} user 
  */
-const listAll = async function(user, skip = 0, limit = 0) {
+const getUsers = async function(user, skip = 0, limit = 0) {
 	if (!user) return new Error('No user logged in');
 
 	const authorized = await permission.checkPermission(user, ['user:view-users']);
@@ -630,7 +630,7 @@ export default {
 	getUserByEmail,
 	getMe,
 	checkUnique,
-	listAll,
+	getUsers,
 	checkUserPermission,
 	addPermission,
 	removePermission,
