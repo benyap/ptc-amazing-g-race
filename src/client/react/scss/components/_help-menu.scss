@@ -5,6 +5,16 @@
 		margin: 1rem;
 		margin-top: -3.6rem;
 		float: right;
+		display: flex;
+		align-items: center;
+
+		.pt-button.pt-loading {
+			padding: 0;
+		}
+		
+		.refresh-loading {
+			margin-right: 0.5rem;
+		}
 	}
 }
 
