@@ -1,3 +1,5 @@
+@import '../variables/bp';
+
 #user-summary {
 	display: flex;
 	flex-wrap: wrap;
@@ -6,7 +8,7 @@
 	margin-bottom: 0.5rem;
 	
 	.pt-input-group {
-		@media(max-width: 640px) {
+		@media(max-width: $bp-s) {
 			margin-top: 0.4rem;
 			width: 100%;
 		}
