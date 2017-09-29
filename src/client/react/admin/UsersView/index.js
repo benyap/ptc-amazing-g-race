@@ -6,27 +6,12 @@ import { gql, graphql, compose } from 'react-apollo';
 import { Spinner, Button, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import DateFormat from 'dateformat';
 import { saveState } from '../../../actions/stateActions';
+import { getSetting } from '../../../graphql/setting';
 import ViewError from '../ViewError';
 import UserCard from './UserCard';
 import UserProfile from './UserProfile';
 import UsersSummary from './UsersSummary';
 
-
-const QueryPaymentAmount = gql`
-query GetSetting($key:String!){
-	getSetting(key:$key) {
-		value
-	}
-}`;
-
-const QueryPaymentAmountOptions = {
-	name: 'QueryPaymentAmount',
-	options: {
-		variables: {
-			key: 'payment_amount'
-		}
-	}
-}
 
 const QueryUsers = gql`
 query ListAll($limit:Int, $skip:Int){
@@ -45,17 +30,20 @@ query ListAll($limit:Int, $skip:Int){
 const QueryUsersOptions = {
 	name: 'QueryUsers',
 	options: {
-			variables: {
-				skip: 0,
-				limit: 0
-		}
+		variables: { skip: 0, limit: 0 }
 	}
 }
 
+const QueryPaymentAmountOptions = {
+	name: 'QueryPaymentAmount',
+	options: {
+		variables: { key: 'payment_amount' }
+	}
+}
 
 @compose(
 	graphql(QueryUsers, QueryUsersOptions),
-	graphql(QueryPaymentAmount, QueryPaymentAmountOptions),
+	graphql(getSetting('value'), QueryPaymentAmountOptions),
 )
 @connect()
 @autobind

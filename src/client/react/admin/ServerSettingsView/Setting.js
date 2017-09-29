@@ -2,23 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DateFormat from 'dateformat';
 import { Dialog, Button, Intent } from '@blueprintjs/core';
-import { graphql, gql } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import { autobind } from 'core-decorators';
+import { setSetting } from '../../../graphql/setting';
 import FormInput from '../../../../../lib/react/components/forms/FormInput';
 
 
-const MutationSetSetting = gql`
-mutation SetSetting($key:String!,$value:String!){
-  setSetting(key:$key,value:$value) {
-    ok
-  }
-}`;
-
-const MutationSetSettingOptions = {
-	name: 'MutationSetSetting'
-}
-
-@graphql(MutationSetSetting, MutationSetSettingOptions)
+@graphql(setSetting('ok'), { name: 'MutationSetSetting' })
 @autobind
 class Setting extends React.Component {
 	static propTypes = {

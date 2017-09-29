@@ -1,22 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
-import { graphql, gql } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import { Dialog, Button, Intent } from '@blueprintjs/core';
+import { setSetting } from '../../../graphql/setting';
 
 
-const MutationSetSetting = gql`
-mutation SetSetting($key:String!,$value:String!){
-  setSetting(key:$key,value:$value) {
-    ok
-  }
-}`;
-
-const MutationSetSettingOptions = {
-	name: 'MutationSetSetting'
-}
-
-@graphql(MutationSetSetting, MutationSetSettingOptions)
+@graphql(setSetting('ok'), { name: 'MutationSetSetting' })
 @autobind
 class State extends React.Component {
 	static propTypes = {

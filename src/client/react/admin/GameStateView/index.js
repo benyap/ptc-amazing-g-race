@@ -1,23 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
-import { gql, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import { Spinner } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import * as GameState from './gameStates';
 import State from './State';
 import ViewError from '../ViewError';
 import RefreshBar from '../RefreshBar';
+import { getPublicSetting } from '../../../graphql/setting';
 
 import '../../scss/admin/_gamestate-view.scss';
 
-
-const QueryRaceState = gql`
-query GetPublicSetting($key:String!){
-  getPublicSetting(key:$key) {
-    value
-  }
-}`
 
 const QueryRaceStateOptions = {
 	name: 'QueryRaceState',
@@ -27,7 +21,7 @@ const QueryRaceStateOptions = {
 	}
 }
 
-@graphql(QueryRaceState, QueryRaceStateOptions)
+@graphql(getPublicSetting('value'), QueryRaceStateOptions)
 @connect()
 @autobind
 class GameStateView extends React.Component {
