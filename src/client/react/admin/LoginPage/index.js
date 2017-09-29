@@ -65,9 +65,10 @@ class LoginPage extends React.Component {
 
 	render() {
 		if (this.props.authenticated && this.props.admin) {
+			let { next, location } = this.props;
 			return <Redirect to={{
-					pathname: this.props.next,
-					state: { origin: this.props.location.state.origin }
+					pathname: next,
+					state: { origin: location.state ? location.state.origin : '' }
 				}}/>
 		}
 		else {
