@@ -1,7 +1,8 @@
 import React from 'react';
 import { FocusStyleManager } from "@blueprintjs/core";
-import { gql, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import { LoadingPage, FallbackPage } from './pages';
+import { getPublicSetting } from '../graphql/setting';
 import AppContainer from '../../../lib/react/components/AppContainer';
 import Promotion from './stages/Promotion';
 import Registration from './stages/Registration';
@@ -13,22 +14,12 @@ import './scss/main.scss';
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
-const QueryRaceState = gql`
-query GetPublicSetting($key:String!){
-  getPublicSetting(key:$key) {
-    value
-  }
-}`
-
 const QueryRaceStateOptions = {
 	name: 'QueryRaceState',
-	options: {
-		variables: { key: 'race_state' }
-	}
+	options: { variables: { key: 'race_state' } }
 }
 
-
-@graphql(QueryRaceState, QueryRaceStateOptions)
+@graphql(getPublicSetting('value'), QueryRaceStateOptions)
 class Root extends React.Component {
 	render() {
 		if (!this.props.QueryRaceState.loading) {

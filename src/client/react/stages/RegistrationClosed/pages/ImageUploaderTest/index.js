@@ -1,17 +1,11 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
 import { Button } from '@blueprintjs/core';
-import { compose, graphql, gql } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
+import { getProtectedSetting } from '../../../../../graphql/setting';
 import ImageUploader from '../../../../../../../lib/react/components/ImageUploader';
 import S3 from 'aws-sdk/clients/s3'
 
-
-const QueryGetProtectedSetting = gql`
-query GetProtectedSetting($key:String!){
-	getProtectedSetting(key:$key) {
-		value
-	}
-}`
 
 const QueryAWSKeyOptions = {
 	name: 'QueryAWSKey',
@@ -29,9 +23,9 @@ const QueryAWSRegionOptions = {
 }
 
 @compose(
-	graphql(QueryGetProtectedSetting, QueryAWSKeyOptions),
-	graphql(QueryGetProtectedSetting, QueryAWSSecretOptions),
-	graphql(QueryGetProtectedSetting, QueryAWSRegionOptions)
+	graphql(getProtectedSetting('value'), QueryAWSKeyOptions),
+	graphql(getProtectedSetting('value'), QueryAWSSecretOptions),
+	graphql(getProtectedSetting('value'), QueryAWSRegionOptions)
 )
 @autobind
 class ImageUploaderTest extends React.Component {
