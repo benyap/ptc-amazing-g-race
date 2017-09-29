@@ -2,8 +2,9 @@ var webpack = require('webpack');
 
 module.exports = {
 	entry: {
-		'main': ['babel-polyfill', './src/client/main.js'],
-		'admin': ['babel-polyfill', './src/client/admin.js']
+		main: ['babel-polyfill', './src/client/main.js'],
+		admin: ['babel-polyfill', './src/client/admin.js'],
+		vendor: ['react']
 	},
 	module: {
 		rules: [
@@ -44,6 +45,9 @@ module.exports = {
 			'process.env':{
 				'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
 			}
+		}),
+		new webpack.optimize.CommonsChunkPlugin({
+			name: 'vendor'
 		})
 	]
 };
