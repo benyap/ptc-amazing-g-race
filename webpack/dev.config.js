@@ -5,7 +5,10 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
 	entry: {
+		main: './src/client/main.js',
+		admin: './src/client/admin.js',
 		vendor: [
+			'@blueprintjs/core',
 			'axios',
 			'aws-sdk',
 			'babel-polyfill',
@@ -29,11 +32,8 @@ module.exports = {
 			'redux-promise-middleware', 
 			'redux-storage', 
 			'redux-storage-engine-localforage', 
-			'redux-thunk', 
-			'@blueprintjs/core'
-		],
-		main: ['babel-polyfill', './src/client/main.js'],
-		admin: ['babel-polyfill', './src/client/admin.js']
+			'redux-thunk' 
+		]
 	},
 	module: {
 		rules: [
