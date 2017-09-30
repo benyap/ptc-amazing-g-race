@@ -10,6 +10,7 @@ import RegistrationClosed from './stages/RegistrationClosed';
 import Race from './stages/Race';
 
 import './scss/main.scss';
+import '../assets/favicon.ico';
 
 
 FocusStyleManager.onlyShowFocusOnTabs();
