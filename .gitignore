@@ -61,8 +61,4 @@ typings/
 dist/
 
 # ignore build files in public folder
-public/*.min.js
-public/*.eot
-public/*.ttf
-public/*.woff
-public/*.otf
+public/
