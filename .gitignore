@@ -62,3 +62,6 @@ dist/
 
 # ignore build files in public folder
 public/
+
+# ignore generated stats file
+stats.json
