@@ -1,82 +1,94 @@
 import React from 'react';
+import axios from 'axios';
+import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import { Button } from '@blueprintjs/core';
-import { compose, graphql } from 'react-apollo';
-import { getProtectedSetting } from '../../../../../graphql/setting';
+import API from '../../../../../API';
 import ImageUploader from '../../../../../../../lib/react/components/ImageUploader';
-import S3 from 'aws-sdk/clients/s3'
 
 
-const QueryAWSKeyOptions = {
-	name: 'QueryAWSKey',
-	options: { variables: { key: 'aws_user_id' } }
+const mapStateToProps = (state, ownProps) => {
+	return { access: state.auth.tokens.access }
 }
 
-const QueryAWSSecretOptions = {
-	name: 'QueryAWSSecret',
-	options: { variables: { key: 'aws_user_secret' } }
-}
-
-const QueryAWSRegionOptions = {
-	name: 'QueryAWSRegion',
-	options: { variables: { key: 'aws_region' } }
-}
-
-@compose(
-	graphql(getProtectedSetting('value'), QueryAWSKeyOptions),
-	graphql(getProtectedSetting('value'), QueryAWSSecretOptions),
-	graphql(getProtectedSetting('value'), QueryAWSRegionOptions)
-)
+@connect(mapStateToProps)
 @autobind
 class ImageUploaderTest extends React.Component {
 	state = {
 		image: null,
-		uploading: false
-	}
-
-	componentDidUpdate() {
-		const unavailable = this.props.QueryAWSKey.loading || this.props.QueryAWSSecret.loading || this.props.QueryAWSRegion.loading;
-		if (!this.s3 && !unavailable) {
-			this.s3 = new S3({
-				accessKeyId: this.props.QueryAWSKey.getProtectedSetting.value,
-				secretAccessKey: this.props.QueryAWSSecret.getProtectedSetting.value,
-				region: this.props.QueryAWSRegion.getProtectedSetting.value
-			});
-		}
+		uploading: false,
+		uploadError: null
 	}
 
 	setImage(image) {
 		this.setState({image: image});
 	}
 
-	uploadFile() {
-		if (this.state.image) {
-			this.setState({uploading: true});
+	async uploadFile() {
+		this.setState({ uploading: true, uploadError: null });
 
-			const params = {
-				Body: this.state.image, 
-				Bucket: 'powertochange-amazing-g-race/uploads/images', 
-				Key: this.state.image.name
+		const mutation =
+		`mutation UploadObject($collection:String!,$key:String!,$name:String!){
+			_uploadObject(collection:$collection,key:$key,name:$name){
+				ok failureMessage
 			}
+		}`;
 
-			this.s3.putObject(params, function(err, data) {
-				this.setState({uploading: false});
+		const variables = { 
+			collection: 'images', 
+			key: this.state.image.name,	// TODO: Use a unique key for this image
+			name: this.state.image.name
+		};
+		const formData = new FormData();
+		formData.append('variables', JSON.stringify(variables));
+		formData.append('file', this.state.image);
+		formData.append('query', mutation);
 
-				// TODO: Handle log to deal with uploaded image here
+		const config = {
+			url: API.api,
+			method: 'POST',
+			timeout: 60000,
+			headers: { 
+				'content-type': 'multipart/form-data',
+				'Authorization': `Bearer ${this.props.access}`
+			},
+			data: formData
+		}
 
-			}.bind(this));
+		try {
+			const result = await axios(config);
+			const { data: { data: { _uploadObject }, errors } } = result;
+
+			if (errors) {
+				this.setState({ uploading: false, uploadError: errors[0].message });
+			}
+			else if (_uploadObject.ok) {
+				this.setState({ uploading: false });
+			}
+			else {
+				this.setState({ uploading: false, uploadError: _uploadObject.failureMessage });
+			}
+		}
+		catch (err) {
+			this.setState({ uploading: false, uploadError: err.toString() });
 		}
 	}
 
 	render() {
-		const unavailable = this.props.QueryAWSKey.loading || this.props.QueryAWSSecret.loading || this.props.QueryAWSRegion.loading;
 		return (
 			<main id='image-uploader-test' className='dashboard'>
 				<div className='content'>
 					<h2>Image uploader test</h2>
+					{ this.state.uploadError ? 
+						<div className='pt-callout pt-intent-danger pt-icon-error'>
+							<h5>Upload error</h5>
+							{this.state.uploadError}
+						</div>
+						:null
+					}
 					<ImageUploader preview showFilesize compress onChange={this.setImage} disabled={this.state.uploading}/>
-					<Button className='pt-fill pt-intent-primary' text={unavailable?'Loading...':'Upload'} onClick={this.uploadFile} 
-						loading={this.state.uploading} disabled={unavailable||!this.state.image}/>
+					<Button className='pt-fill pt-intent-primary' text={'Upload'} onClick={this.uploadFile} 
+						loading={this.state.uploading} disabled={!this.state.image}/>
 				</div>
 			</main>
 		);

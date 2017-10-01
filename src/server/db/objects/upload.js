@@ -10,7 +10,7 @@ import { s3, s3Admin, AWS_S3_UPLOAD_BUCKET } from '../s3';
  * @param {String} collection 
  * @param {String} key 
  */
-const _uploadObject = async function(user, object, collection, key) {
+const _uploadObject = async function(user, object, collection, key, name) {
 	if (!user) return new Error('No user logged in');
 	
 	const authorized = await permission.checkPermission(user, ['user:upload-object']);
@@ -19,8 +19,11 @@ const _uploadObject = async function(user, object, collection, key) {
 	if (!object) return new Error('No object to upload.');
 	if (!collection) return new Error('Collection is required.');
 	if (!key) return new Error('Object key is required.');
+	if (!name) return new Error('The file name is required.');
 	
 	try {
+		let actionString;
+
 		const params = {
 			Bucket: `${AWS_S3_UPLOAD_BUCKET}${collection}`, 
 			Body: object.data, 
@@ -30,35 +33,56 @@ const _uploadObject = async function(user, object, collection, key) {
 		const uploadResult = await s3.putObject(params).promise();
 
 		const db = await connect();
+
+		// Check if the file exists
+		const uploadCheck = await db.collection('uploads').findOne({ collection, key });
 		
-		// Log upload
-		const uploadObject = {
-			key: key,
-			version: uploadResult.VersionId,
-			collection: collection,
-			bucket: params.Bucket,
-			size: object.size,
-			type: object.mimetype,
-			uploadedBy: user.username,
-			lastUpdated: new Date()
+		if (uploadCheck) {
+			// Upload already exists, update the object
+			actionString = 'Update object';
+
+			db.collection('uploads').update(
+				// Selector
+				{ collection, key },
+				// Update
+				{ $set: { version: uploadResult.VersionId, lastUpdated: new Date() } }
+			);
 		}
-		db.collection('uploads').insert(uploadObject);
+		else {
+			// New upload
+			actionString = 'Upload object';
+
+			const uploadObject = {
+				key: key,
+				name: name,
+				version: uploadResult.VersionId,
+				collection: collection,
+				bucket: params.Bucket,
+				size: object.size,
+				type: object.mimetype,
+				uploadedBy: user.username,
+				lastUpdated: new Date()
+			}
+			db.collection('uploads').insert(uploadObject);
+		}
 
 		// Log action
 		const action = {
-			action: 'Upload object',
+			action: actionString,
 			target: key,
 			targetCollection: 'uploads',
 			who: user.username,
 			date: new Date(),
 			infoJSONString: JSON.stringify({
+				key: key,
+				name: name,
 				bucket: params.Bucket,
 				type: object.mimetype,
 				size: object.size
 			})
 		};
 		db.collection('actions').insert(action);
-		
+
 		return {
 			ok: true,
 			action: action

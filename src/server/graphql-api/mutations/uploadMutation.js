@@ -20,6 +20,10 @@ const _uploadObject = {
 		key: {
 			type: new GraphQLNonNull(GraphQLString),
 			description: 'A unique identifier for the object'
+		},
+		name: {
+			type: new GraphQLNonNull(GraphQLString),
+			description: 'The original file name'
 		}
 	},
 	resolve(root, params, ctx, options) {
