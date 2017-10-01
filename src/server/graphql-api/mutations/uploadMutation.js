@@ -28,6 +28,26 @@ const _uploadObject = {
 }
 
 
+const _deleteObject = {
+	type: types.confirmType,
+	description: 'Delete an object from S3',
+	args: {
+		collection: {
+			type: new GraphQLNonNull(GraphQLString),
+			description: 'The collection the object upload belongs to'
+		},
+		key: {
+			type: new GraphQLNonNull(GraphQLString),
+			description: 'A unique identifier for the object'
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.uploadResolver._deleteObject(root, params, ctx, options);
+	}
+}
+
+
 export default {
-	_uploadObject
+	_uploadObject,
+	_deleteObject
 };
