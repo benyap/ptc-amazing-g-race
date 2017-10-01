@@ -10,7 +10,6 @@ module.exports = {
 		vendor: [
 			'@blueprintjs/core',
 			'axios',
-			'aws-sdk',
 			'babel-polyfill',
 			'core-decorators',
 			'core-js',
