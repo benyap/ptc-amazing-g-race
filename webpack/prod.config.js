@@ -8,6 +8,7 @@ module.exports = {
 		main: './src/client/main.js',
 		admin: './src/client/admin.js',
 		vendor: [
+			'@blueprintjs/core',
 			'axios',
 			'babel-polyfill',
 			'core-js',
@@ -22,8 +23,9 @@ module.exports = {
 			'react-dom', 
 			'react-redux', 
 			'react-responsive', 
-			'redux-storage', 
 			'react-router-dom', 
+			'react-transition-group',
+			'redux-storage', 
 			'redux', 
 			'redux-logger', 
 			'redux-promise-middleware', 
