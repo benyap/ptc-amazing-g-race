@@ -5,7 +5,6 @@ import { Link, Redirect } from 'react-router-dom';
 import { Button, Intent } from '@blueprintjs/core';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import ScrollAnimation from 'react-animate-on-scroll';
 import { login } from '../../../actions/authActions';
 import LoginForm from '../../../../../lib/react/components/forms/LoginForm';
 import Authenticated from '../../../../../lib/react/components/utility/Authenticated';
@@ -83,14 +82,7 @@ class Login extends React.Component {
 			return (
 				<main>
 					<Title notAnimated/>
-
-					{this.props.notAnimated ? 
-						content
-						:
-						<ScrollAnimation animateOnce animateIn='fadeInUp' offset={0} duration={0.5}>
-							{content}
-						</ScrollAnimation>
-					}
+					{content}
 				</main>
 			);
 		}
