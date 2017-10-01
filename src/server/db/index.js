@@ -5,6 +5,7 @@ import user from './objects/user';
 import auth from './objects/auth';
 import team from './objects/team';
 import article from './objects/article';
+import upload from './objects/upload';
 
 
 /**
@@ -18,5 +19,6 @@ export default {
 	user,
 	auth,
 	team,
-	article
+	article,
+	upload
 };
