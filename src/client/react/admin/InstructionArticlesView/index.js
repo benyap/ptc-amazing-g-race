@@ -1,6 +1,9 @@
 import React from 'react';
 import autobind from 'core-decorators/es/autobind';
-import { Button, Intent, Spinner, Dialog } from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core/dist/components/button/buttons';
+import { Intent } from '@blueprintjs/core/dist/common/intent';
+import { Spinner } from '@blueprintjs/core/dist/components/spinner/spinner';
+import { Dialog } from '@blueprintjs/core/dist/components/dialog/dialog';
 import { compose, graphql } from 'react-apollo'
 import { getArticles, addArticle } from '../../../graphql/article';
 import RefreshBar from '../RefreshBar';

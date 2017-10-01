@@ -1,6 +1,6 @@
 import React from 'react';
 import Page from './Page';
-import { Spinner } from '@blueprintjs/core';
+import { Spinner } from '@blueprintjs/core/dist/components/spinner/spinner';
 
 import '../../assets/images/logo/brand_white.png';
 

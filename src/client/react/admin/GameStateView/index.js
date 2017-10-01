@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
-import { Spinner } from '@blueprintjs/core';
+import { Spinner } from '@blueprintjs/core/dist/components/spinner/spinner';
 import { connect } from 'react-redux';
 import * as GameState from './gameStates';
 import State from './State';

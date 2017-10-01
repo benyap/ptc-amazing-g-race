@@ -1,7 +1,11 @@
 import React from 'react';
 import autobind from 'core-decorators/es/autobind';
 import { withRouter } from 'react-router-dom';
-import { Position, Spinner, Menu, MenuItem, MenuDivider } from '@blueprintjs/core';
+import { Position } from '@blueprintjs/core/dist/common/position';
+import { Spinner } from '@blueprintjs/core/dist/components/spinner/spinner';
+import { Menu } from '@blueprintjs/core/dist/components/menu/menu';
+import { MenuItem} from '@blueprintjs/core/dist/components/menu/menuItem';
+import { MenuDivider } from '@blueprintjs/core/dist/components/menu/menuDivider';
 import { connect } from 'react-redux';
 import { logout } from '../../../actions/authActions';
 import axios from 'axios';

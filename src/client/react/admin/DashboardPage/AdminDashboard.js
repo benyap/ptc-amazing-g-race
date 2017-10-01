@@ -1,6 +1,7 @@
 import React from 'react';
 import autobind from 'core-decorators/es/autobind';
-import { Tab2, Tabs2 } from '@blueprintjs/core';
+import { Tab2 } from '@blueprintjs/core/dist/components/tabs2/tab2';
+import { Tabs2 } from '@blueprintjs/core/dist/components/tabs2/tabs2';
 import MediaQuery from 'react-responsive';
 import { withRouter } from 'react-router-dom';
 import bp from '../../../../../lib/react/components/utility/bp';

@@ -2,7 +2,8 @@ import React from 'react';
 import autobind from 'core-decorators/es/autobind';
 import { Link } from 'react-router-dom';
 import { graphql } from 'react-apollo';
-import { Button, Spinner } from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core/dist/components/button/buttons';
+import { Spinner } from '@blueprintjs/core/dist/components/spinner/spinner';
 import { getArticles } from '../../../../../graphql/article';
 import InstructionCollapse from './InstructionCollapse';
 

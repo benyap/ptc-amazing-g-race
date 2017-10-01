@@ -1,5 +1,7 @@
 import React from 'react';
-import { Intent, Icon, Spinner } from '@blueprintjs/core';
+import { Icon } from '@blueprintjs/core/dist/components/icon/icon';
+import { Intent } from '@blueprintjs/core/dist/common/intent';
+import { Spinner } from '@blueprintjs/core/dist/components/spinner/spinner';
 
 
 const errorIcon = () => {

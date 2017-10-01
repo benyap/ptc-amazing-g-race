@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Spinner } from '@blueprintjs/core';
+import { Spinner } from '@blueprintjs/core/dist/components/spinner/spinner';
 import { compose, graphql } from 'react-apollo';
 import { getPublicSetting, getProtectedSetting } from '../../../graphql/setting';
 import { getUserByEmail } from '../../../graphql/user';

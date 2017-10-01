@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
-import { Dialog, Button, Intent } from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core/dist/components/button/buttons';
+import { Intent } from '@blueprintjs/core/dist/common/intent';
+import { Dialog } from '@blueprintjs/core/dist/components/dialog/dialog';
 import { setSetting } from '../../../graphql/setting';
 
 

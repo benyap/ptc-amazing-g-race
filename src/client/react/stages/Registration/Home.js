@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Intent } from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core/dist/components/button/buttons';
+import { Intent } from '@blueprintjs/core/dist/common/intent';
 import { connect } from 'react-redux';
 import ScrollAnimation from 'react-animate-on-scroll';
 import Title from '../components/Title';

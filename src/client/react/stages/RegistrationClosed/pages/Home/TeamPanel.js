@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Spinner } from '@blueprintjs/core';
+import { Spinner } from '@blueprintjs/core/dist/components/spinner/spinner';
 
 import '../../../../scss/dashboard/_team-panel.scss';
 

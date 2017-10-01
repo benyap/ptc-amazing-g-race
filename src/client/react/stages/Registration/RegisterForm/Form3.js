@@ -1,7 +1,10 @@
 import React from 'react';
 import autobind from 'core-decorators/es/autobind';
 import { withApollo, gql } from 'react-apollo';
-import { Button, Intent, ProgressBar, Icon } from '@blueprintjs/core';
+import { ProgressBar } from '@blueprintjs/core/dist/components/progress/progressBar';
+import { Icon } from '@blueprintjs/core/dist/components/icon/icon';
+import { Button } from '@blueprintjs/core/dist/components/button/buttons';
+import { Intent } from '@blueprintjs/core/dist/common/intent';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import Validator from '../../../../../../lib/react/components/forms/validation/Validator';
 import NotEmpty from '../../../../../../lib/react/components/forms/validation/functions/NotEmpty';

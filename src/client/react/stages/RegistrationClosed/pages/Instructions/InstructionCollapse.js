@@ -1,6 +1,8 @@
 import React from 'react';
 import autobind from 'core-decorators/es/autobind';
-import { Button, Intent, Collapse } from '@blueprintjs/core';
+import { Intent } from '@blueprintjs/core/dist/common/intent';
+import { Button } from '@blueprintjs/core/dist/components/button/buttons';
+import { Collapse } from '@blueprintjs/core/dist/components/collapse/collapse';
 import MarkdownRenderer from '../../../../../../../lib/react/components/MarkdownRenderer';
 
 import '../../../../scss/components/_instruction-collapse.scss'

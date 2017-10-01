@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
-import { Button } from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core/dist/components/button/buttons';
 import API from '../../../../../API';
 import ImageUploader from '../../../../../../../lib/react/components/ImageUploader';
 
