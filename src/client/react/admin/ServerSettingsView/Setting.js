@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DateFormat from 'dateformat';
+import autobind from 'core-decorators/es/autobind';
 import { Dialog, Button, Intent } from '@blueprintjs/core';
 import { graphql } from 'react-apollo';
-import { autobind } from 'core-decorators';
 import { setSetting } from '../../../graphql/setting';
 import FormInput from '../../../../../lib/react/components/forms/FormInput';
 

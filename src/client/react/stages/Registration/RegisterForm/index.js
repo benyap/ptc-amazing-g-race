@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { ProgressBar, Intent, Icon } from '@blueprintjs/core';

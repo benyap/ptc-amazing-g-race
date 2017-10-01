@@ -1,6 +1,6 @@
 import React from 'react';
+import autobind from 'core-decorators/es/autobind';
 import { Link } from 'react-router-dom';
-import { autobind } from 'core-decorators';
 import { graphql } from 'react-apollo';
 import { Button, Spinner } from '@blueprintjs/core';
 import { getArticles } from '../../../../../graphql/article';

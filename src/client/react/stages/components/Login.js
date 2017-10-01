@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import autobind from 'core-decorators/es/autobind';
 import { Link, Redirect } from 'react-router-dom';
 import { Button, Intent } from '@blueprintjs/core';
-import { autobind } from 'core-decorators';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import ScrollAnimation from 'react-animate-on-scroll';

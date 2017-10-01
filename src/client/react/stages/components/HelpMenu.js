@@ -1,5 +1,5 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 import { withRouter } from 'react-router-dom';
 import { Position, Spinner, Menu, MenuItem, MenuDivider } from '@blueprintjs/core';
 import { connect } from 'react-redux';

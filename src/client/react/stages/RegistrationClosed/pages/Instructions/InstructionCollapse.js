@@ -1,5 +1,5 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 import { Button, Intent, Collapse } from '@blueprintjs/core';
 import MarkdownRenderer from '../../../../../../../lib/react/components/MarkdownRenderer';
 

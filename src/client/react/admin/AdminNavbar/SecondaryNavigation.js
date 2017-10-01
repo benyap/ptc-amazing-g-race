@@ -1,7 +1,7 @@
 import React from 'react';
+import autobind from 'core-decorators/es/autobind';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import API from '../../../API'

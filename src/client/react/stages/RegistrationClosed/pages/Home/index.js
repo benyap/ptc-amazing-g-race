@@ -1,7 +1,7 @@
 import React from 'react';
+import autobind from 'core-decorators/es/autobind';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { autobind } from 'core-decorators';
 import { Spinner, Button } from '@blueprintjs/core';
 import { graphql, withApollo } from 'react-apollo';
 import { getUserByEmail } from '../../../../../graphql/user';

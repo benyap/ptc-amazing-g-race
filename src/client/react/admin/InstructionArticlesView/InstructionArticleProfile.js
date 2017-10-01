@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
-import { autobind } from 'core-decorators';
 import { compose, graphql } from 'react-apollo';
 import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core';
 import { getArticle, setArticleTitle, editArticle, removeArticle } from '../../../graphql/article';

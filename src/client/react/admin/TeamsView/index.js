@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 import { compose, graphql } from 'react-apollo';
 import { Spinner, Button, Intent, Dialog } from '@blueprintjs/core';
 import { getTeams, addTeam } from '../../../graphql/team';

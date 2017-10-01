@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 import FormInput from '../../../../../lib/react/components/forms/FormInput';
 
 import '../../scss/admin/_user-summary.scss';

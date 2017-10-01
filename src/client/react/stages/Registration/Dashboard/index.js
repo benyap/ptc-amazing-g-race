@@ -1,5 +1,5 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { withRouter, Link, Redirect } from 'react-router-dom';

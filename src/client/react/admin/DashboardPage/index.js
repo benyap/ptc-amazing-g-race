@@ -1,5 +1,5 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 import Authenticated from '../../../../../lib/react/components/utility/Authenticated';
 import Kick from './Kick';
 import AdminDashboard from './AdminDashboard';

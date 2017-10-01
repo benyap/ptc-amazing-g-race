@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DateFormat from 'dateformat';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 
 
 @autobind

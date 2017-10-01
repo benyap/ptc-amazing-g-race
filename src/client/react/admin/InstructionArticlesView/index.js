@@ -1,5 +1,5 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 import { Button, Intent, Spinner, Dialog } from '@blueprintjs/core';
 import { compose, graphql } from 'react-apollo'
 import { getArticles, addArticle } from '../../../graphql/article';
