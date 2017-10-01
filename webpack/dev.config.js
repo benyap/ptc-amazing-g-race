@@ -8,13 +8,10 @@ module.exports = {
 		main: './src/client/main.js',
 		admin: './src/client/admin.js',
 		vendor: [
-			'@blueprintjs/core',
 			'axios',
 			'babel-polyfill',
-			'core-decorators',
 			'core-js',
 			'history',
-			'lodash',
 			'lodash.merge',
 			'localforage',
 			'marked',
