@@ -6,11 +6,11 @@ import { s3, AWS_S3_UPLOAD_BUCKET } from '../s3';
 /**
  * Upload a file to s3 inside the specified collection
  * @param {*} user 
+ * @param {*} object 
  * @param {String} collection 
  * @param {String} key 
- * @param {*} object 
  */
-const _uploadObject = async function(user, object, collection, key, callback) {
+const _uploadObject = async function(user, object, collection, key) {
 	if (!user) return new Error('No user logged in');
 	
 	const authorized = await permission.checkPermission(user, ['user:upload-object']);
@@ -26,25 +26,15 @@ const _uploadObject = async function(user, object, collection, key, callback) {
 		Key: `${key}`
 	}
 
-	let upload = await new Promise(
-		resolve => {
-			s3.putObject(params, (err, data) => {
-				resolve({err, data});
-			});
-		}
-	);
-	
-	// If a callback is provided, hand control over to the callback to manage
-	if (callback) { 
-		return callback(upload);
-	}
-	else {
+	try {
+		let uploadResult = await s3.putObject(params).promise();
+
 		const db = await connect();
 
 		// Log upload
 		const uploadObject = {
 			key: key,
-			version: upload.data.VersionId,
+			version: uploadResult.data.VersionId,
 			collection: collection,
 			bucket: params.Bucket,
 			size: object.size,
@@ -74,6 +64,12 @@ const _uploadObject = async function(user, object, collection, key, callback) {
 			action: action
 		}
 	}
+	catch (err) {
+		return new Error(err.toString());
+	}
+}
+
+
 }
 
 
