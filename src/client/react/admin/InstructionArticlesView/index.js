@@ -87,7 +87,7 @@ class InstructionArticlesView extends React.Component {
 
 	render() {
 		let content = null;
-		let { loading, error, getArticles } = this.props.QueryGetArticles;
+		const { loading, error, getArticles } = this.props.QueryGetArticles;
 
 		if (loading) {
 			content = (

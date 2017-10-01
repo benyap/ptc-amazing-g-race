@@ -70,7 +70,7 @@ class RegisterForm extends React.Component {
 			currentStage: 5
 		});
 	
-		let options = {
+		const options = {
 			method: 'POST',
 			url: API.api,
 			data: {
@@ -94,7 +94,7 @@ class RegisterForm extends React.Component {
 		}
 
 		try {
-			let result = await axios(options);
+			const result = await axios(options);
 			if (result.data.data.registerUser.email === this.state.email) {
 				this.setState({ complete: true, loading: false });
 			}

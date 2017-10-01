@@ -53,7 +53,7 @@ class State extends React.Component {
 			if (this.props.state.settings && this.props.state.settings.set) {
 				for (let setting of this.props.state.settings.set) {
 					try {
-						let results = await this.props.MutationSetSetting({
+						await this.props.MutationSetSetting({
 							variables: {
 								key: setting.key,
 								value: setting.value
@@ -77,9 +77,9 @@ class State extends React.Component {
 	}
 
 	render() {
-		let { name, key, settings } = this.props.state;
+		const { name, key } = this.props.state;
 		let modifier = '';
-		if (this.props.currentState===this.props.state.key) modifier = 'current-state';
+		if (this.props.currentState === this.props.state.key) modifier = 'current-state';
 
 		let error = null;
 		if (this.state.error) {

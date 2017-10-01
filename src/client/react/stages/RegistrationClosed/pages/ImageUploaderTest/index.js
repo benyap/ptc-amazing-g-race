@@ -35,7 +35,7 @@ class ImageUploaderTest extends React.Component {
 	}
 
 	componentDidUpdate() {
-		let unavailable = this.props.QueryAWSKey.loading || this.props.QueryAWSSecret.loading || this.props.QueryAWSRegion.loading;
+		const unavailable = this.props.QueryAWSKey.loading || this.props.QueryAWSSecret.loading || this.props.QueryAWSRegion.loading;
 		if (!this.s3 && !unavailable) {
 			this.s3 = new S3({
 				accessKeyId: this.props.QueryAWSKey.getProtectedSetting.value,
@@ -69,7 +69,7 @@ class ImageUploaderTest extends React.Component {
 	}
 
 	render() {
-		let unavailable = this.props.QueryAWSKey.loading || this.props.QueryAWSSecret.loading || this.props.QueryAWSRegion.loading;
+		const unavailable = this.props.QueryAWSKey.loading || this.props.QueryAWSSecret.loading || this.props.QueryAWSRegion.loading;
 		return (
 			<main id='image-uploader-test' className='dashboard'>
 				<div className='content'>

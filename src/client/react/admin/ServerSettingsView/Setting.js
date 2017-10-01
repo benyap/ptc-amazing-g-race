@@ -84,7 +84,7 @@ class Setting extends React.Component {
 
 		this.setState({editLoading: true});
 		try {
-			let results = await this.props.MutationSetSetting({
+			await this.props.MutationSetSetting({
 				variables: {
 					key: this.state.editKey,
 					value: this.state.editValue
@@ -101,7 +101,7 @@ class Setting extends React.Component {
 	}
 
 	render() {
-		let { name, value, values, valueType, modified, modifiedBy } = this.props;
+		const { name, value, values, valueType, modified, modifiedBy } = this.props;
 
 		return (
 			<div id={name} className='pt-card pt-elevation-0 pt-interactive' onClick={this.handleClick(name, value, valueType)}>

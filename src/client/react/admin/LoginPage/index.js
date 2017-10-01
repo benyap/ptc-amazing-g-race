@@ -57,7 +57,7 @@ class LoginPage extends React.Component {
 		}
 		
 		// Send login request to server
-		let result = await axios(config);
+		const result = await axios(config);
 
 		// Return result
 		return result.data.data.adminLogin;
@@ -65,7 +65,7 @@ class LoginPage extends React.Component {
 
 	render() {
 		if (this.props.authenticated && this.props.admin) {
-			let { next, location } = this.props;
+			const { next, location } = this.props;
 			return <Redirect to={{
 					pathname: next,
 					state: { origin: location.state ? location.state.origin : '' }

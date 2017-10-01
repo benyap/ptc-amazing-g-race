@@ -75,7 +75,7 @@ const getMe = async function(user) {
  */
 const checkUnique = async function(user, parameter, value) {
 	const db = await connect();
-	let result = await db.collection('users').findOne({[parameter]: value.toLowerCase()});
+	const result = await db.collection('users').findOne({[parameter]: value.toLowerCase()});
 	if (result) {
 		return {
 			ok: false,
@@ -258,7 +258,7 @@ const registerUser = async function(user, {firstname, lastname, username, studen
 	}
 
 	// Validate parameters
-	let errors = [];
+	const errors = [];
 
 	if (!firstname) errors.push(new Error('First name is required'));
 
@@ -270,7 +270,7 @@ const registerUser = async function(user, {firstname, lastname, username, studen
 	if (!email) errors.push(new Error('Email is required'));
 	else {
 		// Test email with regex
-		let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+		const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 		if (!regex.test(email)) errors.push(new Error('Invalid email'));
 	}
 
@@ -286,7 +286,7 @@ const registerUser = async function(user, {firstname, lastname, username, studen
 
 	if (!mobileNumber) errors.push(new Error('Mobile number is required'));
 	else {
-		let regex = /^([0-9 ]{10,15})$/;
+		const regex = /^([0-9 ]{10,15})$/;
 		if (!regex.test(mobileNumber)) errors.push(new Error('Invalid phone number'));
 	}
 
@@ -355,7 +355,7 @@ const registerUser = async function(user, {firstname, lastname, username, studen
 const getUserActions = async function(user, action, skip = 0, limit = 0) {
 	if (!user) return new Error('No user logged in');
 
-	let findParams = { who: user.username };
+	const findParams = { who: user.username };
 
 	if (limit < 0) return new Error(`Limit value must be non-negative, but received: ${limit}`);
 	
@@ -384,7 +384,7 @@ const getActions = async function(user, username, action, skip = 0, limit = 0) {
 	const authorized = await permission.checkPermission(user, ['leader:view-useractions']);
 	if (authorized !== true) return authorized;
 
-	let findParams = {};
+	const findParams = {};
 	
 	if (action) {
 		const escapedAction = action.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
@@ -397,7 +397,7 @@ const getActions = async function(user, username, action, skip = 0, limit = 0) {
 	const db = await connect();
 
 	if (username) {
-		let userCheck = await db.collection('users').findOne({username});
+		const userCheck = await db.collection('users').findOne({username});
 		if (!userCheck) return new Error(`User \'${username}\' not found`);
 		else findParams.who = username;
 	}
@@ -575,7 +575,7 @@ const _setUserTeam = async function(user, username, teamId) {
 
 	if (result.result.nModified === 1) {
 		// Log action
-		let modifyaction = teamId ? 'Set' : 'Remove';
+		const modifyaction = teamId ? 'Set' : 'Remove';
 		const action = {
 			action: `${modifyaction} user team`,
 			target: username,

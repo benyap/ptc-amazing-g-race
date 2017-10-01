@@ -54,7 +54,7 @@ class Pay extends React.Component {
 	render() {
 		let payment, price; 
 
-		let _price = this.props.QueryPaymentPrice.loading ? 
+		const _price = this.props.QueryPaymentPrice.loading ? 
 			null : this.props.QueryPaymentPrice.getPublicSetting.value;
 		
 		if (_price === null || isNaN(_price)) {

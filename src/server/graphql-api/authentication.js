@@ -14,7 +14,7 @@ const authentication = async function(req, res, next) {
 
 	try {
 		// Verify access token
-		let payload = await jwt.verify(access, process.env.JWT_SECRET);
+		const payload = await jwt.verify(access, process.env.JWT_SECRET);
 
 		// Set req.user to user details
 		if (payload) {
@@ -36,7 +36,7 @@ const authentication = async function(req, res, next) {
  */
 const _getBearer = function(req, headername) {
 	if (req.headers[headername]) {
-		let header = req.headers[headername].split(' ');
+		const header = req.headers[headername].split(' ');
 		if (header[0] === 'Bearer') {
 			return header[1];
 		}

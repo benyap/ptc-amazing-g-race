@@ -54,7 +54,7 @@ class Login extends React.Component {
 		}
 		
 		// Send login request to server
-		let result = await axios(config);
+		const result = await axios(config);
 
 		// Return result
 		return result.data.data.login;

@@ -72,7 +72,7 @@ class HelpMenu extends React.Component {
 		}
 
 		// Send logout request to server
-		let result = await axios(config);
+		const result = await axios(config);
 
 		if (!result.data.data.logout.ok) {
 			console.warn(result.data.data.logout.failureMessage);

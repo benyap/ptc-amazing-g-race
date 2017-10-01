@@ -58,8 +58,8 @@ class Form1 extends React.Component {
 	}
 
 	_validateForm() {
-		let validFirstname = this._validateName()(this.state.firstname);
-		let validLastname = this._validateName()(this.state.lastname);
+		const validFirstname = this._validateName()(this.state.firstname);
+		const validLastname = this._validateName()(this.state.lastname);
 
 		if (validFirstname.ok && validLastname.ok) return true;
 		else return false;

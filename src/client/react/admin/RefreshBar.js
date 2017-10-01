@@ -27,7 +27,7 @@ class RefreshBar extends React.Component {
 	}
 
 	_setLoadingState(loading, lastFetch) {
-		let options = { loading: loading };
+		const options = { loading: loading };
 		if (lastFetch) options.lastFetch = lastFetch;
 		this.setState(options);
 		if (this.props.setLoading) this.props.setLoading(loading);
@@ -72,7 +72,7 @@ class RefreshBar extends React.Component {
 	}
 
 	render() {
-		let { loading, error } = this.props.query;
+		const { loading, error } = this.props.query;
 
 		return (
 			<div className='view-header'>

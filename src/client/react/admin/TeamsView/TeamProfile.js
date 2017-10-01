@@ -164,7 +164,7 @@ class TeamProfile extends React.Component {
 
 	toggleAddUsers() {
 		this.setState((prevState) => {
-			let state = { addUsersDialogOpen: !prevState.addUsersDialogOpen, addUserError: null };
+			const state = { addUsersDialogOpen: !prevState.addUsersDialogOpen, addUserError: null };
 			if (state.addUsersDialogOpen) state.userToAdd = 'NONE';
 			else state.userToAdd = null;
 			return state;
@@ -249,7 +249,7 @@ class TeamProfile extends React.Component {
 		let content = null;
 
 		if (this.props.QueryTeam.getTeam) {
-			let {
+			const {
 				teamName,
 				memberCount,
 				members,

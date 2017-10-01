@@ -168,7 +168,7 @@ class InstructionArticleProfile extends React.Component {
 	}
 
 	render() {
-		let { loading, getArticle } = this.props.QueryGetArticle;
+		const { loading, getArticle } = this.props.QueryGetArticle;
 
 		return (
 			<div id='instruction-article-profile' className='pt-card instruction-article-profile'>

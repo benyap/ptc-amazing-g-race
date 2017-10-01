@@ -19,7 +19,7 @@ class InstructionArticleCard extends React.Component {
 	}
 
 	render() {
-		let { title, modifiedBy, modified, createdBy, created } = this.props.article;
+		const { title, modifiedBy, modified, createdBy, created } = this.props.article;
 		let date;
 		if (modified) date = DateFormat(new Date(modified), 'mmm dd yyyy hh:MM:ss TT');
 		else date = DateFormat(new Date(created), 'mmm dd yyyy hh:MM:ss TT');

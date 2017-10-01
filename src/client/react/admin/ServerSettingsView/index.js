@@ -35,7 +35,7 @@ class ServerSettingsView extends React.Component {
 
 	render() {
 		let content = null;
-		let { loading, error, getSettings } = this.props.QuerySettings;
+		const { loading, error, getSettings } = this.props.QuerySettings;
 
 		if (loading || this.state.loading) {
 			content = (

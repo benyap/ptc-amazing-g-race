@@ -20,7 +20,7 @@ class InstructionCollapse extends React.Component {
 	}
 
 	render() {
-		let { title, content } = this.props.article;
+		const { title, content } = this.props.article;
 
 		return (
 			<div className='instruction-collapse'>

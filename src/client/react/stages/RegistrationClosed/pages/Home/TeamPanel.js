@@ -18,7 +18,7 @@ class TeamPanel extends React.Component {
 
 	render() {
 		if (this.props.team) {
-			let { points, members } = this.props.team;
+			const { points, members } = this.props.team;
 			return (
 				<div id='dashboard-team-panel'>
 					<div className='pt-callout'>

@@ -108,8 +108,8 @@ class UsersView extends React.Component {
 	render() {
 		let content = null;
 		let summary = null;
-		let { loading, error, getUsers } = this.props.QueryUsers;
-		let loadingPayment = this.props.QueryPaymentAmount.loading;
+		const { loading, error, getUsers } = this.props.QueryUsers;
+		const loadingPayment = this.props.QueryPaymentAmount.loading;
 
 		if (loading || loadingPayment || this.state.loading) {
 			content = (
@@ -119,7 +119,7 @@ class UsersView extends React.Component {
 			);
 		}
 		else {
-			let paymentAmount = parseFloat(this.props.QueryPaymentAmount.getSetting.value);
+			const paymentAmount = parseFloat(this.props.QueryPaymentAmount.getSetting.value);
 
 			if (error) {
 				content = <ViewError error={error}/>
@@ -139,18 +139,18 @@ class UsersView extends React.Component {
 					<div>
 						<div className='view-list'>
 							{getUsers.map((user) => {
-								let userCard = (
+								const userCard = (
 									<UserCard 
 										key={user.email} user={user} 
 										paymentAmount={paymentAmount}
 										renderProfile={this.renderProfile}/>
 								);
 								if (this.state.filter.length > 0) {
-									let filter = this.state.filter.toLowerCase();
-									let matchFirst = user.firstname.toLowerCase().indexOf(filter) >= 0;
-									let matchLast = user.lastname.toLowerCase().indexOf(filter) >= 0;
-									let matchUser = user.username.toLowerCase().indexOf(filter) >= 0;
-									let matchUni = user.university.toLowerCase().indexOf(filter) >= 0;
+									const filter = this.state.filter.toLowerCase();
+									const matchFirst = user.firstname.toLowerCase().indexOf(filter) >= 0;
+									const matchLast = user.lastname.toLowerCase().indexOf(filter) >= 0;
+									const matchUser = user.username.toLowerCase().indexOf(filter) >= 0;
+									const matchUni = user.university.toLowerCase().indexOf(filter) >= 0;
 
 									if (matchFirst || matchLast || matchUser || matchUni) {
 										return userCard;

@@ -77,7 +77,7 @@ class Home extends React.Component {
 	}
 
 	refresh() {
-		let { getUserByEmail } = this.props.QueryGetUserByEmail;
+		const { getUserByEmail } = this.props.QueryGetUserByEmail;
 		if (getUserByEmail) {
 			this.refetchTeam(getUserByEmail.teamId);
 		}
@@ -90,7 +90,7 @@ class Home extends React.Component {
 	}
 
 	render() {
-		let { loading, getUserByEmail } = this.props.QueryGetUserByEmail;
+		const { loading, getUserByEmail } = this.props.QueryGetUserByEmail;
 		
 		if (getUserByEmail && getUserByEmail.teamId && !this.state.team && !this.state.teamLoading) {
 			this.refetchTeam(getUserByEmail.teamId);

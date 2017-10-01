@@ -60,7 +60,7 @@ class TeamsView extends React.Component {
 	async submitCreateTeam() {
 		this.setState({ createTeamLoading: true });
 		try {
-			let result = await this.props.MutationCreateTeam({ variables: { teamName: this.state.teamName.trim() } });
+			await this.props.MutationCreateTeam({ variables: { teamName: this.state.teamName.trim() } });
 			this.setState({createTeamLoading: false, createTeamError: null});
 			this.toggleCreateTeamDialog();
 			this.props.QueryGetTeams.refetch();
@@ -75,7 +75,7 @@ class TeamsView extends React.Component {
 
 	render() {
 		let content = null;
-		let { loading, error, getTeams } = this.props.QueryGetTeams;
+		const { loading, error, getTeams } = this.props.QueryGetTeams;
 
 		if (loading) {
 			content = (

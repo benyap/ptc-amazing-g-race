@@ -49,7 +49,7 @@ class SecondaryNavigation extends React.Component {
 		}
 
 		// Send logout request to server
-		let result = await axios(config);
+		const result = await axios(config);
 		this.setState({loading: false});
 		this.props.dispatch(logout(new Date()));
 		

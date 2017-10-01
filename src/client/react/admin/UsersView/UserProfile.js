@@ -83,7 +83,7 @@ class UserProfile extends React.Component {
 	savePaid() {
 		this.setState({ saving: true, error: null });
 
-		let variables = {
+		const variables = {
 			username: this.props.QueryUser.getUserByEmail.username,
 			amount: this.state.paidAmount
 		};
@@ -201,7 +201,7 @@ class UserProfile extends React.Component {
 	}
 
 	render() {
-		let { firstname, lastname, email, university } = this.props.user;
+		const { firstname, lastname, email, university } = this.props.user;
 		let content;
 		let showLoadingIndicator = false;
 		
@@ -210,7 +210,7 @@ class UserProfile extends React.Component {
 		}
 
 		if (this.props.QueryUser.getUserByEmail) {
-			let { 
+			const { 
 				username, mobileNumber, studentID, isAdmin,
 				registerDate, paidAmount, permissions,
 				raceDetails: { 

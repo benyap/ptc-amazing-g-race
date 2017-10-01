@@ -57,7 +57,7 @@ class Dashboard extends React.Component {
 		}
 
 		// Send logout request to server
-		let result = await axios(config);
+		const result = await axios(config);
 
 		if (!result.data.data.logout.ok) {
 			console.warn(result.data.data.logout.failureMessage);
@@ -81,7 +81,7 @@ class Dashboard extends React.Component {
 			);
 
 			if (!this.props.QueryMe.loading) {
-				let { firstname } = this.props.QueryMe.getUserByEmail;
+				const { firstname } = this.props.QueryMe.getUserByEmail;
 
 				content = (
 					<div className='dashboard'>

@@ -34,7 +34,7 @@ class Dashboard extends React.Component {
 			}}/>;
 		}
 
-		let { url } = this.props.match;
+		const { url } = this.props.match;
 
 		return (
 			<div className='pt-dark'>

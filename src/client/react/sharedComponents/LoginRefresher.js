@@ -56,7 +56,7 @@ class LoginRefresh extends React.Component {
 
 		// Send refresh request
 		try {
-			let result = await this.props.MutationAccessRefresh({
+			const result = await this.props.MutationAccessRefresh({
 				variables: { refreshToken: this.props.refreshToken }
 			});
 

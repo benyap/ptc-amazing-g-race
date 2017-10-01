@@ -36,7 +36,7 @@ class GameStateView extends React.Component {
 	render() {
 		let content = null;
 		let currentState = '...';
-		let { loading, error, getSettings } = this.props.QueryRaceState;
+		const { loading, error, getSettings } = this.props.QueryRaceState;
 		
 		if (loading || this.state.loading) {
 			content = (

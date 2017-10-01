@@ -26,8 +26,8 @@ class UserCard extends React.Component {
 	}
 
 	render() {
-		let { firstname, lastname, username, email, university, enabled } = this.props.user;
-		let { paymentAmount } = this.props;
+		const { firstname, lastname, username, email, university, enabled } = this.props.user;
+		const { paymentAmount } = this.props;
 
 		return (
 			<div className='pt-card pt-elevation-0 pt-interactive user-card' onClick={this.openProfile}>
