@@ -10,6 +10,7 @@ import GameStateView from '../GameStateView';
 import ServerSettingsView from '../ServerSettingsView';
 import InstructionArticlesView from '../InstructionArticlesView';
 import S3ExplorerView from '../S3ExplorerView';
+import ChallengesView from '../ChallengesView';
 
 
 @withRouter
@@ -50,8 +51,9 @@ class AdminDashboard extends React.Component {
 				selectedTabId={this.state.selectedTabId} vertical={vertical}>
 				<Tab2 id='users' title='Users' panel={<UsersView shouldRefresh={this.state.selectedTabId==='users'}/>}/>
 				<Tab2 id='teams' title='Teams' panel={<TeamsView shouldRefresh={this.state.selectedTabId==='teams'}/>}/>
+				<Tab2 id='challenges' title='Challenges' panel={<ChallengesView/>}/>
+				<Tab2 id='s3UploadsExplorer' title='Uploads (S3)' panel={<S3ExplorerView shouldRefresh={this.state.selectedTabId==='s3UploadsExplorer'}/>}/>
 				<Tab2 id='instructions' title='Instructions' panel={<InstructionArticlesView shouldRefresh={this.state.selectedTabId==='instructions'}/>}/>
-				<Tab2 id='s3UploadsExplorer' title='Uploads (S3)' panel={<S3ExplorerView/>}/>
 				<Tab2 id='state' title='Game State' panel={<GameStateView shouldRefresh={this.state.selectedTabId==='state'}/>}/>
 				<Tab2 id='server' title='Server' panel={<ServerSettingsView shouldRefresh={this.state.selectedTabId==='server'}/>}/>
 			</Tabs2>
