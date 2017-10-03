@@ -9,6 +9,7 @@ import TeamsView from '../TeamsView';
 import GameStateView from '../GameStateView';
 import ServerSettingsView from '../ServerSettingsView';
 import InstructionArticlesView from '../InstructionArticlesView';
+import S3ExplorerView from '../S3ExplorerView';
 
 
 @withRouter
@@ -19,7 +20,7 @@ class AdminDashboard extends React.Component {
 	}
 
 	views = [
-		'users', 'teams', 'instructions', 'state', 'server'
+		'users', 'teams', 'instructions', 's3UploadsExplorer', 'state', 'server'
 	];
 
 	componentDidMount() {
@@ -50,6 +51,7 @@ class AdminDashboard extends React.Component {
 				<Tab2 id='users' title='Users' panel={<UsersView visible={this.state.selectedTabId==='users'}/>}/>
 				<Tab2 id='teams' title='Teams' panel={<TeamsView visible={this.state.selectedTabId==='teams'}/>}/>
 				<Tab2 id='instructions' title='Instructions' panel={<InstructionArticlesView visible={this.state.selectedTabId==='instructions'}/>}/>
+				<Tab2 id='s3UploadsExplorer' title='S3 Uploads' panel={<S3ExplorerView/>}/>
 				<Tab2 id='state' title='Game State' panel={<GameStateView visible={this.state.selectedTabId==='state'}/>}/>
 				<Tab2 id='server' title='Server' panel={<ServerSettingsView visible={this.state.selectedTabId==='server'}/>}/>
 			</Tabs2>
