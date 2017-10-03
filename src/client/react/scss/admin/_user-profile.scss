@@ -1,21 +1,23 @@
 @import '../variables/bp';
 
-.user-profile.pt-card {
-	padding: 0.8rem;
-	margin-bottom: 1rem;
-	overflow: scroll;
+#dashboard-users {
+	.user-profile.pt-card {
+		padding: 0.8rem;
+		margin-bottom: 1rem;
+		overflow: auto;
+		
+		@media(max-width: $bp-s) {
+			padding: 0.5rem;
+		}
 	
-	@media(max-width: $bp-s) {
-		padding: 0.5rem;
-	}
-
-	h5 {
-		margin-bottom: 0.4rem;
-	}
-
-	ul {
-		margin: 0;
-		padding-left: 0;
-		list-style: none;
+		h5 {
+			margin-bottom: 0.4rem;
+		}
+	
+		ul {
+			margin: 0;
+			padding-left: 0;
+			list-style: none;
+		}
 	}
 }
