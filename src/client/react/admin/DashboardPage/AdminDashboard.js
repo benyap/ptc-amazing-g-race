@@ -12,6 +12,15 @@ import InstructionArticlesView from '../InstructionArticlesView';
 import S3ExplorerView from '../S3ExplorerView';
 import ChallengesView from '../ChallengesView';
 
+const views = [
+	'users', 
+	'teams', 
+	'challenges', 
+	'instructions', 
+	's3UploadsExplorer', 
+	'state', 
+	'server'
+];
 
 @withRouter
 @autobind
@@ -20,9 +29,7 @@ class AdminDashboard extends React.Component {
 		selectedTabId: 'users'
 	}
 
-	views = [
-		'users', 'teams', 'instructions', 's3UploadsExplorer', 'state', 'server'
-	];
+
 
 	componentDidMount() {
 		let path = 'users';
@@ -30,7 +37,7 @@ class AdminDashboard extends React.Component {
 			const regex = /(view=)([a-zA-Z0-9]+)/;
 			const result = regex.exec(this.props.location.state.origin.search);
 	
-			if (result && this.views.indexOf(result[2]) >= 0) {
+			if (result && views.indexOf(result[2]) >= 0) {
 				path = result[2];
 			}
 		}
