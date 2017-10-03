@@ -7,10 +7,16 @@
 	align-items: center;
 	margin-bottom: 0.5rem;
 	
-	.pt-input-group {
+	.user-summary-controls {
+		display: flex;
+		
 		@media(max-width: $bp-s) {
 			margin-top: 0.4rem;
 			width: 100%;
 		}
+	}
+
+	.pt-input-group {
+		width: 100%;
 	}
 }

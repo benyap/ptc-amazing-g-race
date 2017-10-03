@@ -46,7 +46,7 @@ class UsersView extends React.Component {
 		loading: false,
 		refetching: false,
 		viewProfile: null,
-		filter: '',
+		search: '',
 		lastFetch: new Date()
 	}
 
@@ -88,8 +88,8 @@ class UsersView extends React.Component {
 		});
 	}
 
-	filterUsers(filter) {
-		this.setState({filter});
+	searchUsers(search) {
+		this.setState({search});
 	}
 
 	renderHotkeys() {
@@ -132,7 +132,7 @@ class UsersView extends React.Component {
 			else {
 				summary = (
 					<UsersSummary users={getUsers} paymentAmount={paymentAmount} 
-						filterValue={this.state.filter} onFilterChange={this.filterUsers}/>
+						searchValue={this.state.search} onSearchChange={this.searchUsers}/>
 				);
 				
 				content = (
@@ -145,12 +145,12 @@ class UsersView extends React.Component {
 										paymentAmount={paymentAmount}
 										renderProfile={this.renderProfile}/>
 								);
-								if (this.state.filter.length > 0) {
-									const filter = this.state.filter.toLowerCase();
-									const matchFirst = user.firstname.toLowerCase().indexOf(filter) >= 0;
-									const matchLast = user.lastname.toLowerCase().indexOf(filter) >= 0;
-									const matchUser = user.username.toLowerCase().indexOf(filter) >= 0;
-									const matchUni = user.university.toLowerCase().indexOf(filter) >= 0;
+								if (this.state.search.length > 0) {
+									const search = this.state.search.toLowerCase();
+									const matchFirst = user.firstname.toLowerCase().indexOf(search) >= 0;
+									const matchLast = user.lastname.toLowerCase().indexOf(search) >= 0;
+									const matchUser = user.username.toLowerCase().indexOf(search) >= 0;
+									const matchUni = user.university.toLowerCase().indexOf(search) >= 0;
 
 									if (matchFirst || matchLast || matchUser || matchUni) {
 										return userCard;
