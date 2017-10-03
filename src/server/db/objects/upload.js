@@ -1,6 +1,6 @@
 import connect from '../connect';
 import permission from '../permission';
-import { s3, s3Admin, AWS_S3_UPLOAD_BUCKET } from '../s3';
+import { s3, s3Admin, AWS_S3_BUCKET, AWS_S3_UPLOAD_LOCATION } from '../s3';
 
 
 /**
@@ -25,10 +25,15 @@ const _uploadObject = async function(user, object, collection, key, name) {
 		let actionString;
 
 		const params = {
-			Bucket: `${AWS_S3_UPLOAD_BUCKET}${collection}`, 
+			Bucket: `${AWS_S3_BUCKET}/${AWS_S3_UPLOAD_LOCATION}/${collection}`, 
 			Body: object.data, 
-			Key: `${key}`
-		}
+			Key: `${key}`,
+			ServerSideEncryption: 'AES256',
+			Metadata: {
+				username: user.username,
+				collection: collection
+			}
+		};
 
 		const uploadResult = await s3.putObject(params).promise();
 
@@ -110,7 +115,7 @@ const _deleteObject = async function(user, collection, key) {
 
 	try {
 		const params = {
-			Bucket: `${AWS_S3_UPLOAD_BUCKET}${collection}`, 
+			Bucket: `${AWS_S3_BUCKET}/${AWS_S3_UPLOAD_LOCATION}/${collection}`, 
 			Key: `${key}`
 		}
 
