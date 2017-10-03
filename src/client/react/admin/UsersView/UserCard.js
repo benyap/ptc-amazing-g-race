@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import '../../scss/admin/_user-card.scss';
 
 
 @autobind

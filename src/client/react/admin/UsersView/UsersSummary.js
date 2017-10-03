@@ -5,8 +5,6 @@ import FormInput from '../../../../../lib/react/components/forms/FormInput';
 import Filter from './Filter';
 import Search from './Search';
 
-import '../../scss/admin/_user-summary.scss';
-
 
 @autobind
 class UserSummary extends React.Component {

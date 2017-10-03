@@ -9,7 +9,6 @@ import { getUserByEmail, setUserPaidAmount, addPermission, removePermission } fr
 import { saveState } from '../../../actions/stateActions';
 import NotificationToaster from '../NotificationToaster';
 import FormInput from '../../../../../lib/react/components/forms/FormInput';
-import '../../scss/admin/_user-profile.scss';
 
 
 const QueryUserParams = 

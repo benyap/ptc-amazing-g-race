@@ -10,6 +10,8 @@ import InstructionArticleCard from './InstructionArticleCard';
 import InstructionArticleProfile from './InstructionArticleProfile';
 import FormInput from '../../../../../lib/react/components/forms/FormInput';
 
+import '../../scss/admin/_instructions-view.scss';
+
 
 const QueryGetArticlesParams = '_id title created createdBy{username} modified modifiedBy{username}';
 

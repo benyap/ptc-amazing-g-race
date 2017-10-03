@@ -9,7 +9,6 @@ import { saveState } from '../../../actions/stateActions';
 import MarkdownEditor from '../../../../../lib/react/components/MarkdownEditor';
 import NotificationToaster from '../NotificationToaster';
 
-import '../../scss/admin/_instruction-article-profile.scss';
 import '../../scss/components/_instruction-panel.scss';
 
 
@@ -171,7 +170,7 @@ class InstructionArticleProfile extends React.Component {
 		const { loading, getArticle } = this.props.QueryGetArticle;
 
 		return (
-			<div id='instruction-article-profile' className='pt-card instruction-article-profile'>
+			<div className='pt-card instruction-article-profile'>
 				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.toggleConfirmClose} style={{float:'right'}}/>
 				<Button className='pt-minimal' intent={Intent.PRIMARY} text='Save' onClick={this.saveContent} style={{float:'right'}} disabled={!this.state.modified}/>
 				<Button className='pt-minimal' intent={Intent.NONE} text='Delete' onClick={this.toggleConfirmDelete} style={{float:'right'}}/>
