@@ -155,7 +155,33 @@ const _deleteObject = async function(user, collection, key) {
 }
 
 
+/**
+ * List uploaded objects from S3
+ * @param {*} user 
+ * @param {Number} MaxKeys 
+ * @param {String} Prefix 
+ * @param {String} StartAfter 
+ */
+const _listObjectsFromS3 = async function(user, MaxKeys, Prefix, StartAfter) {
+	if (!user) return new Error('No user logged in');
+	
+	const authorized = await permission.checkPermission(user, ['admin:view-objectsFromS3']);
+	if (authorized !== true) return authorized;
+	
+	const params = {
+		Bucket: `${AWS_S3_BUCKET}`,
+		MaxKeys,
+		Prefix: (Prefix?`uploads/${Prefix}`:`uploads/`),
+		Delimiter: '/',
+		StartAfter
+	};
+
+	return await s3Admin.listObjectsV2(params).promise();
+}
+
+
 export default {
 	_uploadObject,
-	_deleteObject
+	_deleteObject,
+	_listObjectsFromS3
 }
