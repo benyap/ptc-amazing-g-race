@@ -23,6 +23,7 @@ class Filter extends React.Component {
 							<option value='players'>Players</option>
 							<option value='paid'>Paid</option>
 							<option value='notpaid'>Not paid</option>
+							<option value='noteam'>No team</option>
 						</select>
 					</div>
 				</div>

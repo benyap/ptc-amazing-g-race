@@ -146,6 +146,9 @@ class UsersView extends React.Component {
 				}
 				else return true;
 			}
+			case 'noteam': {
+				return user.teamId === null;
+			}
 			case 'all':
 			default: return true;
 		}
