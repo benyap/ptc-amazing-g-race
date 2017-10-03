@@ -4,6 +4,7 @@ import userQuery from './userQuery';
 import teamQuery from './teamQuery';
 import articleQuery from './articleQuery';
 import uploadQuery from './uploadQuery';
+import challengeQuery from './challengeQuery';
 
 
 export default {
@@ -16,5 +17,6 @@ export default {
 	...userQuery,
 	...teamQuery,
 	...articleQuery,
-	...uploadQuery
+	...uploadQuery,
+	...challengeQuery
 };

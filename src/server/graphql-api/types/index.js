@@ -8,6 +8,7 @@ import teamType from './teamType';
 import articleType from './articleType';
 import s3ObjectListType from './s3ObjectListType';
 import s3ObjectType from './s3ObjectType';
+import challengeType from './challengeType';
 
 
 export default {
@@ -20,5 +21,6 @@ export default {
 	teamType,
 	articleType,
 	s3ObjectListType,
-	s3ObjectType
+	s3ObjectType,
+	challengeType
 };

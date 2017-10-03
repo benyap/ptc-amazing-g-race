@@ -4,6 +4,7 @@ import authMutation from './authMutation';
 import teamMutation from './teamMutation';
 import articleMutation from './articleMutation';
 import uploadMutation from './uploadMutation';
+import challengeMutation from './challengeMutation';
 
 
 export default {
@@ -12,5 +13,6 @@ export default {
 	...authMutation,
 	...teamMutation,
 	...articleMutation,
-	...uploadMutation
+	...uploadMutation,
+	...challengeMutation
 };
