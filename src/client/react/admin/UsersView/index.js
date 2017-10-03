@@ -190,21 +190,19 @@ class UsersView extends React.Component {
 				let displayPaidCount = 0;
 
 				content = (
-					<div>
-						<div className='view-list'>
-							{getUsers.map((user) => {
-								if (this._applyFilterUser(user) && this._applySearchUser(user)) {
+					<div className='view-list'>
+						{getUsers.map((user) => {
+							if (this._applyFilterUser(user) && this._applySearchUser(user)) {
 
-									// Count users and paid users
-									displayCount++;
-									if (user.paidAmount >= paymentAmount) displayPaidCount++;
+								// Count users and paid users
+								displayCount++;
+								if (user.paidAmount >= paymentAmount) displayPaidCount++;
 
-									return (
-										<UserCard key={user.email} user={user} paymentAmount={paymentAmount} renderProfile={this.renderProfile}/>
-									);
-								}
-							})}
-						</div>
+								return (
+									<UserCard key={user.email} user={user} paymentAmount={paymentAmount} renderProfile={this.renderProfile}/>
+								);
+							}
+						})}
 					</div>
 				);
 
