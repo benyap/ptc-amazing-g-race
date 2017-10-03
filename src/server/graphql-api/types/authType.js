@@ -13,7 +13,7 @@ const authType = new GraphQLObjectType({
 	fields: {
 		ok: {
 			type: new GraphQLNonNull(GraphQLBoolean),
-			description: 'True if authentication was succesful'
+			description: 'True if authentication was successful'
 		},
 		message: {
 			type: new GraphQLNonNull(GraphQLString),
