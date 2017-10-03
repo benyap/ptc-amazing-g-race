@@ -24,6 +24,10 @@ const QueryGetTeamsOptions = {
 )
 @autobind
 class TeamsView extends React.Component {
+	static propTypes = {
+		shouldRefresh: PropTypes.bool.isRequired
+	}
+
 	state = {
 		viewProfile: null,
 		refetching: false,
@@ -133,7 +137,7 @@ class TeamsView extends React.Component {
 		return (
 			<div id='dashboard-teams' className='dashboard-tab'>
 				<h4>Teams</h4>
-				<RefreshBar query={this.props.QueryGetTeams} disabled={this.state.viewProfile} refetching={this.state.refetching}/>
+				<RefreshBar query={this.props.QueryGetTeams} disabled={this.state.viewProfile} refetching={this.state.refetching} shouldRefresh={this.props.shouldRefresh}/>
 				{content}
 			</div>
 		);

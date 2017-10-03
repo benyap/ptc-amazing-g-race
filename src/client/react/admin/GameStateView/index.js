@@ -26,7 +26,7 @@ const QueryRaceStateOptions = {
 @autobind
 class GameStateView extends React.Component {
 	static propTypes = {
-		visible: PropTypes.bool
+		shouldRefresh: PropTypes.bool
 	}
 
 	state = {
@@ -74,7 +74,7 @@ class GameStateView extends React.Component {
 		return (
 			<div id='dashboard-state' className='dashboard-tab'>
 				<h4>Game State</h4>
-				<RefreshBar query={this.props.QueryRaceState} visible={this.props.visible}/>
+				<RefreshBar query={this.props.QueryRaceState} shouldRefresh={this.props.shouldRefresh}/>
 				{content}
 			</div>
 		);

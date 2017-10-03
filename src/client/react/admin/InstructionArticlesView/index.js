@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { Button, Intent, Spinner, Dialog } from '@blueprintjs/core';
 import { compose, graphql } from 'react-apollo'
@@ -26,6 +27,10 @@ const QueryGetArticlesOptions = {
 )
 @autobind
 class InstructionArticlesView extends React.Component {
+	static propTypes = {
+		shouldRefresh: PropTypes.bool.isRequired
+	}
+
 	state = {
 		viewProfile: null,
 		loading: false,
@@ -151,7 +156,7 @@ class InstructionArticlesView extends React.Component {
 		return (
 			<div id='dashboard-instructions' className='dashboard-tab'>
 				<h4>Instruction Articles</h4>
-				<RefreshBar query={this.props.QueryGetArticles} disabled={this.state.viewProfile} refetching={this.state.refetching}/>
+				<RefreshBar query={this.props.QueryGetArticles} disabled={this.state.viewProfile} refetching={this.state.refetching} shouldRefresh={this.props.shouldRefresh}/>
 				{content}
 			</div>
 		);

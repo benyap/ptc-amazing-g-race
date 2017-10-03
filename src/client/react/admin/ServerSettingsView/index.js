@@ -26,7 +26,7 @@ const QueryGetSettingsOptions = {
 @autobind
 class ServerSettingsView extends React.Component {
 	static propTypes = {
-		visible: PropTypes.bool
+		shouldRefresh: PropTypes.bool
 	}
 
 	state = {
@@ -73,7 +73,7 @@ class ServerSettingsView extends React.Component {
 		return (
 			<div id='dashboard-settings' className='dashboard-tab'>
 				<h4>Server State Settings</h4>
-				<RefreshBar query={this.props.QuerySettings} visible={this.props.visible}/>
+				<RefreshBar query={this.props.QuerySettings} shouldRefresh={this.props.shouldRefresh}/>
 				{content}
 			</div>
 		);

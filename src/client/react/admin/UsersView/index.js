@@ -39,7 +39,7 @@ const QueryPaymentAmountOptions = {
 @HotkeysTarget
 class UsersView extends React.Component {
 	static propTypes = {
-		visible: PropTypes.bool
+		shouldRefresh: PropTypes.bool
 	}
 
 	state = {
@@ -65,7 +65,7 @@ class UsersView extends React.Component {
 	}
 
 	refetchUsers(loading = false) {
-		if (!this.state.viewProfile) {
+		if (!this.state.viewProfile && this.props.shouldRefresh) {
 			if (this.mounted) this.setState({loading, refetching: true});
 			Promise.all([
 				this.props.QueryPaymentAmount.refetch(),
@@ -87,7 +87,7 @@ class UsersView extends React.Component {
 
 	closeProfile() {
 		this.setState({ viewProfile: null }, () => {
-			this.refetchUsers(false);
+			this.refetchUsers();
 		});
 	}
 
@@ -106,7 +106,7 @@ class UsersView extends React.Component {
 					global={true}
 					combo='r'
 					label='Refresh'
-					onKeyDown={() => { if (this.props.visible) this.refetchUsers(false) }}
+					onKeyDown={this.refetchUsers}
 				/>
 			</Hotkeys>
 		);

@@ -15,7 +15,7 @@ class RefreshBar extends React.Component {
 		query: PropTypes.shape({
 			refetch: PropTypes.func.isRequired
 		}).isRequired,
-		visible: PropTypes.bool,
+		shouldRefresh: PropTypes.bool,
 		setLoading: PropTypes.func,
 		refetching: PropTypes.bool,
 		disabled: PropTypes.any
