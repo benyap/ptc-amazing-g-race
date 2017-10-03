@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import FormInput from '../../../../../lib/react/components/forms/FormInput';
+import Filter from './Filter';
 import Search from './Search';
 
 import '../../scss/admin/_user-summary.scss';
@@ -21,11 +22,17 @@ class UserSummary extends React.Component {
 		})).isRequired,
 		paymentAmount: PropTypes.number.isRequired,
 		onSearchChange: PropTypes.func.isRequired,
-		searchValue: PropTypes.string.isRequired
+		searchValue: PropTypes.string.isRequired,
+		onFilterChange: PropTypes.func.isRequired,
+		filterValue: PropTypes.string.isRequired
 	}
 
 	onSearchChange(e) {
 		this.props.onSearchChange(e.target.value);
+	}
+
+	onFilterChange(e) {
+		this.props.onFilterChange(e.target.value);
 	}
 
 	render() {
@@ -46,6 +53,7 @@ class UserSummary extends React.Component {
 			<div id='user-summary' className={'pt-callout ' + intent}>
 				{paidCount} out of {userCount} registered users have paid.
 				<div className='user-summary-controls'>
+					<Filter value={this.props.filterValue} onChange={this.onFilterChange}/>
 					<Search value={this.props.searchValue} onChange={this.onSearchChange}/>
 				</div>
 			</div>

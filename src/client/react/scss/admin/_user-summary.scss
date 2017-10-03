@@ -9,7 +9,7 @@
 	
 	.user-summary-controls {
 		display: flex;
-		
+
 		@media(max-width: $bp-s) {
 			margin-top: 0.4rem;
 			width: 100%;
@@ -18,5 +18,13 @@
 
 	.pt-input-group {
 		width: 100%;
+	}
+
+	.filter {
+		margin-right: 0.5rem;
+		
+		select {
+			padding-left: 1.6rem;
+		}
 	}
 }

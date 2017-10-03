@@ -14,7 +14,7 @@ import UserProfile from './UserProfile';
 import UsersSummary from './UsersSummary';
 
 
-const QueryUserParams = 'firstname lastname username email university enabled paidAmount teamId';
+const QueryUserParams = 'firstname lastname username email university enabled paidAmount teamId isAdmin';
 
 const QueryUsersOptions = {
 	name: 'QueryUsers',
@@ -47,6 +47,7 @@ class UsersView extends React.Component {
 		refetching: false,
 		viewProfile: null,
 		search: '',
+		filter: 'all',
 		lastFetch: new Date()
 	}
 
@@ -92,6 +93,10 @@ class UsersView extends React.Component {
 		this.setState({search});
 	}
 
+	filterUsers(filter) {
+		this.setState({filter});
+	}
+
 	renderHotkeys() {
 		return (
 			<Hotkeys>
@@ -103,6 +108,45 @@ class UsersView extends React.Component {
 				/>
 			</Hotkeys>
 		);
+	}
+
+	_applySearchUser(user) {
+		if (this.state.search.length > 0) {
+			const search = this.state.search.toLowerCase();
+			const matchFirst = user.firstname.toLowerCase().indexOf(search) >= 0;
+			const matchLast = user.lastname.toLowerCase().indexOf(search) >= 0;
+			const matchUser = user.username.toLowerCase().indexOf(search) >= 0;
+			const matchUni = user.university.toLowerCase().indexOf(search) >= 0;
+
+			if (matchFirst || matchLast || matchUser || matchUni) return true;
+			else return false;
+		}
+		else return true;
+	}
+
+	_applyFilterUser(user) {
+		switch (this.state.filter) {
+			case 'admins': {
+				return user.isAdmin;
+			}
+			case 'players': {
+				return !user.isAdmin;
+			}
+			case 'paid': {
+				if (this.props.QueryPaymentAmount.getSetting) {
+					return user.paidAmount >= parseFloat(this.props.QueryPaymentAmount.getSetting.value);
+				}
+				else return true;
+			}
+			case 'notpaid': {
+				if (this.props.QueryPaymentAmount.getSetting) {
+					return user.paidAmount < parseFloat(this.props.QueryPaymentAmount.getSetting.value);
+				}
+				else return true;
+			}
+			case 'all':
+			default: return true;
+		}
 	}
 
 	render() {
@@ -132,31 +176,19 @@ class UsersView extends React.Component {
 			else {
 				summary = (
 					<UsersSummary users={getUsers} paymentAmount={paymentAmount} 
-						searchValue={this.state.search} onSearchChange={this.searchUsers}/>
+						searchValue={this.state.search} onSearchChange={this.searchUsers}
+						filterValue={this.state.filter} onFilterChange={this.filterUsers}/>
 				);
 				
 				content = (
 					<div>
 						<div className='view-list'>
 							{getUsers.map((user) => {
-								const userCard = (
-									<UserCard 
-										key={user.email} user={user} 
-										paymentAmount={paymentAmount}
-										renderProfile={this.renderProfile}/>
-								);
-								if (this.state.search.length > 0) {
-									const search = this.state.search.toLowerCase();
-									const matchFirst = user.firstname.toLowerCase().indexOf(search) >= 0;
-									const matchLast = user.lastname.toLowerCase().indexOf(search) >= 0;
-									const matchUser = user.username.toLowerCase().indexOf(search) >= 0;
-									const matchUni = user.university.toLowerCase().indexOf(search) >= 0;
-
-									if (matchFirst || matchLast || matchUser || matchUni) {
-										return userCard;
-									}
+								if (this._applyFilterUser(user) && this._applySearchUser(user)) {
+									return (
+										<UserCard key={user.email} user={user} paymentAmount={paymentAmount} renderProfile={this.renderProfile}/>
+									);
 								}
-								else return userCard;
 							})}
 						</div>
 					</div>
