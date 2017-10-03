@@ -12,6 +12,8 @@ import ChallengeCard from './ChallengeCard';
 import ChallengeProfile from './ChallengeProfile';
 import NotificationToaster from '../NotificationToaster';
 
+import '../../scss/admin/_challenge-view.scss';
+
 
 const QueryGetAllChallengesOptions = {
 	name: 'QueryGetAllChallenges',

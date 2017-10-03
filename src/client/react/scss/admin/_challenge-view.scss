@@ -1,6 +1,10 @@
 @import '../variables/bp';
 
 #dashboard-challenges {
+	h5 {
+		margin-bottom: 0.4rem;
+	}
+
 	.challenge-profile.pt-card {
 		padding: 0.8rem;
 		margin-bottom: 1rem;
@@ -8,10 +12,6 @@
 		
 		@media(max-width: $bp-s) {
 			padding: 0.5rem;
-		}
-	
-		h5 {
-			margin-bottom: 0.4rem;
 		}
 	}
 }

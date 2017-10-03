@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { Button, Intent, Spinner } from '@blueprintjs/core';
 
-import '../../scss/admin/_challenge-profile.scss';
-
 
 @autobind
 class ChallengeProfile extends React.Component {
