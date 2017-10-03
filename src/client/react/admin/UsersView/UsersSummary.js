@@ -11,16 +11,8 @@ import '../../scss/admin/_user-summary.scss';
 @autobind
 class UserSummary extends React.Component {
 	static propTypes = {
-		users: PropTypes.arrayOf(PropTypes.shape({
-			firstname: PropTypes.string,
-			lastname: PropTypes.string,
-			username: PropTypes.string,
-			email: PropTypes.string,
-			university: PropTypes.string,
-			enabled: PropTypes.bool,
-			paidAmount: PropTypes.number,
-		})).isRequired,
-		paymentAmount: PropTypes.number.isRequired,
+		displayCount: PropTypes.number.isRequired,
+		displayPaidCount: PropTypes.number.isRequired,
 		onSearchChange: PropTypes.func.isRequired,
 		searchValue: PropTypes.string.isRequired,
 		onFilterChange: PropTypes.func.isRequired,
@@ -36,22 +28,12 @@ class UserSummary extends React.Component {
 	}
 
 	render() {
-		// Count users
-		let userCount = 0;
-		let paidCount = 0;
-		this.props.users.forEach((user) => {
-			userCount++;
-			if (user.paidAmount >= this.props.paymentAmount) {
-				paidCount++;
-			}
-		});
-
 		let intent = 'pt-intent-danger';
-		if (paidCount === userCount) intent = 'pt-intent-success';
+		if (this.props.displayPaidCount === this.props.displayCount) intent = 'pt-intent-success';
 		
 		return (
 			<div id='user-summary' className={'pt-callout ' + intent}>
-				{paidCount} out of {userCount} registered users have paid.
+				{this.props.displayPaidCount} out of {this.props.displayCount} users have paid.
 				<div className='user-summary-controls'>
 					<Filter value={this.props.filterValue} onChange={this.onFilterChange}/>
 					<Search value={this.props.searchValue} onChange={this.onSearchChange}/>
