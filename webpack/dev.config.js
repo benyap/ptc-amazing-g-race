@@ -53,8 +53,8 @@ module.exports = {
 				use: ExtractTextPlugin.extract({
 					fallback: 'style-loader',
 					use: [
-						{ loader: 'css-loader', options: { minimize: true } },
-						{ loader: 'sass-loader' }
+						{ loader: 'css-loader?sourceMap', options: { minimize: true } },
+						{ loader: 'sass-loader?sourceMap' }
 					]
 				})
 			},
@@ -80,7 +80,8 @@ module.exports = {
 	plugins: [
 		new CleanWebpackPlugin([
 			'public/css/*.css',
-			'public/js/*.js'
+			'public/js/*.js',
+			'public/js/*.map'
 		],
 		{ root: __dirname + '/..' }),
 
@@ -108,5 +109,6 @@ module.exports = {
 			chunks: ['vendor', 'admin'],
 			template: 'src/client/assets/admin.html'
 		})
-	]
+	],
+	devtool: 'source-map'
 };
