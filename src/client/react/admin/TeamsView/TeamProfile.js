@@ -56,7 +56,9 @@ class TeamProfile extends React.Component {
 	
 	state = {
 		teamName: null,
+		teamNameModified: false,
 		points: null,
+		pointsModified: false,
 		saving: false,
 
 		addUsersDialogOpen: false,
@@ -88,15 +90,15 @@ class TeamProfile extends React.Component {
 	}
 
 	editPoints(value) {
-		this.setState({points: value});
+		this.setState({points: value, pointsModified: true});
 	}
 
 	editName(value) {
-		this.setState({teamName: value});
+		this.setState({teamName: value, teamNameModified: true});
 	}
 
 	confirmPoints(value) {
-		if (value.length > 0) {
+		if (value.length > 0 && this.state.pointsModified) {
 			const regex = /^[-0-9]+(\.|)[0-9]{0,2}$/;
 			if (regex.exec(value)) {
 				this.savePoints();
@@ -107,7 +109,7 @@ class TeamProfile extends React.Component {
 	}
 
 	confirmName(value) {
-		if (value.length > 0) {
+		if (value.length > 0 && this.state.teamNameModified) {
 			this.saveName();
 			return;
 		}
@@ -143,7 +145,7 @@ class TeamProfile extends React.Component {
 				if (result.data[mutationName].ok) {
 					await this.props.QueryTeam.refetch();
 					this.props.dispatch(saveState());
-					if (this._mounted) this.setState({saving: false});
+					if (this._mounted) this.setState({saving: false, teamNameModified: false, pointsModified: false });
 				}
 				else {
 					if (this._mounted) this.setState({saving: false});
