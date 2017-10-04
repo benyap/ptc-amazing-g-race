@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { Button, Intent, Spinner, EditableText, Switch } from '@blueprintjs/core';
+import { Button, Intent, Spinner, EditableText, Switch, Dialog } from '@blueprintjs/core';
 import { graphql } from 'react-apollo';
 import MarkdownEditor from '../../../../../lib/react/components/MarkdownEditor';
 import { getChallenge } from '../../../graphql/challenge';
@@ -38,6 +38,7 @@ class ChallengeProfile extends React.Component {
 		saving: false,
 		loaded: false,
 		modified: false,
+		showConfimClose: false,
 
 		// Editable values
 		key: this.props.challenge.key,
@@ -56,9 +57,22 @@ class ChallengeProfile extends React.Component {
 		modified_passphrase: false,
 		teams: [],
 	}
+	
+	confirmClose() {
+		if (this.state.modified) {
+			this.toggleDialog('ConfirmClose')();
+		}
+		else {
+			this.props.closeProfile();
+		}
+	}
 
-	closeProfile() {
-		this.props.closeProfile();
+	toggleDialog(key) {
+		return () => {
+			this.setState((prevState) => {
+				return { [`show${key}`]: !prevState[`show${key}`] }
+			});
+		}
 	}
 
 	_loadValues(challenge) {
@@ -87,6 +101,7 @@ class ChallengeProfile extends React.Component {
 		}
 	}
 
+
 	render() {
 		const { key, group, title, locked } = this.props.challenge;
 		const { loading, getChallenge } = this.props.QueryGetChallenge;
@@ -107,7 +122,7 @@ class ChallengeProfile extends React.Component {
 
 		return (
 			<div className='pt-card challenge-profile'>
-				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
+				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.confirmClose} style={{float:'right'}}/>
 				<Button className='pt-minimal' intent={Intent.PRIMARY} text='Save' onClick={this.saveContent} style={{float:'right'}} disabled={!this.state.modified}/>
 				<Button className='pt-minimal' intent={Intent.NONE} text='Delete' onClick={this.toggleConfirmDelete} style={{float:'right'}}/>
 				{loading || this.state.saving ? 
@@ -187,6 +202,19 @@ class ChallengeProfile extends React.Component {
 						</div>
 					</div>
 				</div>
+
+				{/* Confirm close dialog */}
+				<Dialog isOpen={this.state.showConfirmClose} onClose={this.toggleDialog('ConfirmClose')} title='Unsaved changes'>
+					<div className='pt-dialog-body'>
+						Are you sure you want to close without saving?
+					</div>
+					<div className='pt-dialog-footer'>
+						<div className='pt-dialog-footer-actions'>
+							<Button intent={Intent.DANGER} className='pt-minimal' text='Close' onClick={this.props.closeProfile}/>
+							<Button intent={Intent.PRIMARY} text='Cancel' onClick={this.toggleDialog('ConfirmClose')}/>
+						</div>
+					</div>
+				</Dialog>
 			</div>
 		);
 	}
