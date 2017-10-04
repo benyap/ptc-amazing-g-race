@@ -162,78 +162,89 @@ class ChallengeProfile extends React.Component {
 			<div className='pt-text-muted' style={{margin:'1rem 0'}}>Deleting challenge...</div>
 		);
 		else {
-			content = (
-				<div>
-					<div className='pt-callout pt-intent-primary pt-icon-info-sign' style={{margin:'1rem 0'}}>
-						<ul style={{margin: '0', padding: '0 0 0 1rem'}}>
-							<li>
-								The <code>key</code> should be a unique identifier for this challenge.
-							</li>
-							<li>
-								Challenges in the same <code>group</code> will be presented as one group to the user.
-							</li>
-							<li>
-								If the challenge is not <code>public</code>, a team can enter the <code>passphrase</code> to unlock the challenge.
-							</li>
-							<li>
-								<code>Locked</code> challenges are viewable but do not accept responses.
-							</li>
-						</ul>
-					</div>
-					<div className='profile-content'>
-						<table className='pt-table pt-striped content'>
-							<tbody>
-								<tr>
-									<td>Key</td>
-									<td><EditableText value={this.state.key} onChange={this.handleChange('key')}/></td>
-								</tr>
-								<tr>
-									<td>Group</td>
-									<td><EditableText value={this.state.group} onChange={this.handleChange('group')}/></td>
-								</tr>
-								<tr>
-									<td>Public</td>
-									<td><Switch checked={this.state.public} onChange={(e)=>{this.handleChange('public')(e.target.value==='on'!==this.state.public)}}/></td>
-								</tr>
-								<tr>
-									<td>Locked</td>
-									<td><Switch checked={this.state.locked} onChange={(e)=>{this.handleChange('locked')(e.target.value==='on'!==this.state.locked)}}/></td>
-								</tr>
-								<tr>
-									<td>Passphrase</td>
-									<td>
-										{ loading ? <span className='pt-text-muted'>Loading...</span> :
-											<EditableText value={this.state.passphrase} onChange={this.handleChange('passphrase')}/>
-										}
-									</td>
-								</tr>
-								<tr>
-									<td>Teams with access</td>
-									<td>
-										{ loading ? <span className='pt-text-muted'>Loading...</span> :
-											<ul>
-												{getChallenge.teams.map((team) => {
-													return <li key={team}>{team}</li>
-												})}
-											</ul>
-										}
-									</td>
-								</tr>
-							</tbody>
-						</table>
-						<div className='content'>
-							<div className='pt-callout pt-intent-primary pt-icon-info-sign'>
-								The information below is presented to users if they have access to the challenge.
-							</div>
-							<div className='instruction-panel markdown-preview'>
-								{ loading ? <div className='pt-text-muted' style={{marginTop:'1rem'}}>Loading description content...</div> :
-									<MarkdownEditor content={this.state.description} onChange={(e)=>{this.handleChange('description')(e.target.value)}}/>
-								}
+			try {
+				content = (
+					<div>
+						<div className='pt-callout pt-intent-primary pt-icon-info-sign' style={{margin:'1rem 0'}}>
+							<ul style={{margin: '0', padding: '0 0 0 1rem'}}>
+								<li>
+									The <code>key</code> should be a unique identifier for this challenge.
+								</li>
+								<li>
+									Challenges in the same <code>group</code> will be presented as one group to the user.
+								</li>
+								<li>
+									If the challenge is not <code>public</code>, a team can enter the <code>passphrase</code> to unlock the challenge.
+								</li>
+								<li>
+									<code>Locked</code> challenges are viewable but do not accept responses.
+								</li>
+							</ul>
+						</div>
+						<div className='profile-content'>
+							<table className='pt-table pt-striped content'>
+								<tbody>
+									<tr>
+										<td>Key</td>
+										<td><EditableText value={this.state.key} onChange={this.handleChange('key')}/></td>
+									</tr>
+									<tr>
+										<td>Group</td>
+										<td><EditableText value={this.state.group} onChange={this.handleChange('group')}/></td>
+									</tr>
+									<tr>
+										<td>Public</td>
+										<td><Switch checked={this.state.public} onChange={(e)=>{this.handleChange('public')(e.target.value==='on'!==this.state.public)}}/></td>
+									</tr>
+									<tr>
+										<td>Locked</td>
+										<td><Switch checked={this.state.locked} onChange={(e)=>{this.handleChange('locked')(e.target.value==='on'!==this.state.locked)}}/></td>
+									</tr>
+									<tr>
+										<td>Passphrase</td>
+										<td>
+											{ loading ? <span className='pt-text-muted'>Loading...</span> :
+												<EditableText value={this.state.passphrase} onChange={this.handleChange('passphrase')}/>
+											}
+										</td>
+									</tr>
+									<tr>
+										<td>Teams with access</td>
+										<td>
+											{ loading ? <span className='pt-text-muted'>Loading...</span> :
+												<ul>
+													{getChallenge.teams.map((team) => {
+														return <li key={team}>{team}</li>
+													})}
+												</ul>
+											}
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div className='content'>
+								<div className='pt-callout pt-intent-primary pt-icon-info-sign'>
+									The information below is presented to users if they have access to the challenge.
+								</div>
+								<div className='instruction-panel markdown-preview'>
+									{ loading ? <div className='pt-text-muted' style={{marginTop:'1rem'}}>Loading description content...</div> :
+										<MarkdownEditor content={this.state.description} onChange={(e)=>{this.handleChange('description')(e.target.value)}}/>
+									}
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			);
+				);
+			}
+			catch (err) {
+				setTimeout(() => {
+					NotificationToaster.show({
+						intent: Intent.DANGER,
+						message: err.toString()
+					});
+					this.props.closeProfile();
+				}, 0);
+			}
 		}
 
 		return (
