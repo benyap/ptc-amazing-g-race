@@ -197,16 +197,29 @@ const getChallenges = async function(user) {
 const getChallenge = async function(user, key) {
 	if (!user) return new Error('No user logged in');
 	
-	const authorized = await permission.checkPermission(user, ['user:view-challenges']);
-	if (authorized !== true) return authorized;
+	let isAdmin = false;
+
+	const adminAuthorized = await permission.checkPermission(user, ['admin:view-allchallenges']);
+	if (adminAuthorized == true) isAdmin = true;
+
+	if (!isAdmin) {
+		const authorized = await permission.checkPermission(user, ['user:view-challenges']);
+		if (authorized !== true) return authorized;
+	}
 	
 	const db = await connect();
 	
 	const userProfile = await db.collection('users').findOne({username: user.username});
-	return db.collection('challenges').findOne({ 
-		key,
-		$or: [{ teams: userProfile.teamId.toString() }, { public: true }]		
-	});
+	
+	if (isAdmin) {
+		return db.collection('challenges').findOne({ key });
+	}
+	else {
+		return db.collection('challenges').findOne({ 
+			key,
+			$or: [{ teams: userProfile.teamId.toString() }, { public: true }]
+		});
+	}
 }
 
 
