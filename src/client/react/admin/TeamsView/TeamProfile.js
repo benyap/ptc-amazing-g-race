@@ -308,6 +308,7 @@ class TeamProfile extends React.Component {
 		return (
 			<div id='team-profile' className='pt-card team-profile'>
 				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
+				<Button className='pt-minimal' intent={Intent.NONE} text='Delete' onClick={this.toggleRemoveTeam} style={{float:'right'}}/>
 				{this.props.QueryTeam.loading || this.state.saving ? 
 					<div style={{float:'right'}}>
 						<Spinner className='pt-small'/>
@@ -324,7 +325,6 @@ class TeamProfile extends React.Component {
 						this.props.team.teamName
 					}
 					<Button className='pt-minimal action-button' iconName='new-person' intent={Intent.PRIMARY} onClick={this.toggleAddUsers}/>
-					<Button className='pt-minimal action-button' iconName='remove' intent={Intent.DANGER} onClick={this.toggleRemoveTeam}/>
 				</b></h4>
 
 				<div className='manage'>
