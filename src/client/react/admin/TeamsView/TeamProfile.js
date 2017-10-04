@@ -248,7 +248,18 @@ class TeamProfile extends React.Component {
 	render() {
 		let content = null;
 
-		if (this.props.QueryTeam.getTeam) {
+		if (this.props.QueryTeam.error) {
+			if (this._mounted) {
+				setTimeout(() => {
+					this.props.closeProfile();
+					NotificationToaster.show({
+						intent: Intent.DANGER,
+						message: this.props.QueryTeam.error.toString()
+					});
+				}, 0);
+			}
+		}
+		else if (this.props.QueryTeam.getTeam) {
 			const {
 				teamName,
 				memberCount,
