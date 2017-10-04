@@ -26,7 +26,7 @@ class ChallengeCard extends React.Component {
 		let icon = 'pt-icon-lock ';
 		
 		if (this.props.challenge.public) {
-			icon = 'pt-icon-unlock ';
+			icon = 'pt-icon-globe ';
 		}
 
 		if (locked) {
