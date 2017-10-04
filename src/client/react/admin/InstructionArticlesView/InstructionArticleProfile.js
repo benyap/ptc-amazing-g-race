@@ -172,9 +172,9 @@ class InstructionArticleProfile extends React.Component {
 
 		return (
 			<div className='pt-card instruction-article-profile'>
-				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.toggleConfirmClose} style={{float:'right'}}/>
+				<Button className='pt-minimal' intent={Intent.NONE} text='Close' onClick={this.toggleConfirmClose} style={{float:'right'}}/>
 				<Button className='pt-minimal' intent={Intent.PRIMARY} text='Save' onClick={this.saveContent} style={{float:'right'}} disabled={!this.state.modified}/>
-				<Button className='pt-minimal' intent={Intent.NONE} text='Delete' onClick={this.toggleConfirmDelete} style={{float:'right'}}/>
+				<Button className='pt-minimal' intent={Intent.DANGER} text='Delete' onClick={this.toggleConfirmDelete} style={{float:'right'}}/>
 				{loading || this.state.saving ? 
 					<div style={{float:'right'}}>
 						<Spinner className='pt-small'/>

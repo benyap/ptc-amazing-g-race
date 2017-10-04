@@ -314,7 +314,7 @@ class UserProfile extends React.Component {
 
 		return (
 			<div className='pt-card user-profile'>
-				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
+				<Button className='pt-minimal' intent={Intent.NONE} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
 				{showLoadingIndicator ? 
 					<div style={{float:'right'}}>
 						<Spinner className='pt-small'/>
