@@ -61,7 +61,7 @@ const deleteChallenge = {
 		}
 	},
 	resolve(root, params, ctx, options) {
-		return resolvers.challengeResolver.removeTeamFromUnlocked(root, params, ctx, options);
+		return resolvers.challengeResolver.deleteChallenge(root, params, ctx, options);
 	}
 };
 
