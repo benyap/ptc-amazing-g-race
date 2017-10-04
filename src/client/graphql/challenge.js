@@ -31,10 +31,17 @@ const getAllChallenges = (params) => {
 //	MUTATIONS
 // ===========
 
+const deleteChallenge = (params) => {
+	return gql`
+	mutation DeleteChallenge($key:String!){
+		deleteChallenge(key:$key){ ${params} }
+	}`;
+}
 
 
 export {
 	getChallenge,
 	getChallenges,
-	getAllChallenges
+	getAllChallenges,
+	deleteChallenge
 };

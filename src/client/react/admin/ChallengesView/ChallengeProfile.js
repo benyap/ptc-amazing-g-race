@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { Button, Intent, Spinner, EditableText, Switch, Dialog } from '@blueprintjs/core';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
+import { getChallenge, deleteChallenge } from '../../../graphql/challenge';
+import NotificationToaster from '../NotificationToaster';
 import MarkdownEditor from '../../../../../lib/react/components/MarkdownEditor';
-import { getChallenge } from '../../../graphql/challenge';
 
 import '../../scss/components/_instruction-panel.scss';
 import '../../scss/admin/_markdown-preview.scss';
@@ -20,7 +21,10 @@ const QueryGetChallengeOptions = {
 	}
 }
 
-@graphql(getChallenge('group type public passphrase title description locked teams'), QueryGetChallengeOptions)
+@compose(
+	graphql(getChallenge('group type public passphrase title description locked teams'), QueryGetChallengeOptions),
+	graphql(deleteChallenge('ok'), { name: 'MutationDeleteChallenge' })
+)
 @autobind
 class ChallengeProfile extends React.Component {
 	static propTypes = {
@@ -34,6 +38,14 @@ class ChallengeProfile extends React.Component {
 		closeProfile: PropTypes.func.isRequired
 	}
 
+	componentDidMount() {
+		this._mounted = true;
+	}
+
+	componentWillUnmount() {
+		this._mounted = false;
+	}
+
 	state = {
 		saving: false,
 		loaded: false,
@@ -41,6 +53,7 @@ class ChallengeProfile extends React.Component {
 		showConfimClose: false,
 		showConfirmDelete: false,
 		deleteLoading: false,
+		deleteError: null,
 
 		// Editable values
 		key: this.props.challenge.key,
@@ -59,7 +72,7 @@ class ChallengeProfile extends React.Component {
 		modified_passphrase: false,
 		teams: [],
 	}
-	
+
 	confirmClose() {
 		if (this.state.modified) {
 			this.toggleDialog('ConfirmClose')();
@@ -72,14 +85,30 @@ class ChallengeProfile extends React.Component {
 	toggleDialog(key) {
 		return () => {
 			this.setState((prevState) => {
-				return { [`show${key}`]: !prevState[`show${key}`] }
+				return { [`show${key}`]: !prevState[`show${key}`], deleteError: null }
 			});
 		}
 	}
 
-	submitDeleteChallenge() {
-		this.setState({ deleteLoading: true, modified: false });
-
+	async submitDeleteChallenge() {
+		this.setState({ deleteLoading: true, deleteError: null, modified: false });
+		try {
+			await this.props.MutationDeleteChallenge({
+				variables: { key: this.props.challenge.key }
+			});
+			this.setState({ deleteLoading: false, deleteError: null });
+			this.props.closeProfile();
+		}
+		catch (err) {
+			if (this._mounted && this.state.showConfirmDelete) this.setState({ deleteLoading: false, deleteError: err.toString() });
+			else {
+				this.setState({ deleteLoading: false });
+				NotificationToaster.show({
+					intent: Intent.DANGER,
+					message: err.toString()
+				});
+			}
+		}
 	}
 
 	_loadValues(challenge) {
@@ -240,7 +269,12 @@ class ChallengeProfile extends React.Component {
 				{/* Confirm delete dialog */}
 				<Dialog isOpen={this.state.showConfirmDelete} onClose={this.toggleDialog('ConfirmDelete')} title='Delete challenge'>
 					<div className='pt-dialog-body'>
-						Are you sure you want to delete this challenge? This action is irreversible.
+						{ this.state.deleteError ? 
+							<div className='pt-callout pt-intent-danger pt-icon-error'>
+								{ this.state.deleteError }
+							</div> 
+							: 'Are you sure you want to delete this challenge? This action is irreversible.'
+						}
 					</div>
 					<div className='pt-dialog-footer'>
 						<div className='pt-dialog-footer-actions'>
