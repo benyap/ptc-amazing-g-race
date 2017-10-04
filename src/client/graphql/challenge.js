@@ -31,6 +31,15 @@ const getAllChallenges = (params) => {
 //	MUTATIONS
 // ===========
 
+const createChallenge = (params) => {
+	return gql`
+	mutation CreateChallenge($key:String!,$group:String!,$type:String!,$passphrase:String,$title:String,$description:String){
+		createChallenge(key:$key,group:$group,type:$type,passphrase:$passphrase,title:$title,description:$description){
+			${params}
+		}
+	}`;
+}
+
 const deleteChallenge = (params) => {
 	return gql`
 	mutation DeleteChallenge($key:String!){
@@ -43,5 +52,6 @@ export {
 	getChallenge,
 	getChallenges,
 	getAllChallenges,
+	createChallenge,
 	deleteChallenge
 };
