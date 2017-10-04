@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import DateFormat from 'dateformat';
 import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
-import { Button, Spinner, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
+import { Button, Intent, Spinner, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import { saveState } from '../../actions/stateActions';
+import NotificationToaster from './NotificationToaster';
 
 
 @connect()
@@ -52,8 +53,12 @@ class RefreshBar extends React.Component {
 					if (this.mounted) this._setLoadingState(false, new Date());
 					this.props.dispatch(saveState());
 				})
-				.catch(() => {
+				.catch((err) => {
 					if (this.mounted) this._setLoadingState(false);
+					NotificationToaster.show({
+						intent: Intent.DANGER,
+						message: err.toString()	
+					});
 				});
 		}
 	}
