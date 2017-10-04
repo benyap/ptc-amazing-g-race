@@ -111,7 +111,7 @@ class TeamProfile extends React.Component {
 			this.saveName();
 			return;
 		}
-		this.setState({points: this.props.QueryTeam.getTeam.teamName});
+		this.setState({teamName: this.props.QueryTeam.getTeam.teamName});
 	}
 
 	savePoints() {
