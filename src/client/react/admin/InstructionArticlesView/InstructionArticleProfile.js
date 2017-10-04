@@ -185,7 +185,8 @@ class InstructionArticleProfile extends React.Component {
 					<EditableText value={this.state.titleText} onChange={this.editTitle} onConfirm={this.confirmTitle}/>
 				</b></h4>
 				
-					{ loading ? null:
+					{ loading ? 
+						<div className='pt-text-muted' style={{margin:'1rem 0'}}>Loading content...</div>:
 						<div className='markdown-preview instruction-panel'>
 							<MarkdownEditor content={this.state.content || this.props.QueryGetArticle.getArticle.content} onChange={this.editContent}/>
 						</div>
