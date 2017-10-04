@@ -9,6 +9,9 @@ $icon-font-path: "~@blueprintjs/core/resources/icons";
 // Import animate.css
 @import '../../../../node_modules/animate.css/animate.min.css';
 
+@import 'variables/fonts';
+@import 'fonts/fonts';
+
 html, body {
 	min-width: 320px;
 	font-weight: 200;

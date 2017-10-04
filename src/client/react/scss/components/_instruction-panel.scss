@@ -1,12 +1,6 @@
 @import '../../scss/variables/colours';
-@import '../../scss/variables/fonts';
 
 .instruction-panel {
-	.markdown.input {
-		textarea {
-			font-family: $mono-font;
-		}
-	}
 
 	.markdown.output.markdown-content {
 		color: white;

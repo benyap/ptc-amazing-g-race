@@ -1,4 +1,4 @@
-@import '../fonts/remote-fonts';
+@import '../fonts/fonts';
 @import '../variables/fonts';
 
 .markdown-preview {
@@ -9,5 +9,11 @@
 		font-weight: 200;
 		background: rgba(0,0,0,0.8);
 		font-family: $theme-font, sans-serif;
+	}
+
+	.markdown.editor .markdown.input {
+		textarea {
+			font-family: $mono-font, monospace;
+		}
 	}
 }
