@@ -1,0 +1,13 @@
+@import '../fonts/remote-fonts';
+@import '../variables/fonts';
+
+.markdown-preview {
+	.markdown.output.markdown-content {
+		margin: auto;
+		margin-bottom: 1rem;
+		max-width: 20rem;
+		font-weight: 200;
+		background: rgba(0,0,0,0.8);
+		font-family: $theme-font, sans-serif;
+	}
+}

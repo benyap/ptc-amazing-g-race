@@ -10,6 +10,7 @@ import MarkdownEditor from '../../../../../lib/react/components/MarkdownEditor';
 import NotificationToaster from '../NotificationToaster';
 
 import '../../scss/components/_instruction-panel.scss';
+import '../../scss/admin/_markdown-preview.scss';
 
 
 const QueryGetArticleParams = 'title content modified modifiedBy{username}';
@@ -185,7 +186,7 @@ class InstructionArticleProfile extends React.Component {
 				</b></h4>
 				
 					{ loading ? null:
-						<div className='instruction-panel'>
+						<div className='markdown-preview instruction-panel'>
 							<MarkdownEditor content={this.state.content || this.props.QueryGetArticle.getArticle.content} onChange={this.editContent}/>
 						</div>
 					}
