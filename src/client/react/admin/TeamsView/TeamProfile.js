@@ -322,10 +322,13 @@ class TeamProfile extends React.Component {
 					</div>
 					<div className='manage-item'>
 						<span>Points:&nbsp;</span>
-						<EditableText selectAllOnFocus 
-							value={this.state.points} 
-							onChange={this.editPoints} 
-							onConfirm={this.confirmPoints}/>
+						{ this.props.QueryTeam.getTeam ? 
+							<EditableText selectAllOnFocus 
+								value={this.state.points} 
+								onChange={this.editPoints} 
+								onConfirm={this.confirmPoints}/>
+							: <span className='pt-text-muted'>Loading...</span>
+						}
 					</div>
 				</div>
 
