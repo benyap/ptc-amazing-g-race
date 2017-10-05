@@ -1,0 +1,74 @@
+@import '../../../scss/variables/bp';
+
+#admin-dashboard {
+	@media (min-width: $bp-s) {
+		margin-right: 1rem;
+	}
+
+	.mobile-tabs {
+		& > .pt-tab-list {
+			margin: 0.6rem;
+			overflow-x: scroll;
+			border-top: solid 1px lightgray;
+			border-bottom: solid 1px lightgray;
+		}
+
+		.pt-tab-panel {
+			margin-top: 0.3rem;
+		}
+	}
+
+	& > .pt-tab-list {
+		margin-right: 1rem;
+	}
+
+	.pt-tab-panel {
+		width: 100%;
+		height: 100%;
+		padding-left: 0;
+	}
+
+	.dashboard-tab {
+		margin: 0 1rem 1rem 1rem;
+
+		.loading-spinner {
+			margin-top: 20vh;
+			width: 100%;
+			text-align: center;
+
+			.pt-spinner {
+				width: 10%;
+				min-width: 100px;
+				display: inline-block;
+			}
+		}
+
+		.pt-non-ideal-state {
+			margin-top: 10vh;
+		}
+
+		.view-list {
+			.pt-card {
+				margin-bottom: 0.5rem;
+				padding: 0.8rem;
+				background-color: #FAFAFA;
+			}
+			margin-bottom: 1rem;
+		}
+	
+		.view-header {
+			display: flex;
+			margin: 0.5rem 0;
+			justify-content: space-between;
+			padding: 0.4rem;
+			border-radius: 0.3rem;
+			border: solid 1px #DDD;
+
+			.fetched {
+				font-size: 0.8rem;
+				margin: auto 0;
+				color: gray;
+			}
+		}	
+	}
+}

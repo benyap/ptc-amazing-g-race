@@ -114,6 +114,10 @@ const refresh = async function(user, refreshToken) {
 					// Options
 					{ multi: true }
 				);
+				return {
+					ok: false,
+					message: 'Invalid refresh token: does not exist'
+				}
 			}
 			else {
 				// Refresh token found
@@ -162,6 +166,12 @@ const refresh = async function(user, refreshToken) {
 				}
 			}
 		}
+		else {
+			return {
+				ok: false,
+				message: 'Invalid refresh token: no payload'
+			}
+		}
 	}
 	catch (e) { 
 		if (e.name === 'TokenExpiredError') {
@@ -171,7 +181,10 @@ const refresh = async function(user, refreshToken) {
 			};
 		}
 		else {
-			return e;
+			return {
+				ok: false,
+				message: e.toString()
+			};
 		}
 	}
 };

@@ -3,13 +3,13 @@ import { FocusStyleManager } from '@blueprintjs/core';
 import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import { loadState } from '../actions/stateActions';
-import { LoadingPage, FallbackPage } from './pages';
+import LoadingPage from './pages/Loading';
 import { getPublicSetting } from '../graphql/setting';
 import AppContainer from '../../../lib/react/components/AppContainer';
-import Promotion from './stages/Promotion';
-import Registration from './stages/Registration';
-import RegistrationClosed from './stages/RegistrationClosed';
-import Race from './stages/Race';
+import Promotion from './user/stages/Promotion';
+import Registration from './user/stages/Registration';
+import RegistrationClosed from './user/stages/RegistrationClosed';
+import Race from './user/stages/Race';
 
 import './scss/main.scss';
 import '../assets/favicon.ico';
