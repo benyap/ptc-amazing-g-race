@@ -78,13 +78,10 @@ module.exports = {
 		publicPath: '/'
 	},
 	plugins: [
-		new CleanWebpackPlugin([
-			'public/css/*.css',
-			'public/css/*.map',
-			'public/js/*.js',
-			'public/js/*.map'
-		],
-		{ root: __dirname + '/..' }),
+		new CleanWebpackPlugin(
+			['public'],
+			{ root: __dirname + '/..' }
+		),
 
 		new webpack.DefinePlugin({
 			'process.env':{
