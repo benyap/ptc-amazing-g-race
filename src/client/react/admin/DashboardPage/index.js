@@ -25,10 +25,7 @@ class DashboardPage extends React.Component {
 				<div>
 					<Authenticated adminOnly hideUnauthenticated>
 						<AdminNavbar/>
-						<main id='admin-dashboard'>
-							<h2 style={{margin: '1rem 0.6rem'}}>Administrator Dashboard</h2>
-							<AdminDashboard/>
-						</main>
+						<AdminDashboard/>
 					</Authenticated>
 				</div>
 			);
