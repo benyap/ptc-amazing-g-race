@@ -42,10 +42,7 @@ class LoginPage extends React.Component {
 				query: 
 				`mutation AdminLogin($email: String!, $password: String!) {
 					adminLogin(email: $email, password: $password) {
-						ok
-						message
-						access_token
-						refresh_token
+						ok message access_token refresh_token
 					}
 				}`
 			}
@@ -60,10 +57,13 @@ class LoginPage extends React.Component {
 
 	render() {
 		const { authenticated, admin } = this.props;
-		if (authenticated && admin) {
-			return (
-				<Redirect to='/admin/dashboard/users'/>
-			);
+		if (authenticated && admin) {			
+			if (this.props.location.state) {
+				return <Redirect to={this.props.location.state}/>;
+			}
+			else {
+				return <Redirect to='/admin/dashboard/users'/>;
+			}
 		}
 		else {
 			return (
@@ -75,8 +75,7 @@ class LoginPage extends React.Component {
 						loginAction={loginAdmin} 
 						authenticationHandler={this.adminLoginHandler}
 						email={this.props.remember&&this.props.email ? this.props.email : null}
-						remember={this.props.remember}
-						next={this.props.location.state ? this.props.location.state : '/admin/dashboard/users'}
+						remember={this.props.remember} preventRedirect
 					/>
 				</main>
 			);
