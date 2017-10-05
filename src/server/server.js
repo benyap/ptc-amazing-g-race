@@ -40,7 +40,7 @@ app.use(morgan('dev'));
 // }
 
 // Busboy body parser middleware
-let busboyBodyParser = require('busboy-body-parser');
+const busboyBodyParser = require('busboy-body-parser');
 app.use(busboyBodyParser());
 
 // Serve static files

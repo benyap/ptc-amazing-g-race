@@ -1,24 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DateFormat from 'dateformat';
+import autobind from 'core-decorators/es/autobind';
 import { Dialog, Button, Intent } from '@blueprintjs/core';
-import { graphql, gql } from 'react-apollo';
-import { autobind } from 'core-decorators';
+import { graphql } from 'react-apollo';
+import { setSetting } from '../../../graphql/setting';
 import FormInput from '../../../../../lib/react/components/forms/FormInput';
 
 
-const MutationSetSetting = gql`
-mutation SetSetting($key:String!,$value:String!){
-  setSetting(key:$key,value:$value) {
-    ok
-  }
-}`;
-
-const MutationSetSettingOptions = {
-	name: 'MutationSetSetting'
-}
-
-@graphql(MutationSetSetting, MutationSetSettingOptions)
+@graphql(setSetting('ok'), { name: 'MutationSetSetting' })
 @autobind
 class Setting extends React.Component {
 	static propTypes = {
@@ -94,7 +84,7 @@ class Setting extends React.Component {
 
 		this.setState({editLoading: true});
 		try {
-			let results = await this.props.MutationSetSetting({
+			await this.props.MutationSetSetting({
 				variables: {
 					key: this.state.editKey,
 					value: this.state.editValue
@@ -111,7 +101,7 @@ class Setting extends React.Component {
 	}
 
 	render() {
-		let { name, value, values, valueType, modified, modifiedBy } = this.props;
+		const { name, value, values, valueType, modified, modifiedBy } = this.props;
 
 		return (
 			<div id={name} className='pt-card pt-elevation-0 pt-interactive' onClick={this.handleClick(name, value, valueType)}>
@@ -132,21 +122,19 @@ class Setting extends React.Component {
 
 				<Dialog isOpen={this.state.editDialogOpen} title={'Edit ' + this.state.editKey}
 					onClose={this.toggleDialog}>
-					<div style={{padding: '1rem'}}>
-						<div className='pt-dialog-body'>
-							{this.state.editError ? 
-								<div className='pt-callout pt-intent-danger pt-icon-error'>
-									{this.state.editError}
-								</div>
-								:null}
-							<b>Value:</b> <FormInput id={this.state.editKey} value={this.state.editValue} onChange={this.handleChange} 
-								intent={this.state.editError ? Intent.DANGER : Intent.NONE}/>
-						</div>
-						<div className='pt-dialog-footer'>
-							<div className='pt-dialog-footer-actions'>
-								<Button onClick={this.toggleDialog} text='Cancel' className='pt-minimal' disabled={this.state.editLoading}/>
-								<Button onClick={this.submitChange} text='Save' intent={Intent.PRIMARY} loading={this.state.editLoading}/>
+					<div className='pt-dialog-body'>
+						{this.state.editError ? 
+							<div className='pt-callout pt-intent-danger pt-icon-error'>
+								{this.state.editError}
 							</div>
+							:null}
+						<b>Value:</b> <FormInput id={this.state.editKey} value={this.state.editValue} onChange={this.handleChange} 
+							intent={this.state.editError ? Intent.DANGER : Intent.NONE}/>
+					</div>
+					<div className='pt-dialog-footer'>
+						<div className='pt-dialog-footer-actions'>
+							<Button onClick={this.toggleDialog} text='Cancel' className='pt-minimal' disabled={this.state.editLoading}/>
+							<Button onClick={this.submitChange} text='Save' intent={Intent.PRIMARY} loading={this.state.editLoading}/>
 						</div>
 					</div>
 				</Dialog>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 import { Button, Intent } from '@blueprintjs/core';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import Validator from '../../../../../../lib/react/components/forms/validation/Validator';
@@ -58,8 +58,8 @@ class Form1 extends React.Component {
 	}
 
 	_validateForm() {
-		let validFirstname = this._validateName()(this.state.firstname);
-		let validLastname = this._validateName()(this.state.lastname);
+		const validFirstname = this._validateName()(this.state.firstname);
+		const validLastname = this._validateName()(this.state.lastname);
 
 		if (validFirstname.ok && validLastname.ok) return true;
 		else return false;

@@ -1,0 +1,57 @@
+@import '../variables/bp';
+
+#dashboard-users {
+	.user-card {
+		h5 {
+			margin-bottom: 0.4rem;
+		}
+	}
+
+	.user-profile.pt-card {
+		padding: 0.8rem;
+		overflow: auto;
+		
+		@media(max-width: $bp-s) {
+			padding: 0.5rem;
+		}
+	
+		h5 {
+			margin-bottom: 0.4rem;
+		}
+	
+		ul {
+			margin: 0;
+			padding-left: 0;
+			list-style: none;
+		}
+	}
+
+	#user-summary {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 0.5rem;
+		
+		.user-summary-controls {
+			display: flex;
+	
+			@media(max-width: $bp-s) {
+				margin-top: 0.4rem;
+				width: 100%;
+			}
+		}
+	
+		.pt-input-group {
+			width: 100%;
+		}
+	
+		.filter {
+			margin-right: 0.5rem;
+			
+			select {
+				padding-left: 1.6rem;
+			}
+		}
+	}
+}

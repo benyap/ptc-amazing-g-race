@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import autobind from 'core-decorators/es/autobind';
 import { Link, Redirect } from 'react-router-dom';
 import { Button, Intent } from '@blueprintjs/core';
-import { autobind } from 'core-decorators';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import ScrollAnimation from 'react-animate-on-scroll';
 import { login } from '../../../actions/authActions';
 import LoginForm from '../../../../../lib/react/components/forms/LoginForm';
 import Authenticated from '../../../../../lib/react/components/utility/Authenticated';
@@ -54,7 +53,7 @@ class Login extends React.Component {
 		}
 		
 		// Send login request to server
-		let result = await axios(config);
+		const result = await axios(config);
 
 		// Return result
 		return result.data.data.login;
@@ -83,14 +82,7 @@ class Login extends React.Component {
 			return (
 				<main>
 					<Title notAnimated/>
-
-					{this.props.notAnimated ? 
-						content
-						:
-						<ScrollAnimation animateOnce animateIn='fadeInUp' offset={0} duration={0.5}>
-							{content}
-						</ScrollAnimation>
-					}
+					{content}
 				</main>
 			);
 		}

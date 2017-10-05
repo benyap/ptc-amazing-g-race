@@ -1,0 +1,17 @@
+.image-uploader {
+	label {
+		width: 100%;
+	}
+	
+	.image-uploader-preview {
+		background: rgba(0,0,0,0.5);
+		border-radius: 0.3rem;
+		text-align: center;
+		margin: 0.5rem 0;
+		font-size: large;
+
+		img {
+			width: 100%;
+		}
+	}
+}

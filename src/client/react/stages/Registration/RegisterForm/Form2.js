@@ -1,5 +1,5 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 import { withApollo, gql } from 'react-apollo';
 import { Button, Intent } from '@blueprintjs/core';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';

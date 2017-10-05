@@ -1,7 +1,7 @@
 import React from 'react';
+import autobind from 'core-decorators/es/autobind';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import API from '../../../API'
@@ -49,7 +49,7 @@ class SecondaryNavigation extends React.Component {
 		}
 
 		// Send logout request to server
-		let result = await axios(config);
+		const result = await axios(config);
 		this.setState({loading: false});
 		this.props.dispatch(logout(new Date()));
 		

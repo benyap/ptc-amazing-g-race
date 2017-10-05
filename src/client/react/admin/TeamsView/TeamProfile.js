@@ -1,29 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
-import { autobind } from 'core-decorators';
-import { compose, gql, graphql } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core';
 import { saveState } from '../../../actions/stateActions';
+import { getTeam, setTeamName, setTeamPoints, removeTeam } from '../../../graphql/team';
+import { getUsers, setUserTeam, removeUserTeam } from '../../../graphql/user';
 import NotificationToaster from '../NotificationToaster';
 
 import '../../scss/admin/_team-profile.scss';
 
 
-const QueryTeam = gql`
-query GetTeam($teamId: ID!){
-	getTeam(teamId: $teamId){
-		_id
-		teamName
-		members{
-			username
-			firstname
-			lastname
-		}
-		memberCount
-		points
-	}
-}`;
+const QueryTeamParams = '_id teamName members{username firstname lastname} memberCount points';
 
 const QueryTeamOptions = {
 	name: 'QueryTeam',
@@ -33,16 +22,6 @@ const QueryTeamOptions = {
 	})
 }
 
-const QueryUsers = gql`
-query ListAll($limit:Int, $skip:Int){
-	listAll(limit:$limit, skip:$skip) {
-		firstname
-		lastname
-		username
-		teamId
-	}
-}`;
-
 const QueryUsersOptions = {
 	name: 'QueryUsers',
 	options: { 
@@ -51,51 +30,14 @@ const QueryUsersOptions = {
 	}
 }
 
-const MutationSetTeamName = gql`
-mutation SetTeamName($teamId:ID!, $name:String!) {
-	setTeamName(teamId:$teamId, name:$name) {
-		ok
-		failureMessage
-	}
-}`;
-
-const MutationSetTeamPoints = gql`
-mutation SetTeamPoints($teamId:ID!, $points:Float!) {
-	setTeamPoints(teamId:$teamId, points:$points) {
-		ok
-		failureMessage
-	}
-}`;
-
-const MutationSetUserTeam = gql`
-mutation SetUserTeam($username:String!,$teamId:ID!){
-	setUserTeam(username:$username,teamId:$teamId){
-		ok
-	}
-}`;
-
-const MutationRemoveUserTeam = gql`
-mutation RemoveUserTeam($username:String!){
-  removeUserTeam(username:$username){
-		ok
-	}
-}`;
-
-const MutationRemoveTeam = gql`
-mutation RemoveTeam($teamId:ID!){
-	removeTeam(teamId:$teamId){
-		ok
-	}
-}`;
-
 @compose(
-	graphql(QueryTeam, QueryTeamOptions),
-	graphql(QueryUsers, QueryUsersOptions),
-	graphql(MutationSetTeamName, {name: 'MutationSetTeamName'}),
-	graphql(MutationSetTeamPoints, {name: 'MutationSetTeamPoints'}),
-	graphql(MutationSetUserTeam, {name: 'MutationSetUserTeam'}),
-	graphql(MutationRemoveUserTeam, {name: 'MutationRemoveUserTeam'}),
-	graphql(MutationRemoveTeam, {name: 'MutationRemoveTeam'})
+	graphql(getTeam(QueryTeamParams), QueryTeamOptions),
+	graphql(getUsers('firstname lastname username teamId'), QueryUsersOptions),
+	graphql(setTeamName('ok failureMessage'), {name: 'MutationSetTeamName'}),
+	graphql(setTeamPoints('ok failureMessage'), {name: 'MutationSetTeamPoints'}),
+	graphql(removeTeam('ok'), {name: 'MutationRemoveTeam'}),
+	graphql(setUserTeam('ok'), {name: 'MutationSetUserTeam'}),
+	graphql(removeUserTeam('ok'), {name: 'MutationRemoveUserTeam'})
 )
 @connect()
 @autobind
@@ -114,7 +56,9 @@ class TeamProfile extends React.Component {
 	
 	state = {
 		teamName: null,
+		teamNameModified: false,
 		points: null,
+		pointsModified: false,
 		saving: false,
 
 		addUsersDialogOpen: false,
@@ -146,15 +90,15 @@ class TeamProfile extends React.Component {
 	}
 
 	editPoints(value) {
-		this.setState({points: value});
+		this.setState({points: value, pointsModified: true});
 	}
 
 	editName(value) {
-		this.setState({teamName: value});
+		this.setState({teamName: value, teamNameModified: true});
 	}
 
 	confirmPoints(value) {
-		if (value.length > 0) {
+		if (value.length > 0 && this.state.pointsModified) {
 			const regex = /^[-0-9]+(\.|)[0-9]{0,2}$/;
 			if (regex.exec(value)) {
 				this.savePoints();
@@ -165,11 +109,11 @@ class TeamProfile extends React.Component {
 	}
 
 	confirmName(value) {
-		if (value.length > 0) {
+		if (value.length > 0 && this.state.teamNameModified) {
 			this.saveName();
 			return;
 		}
-		this.setState({points: this.props.QueryTeam.getTeam.teamName});
+		this.setState({teamName: this.props.QueryTeam.getTeam.teamName});
 	}
 
 	savePoints() {
@@ -201,7 +145,7 @@ class TeamProfile extends React.Component {
 				if (result.data[mutationName].ok) {
 					await this.props.QueryTeam.refetch();
 					this.props.dispatch(saveState());
-					if (this._mounted) this.setState({saving: false});
+					if (this._mounted) this.setState({saving: false, teamNameModified: false, pointsModified: false });
 				}
 				else {
 					if (this._mounted) this.setState({saving: false});
@@ -222,7 +166,7 @@ class TeamProfile extends React.Component {
 
 	toggleAddUsers() {
 		this.setState((prevState) => {
-			let state = { addUsersDialogOpen: !prevState.addUsersDialogOpen, addUserError: null };
+			const state = { addUsersDialogOpen: !prevState.addUsersDialogOpen, addUserError: null };
 			if (state.addUsersDialogOpen) state.userToAdd = 'NONE';
 			else state.userToAdd = null;
 			return state;
@@ -306,8 +250,19 @@ class TeamProfile extends React.Component {
 	render() {
 		let content = null;
 
-		if (this.props.QueryTeam.getTeam) {
-			let {
+		if (this.props.QueryTeam.error) {
+			if (this._mounted) {
+				setTimeout(() => {
+					this.props.closeProfile();
+					NotificationToaster.show({
+						intent: Intent.DANGER,
+						message: this.props.QueryTeam.error.toString()
+					});
+				}, 0);
+			}
+		}
+		else if (this.props.QueryTeam.getTeam) {
+			const {
 				teamName,
 				memberCount,
 				members,
@@ -354,7 +309,8 @@ class TeamProfile extends React.Component {
 
 		return (
 			<div id='team-profile' className='pt-card team-profile'>
-				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
+				<Button className='pt-minimal' intent={Intent.NONE} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
+				<Button className='pt-minimal' intent={Intent.DANGER} text='Delete' onClick={this.toggleRemoveTeam} style={{float:'right'}}/>
 				{this.props.QueryTeam.loading || this.state.saving ? 
 					<div style={{float:'right'}}>
 						<Spinner className='pt-small'/>
@@ -371,17 +327,21 @@ class TeamProfile extends React.Component {
 						this.props.team.teamName
 					}
 					<Button className='pt-minimal action-button' iconName='new-person' intent={Intent.PRIMARY} onClick={this.toggleAddUsers}/>
-					<Button className='pt-minimal action-button' iconName='remove' intent={Intent.DANGER} onClick={this.toggleRemoveTeam}/>
 				</b></h4>
 
 				<div className='manage'>
-					<div className='points'>
+					<div className='manage-item'>
+						Team ID: {this.props.team._id}
+					</div>
+					<div className='manage-item'>
 						<span>Points:&nbsp;</span>
-						<EditableText selectAllOnFocus 
-							className='points'
-							value={this.state.points} 
-							onChange={this.editPoints} 
-							onConfirm={this.confirmPoints}/>
+						{ this.props.QueryTeam.getTeam ? 
+							<EditableText selectAllOnFocus 
+								value={this.state.points} 
+								onChange={this.editPoints} 
+								onConfirm={this.confirmPoints}/>
+							: <span className='pt-text-muted'>Loading...</span>
+						}
 					</div>
 				</div>
 
@@ -405,7 +365,7 @@ class TeamProfile extends React.Component {
 									}
 									{this.props.QueryUsers.loading ? 
 									null:
-									this.props.QueryUsers.listAll.map((user) => {
+									this.props.QueryUsers.getUsers.map((user) => {
 										if (!user.teamId) {	// Only add users without a team
 											return <option key={user.username} value={user.username}>{`${user.firstname} ${user.lastname}`}</option>
 										}
@@ -437,7 +397,7 @@ class TeamProfile extends React.Component {
 					<div className='pt-dialog-footer'>
 						<div className='pt-dialog-footer-actions'>
 							<Button onClick={this.toggleRemoveUser()} text='Cancel' className='pt-minimal' disabled={this.state.removeUserLoading}/>
-							<Button onClick={this.submitRemoveUser} text='Remove team' intent={Intent.DANGER} loading={this.state.removeUserLoading}/>
+							<Button onClick={this.submitRemoveUser} text='Remove user' intent={Intent.DANGER} loading={this.state.removeUserLoading}/>
 						</div>
 					</div>
 				</Dialog>

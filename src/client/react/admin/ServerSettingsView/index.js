@@ -1,44 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
-import { gql, graphql } from 'react-apollo';
+import autobind from 'core-decorators/es/autobind';
+import { graphql } from 'react-apollo';
 import { Spinner, Button } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import { saveState } from '../../../actions/stateActions';
 import DateFormat from 'dateformat';
+import { getSettings } from '../../../graphql/setting';
 import Setting from './Setting';
 import RefreshBar from '../RefreshBar';
 import ViewError from '../ViewError';
 
 
-const QuerySettings = gql`
-query GetSettings($skip:Int,$limit:Int){
-	getSettings(skip:$skip,limit:$limit){
-		key
-		valueType
-		value
-		values
-		modified
-		modifiedBy
-	}
-}`;
+const QueryGetSettingsParams = 'key valueType value values modified modifiedBy';
 
-const QuerySettingsOptions = {
-	name: 'QuerySettings',
+const QueryGetSettingsOptions = {
+	name: 'QuerySettings', 
 	options: {
-			variables: {
-				skip: 0,
-				limit: 0
-		}
+		variables: { skip: 0, limit: 0 }
 	}
 }
 
-@graphql(QuerySettings, QuerySettingsOptions)
+@graphql(getSettings(QueryGetSettingsParams), QueryGetSettingsOptions)
 @connect()
 @autobind
 class ServerSettingsView extends React.Component {
 	static propTypes = {
-		visible: PropTypes.bool
+		shouldRefresh: PropTypes.bool
 	}
 
 	state = {
@@ -47,7 +35,7 @@ class ServerSettingsView extends React.Component {
 
 	render() {
 		let content = null;
-		let { loading, error, getSettings } = this.props.QuerySettings;
+		const { loading, error, getSettings } = this.props.QuerySettings;
 
 		if (loading || this.state.loading) {
 			content = (
@@ -85,7 +73,7 @@ class ServerSettingsView extends React.Component {
 		return (
 			<div id='dashboard-settings' className='dashboard-tab'>
 				<h4>Server State Settings</h4>
-				<RefreshBar query={this.props.QuerySettings} visible={this.props.visible}/>
+				<RefreshBar query={this.props.QuerySettings} shouldRefresh={this.props.shouldRefresh}/>
 				{content}
 			</div>
 		);

@@ -1,67 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
-import { autobind } from 'core-decorators';
-import { compose, graphql, gql } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core';
+import { getArticle, setArticleTitle, editArticle, removeArticle } from '../../../graphql/article';
 import { saveState } from '../../../actions/stateActions';
 import MarkdownEditor from '../../../../../lib/react/components/MarkdownEditor';
 import NotificationToaster from '../NotificationToaster';
 
-import '../../scss/admin/_instruction-article-profile.scss';
 import '../../scss/components/_instruction-panel.scss';
+import '../../scss/admin/_markdown-preview.scss';
 
 
-const QueryGetArticle = gql`
-query GetArticle($category:String!, $articleId:ID!){
-	getArticle(category:$category, articleId:$articleId){
-		title
-		content
-		modified
-		modifiedBy{
-			username
-		}
-	}
-}`;
+const QueryGetArticleParams = 'title content modified modifiedBy{username}';
 
 const QueryGetArticleOptions = {
 	name: 'QueryGetArticle',
 	options: (props) => {
 		return {
-			variables: {
-				category: 'instructions',
-				articleId: props.article._id
-			}
+			variables: { category: 'instructions', articleId: props.article._id }
 		}
 	}
 }
 
-const MutationSetArticleTitle = gql`
-mutation SetArticleTitle($articleId:ID!,$category:String!, $newTitle:String!){
-	setArticleTitle(articleId:$articleId, category:$category, newTitle:$newTitle){
-		ok
-	}
-}`;
-
-const MutationEditArticle = gql`
-mutation EditArticle($articleId:ID!,$category:String!, $content:String!){
-	editArticle(articleId:$articleId, category:$category, content:$content){
-		ok
-	}
-}`;
-
-const MutationRemoveArticle = gql`
-mutation RemoveArticle($articleId:ID!,$category:String!){
-	removeArticle(articleId:$articleId, category:$category){
-		ok
-	}
-}`;
-
 @compose(
-	graphql(QueryGetArticle, QueryGetArticleOptions),
-	graphql(MutationSetArticleTitle, { name: 'MutationSetArticleTitle' }),
-	graphql(MutationEditArticle, { name: 'MutationEditArticle' }),
-	graphql(MutationRemoveArticle, { name: 'MutationRemoveArticle' })
+	graphql(getArticle(QueryGetArticleParams), QueryGetArticleOptions),
+	graphql(setArticleTitle('ok'), { name: 'MutationSetArticleTitle' }),
+	graphql(editArticle('ok'), { name: 'MutationEditArticle' }),
+	graphql(removeArticle('ok'), { name: 'MutationRemoveArticle' })
 )
 @connect()
 @autobind
@@ -201,13 +168,13 @@ class InstructionArticleProfile extends React.Component {
 	}
 
 	render() {
-		let { loading, getArticle } = this.props.QueryGetArticle;
+		const { loading, getArticle } = this.props.QueryGetArticle;
 
 		return (
-			<div id='instruction-article-profile' className='pt-card instruction-article-profile'>
-				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.toggleConfirmClose} style={{float:'right'}}/>
+			<div className='pt-card instruction-article-profile'>
+				<Button className='pt-minimal' intent={Intent.NONE} text='Close' onClick={this.toggleConfirmClose} style={{float:'right'}}/>
 				<Button className='pt-minimal' intent={Intent.PRIMARY} text='Save' onClick={this.saveContent} style={{float:'right'}} disabled={!this.state.modified}/>
-				<Button className='pt-minimal' intent={Intent.NONE} text='Delete' onClick={this.toggleConfirmDelete} style={{float:'right'}}/>
+				<Button className='pt-minimal' intent={Intent.DANGER} text='Delete' onClick={this.toggleConfirmDelete} style={{float:'right'}}/>
 				{loading || this.state.saving ? 
 					<div style={{float:'right'}}>
 						<Spinner className='pt-small'/>
@@ -218,8 +185,9 @@ class InstructionArticleProfile extends React.Component {
 					<EditableText value={this.state.titleText} onChange={this.editTitle} onConfirm={this.confirmTitle}/>
 				</b></h4>
 				
-					{ loading ? null:
-						<div className='instruction-panel'>
+					{ loading ? 
+						<div className='pt-text-muted' style={{margin:'1rem 0'}}>Loading content...</div>:
+						<div className='markdown-preview instruction-panel'>
 							<MarkdownEditor content={this.state.content || this.props.QueryGetArticle.getArticle.content} onChange={this.editContent}/>
 						</div>
 					}

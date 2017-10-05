@@ -1,7 +1,10 @@
 import React from 'react';
-import { FocusStyleManager } from "@blueprintjs/core";
-import { gql, graphql } from 'react-apollo';
+import { FocusStyleManager } from '@blueprintjs/core';
+import { graphql } from 'react-apollo';
+import { connect } from 'react-redux';
+import { loadState } from '../actions/stateActions';
 import { LoadingPage, FallbackPage } from './pages';
+import { getPublicSetting } from '../graphql/setting';
 import AppContainer from '../../../lib/react/components/AppContainer';
 import Promotion from './stages/Promotion';
 import Registration from './stages/Registration';
@@ -9,29 +12,30 @@ import RegistrationClosed from './stages/RegistrationClosed';
 import Race from './stages/Race';
 
 import './scss/main.scss';
+import '../assets/favicon.ico';
 
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
-const QueryRaceState = gql`
-query GetPublicSetting($key:String!){
-  getPublicSetting(key:$key) {
-    value
-  }
-}`
-
 const QueryRaceStateOptions = {
 	name: 'QueryRaceState',
-	options: {
-		variables: { key: 'race_state' }
-	}
+	options: { variables: { key: 'race_state' } }
 }
 
+const mapStateToProps = (state) => {
+	return { loaded: state.state.loaded }
+}
 
-@graphql(QueryRaceState, QueryRaceStateOptions)
+@connect(mapStateToProps)
+@graphql(getPublicSetting('value'), QueryRaceStateOptions)
 class Root extends React.Component {
+
+	componentWillMount() {
+		this.props.dispatch(loadState());
+	}
+
 	render() {
-		if (!this.props.QueryRaceState.loading) {
+		if (!this.props.QueryRaceState.loading && this.props.loaded) {
 			switch(this.props.QueryRaceState.getPublicSetting.value) {
 				// Render the site according to the state of the race as determined by backend
 				case 'rego_not_open': {

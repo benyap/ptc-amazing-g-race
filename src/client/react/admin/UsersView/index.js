@@ -1,75 +1,57 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
-import { gql, graphql, compose } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import { Spinner, Button, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import DateFormat from 'dateformat';
 import { saveState } from '../../../actions/stateActions';
+import { getSetting } from '../../../graphql/setting';
+import { getUsers } from '../../../graphql/user';
 import ViewError from '../ViewError';
 import UserCard from './UserCard';
 import UserProfile from './UserProfile';
 import UsersSummary from './UsersSummary';
 
+import '../../scss/admin/_user-view.scss';
 
-const QueryPaymentAmount = gql`
-query GetSetting($key:String!){
-	getSetting(key:$key) {
-		value
-	}
-}`;
 
-const QueryPaymentAmountOptions = {
-	name: 'QueryPaymentAmount',
-	options: {
-		variables: {
-			key: 'payment_amount'
-		}
-	}
-}
-
-const QueryUsers = gql`
-query ListAll($limit:Int, $skip:Int){
-	listAll(limit:$limit, skip:$skip) {
-		firstname
-		lastname
-		username
-		email
-		university
-		enabled
-		paidAmount
-		teamId
-	}
-}`;
+const QueryUserParams = 'firstname lastname username email university enabled paidAmount teamId isAdmin';
 
 const QueryUsersOptions = {
 	name: 'QueryUsers',
 	options: {
-			variables: {
-				skip: 0,
-				limit: 0
-		}
+		variables: { skip: 0, limit: 0 }
 	}
 }
 
+const QueryPaymentAmountOptions = {
+	name: 'QueryPaymentAmount',
+	options: {
+		variables: { key: 'payment_amount' }
+	}
+}
 
 @compose(
-	graphql(QueryUsers, QueryUsersOptions),
-	graphql(QueryPaymentAmount, QueryPaymentAmountOptions),
+	graphql(getUsers(QueryUserParams), QueryUsersOptions),
+	graphql(getSetting('value'), QueryPaymentAmountOptions)
 )
 @connect()
 @autobind
 @HotkeysTarget
 class UsersView extends React.Component {
 	static propTypes = {
-		visible: PropTypes.bool
+		shouldRefresh: PropTypes.bool
 	}
 
 	state = {
 		loading: false,
 		refetching: false,
 		viewProfile: null,
-		filter: '',
+		displayCount: 0, 
+		displayPaidCount: 0,
+		search: '',
+		filter: 'all',
 		lastFetch: new Date()
 	}
 
@@ -85,7 +67,7 @@ class UsersView extends React.Component {
 	}
 
 	refetchUsers(loading = false) {
-		if (!this.state.viewProfile) {
+		if (!this.state.viewProfile && this.props.shouldRefresh) {
 			if (this.mounted) this.setState({loading, refetching: true});
 			Promise.all([
 				this.props.QueryPaymentAmount.refetch(),
@@ -107,8 +89,12 @@ class UsersView extends React.Component {
 
 	closeProfile() {
 		this.setState({ viewProfile: null }, () => {
-			this.refetchUsers(false);
+			this.refetchUsers();
 		});
+	}
+
+	searchUsers(search) {
+		this.setState({search});
 	}
 
 	filterUsers(filter) {
@@ -122,17 +108,59 @@ class UsersView extends React.Component {
 					global={true}
 					combo='r'
 					label='Refresh'
-					onKeyDown={() => { if (this.props.visible) this.refetchUsers(false) }}
+					onKeyDown={this.refetchUsers}
 				/>
 			</Hotkeys>
 		);
 	}
 
+	_applySearchUser(user) {
+		if (this.state.search.length > 0) {
+			const search = this.state.search.toLowerCase();
+			const matchFirst = user.firstname.toLowerCase().indexOf(search) >= 0;
+			const matchLast = user.lastname.toLowerCase().indexOf(search) >= 0;
+			const matchUser = user.username.toLowerCase().indexOf(search) >= 0;
+			const matchUni = user.university.toLowerCase().indexOf(search) >= 0;
+
+			if (matchFirst || matchLast || matchUser || matchUni) return true;
+			else return false;
+		}
+		else return true;
+	}
+
+	_applyFilterUser(user) {
+		switch (this.state.filter) {
+			case 'admins': {
+				return user.isAdmin;
+			}
+			case 'players': {
+				return !user.isAdmin;
+			}
+			case 'paid': {
+				if (this.props.QueryPaymentAmount.getSetting) {
+					return user.paidAmount >= parseFloat(this.props.QueryPaymentAmount.getSetting.value);
+				}
+				else return true;
+			}
+			case 'notpaid': {
+				if (this.props.QueryPaymentAmount.getSetting) {
+					return user.paidAmount < parseFloat(this.props.QueryPaymentAmount.getSetting.value);
+				}
+				else return true;
+			}
+			case 'noteam': {
+				return user.teamId === null;
+			}
+			case 'all':
+			default: return true;
+		}
+	}
+
 	render() {
 		let content = null;
 		let summary = null;
-		let { loading, error, listAll } = this.props.QueryUsers;
-		let loadingPayment = this.props.QueryPaymentAmount.loading;
+		const { loading, error, getUsers } = this.props.QueryUsers;
+		const loadingPayment = this.props.QueryPaymentAmount.loading;
 
 		if (loading || loadingPayment || this.state.loading) {
 			content = (
@@ -142,7 +170,7 @@ class UsersView extends React.Component {
 			);
 		}
 		else {
-			let paymentAmount = parseFloat(this.props.QueryPaymentAmount.getSetting.value);
+			const paymentAmount = parseFloat(this.props.QueryPaymentAmount.getSetting.value);
 
 			if (error) {
 				content = <ViewError error={error}/>
@@ -154,36 +182,36 @@ class UsersView extends React.Component {
 			}
 			else {
 				summary = (
-					<UsersSummary users={listAll} paymentAmount={paymentAmount} 
+					<UsersSummary 
+						displayCount={this.state.displayCount} displayPaidCount={this.state.displayPaidCount}
+						searchValue={this.state.search} onSearchChange={this.searchUsers}
 						filterValue={this.state.filter} onFilterChange={this.filterUsers}/>
 				);
 				
-				content = (
-					<div>
-						<div className='view-list'>
-							{listAll.map((user) => {
-								let userCard = (
-									<UserCard 
-										key={user.email} user={user} 
-										paymentAmount={paymentAmount}
-										renderProfile={this.renderProfile}/>
-								);
-								if (this.state.filter.length > 0) {
-									let filter = this.state.filter.toLowerCase();
-									let matchFirst = user.firstname.toLowerCase().indexOf(filter) >= 0;
-									let matchLast = user.lastname.toLowerCase().indexOf(filter) >= 0;
-									let matchUser = user.username.toLowerCase().indexOf(filter) >= 0;
-									let matchUni = user.university.toLowerCase().indexOf(filter) >= 0;
+				let displayCount = 0;
+				let displayPaidCount = 0;
 
-									if (matchFirst || matchLast || matchUser || matchUni) {
-										return userCard;
-									}
-								}
-								else return userCard;
-							})}
-						</div>
+				content = (
+					<div className='view-list'>
+						{getUsers.map((user) => {
+							if (this._applyFilterUser(user) && this._applySearchUser(user)) {
+
+								// Count users and paid users
+								displayCount++;
+								if (user.paidAmount >= paymentAmount) displayPaidCount++;
+
+								return (
+									<UserCard key={user.email} user={user} paymentAmount={paymentAmount} renderProfile={this.renderProfile}/>
+								);
+							}
+						})}
 					</div>
 				);
+
+				if (this.state.displayCount !== displayCount || this.state.displayPaidCount !== displayPaidCount) {
+					// Update count if it has changed since last render
+					setTimeout(() => { this.setState({displayCount, displayPaidCount}) }, 0);
+				}
 			}
 		}
 

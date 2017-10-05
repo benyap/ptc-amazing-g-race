@@ -14,8 +14,8 @@ const OVERRIDE = 'owner:override';
  * @param {*} required 
  */
 const checkPermission = async function(user, required) {
-	let db = await connect();
-	let userInfo = await db.collection('users').findOne({ username: user.username });
+	const db = await connect();
+	const userInfo = await db.collection('users').findOne({ username: user.username });
 
 	for(let i = 0; i < required.length; i++) {
 		if (userInfo.permissions.indexOf(required[i]) < 0) {
@@ -40,7 +40,7 @@ const checkRole = async function(user, accepted) {
 	const userInfo = await db.collection('users').findOne({username: user.username});
 
 	if (accepted.length > 0) {
-		let intersection = accepted.filter((value) => { 
+		const intersection = accepted.filter((value) => { 
 			return userInfo.roles.indexOf(value) > -1;
 		});
 		if (intersection.length < 1) return new Error('User does not have the correct role access to modify this setting. Accepted roles: ' + accepted);

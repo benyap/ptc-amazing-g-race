@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
 import axios from 'axios';
+import autobind from 'core-decorators/es/autobind';
 import API from '../../../API';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -29,12 +29,7 @@ const mapStateToProps = (state, ownProps) => {
 @autobind
 class LoginPage extends React.Component {
 	static propTypes = {
-		remember: PropTypes.bool,
-		next: PropTypes.string
-	}
-
-	static defaultProps = {
-		next: '/admin/dashboard'
+		remember: PropTypes.bool
 	}
 
 	async adminLoginHandler(email, password) {
@@ -57,35 +52,33 @@ class LoginPage extends React.Component {
 		}
 		
 		// Send login request to server
-		let result = await axios(config);
+		const result = await axios(config);
 
 		// Return result
 		return result.data.data.adminLogin;
 	}
 
 	render() {
-		if (this.props.authenticated && this.props.admin) {
-			return <Redirect to={{
-					pathname: this.props.next,
-					state: { origin: this.props.location.state.origin }
-				}}/>
+		const { authenticated, admin } = this.props;
+		if (authenticated && admin) {
+			return (
+				<Redirect to='/admin/dashboard/users'/>
+			);
 		}
 		else {
 			return (
-				<div>
-					<main id='admin-login'>
-						<p style={{margin: '1rem'}}>The Amazing GRace</p>
-						<h2 style={titleStyle}>Administrator Login</h2>
-
-						<LoginForm 
-							loginAction={loginAdmin} 
-							authenticationHandler={this.adminLoginHandler}
-							email={this.props.remember&&this.props.email ? this.props.email : null}
-							remember={this.props.remember}
-							next={this.props.next}
-						/>
-					</main>
-				</div>
+				<main id='admin-login'>
+					<p style={{margin: '1rem'}}>The Amazing GRace</p>
+					<h2 style={titleStyle}>Administrator Login</h2>
+	
+					<LoginForm 
+						loginAction={loginAdmin} 
+						authenticationHandler={this.adminLoginHandler}
+						email={this.props.remember&&this.props.email ? this.props.email : null}
+						remember={this.props.remember}
+						next={this.props.location.state ? this.props.location.state : '/admin/dashboard/users'}
+					/>
+				</main>
 			);
 		}
 	}

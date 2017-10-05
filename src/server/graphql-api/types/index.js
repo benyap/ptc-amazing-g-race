@@ -6,6 +6,9 @@ import authType from './authType';
 import permissionCheckType from './permissionCheckType';
 import teamType from './teamType';
 import articleType from './articleType';
+import s3ObjectListType from './s3ObjectListType';
+import s3ObjectType from './s3ObjectType';
+import challengeType from './challengeType';
 
 
 export default {
@@ -16,5 +19,8 @@ export default {
 	authType,
 	permissionCheckType,
 	teamType,
-	articleType
+	articleType,
+	s3ObjectListType,
+	s3ObjectType,
+	challengeType
 };

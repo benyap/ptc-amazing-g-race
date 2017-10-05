@@ -1,28 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { Button, Dialog, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTarget, Toaster, Position } from '@blueprintjs/core';
-import { gql, graphql, compose } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import DateFormat from 'dateformat';
+import { getUserByEmail, setUserPaidAmount, addPermission, removePermission } from '../../../graphql/user';
 import { saveState } from '../../../actions/stateActions';
 import NotificationToaster from '../NotificationToaster';
 import FormInput from '../../../../../lib/react/components/forms/FormInput';
-import '../../scss/admin/_user-profile.scss';
 
 
-const QueryUser = gql`
-query GetUserByEmail($email:String!) {
-  getUserByEmail(email: $email) {
-    firstname lastname
-    username email isAdmin
-    university studentID
-    mobileNumber enabled
-    registerDate paidAmount
-    raceDetails{ hasSmartphone friends PTProficiency dietaryRequirements }
-    roles permissions
-  }
-}`;
+const QueryUserParams = 
+	'firstname lastname username email isAdmin university studentID ' + 
+	'mobileNumber enabled registerDate paidAmount roles permissions ' + 
+	'raceDetails{hasSmartphone friends PTProficiency dietaryRequirements}';
 
 const QueryUserOptions = {
 	name: 'QueryUser',
@@ -32,33 +24,11 @@ const QueryUserOptions = {
 	})
 }
 
-const MutationSetUserPaidAmount = gql`
-mutation SetPaidAmount($username:String!, $amount:Float!){
-  setUserPaidAmount(username:$username, amount:$amount){
-    ok
-    failureMessage
-  }
-}`;
-
-const MutationAddPermission = gql`
-mutation AddPermission($permission:String!, $username:String!){
-	addPermission(permission:$permission, username:$username){
-		ok
-	}
-}`;
-
-const MutationRemovePermission = gql`
-mutation RemovePermission($permission:String!, $username:String!){
-	removePermission(permission:$permission, username:$username){
-		ok
-	}
-}`;
-
 @compose(
-	graphql(QueryUser, QueryUserOptions),
-	graphql(MutationSetUserPaidAmount, {name: 'MutationSetUserPaidAmount'}),
-	graphql(MutationAddPermission, {name: 'MutationAddPermission'}),
-	graphql(MutationRemovePermission, {name: 'MutationRemovePermission'})
+	graphql(getUserByEmail(QueryUserParams), QueryUserOptions),
+	graphql(setUserPaidAmount('ok failureMessage'), {name: 'MutationSetUserPaidAmount'}),
+	graphql(addPermission('ok'), {name: 'MutationAddPermission'}),
+	graphql(removePermission('ok'), {name: 'MutationRemovePermission'})
 )
 @connect()
 @autobind
@@ -112,7 +82,7 @@ class UserProfile extends React.Component {
 	savePaid() {
 		this.setState({ saving: true, error: null });
 
-		let variables = {
+		const variables = {
 			username: this.props.QueryUser.getUserByEmail.username,
 			amount: this.state.paidAmount
 		};
@@ -230,7 +200,7 @@ class UserProfile extends React.Component {
 	}
 
 	render() {
-		let { firstname, lastname, email, university } = this.props.user;
+		const { firstname, lastname, email, university } = this.props.user;
 		let content;
 		let showLoadingIndicator = false;
 		
@@ -239,7 +209,7 @@ class UserProfile extends React.Component {
 		}
 
 		if (this.props.QueryUser.getUserByEmail) {
-			let { 
+			const { 
 				username, mobileNumber, studentID, isAdmin,
 				registerDate, paidAmount, permissions,
 				raceDetails: { 
@@ -319,17 +289,17 @@ class UserProfile extends React.Component {
 								<td>
 									Account Permissions<br/>
 									<Button style={{marginTop: '0.5rem'}} onClick={this.toggleAddPermission}
-										iconName='add' text='Add permission' className='pt-button pt-icon-add pt-small'/>
+										text='Add permission' className='pt-button pt-small'/>
 								</td>
 								<td>
 									<ul>
 										{ permissions.map((permission, index) => {
 												return (
-													<li key={index}>
+													<li key={index} style={{whiteSpace:'nowrap'}}>
 														<Button iconName='remove' className='pt-small pt-minimal' 
 															intent={Intent.DANGER} onClick={this.toggleRemovePermission(permission)}
 															loading={this.state[permission+'RemoveLoading']}/>
-														{permission}
+														<code>{permission.replace('-', '‑')}</code>
 													</li>
 												);
 										}) }
@@ -344,7 +314,7 @@ class UserProfile extends React.Component {
 
 		return (
 			<div className='pt-card user-profile'>
-				<Button className='pt-minimal' intent={Intent.DANGER} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
+				<Button className='pt-minimal' intent={Intent.NONE} text='Close' onClick={this.closeProfile} style={{float:'right'}}/>
 				{showLoadingIndicator ? 
 					<div style={{float:'right'}}>
 						<Spinner className='pt-small'/>
