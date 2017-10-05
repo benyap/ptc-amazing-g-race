@@ -397,7 +397,7 @@ class TeamProfile extends React.Component {
 					<div className='pt-dialog-footer'>
 						<div className='pt-dialog-footer-actions'>
 							<Button onClick={this.toggleRemoveUser()} text='Cancel' className='pt-minimal' disabled={this.state.removeUserLoading}/>
-							<Button onClick={this.submitRemoveUser} text='Remove team' intent={Intent.DANGER} loading={this.state.removeUserLoading}/>
+							<Button onClick={this.submitRemoveUser} text='Remove user' intent={Intent.DANGER} loading={this.state.removeUserLoading}/>
 						</div>
 					</div>
 				</Dialog>
