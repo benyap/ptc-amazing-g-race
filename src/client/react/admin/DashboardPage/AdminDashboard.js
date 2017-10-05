@@ -29,29 +29,6 @@ class AdminDashboard extends React.Component {
 		selectedTabId: 'users'
 	}
 
-
-
-	componentDidMount() {
-		let path = 'users';
-		if (this.props.location.state && this.props.location.state.origin) {
-			const regex = /(view=)([a-zA-Z0-9]+)/;
-			const result = regex.exec(this.props.location.state.origin.search);
-	
-			if (result && views.indexOf(result[2]) >= 0) {
-				path = result[2];
-			}
-		}
-
-		this.setState({selectedTabId: path}, () => {
-			this.props.history.push(`/admin/dashboard?view=${this.state.selectedTabId}`);
-		});
-	}
-
-	handleTabChange(selectedTabId) {
-		this.setState({selectedTabId});
-		this.props.history.push(`/admin/dashboard?view=${selectedTabId}`);
-	}
-
 	renderTabs(vertical) {
 		return (
 			<Tabs2 id='dashboard' className={vertical?'':'mobile-tabs'} onChange={this.handleTabChange} 

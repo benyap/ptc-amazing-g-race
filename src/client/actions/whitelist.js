@@ -7,6 +7,5 @@ export const saveWhitelist = [
 
 
 export const loadWhitelist = [
-	// 'AUTH_REFRESH',
 	'STATE_LOAD'
 ];

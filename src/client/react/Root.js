@@ -1,6 +1,8 @@
 import React from 'react';
-import { FocusStyleManager } from "@blueprintjs/core";
+import { FocusStyleManager } from '@blueprintjs/core';
 import { graphql } from 'react-apollo';
+import { connect } from 'react-redux';
+import { loadState } from '../actions/stateActions';
 import { LoadingPage, FallbackPage } from './pages';
 import { getPublicSetting } from '../graphql/setting';
 import AppContainer from '../../../lib/react/components/AppContainer';
@@ -20,10 +22,20 @@ const QueryRaceStateOptions = {
 	options: { variables: { key: 'race_state' } }
 }
 
+const mapStateToProps = (state) => {
+	return { loaded: state.state.loaded }
+}
+
+@connect(mapStateToProps)
 @graphql(getPublicSetting('value'), QueryRaceStateOptions)
 class Root extends React.Component {
+
+	componentWillMount() {
+		this.props.dispatch(loadState());
+	}
+
 	render() {
-		if (!this.props.QueryRaceState.loading) {
+		if (!this.props.QueryRaceState.loading && this.props.loaded) {
 			switch(this.props.QueryRaceState.getPublicSetting.value) {
 				// Render the site according to the state of the race as determined by backend
 				case 'rego_not_open': {

@@ -29,12 +29,7 @@ const mapStateToProps = (state, ownProps) => {
 @autobind
 class LoginPage extends React.Component {
 	static propTypes = {
-		remember: PropTypes.bool,
-		next: PropTypes.string
-	}
-
-	static defaultProps = {
-		next: '/admin/dashboard'
+		remember: PropTypes.bool
 	}
 
 	async adminLoginHandler(email, password) {
@@ -64,29 +59,26 @@ class LoginPage extends React.Component {
 	}
 
 	render() {
-		if (this.props.authenticated && this.props.admin) {
-			const { next, location } = this.props;
-			return <Redirect to={{
-					pathname: next,
-					state: { origin: location.state ? location.state.origin : '' }
-				}}/>
+		const { authenticated, admin } = this.props;
+		if (authenticated && admin) {
+			return (
+				<Redirect to='/admin/dashboard'/>
+			);
 		}
 		else {
 			return (
-				<div>
-					<main id='admin-login'>
-						<p style={{margin: '1rem'}}>The Amazing GRace</p>
-						<h2 style={titleStyle}>Administrator Login</h2>
-
-						<LoginForm 
-							loginAction={loginAdmin} 
-							authenticationHandler={this.adminLoginHandler}
-							email={this.props.remember&&this.props.email ? this.props.email : null}
-							remember={this.props.remember}
-							next={this.props.next}
-						/>
-					</main>
-				</div>
+				<main id='admin-login'>
+					<p style={{margin: '1rem'}}>The Amazing GRace</p>
+					<h2 style={titleStyle}>Administrator Login</h2>
+	
+					<LoginForm 
+						loginAction={loginAdmin} 
+						authenticationHandler={this.adminLoginHandler}
+						email={this.props.remember&&this.props.email ? this.props.email : null}
+						remember={this.props.remember}
+						next={this.props.location.state ? this.props.location.state : '/admin/dashboard'}
+					/>
+				</main>
 			);
 		}
 	}
