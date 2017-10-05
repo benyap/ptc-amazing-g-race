@@ -1,0 +1,33 @@
+@import '../../../scss/variables/colours';
+
+#help-menu {
+	.help-button {
+		margin: 1rem;
+		margin-top: -3.6rem;
+		float: right;
+		display: flex;
+		align-items: center;
+
+		.pt-button.pt-loading {
+			padding: 0;
+		}
+		
+		.refresh-loading {
+			margin-right: 0.5rem;
+		}
+	}
+}
+
+.pt-portal {
+	li:not(.pt-menu-divider) {
+		height: 2.5rem;
+		font-size: 1.2rem;
+	}
+	
+	a.pt-menu-item {
+		height: 2.5rem;
+		display: inline-flex;
+		align-items: center;
+		width: 100%;
+	}
+}
