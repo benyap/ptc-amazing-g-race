@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
-import { Button, Dialog, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTarget, Toaster, Position } from '@blueprintjs/core';
-import { graphql, compose } from 'react-apollo';
 import DateFormat from 'dateformat';
+import { graphql, compose } from 'react-apollo';
+import { Button, Dialog, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTarget, Toaster, Position } from '@blueprintjs/core';
 import { getUserByEmail, setUserPaidAmount, addPermission, removePermission } from '../../../../graphql/user';
+import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import { saveState } from '../../../../actions/stateActions';
 import NotificationToaster from '../../components/NotificationToaster';
-import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 
 
 const QueryUserParams = 
@@ -79,7 +79,7 @@ class UserProfile extends React.Component {
 		this.setState({paidAmount: this.props.QueryUser.getUserByEmail.paidAmount});
 	}
 
-	savePaid() {
+	async savePaid() {
 		this.setState({ saving: true, error: null });
 
 		const variables = {
@@ -87,35 +87,32 @@ class UserProfile extends React.Component {
 			amount: this.state.paidAmount
 		};
 
-		this.props.MutationSetUserPaidAmount({ variables })
-		.then((result) => {
-			if (result.data.setUserPaidAmount.ok) {
-				this._refetchUser();
-			}
-			else {
-				if (this._mounted) this.setState({saving: false});
-				NotificationToaster.show({
-					intent: Intent.DANGER,
-					message: result.data.setUserPaidAmount.failureMessage
-				});
-			}
-		})
-		.catch((err) => {
+		try {
+			const result = await this.props.MutationSetUserPaidAmount({ variables });
+			this._refetchUser();
+		}
+		catch (err) {
 			if (this._mounted) this.setState({saving: false});
 			NotificationToaster.show({
 				intent: Intent.DANGER,
 				message: err.toString()
 			});
-		});
+		}
 	}
 
-	_refetchUser() {
+	async _refetchUser() {
 		if (this._mounted) this.setState({saving: true});
-		this.props.QueryUser.refetch()
-		.then(() => {
-			this.props.dispatch(saveState());
+		try {
+			await this.props.QueryUser.refetch();
+		}
+		catch (err) {
 			if (this._mounted) this.setState({saving: false});
-		});
+			this.props.dispatch(saveState());
+			NotificationToaster.show({
+				intent: Intent.DANGER,
+				message: err.toString()
+			});
+		}
 	}
 
 	renderHotkeys() {
@@ -164,39 +161,31 @@ class UserProfile extends React.Component {
 		this._submitPermissionChange('remove', 'Remove', this.state.permissionToRemove);
 	}
 
-	_submitPermissionChange(type, Type, permission) {
+	async _submitPermissionChange(type, Type, permission) {
 		this.setState({[`${type}PermissionLoading`]: true, [`${type}PermissionError`]: null});
 
-		this.props[`Mutation${Type}Permission`]({
-			variables: {
-				username: this.props.user.username,
-				permission: permission
-			}
-		})
-		.then((result) => {
-			if (result.data[`${type}Permission`].ok) {
-				this.setState({
-					[`${type}PermissionLoading`]: false, 
-					[`show${Type}PermissionDialog`]: false,
-					saving: true
-				});
-				this._refetchUser();
-			}
-			else {
-				if (this._mounted) {
-					this.setState({
-						[`${type}PermissionLoading`]: false, 
-						[`${type}PermissionError`]: result.data[`${type}Permission`].failureMessage
-					});
+		try {
+			await this.props[`Mutation${Type}Permission`]({
+				variables: {
+					username: this.props.user.username,
+					permission: permission
 				}
-			}
-		})
-		.catch((err) => {
+			});
+
+			this.setState({
+				[`${type}PermissionLoading`]: false, 
+				[`show${Type}PermissionDialog`]: false,
+				saving: true
+			});
+
+			this._refetchUser();
+		}
+		catch (err) {
 			this.setState({
 				[`${type}PermissionLoading`]: false, 
 				[`${type}PermissionError`]: err.toString()
 			});
-		});
+		}
 	}
 
 	render() {
@@ -329,7 +318,7 @@ class UserProfile extends React.Component {
 					isOpen={this.state.showAddPermissionDialog} onClose={this.toggleAddPermission}>
 					<div className='pt-dialog-body'>
 						{this.state.addPermissionError ? 
-							<div className='pt-callout pt-intent-danger pt-icon-error'>
+							<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'1rem'}}>
 								{this.state.addPermissionError}
 							</div>
 							:null}
@@ -351,7 +340,7 @@ class UserProfile extends React.Component {
 					isOpen={this.state.showRemovePermissionDialog} onClose={this.toggleRemovePermission(null)}>
 					<div className='pt-dialog-body'>
 						{this.state.removePermissionError ? 
-							<div className='pt-callout pt-intent-danger pt-icon-error'>
+							<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'1rem'}}>
 								{this.state.removePermissionError}
 							</div>
 							:null}

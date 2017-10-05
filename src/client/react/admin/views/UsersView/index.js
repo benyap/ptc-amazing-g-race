@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
+import DateFormat from 'dateformat';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
-import { Spinner, Button, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
-import DateFormat from 'dateformat';
+import { Spinner, Button, Intent, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import { saveState } from '../../../../actions/stateActions';
 import { getSetting } from '../../../../graphql/setting';
 import { getUsers } from '../../../../graphql/user';
 import ViewError from '../../components/ViewError';
+import NotificationToaster from '../../components/NotificationToaster';
 import UserCard from './UserCard';
 import UserProfile from './UserProfile';
 import UsersSummary from './UsersSummary';
@@ -56,30 +57,35 @@ class UsersView extends React.Component {
 	}
 
 	componentDidMount() {
-		this.mounted = true;
+		this._mounted = true;
 		this.setState({ loading: false }, () => {
 			this.refetchUsers(true);
 		});
 	}
 
 	componentWillUnmount() {
-		this.mounted = false;
+		this._mounted = false;
 	}
 
-	refetchUsers(loading = false) {
+	async refetchUsers(loading = false) {
 		if (!this.state.viewProfile && this.props.shouldRefresh) {
-			if (this.mounted) this.setState({loading, refetching: true});
-			Promise.all([
-				this.props.QueryPaymentAmount.refetch(),
-				this.props.QueryUsers.refetch()
-			])
-				.then(() => {
-					if (this.mounted) this.setState({loading: false, refetching: false, lastFetch: new Date()});
-					this.props.dispatch(saveState());
-				})
-				.catch(() => {
-					if (this.mounted) this.setState({loading: false, refetching: false});
+			if (this._mounted) this.setState({loading, refetching: true});
+			try {
+				await Promise.all([
+					this.props.QueryPaymentAmount.refetch(),
+					this.props.QueryUsers.refetch()
+				]);
+
+				if (this._mounted) this.setState({loading: false, refetching: false, lastFetch: new Date()});
+				this.props.dispatch(saveState());
+			}
+			catch (err) {
+				if (this._mounted) this.setState({loading: false, refetching: false});
+				NotificationToaster.show({
+					intent: Intent.DANGER,
+					message: err.toString()
 				});
+			}
 		}
 	}
 
@@ -170,7 +176,10 @@ class UsersView extends React.Component {
 			);
 		}
 		else {
-			const paymentAmount = parseFloat(this.props.QueryPaymentAmount.getSetting.value);
+			let paymentAmount = 0;
+			if (this.props.QueryPaymentAmount.getSetting) {
+				paymentAmount = parseFloat(this.props.QueryPaymentAmount.getSetting.value);
+			}
 
 			if (error) {
 				content = <ViewError error={error}/>
