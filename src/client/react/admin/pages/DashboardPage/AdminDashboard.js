@@ -5,12 +5,12 @@ import MediaQuery from 'react-responsive';
 import { withRouter } from 'react-router-dom';
 import bp from '../../../../../../lib/react/components/utility/bp';
 import UsersView from '../../views/UsersView';
-import TeamsView from '../../..views/TeamsView';
+import TeamsView from '../../views/TeamsView';
 import GameStateView from '../../views/GameStateView';
 import ServerSettingsView from '../../views/ServerSettingsView';
 import InstructionArticlesView from '../../views/InstructionArticlesView';
 import S3ExplorerView from '../../views/S3ExplorerView';
-import ChallengesView from '../../..views/ChallengesView';
+import ChallengesView from '../../views/ChallengesView';
 import NotificationToaster from '../../components/NotificationToaster';
 
 
