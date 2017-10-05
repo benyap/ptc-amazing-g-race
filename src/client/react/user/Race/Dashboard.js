@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { Switch, Redirect } from 'react-router-dom';
 import Base from '../components/Base';
 import HelpMenu from '../components/HelpMenu';
-import Home from '../pages/Home';
-import Help from '../pages/Help';
-import Instructions from '../pages/Instructions';
-import ImageUploaderTest from '../pages/ImageUploaderTest';
-import NotFound from '../pages/NotFound';
+import Home from '../views/Home';
+import Help from '../views/Help';
+import Instructions from '../views/Instructions';
+import ImageUploaderTest from '../views/ImageUploaderTest';
+import NotFound from '../views/NotFound';
 
 
 const mapStateToProps = (state, ownProps) => {
