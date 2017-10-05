@@ -3,7 +3,17 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { Button, Intent, Spinner, EditableText, Switch, Dialog } from '@blueprintjs/core';
 import { graphql, compose } from 'react-apollo';
-import { getChallenge, deleteChallenge } from '../../../graphql/challenge';
+import { 
+	getChallenge, 
+	deleteChallenge,
+	setChallengeGroup,
+	setChallengeType,
+	setChallengePublic,
+	setChallengePassphrase,
+	setChallengeTitle,
+	setChallengeDescription,
+	setChallengeLocked
+} from '../../../graphql/challenge';
 import NotificationToaster from '../NotificationToaster';
 import MarkdownEditor from '../../../../../lib/react/components/MarkdownEditor';
 
@@ -23,7 +33,14 @@ const QueryGetChallengeOptions = {
 
 @compose(
 	graphql(getChallenge('group type public passphrase title description locked teams'), QueryGetChallengeOptions),
-	graphql(deleteChallenge('ok'), { name: 'MutationDeleteChallenge' })
+	graphql(deleteChallenge('ok'), { name: 'MutationDeleteChallenge' }),
+	graphql(setChallengeGroup('ok'), { name: 'MutationSetChallengeGroup' }),
+	graphql(setChallengeType('ok'), { name: 'MutationSetChallengeType' }),
+	graphql(setChallengePublic('ok'), { name: 'MutationSetChallengePublic' }),
+	graphql(setChallengePassphrase('ok'), { name: 'MutationSetChallengePassphrase' }),
+	graphql(setChallengeTitle('ok'), { name: 'MutationSetChallengeTitle' }),
+	graphql(setChallengeDescription('ok'), { name: 'MutationSetChallengeDescription' }),
+	graphql(setChallengeLocked('ok'), { name: 'MutationSetChallengeLocked' })
 )
 @autobind
 class ChallengeProfile extends React.Component {
@@ -54,22 +71,27 @@ class ChallengeProfile extends React.Component {
 		showConfirmDelete: false,
 		deleteLoading: false,
 		deleteError: null,
+		key: this.props.challenge.key,
 
 		// Editable values
-		key: this.props.challenge.key,
-		modified_key: false,
 		group: this.props.challenge.group,
 		modified_group: false,
+
 		public: this.props.challenge.public,
 		modified_public: false,
+
 		locked: this.props.challenge.locked,
 		modified_locked: false,
+
 		title: this.props.challenge.title,
 		modified_title: false,
+
 		description: '',
 		modified_description: false,
+
 		passphrase: '',
 		modified_passphrase: false,
+
 		teams: [],
 	}
 
@@ -137,6 +159,39 @@ class ChallengeProfile extends React.Component {
 		}
 	}
 
+	async saveContent() {
+		this.setState({ saving: true });
+		const promises = [];
+
+		['Group','Type','Passphrase','Title','Description','Public','Locked'].map((property) => {
+			if (this.state[`modified_${property.toLowerCase()}`]) {
+				const promise = this.props[`MutationSetChallenge${property}`]({
+					variables: {
+						key: this.props.challenge.key,
+						value: this.state[property.toLowerCase()]
+					}
+				})
+				.then(() => {
+					this.setState({ [`modified_${property.toLowerCase()}`]: false });
+				});
+				promises.push(promise);
+			}
+		});
+
+		try {
+			// Wait till all values have been saved
+			await Promise.all(promises);
+			await this.props.QueryGetChallenge.refetch();
+			this.setState({saving: false, modified: false});
+		}
+		catch (err) {
+			this.setState({saving: false});
+			NotificationToaster.show({
+				intent: Intent.DANGER,
+				message: err.toString()
+			});
+		}
+	}
 
 	render() {
 		const { key, group, title, locked } = this.props.challenge;
@@ -144,11 +199,11 @@ class ChallengeProfile extends React.Component {
 
 		let icon = 'pt-icon-lock ';
 		
-		if (this.props.challenge.public) {
+		if (getChallenge ? getChallenge.public : this.props.challenge.public) {
 			icon = 'pt-icon-globe ';
 		}
 
-		if (locked) {
+		if (getChallenge ? getChallenge.locked : locked) {
 			icon += 'pt-intent-danger';
 		}
 
@@ -186,7 +241,7 @@ class ChallengeProfile extends React.Component {
 								<tbody>
 									<tr>
 										<td>Key</td>
-										<td><EditableText value={this.state.key} onChange={this.handleChange('key')}/></td>
+										<td>{this.state.key}</td>
 									</tr>
 									<tr>
 										<td>Group</td>
@@ -249,7 +304,7 @@ class ChallengeProfile extends React.Component {
 
 		return (
 			<div className='pt-card challenge-profile'>
-				<Button className='pt-minimal' intent={Intent.NONE} text='Close' onClick={this.confirmClose} style={{float:'right'}}/>
+				<Button className='pt-minimal' intent={Intent.NONE} text='Close' onClick={this.confirmClose} style={{float:'right'}} disabled={this.state.saving}/>
 				<Button className='pt-minimal' intent={Intent.PRIMARY} text='Save' onClick={this.saveContent} style={{float:'right'}} disabled={!this.state.modified}/>
 				<Button className='pt-minimal' intent={Intent.DANGER} text='Delete' onClick={this.toggleDialog('ConfirmDelete')} style={{float:'right'}} disabled={this.state.deleteLoading}/>
 				{loading || this.state.saving ? 

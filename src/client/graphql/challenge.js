@@ -47,11 +47,67 @@ const deleteChallenge = (params) => {
 	}`;
 }
 
+const setChallengeGroup = (params) => {
+	return gql`
+	mutation SetChallengeGroup($key:String!,$value:String!){
+		setChallengeGroup(key:$key,value:$value){ ${params} }
+	}`;
+}
+
+const setChallengeType = (params) => {
+	return gql`
+	mutation SetChallengeType($key:String!,$value:String!){
+		setChallengeType(key:$key,value:$value){ ${params} }
+	}`;
+}
+
+const setChallengePublic = (params) => {
+	return gql`
+	mutation SetChallengePublic($key:String!,$value:Boolean!){
+		setChallengePublic(key:$key,value:$value){ ${params} }
+	}`;
+}
+
+const setChallengePassphrase = (params) => {
+	return gql`
+	mutation SetChallengePassphrase($key:String!,$value:String!){
+		setChallengePassphrase(key:$key,value:$value){ ${params} }
+	}`;
+}
+
+const setChallengeTitle = (params) => {
+	return gql`
+	mutation SetChallengeTitle($key:String!,$value:String!){
+		setChallengeTitle(key:$key,value:$value){ ${params} }
+	}`;
+}
+
+const setChallengeDescription = (params) => {
+	return gql`
+	mutation SetChallengeDescription($key:String!,$value:String!){
+		setChallengeDescription(key:$key,value:$value){ ${params} }
+	}`;
+}
+
+const setChallengeLocked = (params) => {
+	return gql`
+	mutation SetChallengeLocked($key:String!,$value:Boolean!){
+		setChallengeLocked(key:$key,value:$value){ ${params} }
+	}`;
+}
+
 
 export {
 	getChallenge,
 	getChallenges,
 	getAllChallenges,
 	createChallenge,
-	deleteChallenge
+	deleteChallenge,
+	setChallengeGroup,
+	setChallengeType,
+	setChallengePublic,
+	setChallengePassphrase,
+	setChallengeTitle,
+	setChallengeDescription,
+	setChallengeLocked,
 };
