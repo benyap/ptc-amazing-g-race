@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -32,6 +33,14 @@ const mapStateToProps = (state, ownProps) => {
 @withApollo
 @autobind
 class Home extends React.Component {
+	static propTypes = {
+		demo: PropTypes.bool
+	}
+	
+	static defaultProps = {
+		demo: false
+	}
+
 	state = {
 		team: null,
 		teamLoading: false,

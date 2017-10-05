@@ -43,11 +43,11 @@ class Dashboard extends React.Component {
 					What you're seeing on this page is a template of how the app will look like on game day.
 				</div>
 				<Switch>
-					<Route exact path={`${url}`} component={()=><Home/>}/>
-					<Route path={`${url}/instructions`} component={()=><Instructions/>}/>
+					<Route exact path={`${url}`} component={()=><Home demo/>}/>
+					<Route path={`${url}/instructions`} component={()=><Instructions demo/>}/>
 					<Route path={`${url}/feed`} component={()=>null}/>
 					<Route path={`${url}/challenges`} component={()=>null}/>
-					<Route path={`${url}/help`} component={()=><Help/>}/>
+					<Route path={`${url}/help`} component={()=><Help demo/>}/>
 					<Route component={()=><NotFound/>}/>
 				</Switch>
 			</div>
