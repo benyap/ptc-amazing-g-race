@@ -1,12 +1,13 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Switch, Redirect } from 'react-router-dom';
 import Base from '../components/Base';
 import HelpMenu from '../components/HelpMenu';
-import Home from './pages/Home';
-import Help from './pages/Help';
-import Instructions from './pages/Instructions';
+import Home from '../pages/Home';
+import Help from '../pages/Help';
+import Instructions from '../pages/Instructions';
+import NotFound from '../pages/NotFound';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -32,7 +33,7 @@ class Dashboard extends React.Component {
 			}}/>;
 		}
 
-		let { url } = this.props.match;
+		const { url } = this.props.match;
 
 		return (
 			<div className='pt-dark'>
@@ -41,12 +42,14 @@ class Dashboard extends React.Component {
 				<div style={this.helpStyle} className='pt-callout pt-icon-info-sign'>
 					What you're seeing on this page is a template of how the app will look like on game day.
 				</div>
-				<Route exact path={`${url}`} component={Home}/>
-				<Route path={`${url}/instructions`} component={Instructions}/>
-				<Route path={`${url}/challenges`} component={null}/>
-				<Route path={`${url}/completed`} component={null}/>
-				<Route path={`${url}/help`} component={Help}/>
-				<Route path={`${url}/profile`} component={null}/>
+				<Switch>
+					<Route exact path={`${url}`} component={()=><Home demo/>}/>
+					<Route path={`${url}/instructions`} component={()=><Instructions demo/>}/>
+					<Route path={`${url}/feed`} component={()=>null}/>
+					<Route path={`${url}/challenges`} component={()=>null}/>
+					<Route path={`${url}/help`} component={()=><Help demo/>}/>
+					<Route component={NotFound}/>
+				</Switch>
 			</div>
 		);
 	}

@@ -1,52 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 import FormInput from '../../../../../lib/react/components/forms/FormInput';
-
-import '../../scss/admin/_user-summary.scss';
+import Filter from './Filter';
+import Search from './Search';
 
 
 @autobind
 class UserSummary extends React.Component {
 	static propTypes = {
-		users: PropTypes.arrayOf(PropTypes.shape({
-			firstname: PropTypes.string,
-			lastname: PropTypes.string,
-			username: PropTypes.string,
-			email: PropTypes.string,
-			university: PropTypes.string,
-			enabled: PropTypes.bool,
-			paidAmount: PropTypes.number,
-		})).isRequired,
-		paymentAmount: PropTypes.number.isRequired,
+		displayCount: PropTypes.number.isRequired,
+		displayPaidCount: PropTypes.number.isRequired,
+		onSearchChange: PropTypes.func.isRequired,
+		searchValue: PropTypes.string.isRequired,
 		onFilterChange: PropTypes.func.isRequired,
 		filterValue: PropTypes.string.isRequired
 	}
 
-	onChange(e) {
+	onSearchChange(e) {
+		this.props.onSearchChange(e.target.value);
+	}
+
+	onFilterChange(e) {
 		this.props.onFilterChange(e.target.value);
 	}
 
 	render() {
-		// Count users
-		let userCount = 0;
-		let paidCount = 0;
-		this.props.users.forEach((user) => {
-			userCount++;
-			if (user.paidAmount >= this.props.paymentAmount) {
-				paidCount++;
-			}
-		});
-
 		let intent = 'pt-intent-danger';
-		if (paidCount === userCount) intent = 'pt-intent-success';
+		if (this.props.displayPaidCount === this.props.displayCount) intent = 'pt-intent-success';
 		
 		return (
 			<div id='user-summary' className={'pt-callout ' + intent}>
-				{paidCount} out of {userCount} registered users have paid.
-				<div class='pt-input-group'>
-					<span class='pt-icon pt-icon-search'></span>
-					<input class='pt-input' type="search" placeholder='Filter...' value={this.props.filterValue} onChange={this.onChange}/>
+				{this.props.displayPaidCount} out of {this.props.displayCount} users have paid.
+				<div className='user-summary-controls'>
+					<Filter value={this.props.filterValue} onChange={this.onFilterChange}/>
+					<Search value={this.props.searchValue} onChange={this.onSearchChange}/>
 				</div>
 			</div>
 		);

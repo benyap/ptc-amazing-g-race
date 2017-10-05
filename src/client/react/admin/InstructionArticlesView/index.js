@@ -1,25 +1,19 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
+import PropTypes from 'prop-types';
+import autobind from 'core-decorators/es/autobind';
 import { Button, Intent, Spinner, Dialog } from '@blueprintjs/core';
-import { compose, gql, graphql } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
+import { getArticles, addArticle } from '../../../graphql/article';
 import RefreshBar from '../RefreshBar';
 import ViewError from '../ViewError';
 import InstructionArticleCard from './InstructionArticleCard';
 import InstructionArticleProfile from './InstructionArticleProfile';
 import FormInput from '../../../../../lib/react/components/forms/FormInput';
 
+import '../../scss/admin/_markdown-preview.scss';
 
-const QueryGetArticles = gql`
-query GetArticles($category:String!){
-	getArticles(category:$category){
-		_id
-		title
-		created
-		createdBy { username }
-		modified
-		modifiedBy{ username }
-	}
-}`;
+
+const QueryGetArticlesParams = '_id title created createdBy{username} modified modifiedBy{username}';
 
 const QueryGetArticlesOptions = {
 	name: 'QueryGetArticles',
@@ -29,19 +23,16 @@ const QueryGetArticlesOptions = {
 	}
 }
 
-const MutationAddArticle = gql`
-mutation AddArticle($title:String!,$category:String!,$content:String!){
-  addArticle(title:$title,category:$category,content:$content){
-    _id
-  }
-}`;
-
 @compose(
-	graphql(QueryGetArticles, QueryGetArticlesOptions),
-	graphql(MutationAddArticle, { name: 'MutationAddArticle' })
+	graphql(getArticles(QueryGetArticlesParams), QueryGetArticlesOptions),
+	graphql(addArticle('_id'), { name: 'MutationAddArticle' })
 )
 @autobind
 class InstructionArticlesView extends React.Component {
+	static propTypes = {
+		shouldRefresh: PropTypes.bool.isRequired
+	}
+
 	state = {
 		viewProfile: null,
 		loading: false,
@@ -103,7 +94,7 @@ class InstructionArticlesView extends React.Component {
 
 	render() {
 		let content = null;
-		let { loading, error, getArticles } = this.props.QueryGetArticles;
+		const { loading, error, getArticles } = this.props.QueryGetArticles;
 
 		if (loading) {
 			content = (
@@ -167,7 +158,7 @@ class InstructionArticlesView extends React.Component {
 		return (
 			<div id='dashboard-instructions' className='dashboard-tab'>
 				<h4>Instruction Articles</h4>
-				<RefreshBar query={this.props.QueryGetArticles} disabled={this.state.viewProfile} refetching={this.state.refetching}/>
+				<RefreshBar query={this.props.QueryGetArticles} disabled={this.state.viewProfile} refetching={this.state.refetching} shouldRefresh={this.props.shouldRefresh}/>
 				{content}
 			</div>
 		);

@@ -1,23 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
-import { gql, graphql } from 'react-apollo';
+import autobind from 'core-decorators/es/autobind';
+import { graphql } from 'react-apollo';
 import { Spinner } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import * as GameState from './gameStates';
 import State from './State';
 import ViewError from '../ViewError';
 import RefreshBar from '../RefreshBar';
+import { getPublicSetting } from '../../../graphql/setting';
 
 import '../../scss/admin/_gamestate-view.scss';
 
-
-const QueryRaceState = gql`
-query GetPublicSetting($key:String!){
-  getPublicSetting(key:$key) {
-    value
-  }
-}`
 
 const QueryRaceStateOptions = {
 	name: 'QueryRaceState',
@@ -27,12 +21,12 @@ const QueryRaceStateOptions = {
 	}
 }
 
-@graphql(QueryRaceState, QueryRaceStateOptions)
+@graphql(getPublicSetting('value'), QueryRaceStateOptions)
 @connect()
 @autobind
 class GameStateView extends React.Component {
 	static propTypes = {
-		visible: PropTypes.bool
+		shouldRefresh: PropTypes.bool
 	}
 
 	state = {
@@ -42,7 +36,7 @@ class GameStateView extends React.Component {
 	render() {
 		let content = null;
 		let currentState = '...';
-		let { loading, error, getSettings } = this.props.QueryRaceState;
+		const { loading, error, getSettings } = this.props.QueryRaceState;
 		
 		if (loading || this.state.loading) {
 			content = (
@@ -80,7 +74,7 @@ class GameStateView extends React.Component {
 		return (
 			<div id='dashboard-state' className='dashboard-tab'>
 				<h4>Game State</h4>
-				<RefreshBar query={this.props.QueryRaceState} visible={this.props.visible}/>
+				<RefreshBar query={this.props.QueryRaceState} shouldRefresh={this.props.shouldRefresh}/>
 				{content}
 			</div>
 		);

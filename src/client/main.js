@@ -6,7 +6,7 @@ import Root from './react/Root';
 import store, { apolloClient } from './store';
 
 
-let root = (
+const root = (
 	<ApolloProvider store={store} client={apolloClient}>
 		<Root/>
 	</ApolloProvider>

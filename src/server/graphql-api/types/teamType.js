@@ -39,7 +39,7 @@ const teamType = new GraphQLObjectType({
 			type: new GraphQLNonNull(GraphQLInt),
 			description: 'The number of members in the team',
 			async resolve(root, params, ctx, options) {
-				let users = await resolvers.userResolver.getUsersByTeam(root, {teamId: root._id}, ctx, options);
+				const users = await resolvers.userResolver.getUsersByTeam(root, {teamId: root._id}, ctx, options);
 				return users.length;
 			}
 		}

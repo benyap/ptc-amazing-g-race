@@ -93,7 +93,7 @@ const checkUnique = {
 	}
 };
 
-const listAll = {
+const getUsers = {
 	type: new GraphQLList(types.userType),
 	description: 'Retrieve a list of all users',
 	args: {
@@ -109,7 +109,7 @@ const listAll = {
 		}
 	},
 	resolve(root, params, ctx, options) {
-		return resolvers.userResolver.listAll(root, params, ctx, options);
+		return resolvers.userResolver.getUsers(root, params, ctx, options);
 	}
 }
 
@@ -198,7 +198,7 @@ export default {
 	getUserByEmail,
 	getMe,
 	checkUnique,
-	listAll,
+	getUsers,
 	checkUserPermission,
 	getUserActions,
 	getActions

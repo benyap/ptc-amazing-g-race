@@ -116,7 +116,7 @@ const removeTeam = async function(user, teamId) {
 	}
 
 	// Check that team has 0 members
-	let members = await db.collection('users').find({teamId: Mongo.ObjectID(teamId)}).toArray();
+	const members = await db.collection('users').find({teamId: Mongo.ObjectID(teamId)}).toArray();
 	if (members.length > 0) {
 		return new Error(`The team \'${teamCheck.teamName}\' still has ${members.length} member(s), you cannot remove this team.`);
 	}
