@@ -13,7 +13,7 @@ import UserCard from './UserCard';
 import UserProfile from './UserProfile';
 import UsersSummary from './UsersSummary';
 
-import '../../../scss/admin/_user-view.scss';
+import '../../scss/_user-view.scss';
 
 
 const QueryUserParams = 'firstname lastname username email university enabled paidAmount teamId isAdmin';

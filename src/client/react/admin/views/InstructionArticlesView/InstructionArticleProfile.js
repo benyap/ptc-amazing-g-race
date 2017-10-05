@@ -10,7 +10,7 @@ import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEdito
 import NotificationToaster from '../../components/NotificationToaster';
 
 import '../../../scss/components/_instruction-panel.scss';
-import '../../../scss/admin/_markdown-preview.scss';
+import '../../scss/_markdown-preview.scss';
 
 
 const QueryGetArticleParams = 'title content modified modifiedBy{username}';

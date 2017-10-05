@@ -13,7 +13,7 @@ import ChallengeProfile from './ChallengeProfile';
 import NotificationToaster from '../../components/NotificationToaster';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 
-import '../../../scss/admin/_challenge-view.scss';
+import '../../scss/_challenge-view.scss';
 
 
 const QueryGetAllChallengesOptions = {
