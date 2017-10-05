@@ -64,7 +64,7 @@ class SecondaryNavigation extends React.Component {
 
 		if (errorMessage) {
 			NotificationToaster.show({
-				intent: Intent.DANGER,
+				intent: Intent.WARNING,
 				message: errorMessage
 			});
 		}

@@ -8,6 +8,7 @@ import axios from 'axios';
 import API from '../../../API';
 import MenuButton from '../../../../../lib/react/components/MenuButton';
 import LoginRefresher from '../../components/LoginRefresher';
+import NotificationToaster from '../../components/NotificationToaster';
 
 import '../scss/components/_help-menu.scss';
 
@@ -83,8 +84,17 @@ class HelpMenu extends React.Component {
 		this.props.history.push('/');
 	}
 
-	setRefreshing(refreshing) {
-		if (this._mounted) this.setState({refreshLoading: refreshing});
+	setRefreshing(isRefreshing, errorMessage) {
+		if (this._mounted && this.setat.refreshLoading != isRefreshing) {
+			this.setState({refreshLoading: isRefreshing});
+		}
+		
+		if (errorMessage) {
+			NotificationToaster.show({
+				intent: Intent.WARNING,
+				message: errorMessage
+			});
+		}
 	}
 	
 	render() {

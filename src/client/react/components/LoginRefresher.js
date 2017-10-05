@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { gql, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
+import { Intent } from '@blueprintjs/core';
 import { refresh, logout } from '../../actions/authActions';
+import NotificationToaster from './NotificationToaster';
+
 
 const MutationAccessRefresh = gql`
 mutation GetRefresh($refreshToken: String!){
 	refresh(refreshToken:$refreshToken) {
-		ok
-    message
-    access_token
+		ok message access_token
   }
 }`;
 
@@ -60,18 +61,20 @@ class LoginRefresh extends React.Component {
 				variables: { refreshToken: this.props.refreshToken }
 			});
 
+			
 			if (result.data.refresh.ok) {
 				// Refresh successful
 				if (this.props.setRefreshing) this.props.setRefreshing(false);
 				this._dispatchRefresh(result.data.refresh.access_token);
 			}
 			else {
+				// Refresh failed
 				if (this.props.setRefreshing) this.props.setRefreshing(false, result.data.refresh.message);
 				this._dispatchLogout();
 			}
 		}
-		catch (e) {
-			if (this.props.setRefreshing) this.props.setRefreshing(false, e);
+		catch (err) {
+			if (this.props.setRefreshing) this.props.setRefreshing(false, err.toString());
 			this._dispatchLogout();
 		}
 	}
