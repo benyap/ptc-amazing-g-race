@@ -46,10 +46,9 @@ class Dashboard extends React.Component {
 				<Switch>
 					<Route exact path={`${url}`} component={Home}/>
 					<Route path={`${url}/instructions`} component={Instructions}/>
+					<Route path={`${url}/feed`} component={null}/>
 					<Route path={`${url}/challenges`} component={null}/>
-					<Route path={`${url}/completed`} component={null}/>
 					<Route path={`${url}/help`} component={Help}/>
-					<Route path={`${url}/profile`} component={null}/>
 					<Route path={`${url}/image`} component={ImageUploaderTest}/>
 					<Route component={NotFound}/>
 				</Switch>
