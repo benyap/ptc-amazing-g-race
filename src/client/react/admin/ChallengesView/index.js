@@ -163,23 +163,27 @@ class ChallengesView extends React.Component {
 
 				{/* Create Challenge dialog */}
 				<Dialog isOpen={this.state.showCreateChallenge} title='Create a new challenge' onClose={this.toggleCreateChallenge}>
-					<div style={{padding: '1rem'}}>
-						<div className='pt-dialog-body'>
-							{this.state.createChallengeError ? 
-								<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'0.5rem'}}>
-									{this.state.createChallengeError}
-								</div>
-								:null}
-							<label className='pt-label'>
-								<b>Challenge key:</b> 
-								<FormInput id='challenge-key' value={this.state.challengeKey} onChange={this.editChallengeKey}/>
-							</label>
-						</div>
-						<div className='pt-dialog-footer'>
-							<div className='pt-dialog-footer-actions'>
-								<Button onClick={this.toggleCreateChallenge} text='Cancel' className='pt-minimal' disabled={this.state.createChallengeLoading}/>
-								<Button onClick={this.submitCreateChallenge} text='Create' intent={Intent.PRIMARY} loading={this.state.createChallengeLoading}/>
+					<div className='pt-dialog-body'>
+						{this.state.createChallengeError ? 
+							<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'0.5rem'}}>
+								{this.state.createChallengeError}
 							</div>
+							:null}
+						<label className='pt-label'>
+							<div className='pt-callout pt-icon-info-sign' style={{marginBottom:'0.5rem'}}>
+								The <b>challenge key</b> should be a unique identifier for this challenge,
+								and cannot be changed once set.
+								Players will not be able to see the challenge key - they will see the <b>challenge title</b>,
+								which can be changed.
+							</div>
+							<b>Challenge key:</b> 
+							<FormInput id='challenge-key' value={this.state.challengeKey} onChange={this.editChallengeKey}/>
+						</label>
+					</div>
+					<div className='pt-dialog-footer'>
+						<div className='pt-dialog-footer-actions'>
+							<Button onClick={this.toggleCreateChallenge} text='Cancel' className='pt-minimal' disabled={this.state.createChallengeLoading}/>
+							<Button onClick={this.submitCreateChallenge} text='Create' intent={Intent.PRIMARY} loading={this.state.createChallengeLoading}/>
 						</div>
 					</div>
 				</Dialog>
