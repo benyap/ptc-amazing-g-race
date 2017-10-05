@@ -10,7 +10,7 @@ import ViewError from '../../components/ViewError';
 import RefreshBar from '../../components/RefreshBar';
 import { getPublicSetting } from '../../../../graphql/setting';
 
-import '../../scss/_gamestate-view.scss';
+import '../../scss/views/_gamestate-view.scss';
 
 
 const QueryRaceStateOptions = {

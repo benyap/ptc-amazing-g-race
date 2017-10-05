@@ -18,7 +18,7 @@ import NotificationToaster from '../../components/NotificationToaster';
 import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEditor';
 
 import '../../../user/scss/components/_instruction-panel.scss';
-import '../../scss/_markdown-preview.scss';
+import '../../scss/components/_markdown-preview.scss';
 
 
 const QueryGetChallengeOptions = {

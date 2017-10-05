@@ -6,7 +6,7 @@ import Authenticated from '../../../../../../lib/react/components/utility/Authen
 import AdminDashboard from './AdminDashboard';
 import AdminNavbar from '../../components/AdminNavbar';
 
-import '../../scss/_dashboard.scss';
+import '../../scss/pages/_dashboard.scss';
 
 const mapStateToProps = (state, ownProps) => {
 	return { 

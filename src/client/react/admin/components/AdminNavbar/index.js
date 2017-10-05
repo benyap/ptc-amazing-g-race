@@ -3,7 +3,7 @@ import Navbar from '../../../../../../lib/react/components/Navbar';
 import MainNavigation from './MainNavigation';
 import SecondaryNavigation from './SecondaryNavigation';
 
-import '../../scss/_navbar.scss';
+import '../../scss/components/_navbar.scss';
 
 
 class AdminNavbar extends React.Component {

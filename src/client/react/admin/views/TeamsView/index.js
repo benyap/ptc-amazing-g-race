@@ -10,6 +10,8 @@ import RefreshBar from '../../components/RefreshBar';
 import TeamCard from './TeamCard';
 import TeamProfile from './TeamProfile';
 
+import '../../scss/views/_teams-view.scss';
+
 
 const QueryGetTeamsOptions = {
 	name: 'QueryGetTeams',

@@ -9,8 +9,6 @@ import { getTeam, setTeamName, setTeamPoints, removeTeam } from '../../../../gra
 import { getUsers, setUserTeam, removeUserTeam } from '../../../../graphql/user';
 import NotificationToaster from '../../components/NotificationToaster';
 
-import '../../scss/_team-profile.scss';
-
 
 const QueryTeamParams = '_id teamName members{username firstname lastname} memberCount points';
 
