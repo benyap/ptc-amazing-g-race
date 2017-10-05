@@ -62,7 +62,7 @@ class LoginPage extends React.Component {
 		const { authenticated, admin } = this.props;
 		if (authenticated && admin) {
 			return (
-				<Redirect to='/admin/dashboard'/>
+				<Redirect to='/admin/dashboard/users'/>
 			);
 		}
 		else {
@@ -76,7 +76,7 @@ class LoginPage extends React.Component {
 						authenticationHandler={this.adminLoginHandler}
 						email={this.props.remember&&this.props.email ? this.props.email : null}
 						remember={this.props.remember}
-						next={this.props.location.state ? this.props.location.state : '/admin/dashboard'}
+						next={this.props.location.state ? this.props.location.state : '/admin/dashboard/users'}
 					/>
 				</main>
 			);
