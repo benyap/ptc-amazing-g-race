@@ -107,7 +107,7 @@ const _uploadObject = async function(user, object, collection, key, name) {
 const _deleteObject = async function(user, collection, key) {
 	if (!user) return new Error('No user logged in');
 	
-	const authorized = await permission.checkPermission(user, ['user:delete-object']);
+	const authorized = await permission.checkPermission(user, ['admin:delete-object']);
 	if (authorized !== true) return authorized;
 	
 	if (!collection) return new Error('Collection is required.');
