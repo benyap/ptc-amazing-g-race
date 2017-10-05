@@ -48,7 +48,7 @@ class Dashboard extends React.Component {
 					<Route path={`${url}/feed`} component={()=>null}/>
 					<Route path={`${url}/challenges`} component={()=>null}/>
 					<Route path={`${url}/help`} component={()=><Help demo/>}/>
-					<Route component={()=><NotFound/>}/>
+					<Route component={NotFound}/>
 				</Switch>
 			</div>
 		);
