@@ -4,10 +4,25 @@
   "scripts": {
   },
   "env": {
-    "AWS_S3_ID": {
+    "AWS_S3_REGION": {
       "required": true
     },
-    "AWS_S3_SECRET": {
+    "AWS_S3_BUCKET": {
+      "required": true
+    },
+    "AWS_S3_UPLOAD_LOCATION": {
+      "required": true
+    },
+    "AWS_S3_USER_ACCESS_KEY_ID": {
+      "required": true
+    },
+    "AWS_S3_USER_SECRET_ACCESS_KEY": {
+      "required": true
+    },
+    "AWS_S3_ADMIN_ACCESS_KEY_ID": {
+      "required": true
+    },
+    "AWS_S3_ADMIN_SECRET_ACCESS_KEY": {
       "required": true
     },
     "EXPRESS_SESSION_SECRET": {
