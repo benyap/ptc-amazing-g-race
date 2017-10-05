@@ -5,7 +5,7 @@ import Page from './Page';
 class NotFound extends Page {
 	renderPage(route) {
 		return (
-			<main id='not-found' style={{marginTop: '20vh'}}>
+			<main id='not-found' style={{paddingTop: '20vh'}}>
 				<div className='pt-non-ideal-state not-found'>
 					<div className='pt-non-ideal-state-visual pt-non-ideal-state-icon'>
 						<span className='pt-icon pt-icon-error'></span>
