@@ -7,7 +7,6 @@ import HelpMenu from '../components/HelpMenu';
 import Home from '../pages/Home';
 import Help from '../pages/Help';
 import Instructions from '../pages/Instructions';
-import ImageUploaderTest from '../pages/ImageUploaderTest';
 import NotFound from '../pages/NotFound';
 
 
@@ -44,12 +43,12 @@ class Dashboard extends React.Component {
 					What you're seeing on this page is a template of how the app will look like on game day.
 				</div>
 				<Switch>
-					<Route exact path={`${url}`} component={Home}/>
-					<Route path={`${url}/instructions`} component={Instructions}/>
-					<Route path={`${url}/feed`} component={null}/>
-					<Route path={`${url}/challenges`} component={null}/>
-					<Route path={`${url}/help`} component={Help}/>
-					<Route component={NotFound}/>
+					<Route exact path={`${url}`} component={()=><Home/>}/>
+					<Route path={`${url}/instructions`} component={()=><Instructions/>}/>
+					<Route path={`${url}/feed`} component={()=>null}/>
+					<Route path={`${url}/challenges`} component={()=>null}/>
+					<Route path={`${url}/help`} component={()=><Help/>}/>
+					<Route component={()=><NotFound/>}/>
 				</Switch>
 			</div>
 		);

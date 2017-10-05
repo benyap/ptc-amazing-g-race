@@ -35,13 +35,13 @@ class Dashboard extends React.Component {
 				<Base/>
 				<HelpMenu/>
 				<Switch>
-					<Route exact path={`${url}`} component={Home}/>
-					<Route path={`${url}/instructions`} component={Instructions}/>
-					<Route path={`${url}/feed`} component={null}/>
-					<Route path={`${url}/challenges`} component={null}/>
-					<Route path={`${url}/help`} component={Help}/>
-					<Route path={`${url}/image`} component={ImageUploaderTest}/>
-					<Route component={NotFound}/>
+					<Route exact path={`${url}`} component={()=><Home/>}/>
+					<Route path={`${url}/instructions`} component={()=><Instructions/>}/>
+					<Route path={`${url}/feed`} component={()=>null}/>
+					<Route path={`${url}/challenges`} component={()=>null}/>
+					<Route path={`${url}/help`} component={()=><Help/>}/>
+					<Route path={`${url}/image`} component={()=><ImageUploaderTest/>}/>
+					<Route component={()=><NotFound/>}/>
 				</Switch>
 			</div>
 		);
