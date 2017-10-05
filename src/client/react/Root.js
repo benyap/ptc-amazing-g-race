@@ -6,10 +6,10 @@ import { loadState } from '../actions/stateActions';
 import { LoadingPage, FallbackPage } from './pages';
 import { getPublicSetting } from '../graphql/setting';
 import AppContainer from '../../../lib/react/components/AppContainer';
-import Promotion from './stages/Promotion';
-import Registration from './stages/Registration';
-import RegistrationClosed from './stages/RegistrationClosed';
-import Race from './stages/Race';
+import Promotion from './user/Promotion';
+import Registration from './user/Registration';
+import RegistrationClosed from './user/RegistrationClosed';
+import Race from './user/Race';
 
 import './scss/main.scss';
 import '../assets/favicon.ico';
