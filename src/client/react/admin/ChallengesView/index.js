@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
-import { Spinner, Button, Intent } from '@blueprintjs/core';
+import { Spinner, Button, Intent, Dialog } from '@blueprintjs/core';
 import { getAllChallenges, createChallenge } from '../../../graphql/challenge';
 import { saveState } from '../../../actions/stateActions';
 import RefreshBar from '../RefreshBar';
@@ -11,6 +11,7 @@ import ViewError from '../ViewError';
 import ChallengeCard from './ChallengeCard';
 import ChallengeProfile from './ChallengeProfile';
 import NotificationToaster from '../NotificationToaster';
+import FormInput from '../../../../../lib/react/components/forms/FormInput';
 
 import '../../scss/admin/_challenge-view.scss';
 
@@ -35,23 +36,26 @@ class ChallengesView extends React.Component {
 		loading: false,
 		viewProfile: null,
 		refetching: false,
-		createChallengeLoading: false
+		showCreateChallenge: false,
+		createChallengeLoading: false,
+		createChallengeError: null,
+		challengeKey: ''
 	}
 
 	componentDidMount() {
-		this.mounted = true;
+		this._mounted = true;
 	}
 
 	componentWillUnmount() {
-		this.mounted = false;
+		this._mounted = false;
 	}
 
 	refetchChallenges() {
 		if (!this.state.viewProfile) {
-			if (this.mounted) this.setState({refetching: true});
+			if (this._mounted) this.setState({refetching: true});
 			this.props.QueryGetAllChallenges.refetch()
 			.then(() => {
-				if (this.mounted) this.setState({refetching: false});
+				if (this._mounted) this.setState({refetching: false});
 				this.props.dispatch(saveState());
 			})
 			.catch((err) => {
@@ -74,29 +78,43 @@ class ChallengesView extends React.Component {
 		});
 	}
 
+	toggleCreateChallenge() {
+		this.setState((prevState) => {
+			return { showCreateChallenge: !prevState.showCreateChallenge }
+		});
+	}
+	
+	editChallengeKey(e) {
+		this.setState({ challengeKey: e.target.value });
+	}
+
 	async submitCreateChallenge() {
-		this.setState({ createChallengeLoading: true });
+		this.setState({ createChallengeLoading: true, createChallengeError: null });
 		try {
 			const id = parseInt(Date.now()/1000) % 100000;
 			await this.props.MutationCreateChallenge({
 				variables: {
-					key: `challenge_${id}`,
-					group: `new`,
+					key: `${this.state.challengeKey}`,
+					group: `NEW`,
 					type: `none`,
 					passphrase: `${id}`,
-					title: `NEW challenge ${id}`,
+					title: `New Challenge #${id}`,
 					description: `## Challenge ${id}`
 				}
 			});
 			await this.props.QueryGetAllChallenges.refetch();
-			this.setState({ createChallengeLoading: false });
+			this.setState({ createChallengeLoading: false, showCreateChallenge: false, challengeKey: '' });
 		}
 		catch (err) {
-			this.setState({ createChallengeLoading: false });
-			NotificationToaster.show({
-				intent: Intent.DANGER,
-				message: err.toString()
-			});
+			if (this._mounted) {
+				this.setState({ createChallengeLoading: false, createChallengeError: err.toString() });
+			}
+			else {
+				NotificationToaster.show({
+					intent: Intent.DANGER,
+					message: err.toString()
+				});
+			}
 		}
 	}
 
@@ -130,7 +148,7 @@ class ChallengesView extends React.Component {
 							);
 						})}
 						<Button text='Create new challenge' iconName='add' className='pt-fill pt-minimal' 
-							intent={Intent.PRIMARY} onClick={this.submitCreateChallenge} loading={this.state.createChallengeLoading}/>
+							intent={Intent.PRIMARY} onClick={this.toggleCreateChallenge}/>
 					</div>
 				);
 			}
@@ -142,6 +160,29 @@ class ChallengesView extends React.Component {
 				<RefreshBar query={this.props.QueryGetAllChallenges} refetching={this.state.refetching} 
 					disabled={this.state.viewProfile} shouldRefresh={this.props.shouldRefresh}/>
 				{content}
+
+				{/* Create Challenge dialog */}
+				<Dialog isOpen={this.state.showCreateChallenge} title='Create a new challenge' onClose={this.toggleCreateChallenge}>
+					<div style={{padding: '1rem'}}>
+						<div className='pt-dialog-body'>
+							{this.state.createChallengeError ? 
+								<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'0.5rem'}}>
+									{this.state.createChallengeError}
+								</div>
+								:null}
+							<label className='pt-label'>
+								<b>Challenge key:</b> 
+								<FormInput id='challenge-key' value={this.state.challengeKey} onChange={this.editChallengeKey}/>
+							</label>
+						</div>
+						<div className='pt-dialog-footer'>
+							<div className='pt-dialog-footer-actions'>
+								<Button onClick={this.toggleCreateChallenge} text='Cancel' className='pt-minimal' disabled={this.state.createChallengeLoading}/>
+								<Button onClick={this.submitCreateChallenge} text='Create' intent={Intent.PRIMARY} loading={this.state.createChallengeLoading}/>
+							</div>
+						</div>
+					</div>
+				</Dialog>
 			</div>
 		);
 	}
