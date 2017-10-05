@@ -32,7 +32,7 @@ class TeamPanel extends React.Component {
 		else if (this.props.loading) {
 			return (
 				<div className='pt-callout'>
-					Loading team stats...
+					Getting the latest stats...
 				</div>
 			);
 		}

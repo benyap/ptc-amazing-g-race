@@ -14,19 +14,24 @@ import '../../../scss/dashboard/_main.scss'
 import '../../../scss/dashboard/_home.scss';
 
 
-const QueryGetUserByEmailOptions = {
-	name: 'QueryGetUserByEmail',
-	options: { fetchPolicy: 'cache-and-network' }
-}
-
-const QueryGetTeamParams = '_id teamName points memberCount members{username firstname lastname mobileNumber}';
-
 const mapStateToProps = (state, ownProps) => {
 	return { 
 		email: state.auth.login.email,
 		teamName: state.userInfo.teamName
 	};
 }
+
+const QueryGetUserByEmailOptions = {
+	name: 'QueryGetUserByEmail',
+	options: (props) => {
+		return {
+			fetchPolicy: 'cache-and-network',
+			variables: { email: props.email }
+		}
+	}
+}
+
+const QueryGetTeamParams = '_id teamName points memberCount members{username firstname lastname mobileNumber}';
 
 @connect(mapStateToProps)
 @graphql(getUserByEmail('username teamId'), QueryGetUserByEmailOptions)
@@ -43,45 +48,59 @@ class Home extends React.Component {
 
 	state = {
 		team: null,
-		teamLoading: false,
+		teamLoading: true,
 		teamError: null,
 		showHelp: false
 	}
 
 	componentDidMount() {
 		this._mounted = true;
+
+		// Fetch team once user email is loaded
+		this.props.QueryGetUserByEmail.refetch()
+		.then(() => {
+			if (this.props.QueryGetUserByEmail.getUserByEmail) {
+				this.refetchTeam(this.props.QueryGetUserByEmail.getUserByEmail.teamId);
+			}
+		});
 	}
 
 	componentWillUnmount() {
 		this._mounted = false;
 	}
 
-	refetchTeam(teamId) {
+	async refetchTeam(teamId) {
 		if (!teamId) {
 			// Reset team info
 			this.props.dispatch(setTeamInfo(null, null, null));
+			this.setState({ teamLoading: false });
 		}
 		else {
-			setTimeout(() => { if (this._mounted) this.setState({ teamLoading: true }) }, 0);
-			this.props.client.query({
-				query: getTeam(QueryGetTeamParams),
-				variables: { teamId },
-				fetchPolicy: 'network-only'
-			})
-			.then((result) => {
+			if (this._mounted && !this.state.teamLoading) this.setState({ teamLoading: true });
+
+			try {
+				const result = await this.props.client.query({
+					query: getTeam(QueryGetTeamParams),
+					variables: { teamId },
+					fetchPolicy: 'network-only'
+				});
+
 				if (this._mounted) this.setState({ team: result.data, teamLoading: false });
+				
+				// Save team info
 				this.props.dispatch(setTeamInfo(
 					result.data.getTeam._id, 
 					result.data.getTeam.teamName, 
 					result.data.getTeam.members
 				));
-			})
-			.catch((err) => {
-				if (this._mounted) this.setState({ teamLoading: false, teamError: err.toString() });
-				console.warn(err);
+			}
+			catch (err) {
 				// Reset team info
 				this.props.dispatch(setTeamInfo(null, null, null));
-			});
+
+				if (this._mounted) this.setState({ teamLoading: false, teamError: err.toString() });
+				console.warn(err);
+			}
 		}
 	}
 
@@ -98,13 +117,7 @@ class Home extends React.Component {
 		});
 	}
 
-	render() {
-		const { loading, getUserByEmail } = this.props.QueryGetUserByEmail;
-		
-		if (getUserByEmail && getUserByEmail.teamId && !this.state.team && !this.state.teamLoading) {
-			this.refetchTeam(getUserByEmail.teamId);
-		}
-		
+	render() {		
 		return (
 			<main id='home' className='dashboard'>
 				<div className='content'>
