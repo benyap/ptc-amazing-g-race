@@ -21,8 +21,8 @@ const checkUnique = async function(root, params, ctx, options) {
 	return database.user.checkUnique(ctx.user, params.parameter, params.value);
 }
 
-const listAll = async function(root, params, ctx, options) {
-	return database.user.listAll(ctx.user, params.skip, params.limit);
+const getUsers = async function(root, params, ctx, options) {
+	return database.user.getUsers(ctx.user, params.skip, params.limit);
 }
 
 const checkUserPermission = async function(root, params, ctx, options) {
@@ -100,7 +100,7 @@ export default {
 	getUserByEmail,
 	getMe,
 	checkUnique,
-	listAll,
+	getUsers,
 	checkUserPermission,
 	addPermission,
 	removePermission,

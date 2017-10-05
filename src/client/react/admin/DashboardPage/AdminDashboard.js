@@ -1,6 +1,6 @@
 import React from 'react';
-import { Tab2, Tabs2 } from '@blueprintjs/core';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
+import { Tab2, Tabs2, Intent } from '@blueprintjs/core';
 import MediaQuery from 'react-responsive';
 import { withRouter } from 'react-router-dom';
 import bp from '../../../../../lib/react/components/utility/bp';
@@ -9,7 +9,20 @@ import TeamsView from '../TeamsView';
 import GameStateView from '../GameStateView';
 import ServerSettingsView from '../ServerSettingsView';
 import InstructionArticlesView from '../InstructionArticlesView';
+import S3ExplorerView from '../S3ExplorerView';
+import ChallengesView from '../ChallengesView';
+import NotificationToaster from '../NotificationToaster';
 
+
+const VIEWS = [
+	'users', 
+	'teams', 
+	'challenges', 
+	'instructions', 
+	'uploads', 
+	'state', 
+	'server'
+];
 
 @withRouter
 @autobind
@@ -18,40 +31,48 @@ class AdminDashboard extends React.Component {
 		selectedTabId: 'users'
 	}
 
-	views = [
-		'users', 'teams', 'instructions', 'state', 'server'
-	];
+	componentWillMount() {
+		const { params } = this.props.match;
+		if (params) {
+			// Ensure view exists
+			let viewExists = false;
+			VIEWS.forEach((view) => {
+				if (!viewExists) {
+					if (view === params.view) viewExists = true;
+				}
+			})
 
-	componentDidMount() {
-		let path = 'users';
-		if (this.props.location.state && this.props.location.state.origin) {
-			const regex = /(view=)([a-zA-Z0-9]+)/;
-			const result = regex.exec(this.props.location.state.origin.search);
-	
-			if (result && this.views.indexOf(result[2]) >= 0) {
-				path = result[2];
+			if (viewExists) {
+				this.props.history.push(`/admin/dashboard/${params.view}`);
+				this.setState({selectedTabId: params.view});
+			}
+			else {
+				this.props.history.push(`/admin/dashboard/users`);
+				this.setState({selectedTabId: 'users'});
+				NotificationToaster.show({
+					intent: Intent.WARNING,
+					message: `The view '${params.view}' does not exist. You have been redirected to the 'users' view.`
+				});
 			}
 		}
-
-		this.setState({selectedTabId: path}, () => {
-			this.props.history.push(`/admin/dashboard?view=${this.state.selectedTabId}`);
-		});
 	}
 
-	handleTabChange(selectedTabId) {
-		this.setState({selectedTabId});
-		this.props.history.push(`/admin/dashboard?view=${selectedTabId}`);
+	handleTabChange(newTabId) {
+		this.props.history.push(`/admin/dashboard/${newTabId}`);
+		this.setState({selectedTabId: newTabId});
 	}
 
 	renderTabs(vertical) {
 		return (
 			<Tabs2 id='dashboard' className={vertical?'':'mobile-tabs'} onChange={this.handleTabChange} 
 				selectedTabId={this.state.selectedTabId} vertical={vertical}>
-				<Tab2 id='users' title='Users' panel={<UsersView visible={this.state.selectedTabId==='users'}/>}/>
-				<Tab2 id='teams' title='Teams' panel={<TeamsView visible={this.state.selectedTabId==='teams'}/>}/>
-				<Tab2 id='instructions' title='Instructions' panel={<InstructionArticlesView visible={this.state.selectedTabId==='instructions'}/>}/>
-				<Tab2 id='state' title='Game State' panel={<GameStateView visible={this.state.selectedTabId==='state'}/>}/>
-				<Tab2 id='server' title='Server' panel={<ServerSettingsView visible={this.state.selectedTabId==='server'}/>}/>
+				<Tab2 id={VIEWS[0]} title='Users' panel={<UsersView shouldRefresh={this.state.selectedTabId===VIEWS[0]}/>}/>
+				<Tab2 id={VIEWS[1]} title='Teams' panel={<TeamsView shouldRefresh={this.state.selectedTabId===VIEWS[1]}/>}/>
+				<Tab2 id={VIEWS[2]} title='Challenges' panel={<ChallengesView shouldRefresh={this.state.selectedTabId===VIEWS[2]}/>}/>
+				<Tab2 id={VIEWS[3]} title='Uploads (S3)' panel={<S3ExplorerView shouldRefresh={this.state.selectedTabId===VIEWS[3]}/>}/>
+				<Tab2 id={VIEWS[4]} title='Instructions' panel={<InstructionArticlesView shouldRefresh={this.state.selectedTabId===VIEWS[4]}/>}/>
+				<Tab2 id={VIEWS[5]} title='Game State' panel={<GameStateView shouldRefresh={this.state.selectedTabId===VIEWS[5]}/>}/>
+				<Tab2 id={VIEWS[6]} title='Server' panel={<ServerSettingsView shouldRefresh={this.state.selectedTabId===VIEWS[6]}/>}/>
 			</Tabs2>
 		);
 	}

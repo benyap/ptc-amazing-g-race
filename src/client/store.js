@@ -63,9 +63,6 @@ else {
 		store = createStore(reducersWithStorage, composeWithDevTools(middleware));	
 }
 
-// Load store
-load(store);
-
 
 // ========================================
 //  ADD AUTHORIZATION TO NETWORK INTERFACE

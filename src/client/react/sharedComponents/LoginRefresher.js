@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 import { gql, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import { refresh, logout } from '../../actions/authActions';
@@ -56,7 +56,7 @@ class LoginRefresh extends React.Component {
 
 		// Send refresh request
 		try {
-			let result = await this.props.MutationAccessRefresh({
+			const result = await this.props.MutationAccessRefresh({
 				variables: { refreshToken: this.props.refreshToken }
 			});
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { ProgressBar, Intent, Icon } from '@blueprintjs/core';
@@ -22,13 +22,11 @@ const MutationRegisterUser =
   }
 }`;
 
-
 const mapStateToProps = (state, ownProps) => {
 	return { 
 		authenticated: state.auth.login.authenticated
 	}
 }
-
 
 @connect(mapStateToProps)
 @autobind
@@ -72,7 +70,7 @@ class RegisterForm extends React.Component {
 			currentStage: 5
 		});
 	
-		let options = {
+		const options = {
 			method: 'POST',
 			url: API.api,
 			data: {
@@ -96,7 +94,7 @@ class RegisterForm extends React.Component {
 		}
 
 		try {
-			let result = await axios(options);
+			const result = await axios(options);
 			if (result.data.data.registerUser.email === this.state.email) {
 				this.setState({ complete: true, loading: false });
 			}

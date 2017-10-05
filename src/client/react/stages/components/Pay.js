@@ -2,7 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Spinner } from '@blueprintjs/core';
-import { compose, graphql, gql } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
+import { getPublicSetting, getProtectedSetting } from '../../../graphql/setting';
+import { getUserByEmail } from '../../../graphql/user';
 import ScrollAnimation from 'react-animate-on-scroll';
 import Title from './Title';
 import LoginRefresher from '../../sharedComponents/LoginRefresher';
@@ -18,48 +20,17 @@ const mapStateToProps = (state, ownProps) => {
 	}
 }
 
-const QueryMe = gql`
-query GetUserByEmail($email:String!) {
-  getUserByEmail(email:$email) {
-		firstname
-		lastname
-		username 
-  }
-}`;
-
 const QueryMeOptions = {
 	name: 'QueryMe',
-	options: ({email}) => ({
-		variables: {email}
-	}),
-	skip: (ownProps) => {
-		return !ownProps.authenticated;
-	}
+	options: ({email}) => ({ variables: {email} }),
+	skip: (ownProps) => !ownProps.authenticated
 }
-
-const QuerySetting = gql`
-query GetProtectedSetting($key:String!){
-  getProtectedSetting(key:$key){
-		value
-	}
-}`;
-
-const QueryPublicSetting = gql`
-query GetPublicSetting($key:String!){
-  getPublicSetting(key:$key){
-		value
-	}
-}`;
 
 const PaymentQueryOptions = (name, key) => {
 	return {
 		name,
-		options: (props) => ({
-			variables: { key }
-		}),
-		skip: (ownProps) => {
-			return !ownProps.authenticated;
-		}
+		options: (props) => ({ variables: { key } }),
+		skip: (ownProps) => !ownProps.authenticated
 	}
 }
 
@@ -73,17 +44,17 @@ const QueryPaymentPriceOptions = {
 
 @connect(mapStateToProps)
 @compose(
-	graphql(QueryMe, QueryMeOptions),
-	graphql(QueryPublicSetting, QueryPaymentPriceOptions),
-	graphql(QuerySetting, PaymentQueryOptions('QueryBsb', 'payment_bsb')),
-	graphql(QuerySetting, PaymentQueryOptions('QueryAcc', 'payment_acc'))
+	graphql(getUserByEmail('firstname lastname username'), QueryMeOptions),
+	graphql(getPublicSetting('value'), QueryPaymentPriceOptions),
+	graphql(getProtectedSetting('value'), PaymentQueryOptions('QueryBsb', 'payment_bsb')),
+	graphql(getProtectedSetting('value'), PaymentQueryOptions('QueryAcc', 'payment_acc'))
 )
 class Pay extends React.Component {
 	
 	render() {
 		let payment, price; 
 
-		let _price = this.props.QueryPaymentPrice.loading ? 
+		const _price = this.props.QueryPaymentPrice.loading ? 
 			null : this.props.QueryPaymentPrice.getPublicSetting.value;
 		
 		if (_price === null || isNaN(_price)) {

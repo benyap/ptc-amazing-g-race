@@ -1,5 +1,5 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 import { withRouter } from 'react-router-dom';
 import { Position, Spinner, Menu, MenuItem, MenuDivider } from '@blueprintjs/core';
 import { connect } from 'react-redux';
@@ -31,8 +31,8 @@ class HelpMenu extends React.Component {
 		<Menu>
 			<MenuItem text='Team dashboard' iconName='people' onClick={this.navigate('/dashboard')}/>
 			<MenuItem text='Instructions' iconName='clipboard' onClick={this.navigate('/dashboard/instructions')}/>
+			<MenuItem text='News feed' iconName='feed' onClick={this.navigate('/dashboard/feed')}/>
 			<MenuItem text='Challenges' iconName='map' onClick={this.navigate('/dashboard/challenges')}/>
-			<MenuItem text='Completed' iconName='tick-circle' onClick={this.navigate('/dashboard/completed')}/>
 			<MenuDivider/>
 			<MenuItem text='Help' iconName='help' onClick={this.navigate('/dashboard/help')}/>
 			<MenuItem text='Logout' iconName='log-out' onClick={this.logout}/>
@@ -72,7 +72,7 @@ class HelpMenu extends React.Component {
 		}
 
 		// Send logout request to server
-		let result = await axios(config);
+		const result = await axios(config);
 
 		if (!result.data.data.logout.ok) {
 			console.warn(result.data.data.logout.failureMessage);

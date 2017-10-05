@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
+import autobind from 'core-decorators/es/autobind';
 
 
 @autobind
@@ -21,7 +21,7 @@ class TeamCard extends React.Component {
 	}
 
 	render() {
-		let { teamName, memberCount, points } = this.props.team;
+		const { teamName, memberCount, points } = this.props.team;
 
 		return (
 			<div className='pt-card pt-elevation-0 pt-interactive user-card' onClick={this.openProfile}>

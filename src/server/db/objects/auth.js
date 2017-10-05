@@ -251,7 +251,7 @@ const logout = async function(user, refreshToken) {
 		if (payload) {
 			// Invalidate token
 			const db = await connect();
-			let result = await db.collection('refreshtokens').update(
+			const result = await db.collection('refreshtokens').update(
 				// Selector
 				{ email: user ? user.email : payload.email, token: refreshToken, valid: true },
 				// Update
