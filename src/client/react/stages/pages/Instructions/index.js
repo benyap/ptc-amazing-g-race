@@ -3,11 +3,11 @@ import autobind from 'core-decorators/es/autobind';
 import { Link } from 'react-router-dom';
 import { graphql } from 'react-apollo';
 import { Button, Spinner } from '@blueprintjs/core';
-import { getArticles } from '../../../../../graphql/article';
+import { getArticles } from '../../../../graphql/article';
 import InstructionCollapse from './InstructionCollapse';
 
-import '../../../../scss/dashboard/_main.scss'
-import '../../../../scss/components/_instructions.scss';
+import '../../../scss/dashboard/_main.scss'
+import '../../../scss/components/_instructions.scss';
 
 
 const QueryGetArticlesOptions = {

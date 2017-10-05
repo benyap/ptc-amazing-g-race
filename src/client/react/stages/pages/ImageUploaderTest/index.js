@@ -3,8 +3,8 @@ import axios from 'axios';
 import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { Button } from '@blueprintjs/core';
-import API from '../../../../../API';
-import ImageUploader from '../../../../../../../lib/react/components/ImageUploader';
+import API from '../../../../API';
+import ImageUploader from '../../../../../../lib/react/components/ImageUploader';
 
 
 const mapStateToProps = (state, ownProps) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Spinner } from '@blueprintjs/core';
 
-import '../../../../scss/dashboard/_team-panel.scss';
+import '../../../scss/dashboard/_team-panel.scss';
 
 
 class TeamPanel extends React.Component {

@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Spinner, Button } from '@blueprintjs/core';
 import { graphql, withApollo } from 'react-apollo';
-import { getUserByEmail } from '../../../../../graphql/user';
-import { getTeam } from '../../../../../graphql/team';
+import { getUserByEmail } from '../../../../graphql/user';
+import { getTeam } from '../../../../graphql/team';
 import TeamPanel from './TeamPanel';
-import { setTeamInfo } from '../../../../../actions/userInfoActions';
+import { setTeamInfo } from '../../../../actions/userInfoActions';
 
-import '../../../../scss/dashboard/_main.scss'
-import '../../../../scss/dashboard/_home.scss';
+import '../../../scss/dashboard/_main.scss'
+import '../../../scss/dashboard/_home.scss';
 
 
 const QueryGetUserByEmailOptions = {
