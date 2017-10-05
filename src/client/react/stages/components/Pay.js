@@ -7,7 +7,7 @@ import { getPublicSetting, getProtectedSetting } from '../../../graphql/setting'
 import { getUserByEmail } from '../../../graphql/user';
 import ScrollAnimation from 'react-animate-on-scroll';
 import Title from './Title';
-import LoginRefresher from '../../sharedComponents/LoginRefresher';
+import LoginRefresher from '../../components/LoginRefresher';
 
 import '../../scss/components/_pay.scss';
 

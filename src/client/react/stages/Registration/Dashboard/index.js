@@ -9,7 +9,7 @@ import { logout } from '../../../../actions/authActions';
 import axios from 'axios';
 import ScrollAnimation from 'react-animate-on-scroll';
 import Title from '../../components/Title';
-import LoginRefresher from '../../../sharedComponents/LoginRefresher';
+import LoginRefresher from '../../../components/LoginRefresher';
 import API from '../../../../API';
 
 import '../../../scss/components/_dashboard.scss';
