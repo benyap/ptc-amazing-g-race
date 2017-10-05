@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { compose, graphql } from 'react-apollo';
 import { Spinner, Button, Intent, Dialog } from '@blueprintjs/core';
-import { getTeams, addTeam } from '../../../graphql/team';
-import FormInput from '../../../../../lib/react/components/forms/FormInput';
-import ViewError from '../ViewError';
-import RefreshBar from '../RefreshBar';
+import { getTeams, addTeam } from '../../../../graphql/team';
+import FormInput from '../../../../../../lib/react/components/forms/FormInput';
+import ViewError from '../../components/ViewError';
+import RefreshBar from '../../components/RefreshBar';
 import TeamCard from './TeamCard';
 import TeamProfile from './TeamProfile';
 

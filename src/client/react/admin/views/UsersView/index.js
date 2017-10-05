@@ -5,15 +5,15 @@ import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import { Spinner, Button, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import DateFormat from 'dateformat';
-import { saveState } from '../../../actions/stateActions';
-import { getSetting } from '../../../graphql/setting';
-import { getUsers } from '../../../graphql/user';
-import ViewError from '../ViewError';
+import { saveState } from '../../../../actions/stateActions';
+import { getSetting } from '../../../../graphql/setting';
+import { getUsers } from '../../../../graphql/user';
+import ViewError from '../../components/ViewError';
 import UserCard from './UserCard';
 import UserProfile from './UserProfile';
 import UsersSummary from './UsersSummary';
 
-import '../../scss/admin/_user-view.scss';
+import '../../../scss/admin/_user-view.scss';
 
 
 const QueryUserParams = 'firstname lastname username email university enabled paidAmount teamId isAdmin';

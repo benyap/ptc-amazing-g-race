@@ -2,11 +2,11 @@ import React from 'react';
 import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import Authenticated from '../../../../../lib/react/components/utility/Authenticated';
+import Authenticated from '../../../../../../lib/react/components/utility/Authenticated';
 import AdminDashboard from './AdminDashboard';
-import AdminNavbar from '../AdminNavbar';
+import AdminNavbar from '../../components/AdminNavbar';
 
-import '../../scss/admin/_dashboard.scss';
+import '../../../scss/admin/_dashboard.scss';
 
 const mapStateToProps = (state, ownProps) => {
 	return { 

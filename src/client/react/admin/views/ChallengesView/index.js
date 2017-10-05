@@ -4,16 +4,16 @@ import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import { Spinner, Button, Intent, Dialog } from '@blueprintjs/core';
-import { getAllChallenges, createChallenge } from '../../../graphql/challenge';
-import { saveState } from '../../../actions/stateActions';
-import RefreshBar from '../RefreshBar';
-import ViewError from '../ViewError';
+import { getAllChallenges, createChallenge } from '../../../../graphql/challenge';
+import { saveState } from '../../../../actions/stateActions';
+import RefreshBar from '../../components/RefreshBar';
+import ViewError from '../../components/ViewError';
 import ChallengeCard from './ChallengeCard';
 import ChallengeProfile from './ChallengeProfile';
-import NotificationToaster from '../NotificationToaster';
-import FormInput from '../../../../../lib/react/components/forms/FormInput';
+import NotificationToaster from '../../components/NotificationToaster';
+import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 
-import '../../scss/admin/_challenge-view.scss';
+import '../../../scss/admin/_challenge-view.scss';
 
 
 const QueryGetAllChallengesOptions = {

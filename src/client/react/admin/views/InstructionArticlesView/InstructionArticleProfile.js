@@ -4,13 +4,13 @@ import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { compose, graphql } from 'react-apollo';
 import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core';
-import { getArticle, setArticleTitle, editArticle, removeArticle } from '../../../graphql/article';
-import { saveState } from '../../../actions/stateActions';
-import MarkdownEditor from '../../../../../lib/react/components/MarkdownEditor';
-import NotificationToaster from '../NotificationToaster';
+import { getArticle, setArticleTitle, editArticle, removeArticle } from '../../../../graphql/article';
+import { saveState } from '../../../../actions/stateActions';
+import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEditor';
+import NotificationToaster from '../../components/NotificationToaster';
 
-import '../../scss/components/_instruction-panel.scss';
-import '../../scss/admin/_markdown-preview.scss';
+import '../../../scss/components/_instruction-panel.scss';
+import '../../../scss/admin/_markdown-preview.scss';
 
 
 const QueryGetArticleParams = 'title content modified modifiedBy{username}';

@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import autobind from 'core-decorators/es/autobind';
-import API from '../../../API';
+import API from '../../../../API';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { loginAdmin } from '../../../actions/authActions';
-import LoginForm from '../../../../../lib/react/components/forms/LoginForm';
-import Authenticated from '../../../../../lib/react/components/utility/Authenticated';
+import { loginAdmin } from '../../../../actions/authActions';
+import LoginForm from '../../../../../../lib/react/components/forms/LoginForm';
+import Authenticated from '../../../../../../lib/react/components/utility/Authenticated';
 
 
 const titleStyle = {

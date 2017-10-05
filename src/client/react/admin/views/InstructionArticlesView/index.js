@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { Button, Intent, Spinner, Dialog } from '@blueprintjs/core';
 import { compose, graphql } from 'react-apollo'
-import { getArticles, addArticle } from '../../../graphql/article';
-import RefreshBar from '../RefreshBar';
-import ViewError from '../ViewError';
+import { getArticles, addArticle } from '../../../../graphql/article';
+import RefreshBar from '../../components/RefreshBar';
+import ViewError from '../../components/ViewError';
 import InstructionArticleCard from './InstructionArticleCard';
 import InstructionArticleProfile from './InstructionArticleProfile';
-import FormInput from '../../../../../lib/react/components/forms/FormInput';
+import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 
-import '../../scss/admin/_markdown-preview.scss';
+import '../../../scss/admin/_markdown-preview.scss';
 
 
 const QueryGetArticlesParams = '_id title created createdBy{username} modified modifiedBy{username}';

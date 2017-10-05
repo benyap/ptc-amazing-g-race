@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 import { Button, Dialog, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTarget, Toaster, Position } from '@blueprintjs/core';
 import { graphql, compose } from 'react-apollo';
 import DateFormat from 'dateformat';
-import { getUserByEmail, setUserPaidAmount, addPermission, removePermission } from '../../../graphql/user';
-import { saveState } from '../../../actions/stateActions';
-import NotificationToaster from '../NotificationToaster';
-import FormInput from '../../../../../lib/react/components/forms/FormInput';
+import { getUserByEmail, setUserPaidAmount, addPermission, removePermission } from '../../../../graphql/user';
+import { saveState } from '../../../../actions/stateActions';
+import NotificationToaster from '../../components/NotificationToaster';
+import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 
 
 const QueryUserParams = 

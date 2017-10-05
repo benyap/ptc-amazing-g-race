@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import FormInput from '../../../../../lib/react/components/forms/FormInput';
+import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import Filter from './Filter';
 import Search from './Search';
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
 import { Dialog, Button, Intent } from '@blueprintjs/core';
-import { setSetting } from '../../../graphql/setting';
+import { setSetting } from '../../../../graphql/setting';
 
 
 @graphql(setSetting('ok'), { name: 'MutationSetSetting' })

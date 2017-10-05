@@ -6,11 +6,11 @@ import { Spinner } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import * as GameState from './gameStates';
 import State from './State';
-import ViewError from '../ViewError';
-import RefreshBar from '../RefreshBar';
-import { getPublicSetting } from '../../../graphql/setting';
+import ViewError from '../../components/ViewError';
+import RefreshBar from '../../components/RefreshBar';
+import { getPublicSetting } from '../../../../graphql/setting';
 
-import '../../scss/admin/_gamestate-view.scss';
+import '../../../scss/admin/_gamestate-view.scss';
 
 
 const QueryRaceStateOptions = {

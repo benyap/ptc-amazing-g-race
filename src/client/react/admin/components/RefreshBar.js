@@ -4,7 +4,7 @@ import DateFormat from 'dateformat';
 import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { Button, Spinner, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
-import { saveState } from '../../actions/stateActions';
+import { saveState } from '../../../actions/stateActions';
 
 
 @connect()

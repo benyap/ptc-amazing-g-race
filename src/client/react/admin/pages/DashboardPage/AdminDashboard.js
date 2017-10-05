@@ -3,15 +3,15 @@ import autobind from 'core-decorators/es/autobind';
 import { Tab2, Tabs2, Intent } from '@blueprintjs/core';
 import MediaQuery from 'react-responsive';
 import { withRouter } from 'react-router-dom';
-import bp from '../../../../../lib/react/components/utility/bp';
-import UsersView from '../UsersView';
-import TeamsView from '../TeamsView';
-import GameStateView from '../GameStateView';
-import ServerSettingsView from '../ServerSettingsView';
-import InstructionArticlesView from '../InstructionArticlesView';
-import S3ExplorerView from '../S3ExplorerView';
-import ChallengesView from '../ChallengesView';
-import NotificationToaster from '../NotificationToaster';
+import bp from '../../../../../../lib/react/components/utility/bp';
+import UsersView from '../../views/UsersView';
+import TeamsView from '../../..views/TeamsView';
+import GameStateView from '../../views/GameStateView';
+import ServerSettingsView from '../../views/ServerSettingsView';
+import InstructionArticlesView from '../../views/InstructionArticlesView';
+import S3ExplorerView from '../../views/S3ExplorerView';
+import ChallengesView from '../../..views/ChallengesView';
+import NotificationToaster from '../../components/NotificationToaster';
 
 
 const VIEWS = [

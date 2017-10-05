@@ -4,12 +4,12 @@ import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { compose, graphql } from 'react-apollo';
 import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core';
-import { saveState } from '../../../actions/stateActions';
-import { getTeam, setTeamName, setTeamPoints, removeTeam } from '../../../graphql/team';
-import { getUsers, setUserTeam, removeUserTeam } from '../../../graphql/user';
-import NotificationToaster from '../NotificationToaster';
+import { saveState } from '../../../../actions/stateActions';
+import { getTeam, setTeamName, setTeamPoints, removeTeam } from '../../../../graphql/team';
+import { getUsers, setUserTeam, removeUserTeam } from '../../../../graphql/user';
+import NotificationToaster from '../../components/NotificationToaster';
 
-import '../../scss/admin/_team-profile.scss';
+import '../../../scss/admin/_team-profile.scss';
 
 
 const QueryTeamParams = '_id teamName members{username firstname lastname} memberCount points';

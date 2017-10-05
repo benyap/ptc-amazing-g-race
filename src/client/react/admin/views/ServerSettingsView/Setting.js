@@ -4,8 +4,8 @@ import DateFormat from 'dateformat';
 import autobind from 'core-decorators/es/autobind';
 import { Dialog, Button, Intent } from '@blueprintjs/core';
 import { graphql } from 'react-apollo';
-import { setSetting } from '../../../graphql/setting';
-import FormInput from '../../../../../lib/react/components/forms/FormInput';
+import { setSetting } from '../../../../graphql/setting';
+import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 
 
 @graphql(setSetting('ok'), { name: 'MutationSetSetting' })

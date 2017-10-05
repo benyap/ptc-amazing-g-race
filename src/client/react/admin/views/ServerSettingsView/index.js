@@ -4,12 +4,12 @@ import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
 import { Spinner, Button } from '@blueprintjs/core';
 import { connect } from 'react-redux';
-import { saveState } from '../../../actions/stateActions';
+import { saveState } from '../../../../actions/stateActions';
 import DateFormat from 'dateformat';
-import { getSettings } from '../../../graphql/setting';
+import { getSettings } from '../../../../graphql/setting';
 import Setting from './Setting';
-import RefreshBar from '../RefreshBar';
-import ViewError from '../ViewError';
+import RefreshBar from '../../components/RefreshBar';
+import ViewError from '../../components/ViewError';
 
 
 const QueryGetSettingsParams = 'key valueType value values modified modifiedBy';

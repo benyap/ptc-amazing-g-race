@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
-import { _listObjectsFromS3 } from '../../../graphql/upload';
+import { _listObjectsFromS3 } from '../../../../graphql/upload';
 import { Spinner } from '@blueprintjs/core';
-import S3Explorer from '../../../../../lib/react/components/S3Explorer';
-import RefreshBar from '../RefreshBar';
-import ViewError from '../ViewError';
+import S3Explorer from '../../../../../../lib/react/components/S3Explorer';
+import RefreshBar from '../../components/RefreshBar';
+import ViewError from '../../components/ViewError';
 
 
 const QueryS3ObjectsParams = 'Name Prefix KeyCount Contents{Key LastModified Size} CommonPrefixes{Prefix}';
