@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import AppContainer from '../../../../../lib/react/components/AppContainer';
-import { NotFoundPage } from '../../pages';
+import NotFoundPage from '../../pages/NotFound';
 import Home from './Home';
 
 

@@ -3,7 +3,7 @@ import { FocusStyleManager } from '@blueprintjs/core';
 import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import { loadState } from '../actions/stateActions';
-import { LoadingPage, FallbackPage } from './pages';
+import LoadingPage from './pages/Loading';
 import { getPublicSetting } from '../graphql/setting';
 import AppContainer from '../../../lib/react/components/AppContainer';
 import Promotion from './user/Promotion';

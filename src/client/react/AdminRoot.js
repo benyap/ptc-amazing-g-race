@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Loading from './pages/Loading';
 import LoginPage from './admin/LoginPage';
 import DashboardPage from './admin/DashboardPage';
-import { NotFoundPage } from './pages';
+import NotFoundPage from './pages/NotFound';
 import { loadState } from '../actions/stateActions';
 import AppContainer from '../../../lib/react/components/AppContainer';
 
