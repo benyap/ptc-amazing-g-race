@@ -8,7 +8,7 @@ import { Button, Dialog, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, H
 import { getUserByEmail, setUserPaidAmount, addPermission, removePermission } from '../../../../graphql/user';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import { saveState } from '../../../../actions/stateActions';
-import NotificationToaster from '../../components/NotificationToaster';
+import NotificationToaster from '../../../components/NotificationToaster';
 
 
 const QueryUserParams = 

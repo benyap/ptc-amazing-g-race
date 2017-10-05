@@ -10,7 +10,7 @@ import API from '../../../../API'
 import MenuButton from '../../../../../../lib/react/components/MenuButton';
 import { logout } from '../../../../actions/authActions';
 import LoginRefresher from '../../../components/LoginRefresher';
-import NotificationToaster from '../NotificationToaster';
+import NotificationToaster from '../../../components/NotificationToaster';
 import SettingsMenu from './SettingsMenu';
 
 

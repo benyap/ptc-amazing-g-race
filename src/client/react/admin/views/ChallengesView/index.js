@@ -10,7 +10,7 @@ import RefreshBar from '../../components/RefreshBar';
 import ViewError from '../../components/ViewError';
 import ChallengeCard from './ChallengeCard';
 import ChallengeProfile from './ChallengeProfile';
-import NotificationToaster from '../../components/NotificationToaster';
+import NotificationToaster from '../../../components/NotificationToaster';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 
 import '../../scss/views/_challenges-view.scss';

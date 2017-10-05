@@ -14,7 +14,7 @@ import {
 	setChallengeDescription,
 	setChallengeLocked
 } from '../../../../graphql/challenge';
-import NotificationToaster from '../../components/NotificationToaster';
+import NotificationToaster from '../../../components/NotificationToaster';
 import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEditor';
 
 import '../../../user/scss/components/_instruction-panel.scss';

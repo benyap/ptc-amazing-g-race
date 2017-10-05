@@ -5,7 +5,7 @@ import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { Button, Intent, Spinner, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import { saveState } from '../../../actions/stateActions';
-import NotificationToaster from './NotificationToaster';
+import NotificationToaster from '../../components/NotificationToaster';
 
 
 @connect()

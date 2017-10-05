@@ -7,7 +7,7 @@ import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core
 import { saveState } from '../../../../actions/stateActions';
 import { getTeam, setTeamName, setTeamPoints, removeTeam } from '../../../../graphql/team';
 import { getUsers, setUserTeam, removeUserTeam } from '../../../../graphql/user';
-import NotificationToaster from '../../components/NotificationToaster';
+import NotificationToaster from '../../../components/NotificationToaster';
 
 
 const QueryTeamParams = '_id teamName members{username firstname lastname} memberCount points';

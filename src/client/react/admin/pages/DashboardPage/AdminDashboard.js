@@ -11,7 +11,7 @@ import ServerSettingsView from '../../views/ServerSettingsView';
 import InstructionArticlesView from '../../views/InstructionArticlesView';
 import S3ExplorerView from '../../views/S3ExplorerView';
 import ChallengesView from '../../views/ChallengesView';
-import NotificationToaster from '../../components/NotificationToaster';
+import NotificationToaster from '../../../components/NotificationToaster';
 
 
 const VIEWS = [

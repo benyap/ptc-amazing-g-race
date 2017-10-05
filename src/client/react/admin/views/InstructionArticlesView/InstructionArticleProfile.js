@@ -7,7 +7,7 @@ import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core
 import { getArticle, setArticleTitle, editArticle, removeArticle } from '../../../../graphql/article';
 import { saveState } from '../../../../actions/stateActions';
 import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEditor';
-import NotificationToaster from '../../components/NotificationToaster';
+import NotificationToaster from '../../../components/NotificationToaster';
 
 import '../../../user/scss/components/_instruction-panel.scss';
 import '../../scss/components/_markdown-preview.scss';
