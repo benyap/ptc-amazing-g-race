@@ -79,14 +79,15 @@ class AdminDashboard extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<main id='admin-dashboard'>
+				<h2 style={{margin: '1rem 0.6rem'}}>Administrator Dashboard</h2>
 				<MediaQuery minWidth={bp.s+1}>
 					{this.renderTabs(true)}
 				</MediaQuery>
 				<MediaQuery maxWidth={bp.s}>
 					{this.renderTabs(false)}
 				</MediaQuery>
-			</div>
+			</main>
 		);
 	}
 }
