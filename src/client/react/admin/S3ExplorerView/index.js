@@ -6,6 +6,7 @@ import { _listObjectsFromS3 } from '../../../graphql/upload';
 import { Spinner } from '@blueprintjs/core';
 import S3Explorer from '../../../../../lib/react/components/S3Explorer';
 import RefreshBar from '../RefreshBar';
+import ViewError from '../ViewError';
 
 
 const QueryS3ObjectsParams = 'Name Prefix KeyCount Contents{Key LastModified Size} CommonPrefixes{Prefix}';
@@ -31,10 +32,11 @@ class S3ExplorerView extends React.Component {
 
 	render() {
 		let content;
-
 		if (this.props.QueryS3Objects.loading) {
 			if (this.objects) {
-				content = <S3Explorer root={'uploads/'} objects={this.objects} navigateTo={this.navigateTo} open={this.open} loading/>
+				content = (
+					<S3Explorer root={'uploads/'} objects={this.objects} navigateTo={this.navigateTo} open={this.open} loading/>
+				);
 			}
 			else {
 				content = (
@@ -45,11 +47,18 @@ class S3ExplorerView extends React.Component {
 			}
 		}
 		else {
-			this.objects = this.props.QueryS3Objects._listObjectsFromS3
-			content = (
-				<S3Explorer root={'uploads/'} objects={this.props.QueryS3Objects._listObjectsFromS3} 
-					navigateTo={this.navigateTo} open={this.open}/>
-			);
+			if (this.props.QueryS3Objects.error) {
+				content = (
+					<ViewError error={this.props.QueryS3Objects.error}/>
+				);
+			}
+			else {
+				this.objects = this.props.QueryS3Objects._listObjectsFromS3
+				content = (
+					<S3Explorer root={'uploads/'} objects={this.props.QueryS3Objects._listObjectsFromS3} 
+						navigateTo={this.navigateTo} open={this.open}/>
+				);
+			}
 		}
 
 		return (
