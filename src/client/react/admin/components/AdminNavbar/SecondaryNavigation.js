@@ -1,21 +1,21 @@
 import React from 'react';
+import axios from 'axios';
 import autobind from 'core-decorators/es/autobind';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import axios from 'axios';
+import { withRouter } from 'react-router-dom';
+import { Intent } from '@blueprintjs/core';
 import API from '../../../../API'
 import MenuButton from '../../../../../../lib/react/components/MenuButton';
-import SettingsMenu from './SettingsMenu';
-import { withRouter } from 'react-router-dom';
 import { logout } from '../../../../actions/authActions';
 import LoginRefresher from '../../../components/LoginRefresher';
+import NotificationToaster from '../NotificationToaster';
+import SettingsMenu from './SettingsMenu';
 
 
 const mapStateToProps = (state, ownProps) => {
-	return {
-		refresh: state.auth.tokens.refresh
-	}
+	return { refresh: state.auth.tokens.refresh }
 }
 
 @connect(mapStateToProps)
@@ -41,8 +41,7 @@ class SecondaryNavigation extends React.Component {
 				query: 
 				`mutation LogoutUser($refreshToken:String!) { 
 					logout(refreshToken:$refreshToken) {
-						ok
-						failureMessage
+						ok failureMessage
 					}
 				}`
 			}
@@ -58,14 +57,16 @@ class SecondaryNavigation extends React.Component {
 		}
 	}
 
-	setRefreshing(isRefreshing, error) {
+	setRefreshing(isRefreshing, errorMessage) {
 		if (this.state.loading !== isRefreshing) {
 			this.setState({ loading: isRefreshing });
 		}
 
-		if (error) {
-			// TODO: maybe - add notification that refresh failed?
-			console.warn(error);
+		if (errorMessage) {
+			NotificationToaster.show({
+				intent: Intent.DANGER,
+				message: errorMessage
+			});
 		}
 	}
 
