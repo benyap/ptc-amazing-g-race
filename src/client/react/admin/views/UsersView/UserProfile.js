@@ -183,7 +183,8 @@ class UserProfile extends React.Component {
 		catch (err) {
 			this.setState({
 				[`${type}PermissionLoading`]: false, 
-				[`${type}PermissionError`]: err.toString()
+				[`${type}PermissionError`]: err.toString(),
+				saving: false
 			});
 		}
 	}
