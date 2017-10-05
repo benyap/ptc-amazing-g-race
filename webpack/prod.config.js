@@ -80,7 +80,9 @@ module.exports = {
 	plugins: [
 		new CleanWebpackPlugin([
 			'public/css/*.css',
-			'public/js/*.js'
+			'public/css/*.map',
+			'public/js/*.js',
+			'public/js/*.map'
 		],
 		{ root: __dirname + '/..' }),
 
