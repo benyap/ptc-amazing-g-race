@@ -53,8 +53,8 @@ module.exports = {
 				use: ExtractTextPlugin.extract({
 					fallback: 'style-loader',
 					use: [
-						{ loader: 'css-loader?sourceMap', options: { minimize: true } },
-						{ loader: 'sass-loader?sourceMap' }
+						{ loader: 'css-loader', options: { minimize: true, sourceMap: true } },
+						{ loader: 'sass-loader', options: { sourceMap: true } }
 					]
 				})
 			},
