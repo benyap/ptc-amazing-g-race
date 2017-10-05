@@ -122,21 +122,19 @@ class Setting extends React.Component {
 
 				<Dialog isOpen={this.state.editDialogOpen} title={'Edit ' + this.state.editKey}
 					onClose={this.toggleDialog}>
-					<div style={{padding: '1rem'}}>
-						<div className='pt-dialog-body'>
-							{this.state.editError ? 
-								<div className='pt-callout pt-intent-danger pt-icon-error'>
-									{this.state.editError}
-								</div>
-								:null}
-							<b>Value:</b> <FormInput id={this.state.editKey} value={this.state.editValue} onChange={this.handleChange} 
-								intent={this.state.editError ? Intent.DANGER : Intent.NONE}/>
-						</div>
-						<div className='pt-dialog-footer'>
-							<div className='pt-dialog-footer-actions'>
-								<Button onClick={this.toggleDialog} text='Cancel' className='pt-minimal' disabled={this.state.editLoading}/>
-								<Button onClick={this.submitChange} text='Save' intent={Intent.PRIMARY} loading={this.state.editLoading}/>
+					<div className='pt-dialog-body'>
+						{this.state.editError ? 
+							<div className='pt-callout pt-intent-danger pt-icon-error'>
+								{this.state.editError}
 							</div>
+							:null}
+						<b>Value:</b> <FormInput id={this.state.editKey} value={this.state.editValue} onChange={this.handleChange} 
+							intent={this.state.editError ? Intent.DANGER : Intent.NONE}/>
+					</div>
+					<div className='pt-dialog-footer'>
+						<div className='pt-dialog-footer-actions'>
+							<Button onClick={this.toggleDialog} text='Cancel' className='pt-minimal' disabled={this.state.editLoading}/>
+							<Button onClick={this.submitChange} text='Save' intent={Intent.PRIMARY} loading={this.state.editLoading}/>
 						</div>
 					</div>
 				</Dialog>

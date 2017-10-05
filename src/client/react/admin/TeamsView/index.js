@@ -114,23 +114,21 @@ class TeamsView extends React.Component {
 
 							{/* Create new team dialog */}
 							<Dialog isOpen={this.state.showCreateTeamDialog} iconName='add' title='Create a new team' onClose={this.toggleCreateTeamDialog}>
-								<div style={{padding: '1rem'}}>
-									<div className='pt-dialog-body'>
-										{this.state.createTeamError ? 
-											<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'0.5rem'}}>
-												{this.state.createTeamError}
-											</div>
-											:null}
-										<label className='pt-label'>
-											<b>Team name:</b> 
-											<FormInput id={'new-team'} value={this.state.teamName} onChange={this.editTeamName}/>
-										</label>
-									</div>
-									<div className='pt-dialog-footer'>
-										<div className='pt-dialog-footer-actions'>
-											<Button onClick={this.toggleCreateTeamDialog} text='Cancel' className='pt-minimal' disabled={this.state.createTeamLoading}/>
-											<Button onClick={this.submitCreateTeam} text='Create' intent={Intent.PRIMARY} loading={this.state.createTeamLoading}/>
+								<div className='pt-dialog-body'>
+									{this.state.createTeamError ? 
+										<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'0.5rem'}}>
+											{this.state.createTeamError}
 										</div>
+										:null}
+									<label className='pt-label'>
+										<b>Team name:</b> 
+										<FormInput id={'new-team'} value={this.state.teamName} onChange={this.editTeamName}/>
+									</label>
+								</div>
+								<div className='pt-dialog-footer'>
+									<div className='pt-dialog-footer-actions'>
+										<Button onClick={this.toggleCreateTeamDialog} text='Cancel' className='pt-minimal' disabled={this.state.createTeamLoading}/>
+										<Button onClick={this.submitCreateTeam} text='Create' intent={Intent.PRIMARY} loading={this.state.createTeamLoading}/>
 									</div>
 								</div>
 							</Dialog>
