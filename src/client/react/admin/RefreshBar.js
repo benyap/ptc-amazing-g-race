@@ -43,8 +43,7 @@ class RefreshBar extends React.Component {
 	}
 
 	refetch(force = false) {
-		if (this.props.shouldRefresh || (force === true)) {
-
+		if ((this.props.shouldRefresh && !this.props.disabled) || (force === true)) {
 			if (this.mounted) this._setLoadingState(true);
 	
 			this.props.query.refetch()
