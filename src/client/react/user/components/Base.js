@@ -1,7 +1,7 @@
 import React from 'react';
 import ScrollAnimation from 'react-animate-on-scroll';
 
-import '../../scss/components/_base.scss';
+import '../scss/components/_base.scss';
 import '../../../assets/images/logo/logo_white.png';
 
 

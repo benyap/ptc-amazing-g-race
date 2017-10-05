@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import '../../../scss/dashboard/_main.scss'
-import '../../../scss/dashboard/_help.scss';
+import '../../scss/views/_main.scss';
+import '../../scss/views/_help.scss';
 
 
 const mapStateToProps = (state, ownProps) => {

@@ -9,7 +9,7 @@ import { saveState } from '../../../../actions/stateActions';
 import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEditor';
 import NotificationToaster from '../../components/NotificationToaster';
 
-import '../../../scss/components/_instruction-panel.scss';
+import '../../../user/scss/components/_instruction-panel.scss';
 import '../../scss/_markdown-preview.scss';
 
 

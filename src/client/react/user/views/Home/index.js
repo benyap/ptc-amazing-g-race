@@ -10,8 +10,8 @@ import { getTeam } from '../../../../graphql/team';
 import TeamPanel from './TeamPanel';
 import { setTeamInfo } from '../../../../actions/userInfoActions';
 
-import '../../../scss/dashboard/_main.scss'
-import '../../../scss/dashboard/_home.scss';
+import '../../scss/views/_main.scss'
+import '../../scss/views/_home.scss';
 
 
 const mapStateToProps = (state, ownProps) => {

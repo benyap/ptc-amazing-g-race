@@ -12,7 +12,7 @@ import Title from '../../../components/Title';
 import LoginRefresher from '../../../../components/LoginRefresher';
 import API from '../../../../../API';
 
-import '../../../../scss/components/_dashboard.scss';
+import '../../../scss/components/_dashboard.scss';
 
 
 const mapStateToProps = (state, ownProps) => {

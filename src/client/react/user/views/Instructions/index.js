@@ -6,8 +6,8 @@ import { Button, Spinner } from '@blueprintjs/core';
 import { getArticles } from '../../../../graphql/article';
 import InstructionCollapse from './InstructionCollapse';
 
-import '../../../scss/dashboard/_main.scss'
-import '../../../scss/components/_instructions.scss';
+import '../../scss/views/_main.scss'
+import '../../scss/views/_instructions.scss';
 
 
 const QueryGetArticlesOptions = {
