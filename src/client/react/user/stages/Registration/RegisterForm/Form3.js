@@ -2,12 +2,12 @@ import React from 'react';
 import autobind from 'core-decorators/es/autobind';
 import { withApollo, gql } from 'react-apollo';
 import { Button, Intent, ProgressBar, Icon } from '@blueprintjs/core';
-import FormInput from '../../../../../../lib/react/components/forms/FormInput';
-import Validator from '../../../../../../lib/react/components/forms/validation/Validator';
-import NotEmpty from '../../../../../../lib/react/components/forms/validation/functions/NotEmpty';
-import HasLength from '../../../../../../lib/react/components/forms/validation/functions/HasLength';
-import IsMatch from '../../../../../../lib/react/components/forms/validation/functions/IsMatch';
-import RegexCheck from '../../../../../../lib/react/components/forms/validation/functions/RegexCheck';
+import FormInput from '../../../../../../../lib/react/components/forms/FormInput';
+import Validator from '../../../../../../../lib/react/components/forms/validation/Validator';
+import NotEmpty from '../../../../../../../lib/react/components/forms/validation/functions/NotEmpty';
+import HasLength from '../../../../../../../lib/react/components/forms/validation/functions/HasLength';
+import IsMatch from '../../../../../../../lib/react/components/forms/validation/functions/IsMatch';
+import RegexCheck from '../../../../../../../lib/react/components/forms/validation/functions/RegexCheck';
 import { errorProps, pendingProps, successProps } from './lib';
 
 

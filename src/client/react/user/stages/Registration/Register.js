@@ -1,9 +1,9 @@
 import React from 'react';
 import RegisterForm from './RegisterForm';
-import Title from '../components/Title';
+import Title from '../../components/Title';
 import ScrollAnimation from 'react-animate-on-scroll';
 
-import '../../scss/components/_register.scss';
+import '../../../scss/components/_register.scss';
 
 
 class Register extends React.Component {

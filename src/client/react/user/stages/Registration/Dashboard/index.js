@@ -4,15 +4,15 @@ import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { withRouter, Link, Redirect } from 'react-router-dom';
 import { Spinner, Button, Intent } from '@blueprintjs/core';
-import { getUserByEmail } from '../../../../graphql/user';
-import { logout } from '../../../../actions/authActions';
+import { getUserByEmail } from '../../../../../graphql/user';
+import { logout } from '../../../../../actions/authActions';
 import axios from 'axios';
 import ScrollAnimation from 'react-animate-on-scroll';
-import Title from '../../components/Title';
-import LoginRefresher from '../../../components/LoginRefresher';
-import API from '../../../../API';
+import Title from '../../../components/Title';
+import LoginRefresher from '../../../../components/LoginRefresher';
+import API from '../../../../../API';
 
-import '../../../scss/components/_dashboard.scss';
+import '../../../../scss/components/_dashboard.scss';
 
 
 const mapStateToProps = (state, ownProps) => {

@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { Link } from 'react-router-dom';
-import { getUserByEmail } from '../../../graphql/user';
-import Title from '../components/Title';
-import Description2 from '../components/Description2';
+import { getUserByEmail } from '../../../../graphql/user';
+import Title from '../../components/Title';
+import Description2 from '../../components/Description2';
 import ScrollAnimation from 'react-animate-on-scroll';
 
-import '../../scss/components/_registration-closed.scss';
+import '../../../scss/components/_registration-closed.scss';
 
 
 const mapStateToProps = (state, ownProps) => {

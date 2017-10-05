@@ -1,10 +1,10 @@
 import React from 'react';
 import autobind from 'core-decorators/es/autobind';
 import { Button, Intent } from '@blueprintjs/core';
-import FormInput from '../../../../../../lib/react/components/forms/FormInput';
-import Validator from '../../../../../../lib/react/components/forms/validation/Validator';
-import NotEmpty from '../../../../../../lib/react/components/forms/validation/functions/NotEmpty';
-import RegexCheck from '../../../../../../lib/react/components/forms/validation/functions/RegexCheck';
+import FormInput from '../../../../../../../lib/react/components/forms/FormInput';
+import Validator from '../../../../../../../lib/react/components/forms/validation/Validator';
+import NotEmpty from '../../../../../../../lib/react/components/forms/validation/functions/NotEmpty';
+import RegexCheck from '../../../../../../../lib/react/components/forms/validation/functions/RegexCheck';
 import { errorProps } from './lib';
 
 

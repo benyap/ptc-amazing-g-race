@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Button, Intent } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import ScrollAnimation from 'react-animate-on-scroll';
-import Title from '../components/Title';
-import Description2 from '../components/Description2';
+import Title from '../../components/Title';
+import Description2 from '../../components/Description2';
 
 
 const mapStateToProps = (state, ownProps) => {
