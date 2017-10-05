@@ -166,7 +166,7 @@ const getAllChallenges = async function(user) {
 	if (authorized !== true) return authorized;
 
 	const db = await connect();
-	return db.collection('challenges').find().toArray();
+	return db.collection('challenges').find().sort({group: 1}).toArray();
 }
 
 
@@ -185,7 +185,7 @@ const getChallenges = async function(user) {
 	const userProfile = await db.collection('users').findOne({username: user.username});
 	return db.collection('challenges').find({ 
 		$or: [{ teams: userProfile.teamId.toString() }, { public: true }]
-	}).toArray();
+	}).sort({group: 1}).toArray();
 }
 
 
