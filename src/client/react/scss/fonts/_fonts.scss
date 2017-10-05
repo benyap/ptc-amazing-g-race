@@ -1,2 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Encode+Sans|Roboto+Mono');
-@import url('https://fontlibrary.org/face/couture')
+
+@font-face {
+	font-family: 'Couture';
+	src: local('Couture'), url('fonts/couture-bld.otf');
+}
