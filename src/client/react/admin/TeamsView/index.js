@@ -111,6 +111,8 @@ class TeamsView extends React.Component {
 								);
 							})}
 							<Button text='Create new team' iconName='add' className='pt-fill pt-minimal' intent={Intent.PRIMARY} onClick={this.toggleCreateTeamDialog}/>
+
+							{/* Create new team dialog */}
 							<Dialog isOpen={this.state.showCreateTeamDialog} iconName='add' title='Create a new team' onClose={this.toggleCreateTeamDialog}>
 								<div style={{padding: '1rem'}}>
 									<div className='pt-dialog-body'>
