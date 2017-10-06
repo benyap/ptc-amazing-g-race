@@ -28,8 +28,8 @@ const QueryActionsOptions = {
 @autobind
 class LogsView extends React.Component {
 	state = {
-		skip: 0,
-		limit: 10,
+		skip: '0',
+		limit: '10',
 		username: '',
 		action: '',
 		nodes: []
