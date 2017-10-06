@@ -48,7 +48,7 @@ const createChallenge = async function(user, key, group, type, passphrase = null
 		targetCollection: 'challenges',
 		date: new Date(),
 		who: user.username,
-		infoJSONString: JSON.stringify({ public: challenge.public, passphrase: challenge.passphrase })
+		infoJSONString: JSON.stringify({ key: key, public: challenge.public, passphrase: challenge.passphrase })
 	};
 	db.collection('actions').insert(action);
 
@@ -140,11 +140,12 @@ const _editChallengeProperty = async function(user, key, property, value) {
 	
 	// Log action
 	const action = {
-		action: `Edit challenge ${property}`,
+		action: `Edit challenge property: ${property}`,
 		target: key,
 		targetCollection: 'challenges',
 		date: new Date(),
-		who: user.username
+		who: user.username,
+		infoJSONString: JSON.stringify({property, value})
 	};
 	db.collection('actions').insert(action);
 

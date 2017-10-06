@@ -11,6 +11,7 @@ import ServerSettingsView from '../../views/ServerSettingsView';
 import InstructionArticlesView from '../../views/InstructionArticlesView';
 import S3ExplorerView from '../../views/S3ExplorerView';
 import ChallengesView from '../../views/ChallengesView';
+import LogsView from '../../views/LogsView';
 import NotificationToaster from '../../../components/NotificationToaster';
 
 
@@ -21,7 +22,8 @@ const VIEWS = [
 	'instructions', 
 	'uploads', 
 	'state', 
-	'server'
+	'server',
+	'logs'
 ];
 
 @withRouter
@@ -73,6 +75,7 @@ class AdminDashboard extends React.Component {
 				<Tab2 id={VIEWS[4]} title='Instructions' panel={<InstructionArticlesView shouldRefresh={this.state.selectedTabId===VIEWS[4]}/>}/>
 				<Tab2 id={VIEWS[5]} title='Game State' panel={<GameStateView shouldRefresh={this.state.selectedTabId===VIEWS[5]}/>}/>
 				<Tab2 id={VIEWS[6]} title='Server' panel={<ServerSettingsView shouldRefresh={this.state.selectedTabId===VIEWS[6]}/>}/>
+				<Tab2 id={VIEWS[7]} title='Logs' panel={<LogsView shouldRefresh={this.state.selectedTabId===VIEWS[7]}/>}/>
 			</Tabs2>
 		);
 	}

@@ -1,0 +1,25 @@
+#dashboard-logs {
+	.filters {
+		display: flex;
+		margin: 0 -0.5rem;
+		flex-wrap: wrap;
+
+		.pt-form-group {
+			margin: 0 0.5rem;
+			margin-bottom: 0.5rem;
+			min-width: 12rem;
+			flex-grow: 1;
+
+			.pt-label {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	.results-info {
+		margin: 0.8rem 0;
+		padding: 0.5rem;
+		border-radius: 0.3rem;
+		background-color: rgba(138,155,168,.15);
+	}
+}

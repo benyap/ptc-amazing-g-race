@@ -147,10 +147,7 @@ const setSetting = async function(user, key, value) {
 			targetCollection: 'settings',
 			who: user.username,
 			date: new Date(),
-			infoJSONString: JSON.stringify({
-				action: 'set',
-				value: value
-			})
+			infoJSONString: JSON.stringify({ action: 'set', value })
 		};
 		db.collection('actions').insert(action);
 		
@@ -263,10 +260,7 @@ const _modifySettingList = async function(modifyAction, user, key, value) {
 			targetCollection: 'settings',
 			who: user.username,
 			date: new Date(),
-			infoJSONString: JSON.stringify({
-				action: modifyAction,
-				value: value
-			})
+			infoJSONString: JSON.stringify({ action: modifyAction, value })
 		};
 		db.collection('actions').insert(action);
 

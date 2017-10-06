@@ -16,6 +16,7 @@ class RefreshBar extends React.Component {
 		query: PropTypes.shape({
 			refetch: PropTypes.func.isRequired
 		}).isRequired,
+		variables: PropTypes.object,
 		shouldRefresh: PropTypes.bool,
 		setLoading: PropTypes.func,
 		refetching: PropTypes.bool,
@@ -48,7 +49,12 @@ class RefreshBar extends React.Component {
 			if (this.mounted) this._setLoadingState(true);
 	
 			try {
-				await this.props.query.refetch();
+				if (this.props.variables) {
+					await this.props.query.refetch(this.props.variables);
+				}
+				else {
+					await this.props.query.refetch();
+				}
 				if (this.mounted) this._setLoadingState(false, new Date());
 				this.props.dispatch(saveState());
 			}

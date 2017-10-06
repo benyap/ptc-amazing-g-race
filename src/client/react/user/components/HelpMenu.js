@@ -15,6 +15,7 @@ import '../scss/components/_help-menu.scss';
 
 const mapStateToProps = (state, ownProps) => {
 	return { 
+		access: state.auth.tokens.access,
 		refresh: state.auth.tokens.refresh
 	}
 }
@@ -61,6 +62,7 @@ class HelpMenu extends React.Component {
 			url: API.api,
 			method: 'POST',
 			timeout: 10000,
+			headers: { Authorization: `Bearer ${this.props.access}` },
 			data: {
 				variables: { refreshToken: this.props.refresh },
 				query: 
@@ -71,12 +73,15 @@ class HelpMenu extends React.Component {
 				}`
 			}
 		}
-
 		// Send logout request to server
-		const result = await axios(config);
-
-		if (!result.data.data.logout.ok) {
-			console.warn(result.data.data.logout.failureMessage);
+		try {
+			const result = await axios(config);
+			if (!result.data.data.logout.ok) {
+				console.warn(result.data.data.logout.failureMessage);
+			}
+		}
+		catch (err) {
+			console.warn(err.toString());
 		}
 
 		if (this._mounted) this.setState({logoutLoading: false});

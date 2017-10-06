@@ -44,7 +44,7 @@ const _uploadObject = async function(user, object, collection, key, name) {
 		
 		if (uploadCheck) {
 			// Upload already exists, update the object
-			actionString = 'Update object';
+			actionString = 'Update uploaded object';
 
 			db.collection('uploads').update(
 				// Selector
@@ -138,6 +138,7 @@ const _deleteObject = async function(user, collection, key) {
 			who: user.username,
 			date: new Date(),
 			infoJSONString: JSON.stringify({
+				key: key,
 				bucket: params.Bucket,
 				version: deleteResult.VersionId
 			})

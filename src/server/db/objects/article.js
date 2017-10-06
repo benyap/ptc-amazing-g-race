@@ -43,7 +43,7 @@ const addArticle = async function(user, title, category, content) {
 	// Log action
 	const action = {
 		action: 'Create article',
-		target: 'article',
+		target: title,
 		targetCollection: `article_${category}`,
 		date: new Date(),
 		who: user.username,
@@ -218,7 +218,7 @@ const _modifyArticle = async function(modifyType, user, category, articleId, dat
 				}
 			);
 			actionName = 'Modify article content';
-			infoJSON = { articleId, category };
+			infoJSON = { articleId, category, content: data };
 			break;
 		}
 	}

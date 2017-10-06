@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { connect } from 'react-redux';
 import DateFormat from 'dateformat';
+import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import { Button, Dialog, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTarget, Toaster, Position } from '@blueprintjs/core';
 import { getUserByEmail, setUserPaidAmount, addPermission, removePermission } from '../../../../graphql/user';

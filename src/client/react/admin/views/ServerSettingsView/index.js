@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
+import DateFormat from 'dateformat';
 import { graphql } from 'react-apollo';
 import { Spinner, Button } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import { saveState } from '../../../../actions/stateActions';
-import DateFormat from 'dateformat';
 import { getSettings } from '../../../../graphql/setting';
 import Setting from './Setting';
 import RefreshBar from '../../components/RefreshBar';

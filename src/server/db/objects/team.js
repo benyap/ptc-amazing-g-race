@@ -76,11 +76,11 @@ const addTeam = async function(user, teamName) {
 	// Log action
 	const action = {
 		action: 'Create team',
-		target: 'teamName',
+		target: teamName,
 		targetCollection: 'teams',
 		date: new Date(),
 		who: user.username,
-		infoJSONString: JSON.stringify({ teamName: team.teamName, teamId: team._id })
+		infoJSONString: JSON.stringify({ teamName, teamId: team._id })
 	};
 
 	db.collection('actions').insert(action);
@@ -127,7 +127,7 @@ const removeTeam = async function(user, teamId) {
 	// Log action
 	const action = {
 		action: 'Remove team',
-		target: teamId,
+		target: teamCheck.teamName,
 		targetCollection: 'teams',
 		date: new Date(),
 		who: user.username,
@@ -171,6 +171,8 @@ const setTeamName = async function(user, teamId, name) {
 		return new Error(`A team with the id \'${teamId}\' does not exist.`);
 	}
 
+	const oldName = teamCheck.teamName;
+
 	const result = await db.collection('teams').update(
 		{_id: Mongo.ObjectID(teamId)}, 
 		{$set: { teamName: name }});
@@ -178,14 +180,13 @@ const setTeamName = async function(user, teamId, name) {
 	if (result.result.nModified > 0) {
 		// Log action
 		const action = {
-			action: 'Rename team',
+			action: 'Set team name',
 			target: teamId,
 			targetCollection: 'teams',
 			date: new Date(),
 			who: user.username,
-			infoJSONString: JSON.stringify({ teamId, newName: name })
+			infoJSONString: JSON.stringify({ teamId, oldName, newName: name })
 		};
-	
 		db.collection('actions').insert(action);
 		
 		return { 
