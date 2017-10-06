@@ -182,10 +182,10 @@ const removeRole = async function(user, username, role) {
  * @param {String} username
  * @param {String} property
  */
-const _modifyProperty = async function(modifyAction, modifyProperty, user, username, property) {
+const _modifyProperty = async function(modifyAction, property, user, username, value) {
 	if (!user) return new Error('No user logged in');
 
-	const authorized = await permission.checkPermission(user, ['admin:modify' + modifyProperty + '-user']);
+	const authorized = await permission.checkPermission(user, [`admin:modify${property}-user`]);
 	if (authorized !== true) return authorized;
 
 	const db = await connect();
@@ -201,20 +201,20 @@ const _modifyProperty = async function(modifyAction, modifyProperty, user, usern
 
 	// Check what action to take
 	if (modifyAction === 'Add') {
-		proceed = userToModify[modifyProperty + 's'].indexOf(property) < 0;
+		proceed = userToModify[`${property}s`].indexOf(value) < 0;
 		updateAction = '$push';
 		errorPhrase = 'already has'
 	}
 	else if (modifyAction === 'Remove') {
-		proceed = userToModify[modifyProperty + 's'].indexOf(property) >= 0;
+		proceed = userToModify[`${property}s`].indexOf(value) >= 0;
 		updateAction = '$pull';
 		errorPhrase = 'does not have';
 	}
-	else throw new Error(`Invalid argument in modify ${modifyProperty} function: ${action}`);
+	else throw new Error(`Invalid argument in modify ${property} function: ${action}`);
 
 	// Modify the user's properties accordingly
 	if (!proceed) {
-		return new Error(`User \'${username}\' ${errorPhrase} the ${modifyProperty} <${property}>'`);
+		return new Error(`User \'${username}\' ${errorPhrase} the ${property} <${value}>'`);
 	}
 
 	// Update user
@@ -222,18 +222,18 @@ const _modifyProperty = async function(modifyAction, modifyProperty, user, usern
 		// Selector
 		{ username },
 		// Update
-		{ [updateAction]: { [modifyProperty + 's']: property } }
+		{ [updateAction]: { [property + 's']: value } }
 	);
 
 	if (result.result.nModified === 1) {
 		// Log action
 		const action = {
-			action: modifyAction + ' ' + modifyProperty,
+			action: `${modifyAction} user ${property}`,
 			target: username,
 			targetCollection: 'users',
 			date: new Date(),
 			who: user.username,
-			infoJSONString: JSON.stringify({ username, [modifyProperty]: property })
+			infoJSONString: JSON.stringify({ property, value })
 		};
 
 		db.collection('actions').insert(action);
@@ -244,7 +244,7 @@ const _modifyProperty = async function(modifyAction, modifyProperty, user, usern
 		}
 	}
 
-	return new Error(`Unable to modify user ${modifyProperty}`);
+	return new Error(`Unable to modify user ${property}`);
 }
 
 
@@ -505,7 +505,8 @@ const setUserPaidAmount = async function(user, username, amount) {
 			target: username,
 			targetCollection: 'users',
 			date: new Date(),
-			who: user.username
+			who: user.username,
+			infoJSONString: JSON.stringify({amount})
 		};
 
 		db.collection('actions').insert(action);
@@ -582,7 +583,7 @@ const _setUserTeam = async function(user, username, teamId) {
 			targetCollection: 'users',
 			date: new Date(),
 			who: user.username,
-			infoJSONString: JSON.stringify({ username, teamId: teamId ? Mongo.ObjectID(teamId) : null })
+			infoJSONString: JSON.stringify({ teamId })
 		};
 
 		db.collection('actions').insert(action);

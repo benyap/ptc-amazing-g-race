@@ -38,6 +38,16 @@ const _login = async function(user, email, password, isAdmin) {
 	}
 
 	if (!userauthentication) {
+		const action = {
+			action: 'Log in failed',
+			target: isAdmin ? 'admin' : 'user',
+			targetCollection: 'none',
+			date: new Date(),
+			who: email,
+			infoJSONString: JSON.stringify({reason: 'User not found', email: email})
+		}
+		db.collection('actions').insert(action);
+
 		return {
 			ok: false,
 			message: 'User not found',
@@ -48,6 +58,16 @@ const _login = async function(user, email, password, isAdmin) {
 	const isMatch = await bcrypt.compare(password, userauthentication.password);
 
 	if (!isMatch) {
+		const action = {
+			action: 'Log in failed',
+			target: isAdmin ? 'admin' : 'user',
+			targetCollection: 'none',
+			date: new Date(),
+			who: userauthentication.username,
+			infoJSONString: JSON.stringify({reason: 'Invalid credentials'})
+		}
+		db.collection('actions').insert(action);
+
 		return {
 			ok: false,
 			message: 'Invalid credentials',
@@ -60,6 +80,16 @@ const _login = async function(user, email, password, isAdmin) {
 
 	// Check that the user is enabled
 	if (!retrievedUser.enabled) {
+		const action = {
+			action: 'Log in failed',
+			target: isAdmin ? 'admin' : 'user',
+			targetCollection: 'none',
+			date: new Date(),
+			who: retrievedUser.username,
+			infoJSONString: JSON.stringify({reason: 'User is not enabled'})
+		}
+		db.collection('actions').insert(action);
+
 		return {
 			ok: false,
 			message: 'User is not enabled',
@@ -70,6 +100,15 @@ const _login = async function(user, email, password, isAdmin) {
 		// Generate tokens
 		const access_token = _generateAccessToken(retrievedUser);
 		const refresh_token = _generateRefreshToken(retrievedUser);
+
+		const action = {
+			action: 'Log in successful',
+			target: isAdmin ? 'admin' : 'user',
+			targetCollection: 'refreshtokens',
+			date: new Date(),
+			who: retrievedUser.username
+		}
+		db.collection('actions').insert(action);
 
 		return {
 			ok: true,
@@ -272,8 +311,17 @@ const logout = async function(user, refreshToken) {
 			);
 
 			if (result.result.n === 1) {
+				// Logout successful
 				if (result.result.nModified === 1) {
-					// Logout successful
+					const action = {
+						action: 'Log out successful',
+						target: isAdmin ? 'admin' : 'user',
+						targetCollection: 'refreshtokens',
+						date: new Date(),
+						who: user.username
+					}
+					db.collection('actions').insert(action);
+					
 					return { ok: true }
 				}
 				else return {
