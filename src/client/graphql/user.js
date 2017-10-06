@@ -19,6 +19,13 @@ const getUserByEmail = (params) => {
 	}`;
 }
 
+const getActions = (params) => {
+	return gql`
+	query GetActions($username:String,$action:String,$limit:Int,$skip:Int){
+		getActions(username:$username,action:$action,limit:$limit,skip:$skip){ ${params} }
+	}`;
+}
+
 
 // ===========
 //	MUTATIONS
@@ -63,6 +70,7 @@ const removeUserTeam = (params) => {
 export {
 	getUsers,
 	getUserByEmail,
+	getActions,
 	setUserPaidAmount,
 	addPermission,
 	removePermission,
