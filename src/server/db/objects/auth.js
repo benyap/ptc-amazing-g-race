@@ -49,7 +49,7 @@ const _login = async function(user, email, password, isAdmin) {
 	else {
 		const isMatch = await bcrypt.compare(password, userauthentication.password);
 	
-		if (!isMatch) {	
+		if (!isMatch) {
 			response = {
 				ok: false,
 				message: 'Invalid credentials',
@@ -61,7 +61,7 @@ const _login = async function(user, email, password, isAdmin) {
 			const retrievedUser = await db.collection('users').findOne({email});
 		
 			// Check that the user is enabled
-			if (!retrievedUser.enabled) {		
+			if (!retrievedUser.enabled) {
 				response = {
 					ok: false,
 					message: 'User is not enabled',
@@ -80,7 +80,9 @@ const _login = async function(user, email, password, isAdmin) {
 					date: new Date(),
 					who: retrievedUser.username
 				}
-				db.collection('actions').insert(action);
+
+				// Removed successful login logging to reduce log clutter
+				// db.collection('actions').insert(action);
 		
 				return {
 					ok: true,
@@ -95,12 +97,13 @@ const _login = async function(user, email, password, isAdmin) {
 		}
 	}
 
+	// Log failed login attempt
 	const action = {
 		action: 'Log in failed',
 		target: isAdmin ? 'admin' : 'user',
 		targetCollection: 'none',
 		date: new Date(),
-		who: retrievedUser.username,
+		who: email,
 		infoJSONString: JSON.stringify({reason: response.message})
 	}
 	db.collection('actions').insert(action);
@@ -339,7 +342,8 @@ const logout = async function(user, refreshToken) {
 		who: user.username,
 		infoJSONString: JSON.stringify({message: response.failureMessage})
 	}
-	db.collection('actions').insert(action);
+	// Removed logout logging to reduce log clutter
+	// db.collection('actions').insert(action);
 
 	return response;
 }
