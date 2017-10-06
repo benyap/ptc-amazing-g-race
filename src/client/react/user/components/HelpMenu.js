@@ -90,7 +90,7 @@ class HelpMenu extends React.Component {
 	}
 
 	setRefreshing(isRefreshing, errorMessage) {
-		if (this._mounted && this.setat.refreshLoading != isRefreshing) {
+		if (this._mounted && this.state.refreshLoading != isRefreshing) {
 			this.setState({refreshLoading: isRefreshing});
 		}
 		
