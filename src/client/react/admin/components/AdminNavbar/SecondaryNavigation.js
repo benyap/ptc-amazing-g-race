@@ -15,7 +15,10 @@ import SettingsMenu from './SettingsMenu';
 
 
 const mapStateToProps = (state, ownProps) => {
-	return { refresh: state.auth.tokens.refresh }
+	return { 
+		access: state.auth.tokens.access,
+		refresh: state.auth.tokens.refresh
+	}
 }
 
 @connect(mapStateToProps)
@@ -36,6 +39,7 @@ class SecondaryNavigation extends React.Component {
 		const config = {
 			url: API.api,
 			method: 'POST',
+			headers: { Authorization: `Bearer ${this.props.access}` },
 			data: {
 				variables: { refreshToken: this.props.refresh },
 				query: 
@@ -48,13 +52,18 @@ class SecondaryNavigation extends React.Component {
 		}
 
 		// Send logout request to server
-		const result = await axios(config);
+		try {
+			const result = await axios(config);
+			if (!result.data.data.logout.ok) {
+				console.warn(result.data.data.logout.failureMessage);
+			}
+		}
+		catch (err) {
+			console.warn(err.toString());
+		}
+
 		this.setState({loading: false});
 		this.props.dispatch(logout(new Date()));
-		
-		if (!result.data.data.logout.ok) {
-			console.warn(result.data.data.logout.failureMessage);
-		}
 	}
 
 	setRefreshing(isRefreshing, errorMessage) {
