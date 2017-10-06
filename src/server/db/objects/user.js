@@ -381,7 +381,7 @@ const getUserActions = async function(user, action, skip = 0, limit = 0) {
 const getActions = async function(user, username, action, skip = 0, limit = 0) {
 	if (!user) return new Error('No user logged in');
 
-	const authorized = await permission.checkPermission(user, ['leader:view-useractions']);
+	const authorized = await permission.checkPermission(user, ['admin:view-actions']);
 	if (authorized !== true) return authorized;
 
 	const findParams = {};
