@@ -223,8 +223,9 @@ class ChallengeProfile extends React.Component {
 						<div className='pt-callout pt-intent-primary pt-icon-info-sign' style={{margin:'1rem 0'}}>
 							<ul style={{margin: '0', padding: '0 0 0 1rem'}}>
 								<li>
-									The <code>key</code> should be a unique identifier for this challenge and will not be visible to the user.
-									The <code>title</code>, however, will be - so make sure it doesn't give away anything unintentionally.
+									The <code>key</code> will not be visible to the user, 
+									but the <code>title</code> will be visible - 
+									so make sure it doesn't give away anything unintentionally.
 								</li>
 								<li>
 									Challenges in the same <code>group</code> will be presented as one group to the user.
