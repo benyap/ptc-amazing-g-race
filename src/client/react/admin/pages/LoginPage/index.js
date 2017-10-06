@@ -57,7 +57,7 @@ class LoginPage extends React.Component {
 
 	render() {
 		const { authenticated, admin } = this.props;
-		if (authenticated && admin) {			
+		if (authenticated && admin) {
 			if (this.props.location.state) {
 				return <Redirect to={this.props.location.state}/>;
 			}

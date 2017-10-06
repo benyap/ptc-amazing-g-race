@@ -49,7 +49,7 @@ const _login = async function(user, email, password, isAdmin) {
 	else {
 		const isMatch = await bcrypt.compare(password, userauthentication.password);
 	
-		if (!isMatch) {	
+		if (!isMatch) {
 			response = {
 				ok: false,
 				message: 'Invalid credentials',
@@ -103,7 +103,7 @@ const _login = async function(user, email, password, isAdmin) {
 		target: isAdmin ? 'admin' : 'user',
 		targetCollection: 'none',
 		date: new Date(),
-		who: retrievedUser.username,
+		who: email,
 		infoJSONString: JSON.stringify({reason: response.message})
 	}
 	db.collection('actions').insert(action);
