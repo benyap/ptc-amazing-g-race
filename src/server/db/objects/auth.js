@@ -336,10 +336,10 @@ const logout = async function(user, refreshToken) {
 
 	const action = {
 		action: 'Logged out',
-		target: user.username,
+		target: user ? user.username : 'Invalid access token',
 		targetCollection: 'refreshtokens',
 		date: new Date(),
-		who: user.username,
+		who: user ? user.username : 'Invalid access token',
 		infoJSONString: JSON.stringify({message: response.failureMessage})
 	}
 	// Removed logout logging to reduce log clutter
