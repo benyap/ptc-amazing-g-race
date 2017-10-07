@@ -10,6 +10,7 @@ import API from '../../../../API'
 import MenuButton from '../../../../../../lib/react/components/MenuButton';
 import { logout } from '../../../../actions/authActions';
 import LoginRefresher from '../../../components/LoginRefresher';
+import LogoutFunction from '../../../components/LogoutFunction';
 import NotificationToaster from '../../../components/NotificationToaster';
 import SettingsMenu from './SettingsMenu';
 
@@ -36,32 +37,8 @@ class SecondaryNavigation extends React.Component {
 	async logout() {
 		this.setState({loading: true});
 
-		const config = {
-			url: API.api,
-			method: 'POST',
-			headers: { Authorization: `Bearer ${this.props.access}` },
-			data: {
-				variables: { refreshToken: this.props.refresh },
-				query: 
-				`mutation LogoutUser($refreshToken:String!) { 
-					logout(refreshToken:$refreshToken) {
-						ok failureMessage
-					}
-				}`
-			}
-		}
-
-		// Send logout request to server
-		try {
-			const result = await axios(config);
-			if (!result.data.data.logout.ok) {
-				console.warn(result.data.data.logout.failureMessage);
-			}
-		}
-		catch (err) {
-			console.warn(err.toString());
-		}
-
+		await LogoutFunction(this.props.access, this.props.refresh);
+		
 		this.setState({loading: false});
 		this.props.dispatch(logout(new Date()));
 	}

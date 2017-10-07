@@ -1,13 +1,14 @@
 import React from 'react';
 import autobind from 'core-decorators/es/autobind';
 import { withRouter } from 'react-router-dom';
-import { Position, Spinner, Menu, MenuItem, MenuDivider } from '@blueprintjs/core';
+import { Position, Spinner, Menu, MenuItem, MenuDivider, Intent } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import { logout } from '../../../actions/authActions';
 import axios from 'axios';
 import API from '../../../API';
 import MenuButton from '../../../../../lib/react/components/MenuButton';
 import LoginRefresher from '../../components/LoginRefresher';
+import LogoutFunction from '../../components/LogoutFunction';
 import NotificationToaster from '../../components/NotificationToaster';
 
 import '../scss/components/_help-menu.scss';
@@ -58,31 +59,7 @@ class HelpMenu extends React.Component {
 	async logout() {
 		if (this._mounted) this.setState({logoutLoading: true});
 
-		const config = {
-			url: API.api,
-			method: 'POST',
-			timeout: 10000,
-			headers: { Authorization: `Bearer ${this.props.access}` },
-			data: {
-				variables: { refreshToken: this.props.refresh },
-				query: 
-				`mutation LogoutUser($refreshToken:String!) { 
-					logout(refreshToken:$refreshToken) {
-						ok failureMessage
-					}
-				}`
-			}
-		}
-		// Send logout request to server
-		try {
-			const result = await axios(config);
-			if (!result.data.data.logout.ok) {
-				console.warn(result.data.data.logout.failureMessage);
-			}
-		}
-		catch (err) {
-			console.warn(err.toString());
-		}
+		await LogoutFunction(this.props.access, this.props.refresh);
 
 		if (this._mounted) this.setState({logoutLoading: false});
 		this.props.dispatch(logout(new Date()));
