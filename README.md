@@ -40,7 +40,7 @@ Credentials for access to cloud services are not committed to version control fo
 	
 *You will need legitimate credentials to an active MongoDB Atlas instance for the server to connect to.*
 
-- Amazon Web Services S3 (currently unused)
+- Amazon Web Services S3
 	- AWS Region - `AWS_S3_REGION`
 	- AWS bucket name - `AWS_S3_BUCKET`
 	- AWS upload folder name - `AWS_S3_UPLOAD_BUCKET`
