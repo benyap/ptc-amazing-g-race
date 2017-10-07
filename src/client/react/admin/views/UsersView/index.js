@@ -46,7 +46,6 @@ class UsersView extends React.Component {
 	}
 
 	state = {
-		loading: false,
 		refetching: false,
 		viewProfile: null,
 		displayCount: 0, 
@@ -58,29 +57,27 @@ class UsersView extends React.Component {
 
 	componentDidMount() {
 		this._mounted = true;
-		this.setState({ loading: false }, () => {
-			this.refetchUsers(true);
-		});
+		this.refetchUsers();
 	}
 
 	componentWillUnmount() {
 		this._mounted = false;
 	}
 
-	async refetchUsers(loading = false) {
+	async refetchUsers() {
 		if (!this.state.viewProfile && this.props.shouldRefresh) {
-			if (this._mounted) this.setState({loading, refetching: true});
+			if (this._mounted) this.setState({refetching: true});
 			try {
 				await Promise.all([
 					this.props.QueryPaymentAmount.refetch(),
 					this.props.QueryUsers.refetch()
 				]);
 
-				if (this._mounted) this.setState({loading: false, refetching: false, lastFetch: new Date()});
+				if (this._mounted) this.setState({refetching: false, lastFetch: new Date()});
 				this.props.dispatch(saveState());
 			}
 			catch (err) {
-				if (this._mounted) this.setState({loading: false, refetching: false});
+				if (this._mounted) this.setState({refetching: false});
 				NotificationToaster.show({
 					intent: Intent.DANGER,
 					message: err.toString()
@@ -168,7 +165,7 @@ class UsersView extends React.Component {
 		const { loading, error, getUsers } = this.props.QueryUsers;
 		const loadingPayment = this.props.QueryPaymentAmount.loading;
 
-		if (loading || loadingPayment || this.state.loading) {
+		if (loading || loadingPayment) {
 			content = (
 				<div className='loading-spinner'>
 					<Spinner/>
