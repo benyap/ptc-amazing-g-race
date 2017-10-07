@@ -9,8 +9,9 @@ import { logout } from '../../../../../actions/authActions';
 import axios from 'axios';
 import ScrollAnimation from 'react-animate-on-scroll';
 import Title from '../../../components/Title';
+import NotificationToaster from '../../../../components/NotificationToaster';
 import LoginRefresher from '../../../../components/LoginRefresher';
-import API from '../../../../../API';
+import LogoutFunction from '../../../../components/LogoutFunction';
 
 import '../../../scss/components/_dashboard.scss';
 
@@ -19,6 +20,7 @@ const mapStateToProps = (state, ownProps) => {
 	return { 
 		authenticated: state.auth.login.authenticated,
 		email: state.auth.login.email,
+		access: state.auth.tokens.access,
 		refresh: state.auth.tokens.refresh
 	}
 }
@@ -41,28 +43,8 @@ class Dashboard extends React.Component {
 	async logout() {
 		this.setState({logoutLoading: true});
 
-		const config = {
-			url: API.api,
-			method: 'POST',
-			timeout: 10000,
-			data: {
-				variables: { refreshToken: this.props.refresh },
-				query: 
-				`mutation LogoutUser($refreshToken:String!) { 
-					logout(refreshToken:$refreshToken) {
-						ok failureMessage
-					}
-				}`
-			}
-		}
-
-		// Send logout request to server
-		const result = await axios(config);
-
-		if (!result.data.data.logout.ok) {
-			console.warn(result.data.data.logout.failureMessage);
-		}
-
+		await LogoutFunction(this.props.access, this.props.refresh);
+		
 		this.setState({logoutLoading: false}, () => {
 			this.props.dispatch(logout(new Date()));
 			this.props.history.push('/');
