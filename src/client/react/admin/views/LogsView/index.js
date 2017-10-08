@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import DateFormat from 'dateformat';
 import { graphql } from 'react-apollo';
@@ -27,6 +28,10 @@ const QueryActionsOptions = {
 @connect()
 @autobind
 class LogsView extends React.Component {
+	static propTypes = {
+		shouldRefresh: PropTypes.bool.isRequired
+	}
+
 	state = {
 		skip: '0',
 		limit: '10',
@@ -36,6 +41,7 @@ class LogsView extends React.Component {
 	}
 
 	componentDidMount() {
+		this.setState({ loading: true });
 		this.fetchActions();
 	}
 
@@ -49,7 +55,7 @@ class LogsView extends React.Component {
 			});
 			
 			const nodes = this._constructTreeNodes(this.props.QueryActions.getActions);
-			this.setState({nodes});
+			this.setState({nodes, loading: false});
 		}
 		catch (err) {
 			NotificationToaster.show({
@@ -112,9 +118,9 @@ class LogsView extends React.Component {
 
 	render() {
 		let content = null;
-		const { loading, error, getActions } = this.props.QueryActions;
+		const { error, getActions } = this.props.QueryActions;
 
-		if (loading) {
+		if (this.state.loading) {
 			content = (
 				<div className='loading-spinner'>
 					<Spinner/>
@@ -168,6 +174,7 @@ class LogsView extends React.Component {
 		return (
 			<div id='dashboard-logs' className='dashboard-tab'>
 				<h4>Server Action Log</h4>
+				<RefreshBar query={this.props.QueryActions} shouldRefresh={this.props.shouldRefresh}/>
 				<Filters onChange={this.onChange} onFilter={this.onFilter} loading={this.props.QueryActions.loading}
 					action={this.state.action} username={this.state.username} skip={this.state.skip} limit={this.state.limit}/>
 				{content}
