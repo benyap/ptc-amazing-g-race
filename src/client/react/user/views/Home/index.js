@@ -48,7 +48,7 @@ class Home extends React.Component {
 
 	state = {
 		team: null,
-		teamLoading: true,
+		loading: true,
 		teamError: null,
 		showHelp: false
 	}
@@ -73,10 +73,10 @@ class Home extends React.Component {
 		if (!teamId) {
 			// Reset team info
 			this.props.dispatch(setTeamInfo(null, null, null));
-			this.setState({ teamLoading: false });
+			this.setState({ loading: false });
 		}
 		else {
-			if (this._mounted && !this.state.teamLoading) this.setState({ teamLoading: true });
+			if (this._mounted && !this.state.loading) this.setState({ loading: true });
 
 			try {
 				const result = await this.props.client.query({
@@ -85,7 +85,7 @@ class Home extends React.Component {
 					fetchPolicy: 'network-only'
 				});
 
-				if (this._mounted) this.setState({ team: result.data, teamLoading: false });
+				if (this._mounted) this.setState({ team: result.data, loading: false });
 				
 				// Save team info
 				this.props.dispatch(setTeamInfo(
@@ -98,7 +98,7 @@ class Home extends React.Component {
 				// Reset team info
 				this.props.dispatch(setTeamInfo(null, null, null));
 
-				if (this._mounted) this.setState({ teamLoading: false, teamError: err.toString() });
+				if (this._mounted) this.setState({ loading: false, teamError: err.toString() });
 				console.warn(err);
 			}
 		}
@@ -117,14 +117,14 @@ class Home extends React.Component {
 		});
 	}
 
-	render() {		
+	render() {
 		return (
 			<main id='home' className='dashboard'>
 				<div className='content'>
 					<h2>
 						{ this.props.teamName ? this.props.teamName : 'Your Team' }
-						{ this.state.teamLoading ? <Spinner className='pt-small info-loading'/> : null }
-						<Button className='helper-button pt-small pt-minimal pt-intent-warning' iconName='refresh' onClick={this.refresh} disabled={this.state.teamLoading}/>
+						{ this.state.loading ? <Spinner className='pt-small info-loading'/> : null }
+						<Button className='helper-button pt-small pt-minimal pt-intent-warning' iconName='refresh' onClick={this.refresh} disabled={this.state.loading}/>
 						<Button className='helper-button pt-small pt-minimal pt-intent-primary' iconName='help' onClick={this.toggleShowHelp}/>
 					</h2>
 					{ this.state.showHelp ? 
@@ -141,7 +141,7 @@ class Home extends React.Component {
 						</div>
 						: null
 					}
-					<TeamPanel team={ this.state.team ? this.state.team.getTeam : null } loading={this.state.teamLoading}/>
+					<TeamPanel team={ this.state.team ? this.state.team.getTeam : null } loading={this.state.loading}/>
 					<h5>
 						Important contacts
 					</h5>
