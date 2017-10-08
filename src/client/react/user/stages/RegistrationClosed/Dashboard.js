@@ -7,6 +7,8 @@ import HelpMenu from '../../components/HelpMenu';
 import Home from '../../views/Home';
 import Help from '../../views/Help';
 import Instructions from '../../views/Instructions';
+import Feed from '../../views/Feed';
+import Challenges from '../../views/Challenges';
 import NotFound from '../../views/NotFound';
 
 
@@ -45,8 +47,8 @@ class Dashboard extends React.Component {
 				<Switch>
 					<Route exact path={`${url}`} component={()=><Home demo/>}/>
 					<Route path={`${url}/instructions`} component={()=><Instructions demo/>}/>
-					<Route path={`${url}/feed`} component={()=>null}/>
-					<Route path={`${url}/challenges`} component={()=>null}/>
+					<Route path={`${url}/feed`} component={()=><Feed demo/>}/>
+					<Route path={`${url}/challenges`} component={()=><Challenges demo/>}/>
 					<Route path={`${url}/help`} component={()=><Help demo/>}/>
 					<Route component={NotFound}/>
 				</Switch>
