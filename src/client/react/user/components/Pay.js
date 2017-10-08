@@ -29,7 +29,7 @@ const QueryMeOptions = {
 const PaymentQueryOptions = (name, key) => {
 	return {
 		name,
-		options: (props) => ({ variables: { key } }),
+		options: (props) => ({ fetchPolicy: 'network-only', variables: { key } }),
 		skip: (ownProps) => !ownProps.authenticated
 	}
 }
