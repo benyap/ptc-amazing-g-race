@@ -98,7 +98,7 @@ class Pay extends React.Component {
 						<br/>
 						ACC: {this.props.QueryAcc.loading ? <span style={{color:'gray'}}>Loading...</span> : this.props.QueryAcc.getProtectedSetting.value}
 					</p>
-						Please use <span className='highlight'>{reference}</span> as the payee reference.
+						Please use <span className='highlight'>{reference.substring(0, 18)}</span> as the payee reference.
 				</div>
 			);
 		}
