@@ -43,6 +43,22 @@ const removeTeamFromUnlocked = function(root, params, ctx, options) {
 }
 
 
+// Create a challenge
+const createChallengeItem = function(root, params, ctx, options) {
+	return database.challenge.createChallengeItem(ctx.user, params.key, params.itemKey, params.title, params.order, params.type);
+}
+
+// Delete a challenge
+const deleteChallengeItem = function(root, params, ctx, options) {
+	return database.challenge.deleteChallengeItem(ctx.user, params.key, params.itemKey);
+}
+
+// Edit a challenge's property
+const _editChallengeItemProperty = function(root, params, ctx, options) {
+	return database.challenge._editChallengeItemProperty(ctx.user, params.key, params.itemKey, params.property, params.value);
+}
+
+
 export default {
 	createChallenge,
 	deleteChallenge,
@@ -51,5 +67,8 @@ export default {
 	getChallenges,
 	getChallenge,
 	addTeamToUnlocked,
-	removeTeamFromUnlocked
+	removeTeamFromUnlocked,
+	createChallengeItem,
+	deleteChallengeItem,
+	_editChallengeItemProperty,
 };

@@ -19,7 +19,7 @@ const createChallenge = async function(user, key, order, passphrase = null, titl
 	
 	// Validate parameters
 	if (!key) return new Error('A challenge key is required.');
-	if (order === null) return new Error('A challenge order is required.');
+	if (order === null || order.length < 1) return new Error('A challenge order is required.');
 	else if (isNaN(parseInt(order))) return new Error('Challenge order must be a valid integer');
 
 	const db = await connect();
@@ -309,6 +309,193 @@ const _modifyTeams = async function(modifyAction, user, key, teamId) {
 }
 
 
+/**
+ * Create a new challenge item and add it to a challenge
+ * @param {*} user 
+ * @param {String} key 
+ * @param {String} itemKey 
+ * @param {String} title 
+ * @param {Number} order 
+ */
+const createChallengeItem = async function(user, key, itemKey, title, order, type) {
+	if (!user) return new Error('No user logged in');
+	
+	const authorized = await permission.checkPermission(user, ['admin:edit-challenge']);
+	if (authorized !== true) return authorized;
+	
+	// Validate parameters
+	if (!key) return new Error('A challenge key is required.');
+	if (!itemKey) return new Error('A challenge item key is required.');
+	if (!title) return new Error('A challenge key is required.');
+	if (order === null || order.length < 1) return new Error('A challenge order is required.');
+	else if (isNaN(order)) return new Error('Challenge order must be a valid integer.');
+
+	const typeValues = ['upload', 'phrase'];
+	let typeValid = false;
+	typeValues.forEach((typeValue) => {
+		if (type === typeValue) typeValid = true;
+	});
+	if (!typeValid) return new Error(`The type '${type}' is not valid.`);
+	
+	// Check that challenge exists
+	const db = await connect();
+	const challenge = await db.collection('challenges').findOne({key});
+	if (!challenge) return new Error(`The challenge with the key '${key}' does not exist.`);
+
+	// Check that challenge key doesn't exists already
+	const challengeItemCheck = await db.collection('challenges').findOne({key, 'items.key': itemKey});
+	if (challengeItemCheck) return new Error(`A challenge item with the key '${itemKey}' already exists.`);
+	
+	// Create challenge item
+	const item = {
+		key: itemKey,
+		title: title,
+		description: '',
+		type: type,
+		order: order
+	}
+
+	db.collection('challenges').update(
+		// Selector
+		{ key: key },
+		// Update
+		{ $push: { items: item } }
+	);
+	
+	// Log action
+	const action = {
+		action: `Add challenge item`,
+		target: key,
+		targetCollection: 'challenges',
+		date: new Date(),
+		who: user.username,
+		infoJSONString: JSON.stringify({key: itemKey, title, type})
+	};
+	db.collection('actions').insert(action);
+
+	return {
+		ok: true,
+		action: action
+	}
+}
+
+
+/**
+ * Deletes a challenge item from a challenge
+ * @param {*} user 
+ * @param {String} key 
+ * @param {String} itemKey 
+ */
+const deleteChallengeItem = async function(user, key, itemKey) {
+	if (!user) return new Error('No user logged in');
+	
+	const authorized = await permission.checkPermission(user, ['admin:edit-challenge']);
+	if (authorized !== true) return authorized;
+	
+	// Validate parameters
+	if (!key) return new Error('A challenge key is required.');
+	if (!itemKey) return new Error('A challenge item key is required.');
+
+	// Check that challenge exists
+	const db = await connect();
+	const challenge = await db.collection('challenges').findOne({key});
+	if (!challenge) return new Error(`The challenge with the key '${key}' does not exist.`);
+	
+	// Remove item
+	const result = await db.collection('challenges').update(
+		// Selector
+		{ key: key },
+		// Update
+		{ $pull: { items: { key: itemKey } } }
+	);
+	
+	if (result.result.nModified == 0) 
+		return new Error(`Challenge item with the key '${itemKey}' was not found in the challenge '${key}'`);		
+
+	// Log action
+	const action = {
+		action: `Delete challenge item`,
+		target: key,
+		targetCollection: 'challenges',
+		date: new Date(),
+		who: user.username,
+		infoJSONString: JSON.stringify({itemKey})
+	};
+	db.collection('actions').insert(action);
+
+	return {
+		ok: true,
+		action: action
+	}
+}
+
+
+/**
+ * Modify a challenge item property
+ * @param {*} user 
+ * @param {String} key 
+ * @param {String} itemKey 
+ * @param {String} property 
+ * @param {String} value 
+ */
+const _editChallengeItemProperty = async function(user, key, itemKey, property, value) {
+	if (!user) return new Error('No user logged in');
+	
+	const authorized = await permission.checkPermission(user, ['admin:edit-challenge']);
+	if (authorized !== true) return authorized;
+	
+	// Validate parameters
+	if (!key) return new Error('A challenge key is required.');
+
+	// Ensure property being edited is valid
+	const editableProperties = [
+		'order',
+		'title',
+		'description'
+	];
+
+	let valid = false;
+	editableProperties.forEach((p) => { if (!valid) if (p === property) valid = true; });
+	if (!valid) return new Error(`The property ${property} is not valid.`);
+
+	// Check that challenge exists
+	const db = await connect();
+	const challenge = await db.collection('challenges').findOne({key});
+	if (!challenge) return new Error(`The challenge with the key '${key}' does not exist.`);
+
+	// Check that challenge with the item key exists
+	const challengeItemCheck = await db.collection('challenges').findOne({key, 'items.key': itemKey });
+	if (!challengeItemCheck) return new Error(`A challenge item with the key '${itemKey}' does not exist in the challenge '${key}'.`);
+
+	// Update the challenge item
+	const result = await db.collection('challenges').update(
+		// Selector
+		{ key: key, 'items.key': itemKey },
+		// Update
+		{ $set: { [`items.$.${property}`]: value } }
+	);
+	
+	if (result.result.nModified == 0) 
+		return new Error(`Challenge item with the id '${itemKey}' already has the value '${value}' for the property '${property}'`);
+
+	// Log action
+	const action = {
+		action: `Modify challenge item: ${property}`,
+		target: key,
+		targetCollection: 'challenges',
+		date: new Date(),
+		who: user.username,
+		infoJSONString: JSON.stringify({itemKey, property, value})
+	};
+	db.collection('actions').insert(action);
+
+	return {
+		ok: true,
+		action: action
+	}
+}
+
+
 export default {
 	createChallenge,
 	deleteChallenge,
@@ -317,5 +504,8 @@ export default {
 	getChallenges,
 	getChallenge,
 	addTeamToUnlocked,
-	removeTeamFromUnlocked
+	removeTeamFromUnlocked,
+	createChallengeItem,
+	deleteChallengeItem,
+	_editChallengeItemProperty
 }
