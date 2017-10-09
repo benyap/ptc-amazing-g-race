@@ -9,6 +9,7 @@ class ChallengeCard extends React.Component {
 		challenge: PropTypes.shape({
 			key: PropTypes.string.isRequired,
 			title: PropTypes.string.isRequired,
+			items: PropTypes.array.isRequired,
 			public: PropTypes.bool.isRequired,
 			locked: PropTypes.bool.isRequired
 		}),
@@ -20,7 +21,7 @@ class ChallengeCard extends React.Component {
 	}
 
 	render() {
-		const { key, title, locked } = this.props.challenge;
+		const { key, items, title, locked } = this.props.challenge;
 
 		let icon = 'pt-icon-lock ';
 		
@@ -39,7 +40,7 @@ class ChallengeCard extends React.Component {
 					{title}
 				</h5>
 				<p className='pt-text-muted'>
-					<b>Key: </b> {key}
+					<b>Key: </b> {key} | <b>Items: </b> {items.length}
 				</p>
 			</div>
 		);
