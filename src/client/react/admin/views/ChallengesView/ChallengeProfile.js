@@ -6,9 +6,8 @@ import { graphql, compose } from 'react-apollo';
 import { 
 	getChallenge, 
 	deleteChallenge,
-	setChallengeGroup,
-	setChallengeType,
 	setChallengePublic,
+	setChallengeOrder,
 	setChallengePassphrase,
 	setChallengeTitle,
 	setChallengeDescription,
@@ -32,11 +31,10 @@ const QueryGetChallengeOptions = {
 }
 
 @compose(
-	graphql(getChallenge('group type public passphrase title description locked teams'), QueryGetChallengeOptions),
+	graphql(getChallenge('public order passphrase title description locked teams items{key title description}'), QueryGetChallengeOptions),
 	graphql(deleteChallenge('ok'), { name: 'MutationDeleteChallenge' }),
-	graphql(setChallengeGroup('ok'), { name: 'MutationSetChallengeGroup' }),
-	graphql(setChallengeType('ok'), { name: 'MutationSetChallengeType' }),
 	graphql(setChallengePublic('ok'), { name: 'MutationSetChallengePublic' }),
+	graphql(setChallengeOrder('ok'), { name: 'MutationSetChallengeOrder' }),	
 	graphql(setChallengePassphrase('ok'), { name: 'MutationSetChallengePassphrase' }),
 	graphql(setChallengeTitle('ok'), { name: 'MutationSetChallengeTitle' }),
 	graphql(setChallengeDescription('ok'), { name: 'MutationSetChallengeDescription' }),
@@ -47,7 +45,7 @@ class ChallengeProfile extends React.Component {
 	static propTypes = {
 		challenge: PropTypes.shape({
 			key: PropTypes.string.isRequired,
-			group: PropTypes.string.isRequired,
+			order: PropTypes.number.isRequired,
 			title: PropTypes.string.isRequired,
 			public: PropTypes.bool.isRequired,
 			locked: PropTypes.bool.isRequired
@@ -74,8 +72,8 @@ class ChallengeProfile extends React.Component {
 		key: this.props.challenge.key,
 
 		// Editable values
-		group: this.props.challenge.group,
-		modified_group: false,
+		order: this.props.challenge.order,
+		modified_order: false,
 
 		public: this.props.challenge.public,
 		modified_public: false,
@@ -163,7 +161,7 @@ class ChallengeProfile extends React.Component {
 		this.setState({ saving: true });
 		const promises = [];
 
-		['Group','Type','Passphrase','Title','Description','Public','Locked'].map((property) => {
+		['Order','Passphrase','Title','Description','Public','Locked'].map((property) => {
 			if (this.state[`modified_${property.toLowerCase()}`]) {
 				const promise = this.props[`MutationSetChallenge${property}`]({
 					variables: {
@@ -194,7 +192,7 @@ class ChallengeProfile extends React.Component {
 	}
 
 	render() {
-		const { key, group, title, locked } = this.props.challenge;
+		const { key, title, locked } = this.props.challenge;
 		const { loading, getChallenge } = this.props.QueryGetChallenge;
 
 		let icon = 'pt-icon-lock ';
@@ -228,9 +226,6 @@ class ChallengeProfile extends React.Component {
 									so make sure it doesn't give away anything unintentionally.
 								</li>
 								<li>
-									Challenges in the same <code>group</code> will be presented as one group to the user.
-								</li>
-								<li>
 									If the challenge is not <code>public</code>, a team can enter the <code>passphrase</code> to unlock the challenge.
 								</li>
 								<li>
@@ -246,16 +241,16 @@ class ChallengeProfile extends React.Component {
 										<td>{this.state.key}</td>
 									</tr>
 									<tr>
-										<td>Group</td>
-										<td><EditableText value={this.state.group} onChange={this.handleChange('group')}/></td>
+										<td>Order</td>
+										<td><EditableText value={this.state.order} onChange={this.handleChange('order')} disabled={loading}/></td>
 									</tr>
 									<tr>
 										<td>Public</td>
-										<td><Switch checked={this.state.public} onChange={(e)=>{this.handleChange('public')(e.target.value==='on'!==this.state.public)}}/></td>
+										<td><Switch checked={this.state.public} onChange={(e)=>{this.handleChange('public')(e.target.value==='on'!==this.state.public)}} disabled={loading}/></td>
 									</tr>
 									<tr>
 										<td>Locked</td>
-										<td><Switch checked={this.state.locked} onChange={(e)=>{this.handleChange('locked')(e.target.value==='on'!==this.state.locked)}}/></td>
+										<td><Switch checked={this.state.locked} onChange={(e)=>{this.handleChange('locked')(e.target.value==='on'!==this.state.locked)}} disabled={loading}/></td>
 									</tr>
 									<tr>
 										<td>Passphrase</td>

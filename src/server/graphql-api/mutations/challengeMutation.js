@@ -2,6 +2,7 @@ import {
 	GraphQLString,
 	GraphQLNonNull,
 	GraphQLBoolean,
+	GraphQLInt,
 	GraphQLID
 } from 'graphql';
 
@@ -18,15 +19,10 @@ const createChallenge = {
 			description: 'A unique identifier for the challenge',
 			type: new GraphQLNonNull(GraphQLString)
 		},
-		group: {
-			name: 'group',
-			description: 'A key to use to group challenges together',
-			type: new GraphQLNonNull(GraphQLString)
-		},
-		type: {
-			name: 'type',
-			description: 'The type of input required by the challenge',
-			type: new GraphQLNonNull(GraphQLString) // TODO: Make this an enum
+		order: {
+			name: 'order',
+			description: 'A number used to order how the challenges are listed',
+			type: new GraphQLNonNull(GraphQLInt)
 		},
 		passphrase: {
 			name: 'passphrase',
@@ -90,21 +86,15 @@ const _editChallengeProperty = (description, propertyName, valueType) => {
 }
 
 
-const setChallengeGroup = _editChallengeProperty(
-	'Set the group the challenge belongs to', 'group',
-	new GraphQLNonNull(GraphQLString)
-);
-
-
-const setChallengeType = _editChallengeProperty(
-	'Set the challenge type', 'type',
-	new GraphQLNonNull(GraphQLString) // TODO: Make this an enum
-);
-
-
 const setChallengePublic = _editChallengeProperty(
 	'Set whether the challenge is publicly available', 'public',
 	new GraphQLNonNull(GraphQLBoolean)
+);
+
+
+const setChallengeOrder = _editChallengeProperty(
+	'Set the challenge order', 'order',
+	new GraphQLNonNull(GraphQLInt)
 );
 
 
@@ -177,8 +167,7 @@ const removeTeamFromUnlocked = {
 export default {
 	createChallenge,
 	deleteChallenge,
-	setChallengeGroup,
-	setChallengeType,
+	setChallengeOrder,
 	setChallengePublic,
 	setChallengePassphrase,
 	setChallengeTitle,

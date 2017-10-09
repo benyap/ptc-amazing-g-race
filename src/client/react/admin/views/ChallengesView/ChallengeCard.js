@@ -8,7 +8,6 @@ class ChallengeCard extends React.Component {
 	static propTypes = {
 		challenge: PropTypes.shape({
 			key: PropTypes.string.isRequired,
-			group: PropTypes.string.isRequired,
 			title: PropTypes.string.isRequired,
 			public: PropTypes.bool.isRequired,
 			locked: PropTypes.bool.isRequired
@@ -21,7 +20,7 @@ class ChallengeCard extends React.Component {
 	}
 
 	render() {
-		const { key, group, title, locked } = this.props.challenge;
+		const { key, title, locked } = this.props.challenge;
 
 		let icon = 'pt-icon-lock ';
 		
@@ -40,7 +39,7 @@ class ChallengeCard extends React.Component {
 					{title}
 				</h5>
 				<p className='pt-text-muted'>
-					<b>Group: </b> {group} | <b>Key: </b> {key}
+					<b>Key: </b> {key}
 				</p>
 			</div>
 		);

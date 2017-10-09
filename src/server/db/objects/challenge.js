@@ -11,7 +11,7 @@ import permission from '../permission';
  * @param {String} type 
  * @param {String} passphrase 
  */
-const createChallenge = async function(user, key, group, type, passphrase = null, title = '', description = '') {
+const createChallenge = async function(user, key, order, passphrase = null, title = '', description = '') {
 	if (!user) return new Error('No user logged in');
 
 	const authorized = await permission.checkPermission(user, ['admin:create-challenge']);
@@ -19,7 +19,8 @@ const createChallenge = async function(user, key, group, type, passphrase = null
 	
 	// Validate parameters
 	if (!key) return new Error('A challenge key is required.');
-	if (!type) return new Error('A challenge type is required.');
+	if (order === null) return new Error('A challenge order is required.');
+	else if (isNaN(parseInt(order))) return new Error('Challenge order must be a valid integer');
 
 	const db = await connect();
 
@@ -30,13 +31,13 @@ const createChallenge = async function(user, key, group, type, passphrase = null
 	// Create new challenge
 	const challenge = {
 		key: key,
-		group: group,
-		type: type,
+		order: order,
 		public: passphrase ? false : true,
 		passphrase: passphrase,
 		title: title,
 		description: description,
 		locked: false,
+		items: [],
 		teams: []
 	};
 	db.collection('challenges').insert(challenge);
@@ -48,7 +49,7 @@ const createChallenge = async function(user, key, group, type, passphrase = null
 		targetCollection: 'challenges',
 		date: new Date(),
 		who: user.username,
-		infoJSONString: JSON.stringify({ key: key, public: challenge.public, passphrase: challenge.passphrase })
+		infoJSONString: JSON.stringify({ key: key, order: order, public: challenge.public, passphrase: challenge.passphrase })
 	};
 	db.collection('actions').insert(action);
 
@@ -78,7 +79,7 @@ const deleteChallenge = async function(user, key) {
 	// Ensure challenge key exists
 	let challengeCheck = await db.collection('challenges').findOne({key});
 	if (!challengeCheck) return new Error(`A challenge with the key '${key}' does not exist.`);
-	
+
 	//Remove the challenge
 	db.collection('challenges').remove({key});
 
@@ -116,8 +117,8 @@ const _editChallengeProperty = async function(user, key, property, value) {
 
 	// Ensure property being edited is valid
 	const editableProperties = [
-		'group',
 		'type',
+		'order',
 		'public',
 		'passphrase',
 		'title',
@@ -167,7 +168,7 @@ const getAllChallenges = async function(user) {
 	if (authorized !== true) return authorized;
 
 	const db = await connect();
-	return db.collection('challenges').find().sort({group: 1}).toArray();
+	return db.collection('challenges').find().sort({order: 1}).toArray();
 }
 
 
@@ -186,7 +187,7 @@ const getChallenges = async function(user) {
 	const userProfile = await db.collection('users').findOne({username: user.username});
 	return db.collection('challenges').find({ 
 		$or: [{ teams: userProfile.teamId.toString() }, { public: true }]
-	}).sort({group: 1}).toArray();
+	}).sort({order: 1}).toArray();
 }
 
 

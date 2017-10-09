@@ -22,7 +22,7 @@ const QueryGetAllChallengesOptions = {
 }
 
 @compose(
-	graphql(getAllChallenges('key group title public locked'), QueryGetAllChallengesOptions),
+	graphql(getAllChallenges('key order title public locked items{key title description}'), QueryGetAllChallengesOptions),
 	graphql(createChallenge('ok'), { name: 'MutationCreateChallenge' })
 )
 @connect()
@@ -39,7 +39,8 @@ class ChallengesView extends React.Component {
 		showCreateChallenge: false,
 		createChallengeLoading: false,
 		createChallengeError: null,
-		challengeKey: ''
+		challengeKey: '',
+		order: '0'
 	}
 
 	componentDidMount() {
@@ -84,8 +85,10 @@ class ChallengesView extends React.Component {
 		});
 	}
 	
-	editChallengeKey(e) {
-		this.setState({ challengeKey: e.target.value });
+	editValue(valueName) {
+		return (e) => {
+			this.setState({ [valueName]: e.target.value });
+		}
 	}
 
 	async submitCreateChallenge() {
@@ -94,9 +97,8 @@ class ChallengesView extends React.Component {
 			const id = parseInt(Date.now()/1000) % 100000;
 			await this.props.MutationCreateChallenge({
 				variables: {
-					key: `${this.state.challengeKey}`,
-					group: `NEW`,
-					type: `none`,
+					key: this.state.challengeKey,
+					order: this.state.order,
 					passphrase: `${id}`,
 					title: `New Challenge #${id}`,
 					description: `## Challenge ${id}`
@@ -173,11 +175,14 @@ class ChallengesView extends React.Component {
 							<div className='pt-callout pt-icon-info-sign' style={{marginBottom:'0.5rem'}}>
 								The <b>challenge key</b> should be a unique identifier for this challenge,
 								and cannot be changed once set.
-								Players will not be able to see the challenge key - they will see the <b>challenge title</b>,
-								which can be changed.
+								The challenge <b>order</b> determines the order in which the challenge appears on the screen.
 							</div>
-							<b>Challenge key:</b> 
-							<FormInput id='challenge-key' value={this.state.challengeKey} onChange={this.editChallengeKey}/>
+							<div>
+								<b>Challenge key:</b> 
+								<FormInput id='challenge-key' value={this.state.challengeKey} onChange={this.editValue('challengeKey')}/>
+								<b>Order:</b> 
+								<FormInput id='challenge-order' value={this.state.order} onChange={this.editValue('order')}/>
+							</div>
 						</label>
 					</div>
 					<div className='pt-dialog-footer'>

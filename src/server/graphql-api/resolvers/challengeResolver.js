@@ -3,8 +3,8 @@ import database from '../../db';
 
 // Create a challenge
 const createChallenge = function(root, params, ctx, options) {
-	return database.challenge.createChallenge(ctx.user, params.key, params.group, 
-		params.type, params.passphrase, params.title, params.description);
+	return database.challenge.createChallenge(ctx.user, params.key, params.order, 
+		params.passphrase, params.title, params.description);
 }
 
 // Delete a challenge

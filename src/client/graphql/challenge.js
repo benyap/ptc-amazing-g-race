@@ -33,8 +33,8 @@ const getAllChallenges = (params) => {
 
 const createChallenge = (params) => {
 	return gql`
-	mutation CreateChallenge($key:String!,$group:String!,$type:String!,$passphrase:String,$title:String,$description:String){
-		createChallenge(key:$key,group:$group,type:$type,passphrase:$passphrase,title:$title,description:$description){
+	mutation CreateChallenge($key:String!,$order: Int!,$passphrase:String,$title:String,$description:String){
+		createChallenge(key:$key,order:$order,passphrase:$passphrase,title:$title,description:$description){
 			${params}
 		}
 	}`;
@@ -47,24 +47,17 @@ const deleteChallenge = (params) => {
 	}`;
 }
 
-const setChallengeGroup = (params) => {
-	return gql`
-	mutation SetChallengeGroup($key:String!,$value:String!){
-		setChallengeGroup(key:$key,value:$value){ ${params} }
-	}`;
-}
-
-const setChallengeType = (params) => {
-	return gql`
-	mutation SetChallengeType($key:String!,$value:String!){
-		setChallengeType(key:$key,value:$value){ ${params} }
-	}`;
-}
-
 const setChallengePublic = (params) => {
 	return gql`
 	mutation SetChallengePublic($key:String!,$value:Boolean!){
 		setChallengePublic(key:$key,value:$value){ ${params} }
+	}`;
+}
+
+const setChallengeOrder = (params) => {
+	return gql`
+	mutation SetChallengeOrder($key:String!,$value:Int!){
+		setChallengeOrder(key:$key,value:$value){ ${params} }
 	}`;
 }
 
@@ -103,9 +96,8 @@ export {
 	getAllChallenges,
 	createChallenge,
 	deleteChallenge,
-	setChallengeGroup,
-	setChallengeType,
 	setChallengePublic,
+	setChallengeOrder,
 	setChallengePassphrase,
 	setChallengeTitle,
 	setChallengeDescription,
