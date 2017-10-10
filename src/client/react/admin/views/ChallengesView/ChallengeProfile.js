@@ -48,6 +48,7 @@ const QueryGetChallengeOptions = {
 class ChallengeProfile extends React.Component {
 	static propTypes = {
 		challenge: PropTypes.shape({
+			_id: PropTypes.string.isRequired,
 			key: PropTypes.string.isRequired,
 			order: PropTypes.number.isRequired,
 			title: PropTypes.string.isRequired,
@@ -83,9 +84,7 @@ class ChallengeProfile extends React.Component {
 		addItemTitle: '',
 		addItemOrder: '',
 		addItemType: 'phrase',
-
-		key: this.props.challenge.key,
-		
+				
 		// Edit challenge values
 		order: this.props.challenge.order,
 		modified_order: false,
@@ -314,8 +313,12 @@ class ChallengeProfile extends React.Component {
 							<table className='pt-table pt-striped content'>
 								<tbody>
 									<tr>
+										<td>Id</td>
+										<td>{this.props.challenge._id}</td>
+									</tr>
+									<tr>
 										<td>Key</td>
-										<td>{this.state.key}</td>
+										<td>{this.props.challenge.key}</td>
 									</tr>
 									<tr>
 										<td>Order</td>

@@ -22,7 +22,7 @@ const QueryGetAllChallengesOptions = {
 }
 
 @compose(
-	graphql(getAllChallenges('key order title public locked items{key}'), QueryGetAllChallengesOptions),
+	graphql(getAllChallenges('_id key order title public locked items{key}'), QueryGetAllChallengesOptions),
 	graphql(createChallenge('ok'), { name: 'MutationCreateChallenge' })
 )
 @connect()
