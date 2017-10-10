@@ -11,10 +11,13 @@ import {
 	setChallengePassphrase,
 	setChallengeTitle,
 	setChallengeDescription,
-	setChallengeLocked
+	setChallengeLocked,
+	createChallengeItem
 } from '../../../../graphql/challenge';
 import NotificationToaster from '../../../components/NotificationToaster';
 import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEditor';
+import FormInput from '../../../../../../lib/react/components/forms/FormInput';
+import ChallengeItemProfile from './ChallengeItemProfile';
 
 import '../../../user/scss/components/_instruction-panel.scss';
 import '../../scss/components/_markdown-preview.scss';
@@ -31,14 +34,15 @@ const QueryGetChallengeOptions = {
 }
 
 @compose(
-	graphql(getChallenge('public order passphrase title description locked teams items{key title description}'), QueryGetChallengeOptions),
+	graphql(getChallenge('key public order passphrase title description locked teams items{key type order title description}'), QueryGetChallengeOptions),
 	graphql(deleteChallenge('ok'), { name: 'MutationDeleteChallenge' }),
 	graphql(setChallengePublic('ok'), { name: 'MutationSetChallengePublic' }),
-	graphql(setChallengeOrder('ok'), { name: 'MutationSetChallengeOrder' }),	
+	graphql(setChallengeOrder('ok'), { name: 'MutationSetChallengeOrder' }),
 	graphql(setChallengePassphrase('ok'), { name: 'MutationSetChallengePassphrase' }),
 	graphql(setChallengeTitle('ok'), { name: 'MutationSetChallengeTitle' }),
 	graphql(setChallengeDescription('ok'), { name: 'MutationSetChallengeDescription' }),
-	graphql(setChallengeLocked('ok'), { name: 'MutationSetChallengeLocked' })
+	graphql(setChallengeLocked('ok'), { name: 'MutationSetChallengeLocked' }),
+	graphql(createChallengeItem('ok'), { name: 'MutationCreateChallengeItem' })
 )
 @autobind
 class ChallengeProfile extends React.Component {
@@ -69,9 +73,20 @@ class ChallengeProfile extends React.Component {
 		showConfirmDelete: false,
 		deleteLoading: false,
 		deleteError: null,
-		key: this.props.challenge.key,
 
-		// Editable values
+		editChallengeItem: null,
+
+		showAddItem: false,
+		addItemLoading: false,
+		addItemError: null,
+		addItemKey: '',
+		addItemTitle: '',
+		addItemOrder: '',
+		addItemType: 'phrase',
+
+		key: this.props.challenge.key,
+		
+		// Edit challenge values
 		order: this.props.challenge.order,
 		modified_order: false,
 
@@ -91,6 +106,7 @@ class ChallengeProfile extends React.Component {
 		modified_passphrase: false,
 
 		teams: [],
+
 	}
 
 	confirmClose() {
@@ -105,7 +121,17 @@ class ChallengeProfile extends React.Component {
 	toggleDialog(key) {
 		return () => {
 			this.setState((prevState) => {
-				return { [`show${key}`]: !prevState[`show${key}`], deleteError: null }
+				return { 
+					[`show${key}`]: !prevState[`show${key}`],
+
+					// Reset to dialog defaults
+					deleteError: null, 
+					addItemError: null,
+					addItemKey: '',
+					addItemTitle: '',
+					addItemOrder: '',
+					addItemType: 'phrase'
+				}
 			});
 		}
 	}
@@ -191,6 +217,49 @@ class ChallengeProfile extends React.Component {
 		}
 	}
 
+	editChallengeItem(itemKey) {
+		return () => {
+			this.setState({editChallengeItem: itemKey});
+		}
+	}
+	
+	closeChallengeItem() {
+		this.setState({editChallengeItem: null});
+	}
+
+	onAddItemValueChange(value) {
+		return (e) => {
+			this.setState({[value]: e.target.value});
+		}
+	}
+
+	async submitAddItem() {
+		this.setState({addItemLoading: true, addItemError: false});
+		try {
+			await this.props.MutationCreateChallengeItem({
+				variables: { 
+					key: this.props.challenge.key,
+					itemKey: this.state.addItemKey,
+					title: this.state.addItemTitle,
+					order: this.state.addItemOrder,
+					type: this.state.addItemType
+				}
+			});
+			await this.props.QueryGetChallenge.refetch();
+			this.setState({addItemLoading: false, showAddItem: false});
+		}
+		catch (err) {
+			if (this._mounted && this.state.showAddItem) this.setState({ addItemLoading: false, addItemError: err.toString() });
+			else {
+				this.setState({ addItemLoading: false });
+				NotificationToaster.show({
+					intent: Intent.DANGER,
+					message: err.toString()
+				});
+			}
+		}
+	}
+
 	render() {
 		const { key, title, locked } = this.props.challenge;
 		const { loading, getChallenge } = this.props.QueryGetChallenge;
@@ -214,6 +283,14 @@ class ChallengeProfile extends React.Component {
 		if (this.state.deleteLoading) content = (
 			<div className='pt-text-muted' style={{margin:'1rem 0'}}>Deleting challenge...</div>
 		);
+		else if (this.state.editChallengeItem) {
+			content = (
+				<div>
+					<ChallengeItemProfile itemKey={this.state.editChallengeItem} QueryGetChallenge={this.props.QueryGetChallenge}
+						challenge={getChallenge} closeItem={this.closeChallengeItem}/>
+				</div>
+			);
+		}
 		else {
 			try {
 				content = (
@@ -261,6 +338,29 @@ class ChallengeProfile extends React.Component {
 										</td>
 									</tr>
 									<tr>
+										<td>
+											Items<br/>
+											<Button style={{marginTop: '0.5rem'}} text='Add item' className='pt-small' onClick={this.toggleDialog('AddItem')}/>
+										</td>
+										<td>
+											{ loading ? <span className='pt-text-muted'>Loading...</span> :
+												<div>
+													{getChallenge.items.map((item) => {
+														return (
+															<div key={item.key} order={item.order}>
+																<a onClick={this.editChallengeItem(item.key)}>{item.title} ({item.key})</a>
+															</div>
+														)
+													}).sort((a, b) => {
+														if (a.props.order > b.props.order) return 1;
+														else if (a.props.order < b.props.order) return -1;
+														else return 0;
+													})}
+												</div>
+											}
+										</td>
+									</tr>
+									<tr>
 										<td>Teams with access</td>
 										<td>
 											{ loading ? <span className='pt-text-muted'>Loading...</span> :
@@ -301,9 +401,9 @@ class ChallengeProfile extends React.Component {
 
 		return (
 			<div className='pt-card challenge-profile'>
-				<Button className='pt-minimal' intent={Intent.NONE} iconName='cross' onClick={this.confirmClose} style={{float:'right'}}/>
-				<Button className='pt-minimal' intent={Intent.PRIMARY} iconName='floppy-disk' onClick={this.saveContent} style={{float:'right'}} disabled={!this.state.modified||this.state.saving}/>
-				<Button className='pt-minimal' intent={Intent.DANGER} iconName='trash' onClick={this.toggleDialog('ConfirmDelete')} style={{float:'right'}} disabled={this.state.deleteLoading}/>
+				<Button className='pt-minimal' intent={Intent.NONE} iconName='cross' onClick={this.confirmClose} style={{float:'right'}} disabled={this.state.editChallengeItem}/>
+				<Button className='pt-minimal' intent={Intent.PRIMARY} iconName='floppy-disk' onClick={this.saveContent} style={{float:'right'}} disabled={!this.state.modified||this.state.saving||this.state.editChallengeItem}/>
+				<Button className='pt-minimal' intent={Intent.DANGER} iconName='trash' onClick={this.toggleDialog('ConfirmDelete')} style={{float:'right'}} disabled={this.state.deleteLoading||this.state.editChallengeItem}/>
 				{loading || this.state.saving ? 
 					<div style={{float:'right'}}>
 						<Spinner className='pt-small'/>
@@ -311,7 +411,7 @@ class ChallengeProfile extends React.Component {
 				: null }
 				<h5>
 					<span className={`pt-icon ${icon}`}></span>&nbsp;
-					<b><EditableText value={this.state.title} onChange={this.handleChange('title')} disabled={this.state.deleteLoading}/></b>
+					Title: <b><EditableText value={this.state.title} onChange={this.handleChange('title')} disabled={this.state.deleteLoading||this.state.editChallengeItem}/></b>
 				</h5>
 
 				{content}
@@ -346,6 +446,37 @@ class ChallengeProfile extends React.Component {
 						</div>
 					</div>
 				</Dialog>
+
+				{/* Add item dialog */}
+				<Dialog isOpen={this.state.showAddItem} onClose={this.toggleDialog('AddItem')} title='Add challenge item'>
+					<div className='pt-dialog-body'>
+						{ this.state.addItemError ? 
+							<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'1rem'}}>
+								{ this.state.addItemError }
+							</div> 
+							: null
+						}
+						<FormInput id='key' value={this.state.addItemKey} label='Challenge item key' onChange={this.onAddItemValueChange('addItemKey')} disabled={this.state.addItemLoading}/>
+						<FormInput id='title' value={this.state.addItemTitle} label='Challenge item title' onChange={this.onAddItemValueChange('addItemTitle')} disabled={this.state.addItemLoading}/>
+						<FormInput id='order' value={this.state.addItemOrder} label='Challenge item order' onChange={this.onAddItemValueChange('addItemOrder')} disabled={this.state.addItemLoading}/>
+						<label className='pt-label'>
+							Challenge item type
+							<div className='pt-select pt-fill'>
+								<select onChange={this.onAddItemValueChange('addItemType')} disabled={this.state.addItemLoading}>
+									<option value='phrase'>Phrase</option>
+									<option value='upload'>Upload</option>
+								</select>
+							</div>
+						</label>
+					</div>
+					<div className='pt-dialog-footer'>
+						<div className='pt-dialog-footer-actions'>
+							<Button text='Close' onClick={this.toggleDialog('AddItem')} className='pt-minimal' disabled={this.state.addItemLoading}/>
+							<Button text='Add item' onClick={this.submitAddItem} intent={Intent.PRIMARY} loading={this.state.addItemLoading}/>
+						</div>
+					</div>
+				</Dialog>
+
 			</div>
 		);
 	}
