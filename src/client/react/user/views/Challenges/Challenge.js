@@ -33,8 +33,8 @@ class Challenge extends React.Component {
 	render() {
 		let { challenge } = this.props;
 		return (
-			<div>
-				<div className='pt-card pt-elevation-0 pt-interactive' style={{marginBottom:'1rem'}} onClick={this.onClick}>
+			<div style={{marginBottom:'1rem'}}>
+				<div className='pt-card pt-elevation-0 pt-interactive' onClick={this.onClick}>
 					<h5 style={{color:'white',marginBottom:this.state.expandChallenge?'0':'0.5rem'}}>
 						<Icon iconName={this.state.expandChallenge ? 'chevron-up':'chevron-down'}/>&nbsp;
 						{challenge.title}
@@ -44,7 +44,7 @@ class Challenge extends React.Component {
 						<div className='pt-text-muted'>
 							{ !challenge.public ? 
 								(challenge.items.length === 1 ? 
-									`Only you have unlocked this challenge!` :
+									`Only your team has unlocked this challenge!` :
 									`${challenge.items.length} teams have unlocked this challenge!`)
 								: `All teams have access to this challenge!`
 							}
