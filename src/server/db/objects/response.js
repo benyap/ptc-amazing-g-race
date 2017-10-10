@@ -64,7 +64,7 @@ const getTeamResponses = async function(user, challengeKey, itemKey) {
 		teamId: Mongo.ObjectID(userCheck.teamId)
 	};
 
-	return db.collection('responses').find(findParams).toArray();
+	return db.collection('responses').find(findParams).sort({uploadDate:-1}).toArray();
 }
 
 
