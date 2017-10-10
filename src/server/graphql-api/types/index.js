@@ -9,6 +9,7 @@ import articleType from './articleType';
 import s3ObjectListType from './s3ObjectListType';
 import s3ObjectType from './s3ObjectType';
 import challengeType from './challengeType';
+import responseType from './responseType';
 
 
 export default {
@@ -22,5 +23,6 @@ export default {
 	articleType,
 	s3ObjectListType,
 	s3ObjectType,
-	challengeType
+	challengeType,
+	responseType
 };
