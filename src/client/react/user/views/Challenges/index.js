@@ -6,7 +6,7 @@ import { graphql } from 'react-apollo';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import { getChallenges } from '../../../../graphql/challenge';
 import NotificationToaster from '../../../components/NotificationToaster';
-import ChallengeList from './ChallengeList';
+import Challenge from './Challenge';
 
 
 const QueryGetChallengesOptions = {
@@ -14,7 +14,7 @@ const QueryGetChallengesOptions = {
 	options: { fetchPolicy: 'cache-and-network' }
 };
 
-@graphql(getChallenges('key group type title description locked teams'), QueryGetChallengesOptions)
+@graphql(getChallenges('key order title description locked public teams items{key type order title description}'), QueryGetChallengesOptions)
 @autobind
 class Challenges extends React.Component {
 	state = {
@@ -49,26 +49,43 @@ class Challenges extends React.Component {
 		this.setState({showUnlockChallenge: false, unlockChallengeLoading: false});
 	}
 
+	async refresh() {
+		this.setState({loading: true});
+		try {
+			await this.props.QueryGetChallenges.refetch();
+		}
+		catch (err) {
+			NotificationToaster.show({
+				intent: Intent.DANGER,
+				message: err.toString()
+			});
+		}
+		this.setState({loading: false});
+	}
+
 	render() {
 		return (
 			<main id='challenges' className='dashboard'>
 				<div className='content'>
 					<h2>
 						Challenges
-						<Button className='helper-button pt-small pt-minimal pt-intent-warning' iconName='refresh' onClick={this.refresh} disabled={this.state.loading}/>
+						<Button className='helper-button pt-small pt-minimal pt-intent-warning' iconName='refresh' onClick={this.refresh} loading={this.state.loading} style={{padding:'0'}}/>
 						<Button className='helper-button pt-small pt-minimal pt-intent-primary' iconName='help' onClick={this.toggleHelp}/>
 					</h2>
 					{ this.state.showHelp ? 
 						<div className='pt-callout pt-icon-help pt-intent-primary'>
-							Keep track of the challenges you have access to and which ones you've complete. 
+							Keep track of the challenges you have access to and which ones you've completed. 
 							As you progress through the race, you'll see new challenges you unlock show up here. 
 						</div>
 						: null
 					}
 					{ this.props.QueryGetChallenges.getChallenges ?
-						<ChallengeList challenges={this.props.QueryGetChallenges.getChallenges}/> :
-						<div style={{textAlign: 'center'}}>
-							<Spinner className='pt-large'/>
+						this.props.QueryGetChallenges.getChallenges.map((challenge) => {
+							return <Challenge key={challenge.key} challenge={challenge}/>
+						})
+						:
+						<div style={{textAlign:'center',margin:'2rem'}}>
+							<Spinner/>
 						</div>
 					}
 					<Button className='pt-fill' text='Unlock a challenge' iconName='unlock' onClick={this.toggleUnlockChallengePassphrase}/>
