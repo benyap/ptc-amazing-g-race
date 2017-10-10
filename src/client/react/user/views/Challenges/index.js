@@ -6,7 +6,7 @@ import { graphql } from 'react-apollo';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import { getChallenges } from '../../../../graphql/challenge';
 import NotificationToaster from '../../../components/NotificationToaster';
-import Challenge from './Challenge';
+import ChallengeCard from './ChallengeCard';
 
 
 const QueryGetChallengesOptions = {
@@ -14,7 +14,7 @@ const QueryGetChallengesOptions = {
 	options: { fetchPolicy: 'cache-and-network' }
 };
 
-@graphql(getChallenges('key order title description locked public teams items{key type order title description}'), QueryGetChallengesOptions)
+@graphql(getChallenges('_id key order title locked public teams'), QueryGetChallengesOptions)
 @autobind
 class Challenges extends React.Component {
 	state = {
@@ -72,6 +72,9 @@ class Challenges extends React.Component {
 						<Button className='helper-button pt-small pt-minimal pt-intent-warning' iconName='refresh' onClick={this.refresh} loading={this.state.loading} style={{padding:'0'}}/>
 						<Button className='helper-button pt-small pt-minimal pt-intent-primary' iconName='help' onClick={this.toggleHelp}/>
 					</h2>
+					<div style={{margin:'1rem 0'}}>
+						<Button className='pt-fill' intent={Intent.PRIMARY} text='Unlock a challenge' iconName='unlock' onClick={this.toggleUnlockChallengePassphrase}/>
+					</div>
 					{ this.state.showHelp ? 
 						<div className='pt-callout pt-icon-help pt-intent-primary'>
 							Keep track of the challenges you have access to and which ones you've completed. 
@@ -81,14 +84,17 @@ class Challenges extends React.Component {
 					}
 					{ this.props.QueryGetChallenges.getChallenges ?
 						this.props.QueryGetChallenges.getChallenges.map((challenge) => {
-							return <Challenge key={challenge.key} challenge={challenge}/>
+							return <ChallengeCard key={challenge.key} order={challenge.order} challenge={challenge}/>
+						}).sort((a, b) => {
+							if (a.props.order > b.props.order) return 1;
+							else if (a.props.order < b.props.order) return -1;
+							else return 0;
 						})
 						:
 						<div style={{textAlign:'center',margin:'2rem'}}>
 							<Spinner/>
 						</div>
 					}
-					<Button className='pt-fill' text='Unlock a challenge' iconName='unlock' onClick={this.toggleUnlockChallengePassphrase}/>
 				</div>
 
 				{/* Unlock challenge dialog */}

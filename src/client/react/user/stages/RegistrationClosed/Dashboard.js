@@ -9,6 +9,7 @@ import Help from '../../views/Help';
 import Instructions from '../../views/Instructions';
 import Feed from '../../views/Feed';
 import Challenges from '../../views/Challenges';
+import Challenge from '../../views/Challenge';
 import NotFound from '../../views/NotFound';
 
 
@@ -21,7 +22,6 @@ const mapStateToProps = (state, ownProps) => {
 @connect(mapStateToProps)
 class Dashboard extends React.Component {
 	 helpStyle = {
-		marginBottom: '1rem',
 		background: 'rgba(95, 1, 1, 0.73)',
 		color: 'white',
 		borderRadius: '0'
@@ -46,10 +46,11 @@ class Dashboard extends React.Component {
 				</div>
 				<Switch>
 					<Route exact path={`${url}`} component={()=><Home demo/>}/>
-					<Route path={`${url}/instructions`} component={()=><Instructions demo/>}/>
-					<Route path={`${url}/feed`} component={()=><Feed demo/>}/>
-					<Route path={`${url}/challenges`} component={()=><Challenges demo/>}/>
-					<Route path={`${url}/help`} component={()=><Help demo/>}/>
+					<Route exact path={`${url}/instructions`} component={()=><Instructions demo/>}/>
+					<Route exact path={`${url}/feed`} component={()=><Feed demo/>}/>
+					<Route exact path={`${url}/challenges`} component={()=><Challenges demo/>}/>
+					<Route exact path={`${url}/challenges/:id`} component={Challenge}/>
+					<Route exact path={`${url}/help`} component={()=><Help demo/>}/>
 					<Route component={NotFound}/>
 				</Switch>
 			</div>
