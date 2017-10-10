@@ -90,6 +90,46 @@ const setChallengeLocked = (params) => {
 }
 
 
+const setChallengeItemOrder = (params) => {
+	return gql`
+	mutation SetChalItemOrder($key:String!,$itemKey:String!,$value:Int!){
+		setChallengeItemOrder(key:$key,itemKey:$itemKey,value:$value){ ${params} }
+	}`;
+}
+
+
+const setChallengeItemTitle = (params) => {
+	return gql`
+	mutation SetChalItemTitle($key:String!,$itemKey:String!,$value:String!){
+		setChallengeItemTitle(key:$key,itemKey:$itemKey,value:$value){ ${params} }
+	}`;
+}
+
+
+const setChallengeItemDescription = (params) => {
+	return gql`
+	mutation SetChalItemDescription($key:String!,$itemKey:String!,$value:String!){
+		setChallengeItemDescription(key:$key,itemKey:$itemKey,value:$value){ ${params} }
+	}`;
+}
+
+
+const createChallengeItem = (params) => {
+	return gql`
+	mutation CreateChallengeItem($key:String!,$itemKey:String!,$order:Int!,$type:String!,$title:String!){
+		createChallengeItem(key:$key,itemKey:$itemKey,order:$order,title:$title,type:$type){ ${params} } 
+	}`;
+}
+
+
+const deleteChallengeItem = (params) => {
+	return gql`
+	mutation DeleteChallengeItem($key:String!,$itemKey:String!){
+		deleteChallengeItem(key:$key,itemKey:$itemKey){ ${params} }
+	}`;
+}
+
+
 export {
 	getChallenge,
 	getChallenges,
@@ -102,4 +142,9 @@ export {
 	setChallengeTitle,
 	setChallengeDescription,
 	setChallengeLocked,
+	createChallengeItem,
+	deleteChallengeItem,
+	setChallengeItemOrder,
+	setChallengeItemTitle,
+	setChallengeItemDescription
 };
