@@ -192,7 +192,7 @@ const getChallenges = async function(user) {
 
 
 /**
- * Get a challenge (permitted users only)
+ * Get a challenge (permitted users and admins only)
  * @param {*} user 
  * @param {*} key 
  */
@@ -232,29 +232,17 @@ const getChallenge = async function(user, key) {
 const getChallengeById = async function(user, id) {
 	if (!user) return new Error('No user logged in');
 	
-	let isAdmin = false;
+	const authorized = await permission.checkPermission(user, ['user:view-challenges']);
+	if (authorized !== true) return authorized;
 
-	const adminAuthorized = await permission.checkPermission(user, ['admin:view-allchallenges']);
-	if (adminAuthorized == true) isAdmin = true;
-
-	if (!isAdmin) {
-		const authorized = await permission.checkPermission(user, ['user:view-challenges']);
-		if (authorized !== true) return authorized;
-	}
-	
 	const db = await connect();
 	
 	const userProfile = await db.collection('users').findOne({username: user.username});
 	
-	if (isAdmin) {
-		return db.collection('challenges').findOne({ _id: Mongo.ObjectID(id) });
-	}
-	else {
-		return db.collection('challenges').findOne({ 
-			_id: Mongo.ObjectID(id),
-			$or: [{ teams: userProfile.teamId.toString() }, { public: true }]
-		});
-	}
+	return db.collection('challenges').findOne({ 
+		_id: Mongo.ObjectID(id),
+		$or: [{ teams: userProfile.teamId.toString() }, { public: true }]
+	});
 }
 
 

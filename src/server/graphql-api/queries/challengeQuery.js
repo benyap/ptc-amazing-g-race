@@ -34,7 +34,7 @@ const getChallenges = {
 
 const getChallenge = {
 	type: types.challengeType,
-	description: 'Get a challenge the user is permitted to see',
+	description: 'Get a challenge the user is permitted to see (admins excepted)',
 	args: {
 		key: {
 			name: 'key',
