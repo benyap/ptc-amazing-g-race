@@ -32,6 +32,11 @@ const getChallenge = function(root, params, ctx, options) {
 	return database.challenge.getChallenge(ctx.user, params.key);
 }
 
+// Get challenge by Id
+const getChallengeById = function(root, params, ctx, options) {
+	return database.challenge.getChallengeById(ctx.user, params.id);
+}
+
 // Add a team to the list of unlocked teams
 const addTeamToUnlocked = function(root, params, ctx, options) {
 	return database.challenge.addTeamToUnlocked(ctx.user, params.key, params.teamId);
@@ -66,6 +71,7 @@ export default {
 	getAllChallenges,
 	getChallenges,
 	getChallenge,
+	getChallengeById,
 	addTeamToUnlocked,
 	removeTeamFromUnlocked,
 	createChallengeItem,

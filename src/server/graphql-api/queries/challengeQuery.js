@@ -47,8 +47,26 @@ const getChallenge = {
 	}
 }
 
+
+const getChallengeById = {
+	type: types.challengeType,
+	description: 'Get a challenge the user is permitted to see',
+	args: {
+		id: {
+			name: 'id',
+			type: new GraphQLNonNull(GraphQLID),
+			description: 'The id of the challenge to get'
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.challengeResolver.getChallengeById(root, params, ctx, options);
+	}
+}
+
+
 export default {
 	getAllChallenges,
 	getChallenges,
-	getChallenge
+	getChallenge,
+	getChallengeById
 };
