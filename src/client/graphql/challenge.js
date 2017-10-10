@@ -12,6 +12,13 @@ const getChallenge = (params) => {
 	}`;
 }
 
+const getChallengeById = (params) => {
+	return gql`
+	query GetChallengeById($id:ID!){
+		getChallengeById(id:$id){ ${params} }
+	}`;
+}
+
 const getChallenges = (params) => {
 	return gql`
 	query GetChallenges{
@@ -132,6 +139,7 @@ const deleteChallengeItem = (params) => {
 
 export {
 	getChallenge,
+	getChallengeById,
 	getChallenges,
 	getAllChallenges,
 	createChallenge,
