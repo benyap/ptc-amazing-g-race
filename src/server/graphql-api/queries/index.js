@@ -5,6 +5,7 @@ import teamQuery from './teamQuery';
 import articleQuery from './articleQuery';
 import uploadQuery from './uploadQuery';
 import challengeQuery from './challengeQuery';
+import responseQuery from './responseQuery';
 
 
 export default {
@@ -18,5 +19,6 @@ export default {
 	...teamQuery,
 	...articleQuery,
 	...uploadQuery,
-	...challengeQuery
+	...challengeQuery,
+	...responseQuery
 };
