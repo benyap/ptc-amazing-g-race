@@ -133,6 +133,7 @@ const addResponse = async function(user, challengeKey, itemKey, responseType, re
 		uploadedBy: user.username,
 		checked: false,
 		responseValid: false,
+		retry: false,
 		checkedBy: null,
 		pointsAwarded: 0
 	}

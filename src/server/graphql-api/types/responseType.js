@@ -48,6 +48,10 @@ const responseType = new GraphQLObjectType({
 			type: new GraphQLNonNull(GraphQLBoolean),
 			description: 'True if the response has been checked and is valid'
 		},
+		retry: {
+			type: new GraphQLNonNull(GraphQLBoolean),
+			description: 'True if the team is allowed to give another response once checked'
+		},
 		checkedBy: {
 			type: GraphQLString,
 			description: 'The user who checked the response'
