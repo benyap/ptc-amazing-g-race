@@ -1,12 +1,13 @@
+import DateFormat from 'dateformat';
+import Mongo from 'mongodb';
 import connect from '../connect';
 import permission from '../permission';
-import DateFormat from 'dateformat';
 
 import upload from './upload';
 
 
 /**
- * Get a setting value
+ * Get challenge responses (admin only)
  * @param {*} user 
  * @param {String} key
  */
@@ -27,6 +28,41 @@ const getResponses = async function(user, challengeKey, itemKey) {
 
 	let findParams = {challengeKey};
 	if (itemKey) findParams.itemKey = itemKey;
+
+	return db.collection('responses').find(findParams).toArray();
+}
+
+
+/**
+ * Get a team's responses to a challenge
+ * @param {*} user 
+ * @param {String} key
+ */
+const getTeamResponses = async function(user, challengeKey, itemKey) {
+	if (!user) return new Error('No user logged in');
+
+	const authorized = await permission.checkPermission(user, ['user:access-challenges']);
+	if (authorized !== true) return authorized;
+	
+	// Validate parameters
+	if (!challengeKey) return new Error('A challenge key is required.');
+	if (!itemKey) return new Error('An item key is required.');
+	
+	const db = await connect();
+
+	// Ensure challenge exists
+	let challengeCheck = await db.collection('challenges').findOne({key: challengeKey});
+	if (!challengeCheck) return new Error(`A challenge with the key '${challengeKey}' does not exist.`);
+
+	// Ensure user is in a team 
+	let userCheck = await db.collection('users').findOne({username: user.username});
+	if (!userCheck.teamId) return new Error(`${user.username} is not in a team.`);
+
+	const findParams = { 
+		challengeKey, 
+		itemKey, 
+		teamId: Mongo.ObjectID(userCheck.teamId)
+	};
 
 	return db.collection('responses').find(findParams).toArray();
 }
@@ -122,5 +158,6 @@ const addResponse = async function(user, challengeKey, itemKey, responseType, re
 
 export default {
 	getResponses,
+	getTeamResponses,
 	addResponse
 }

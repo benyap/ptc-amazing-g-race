@@ -31,6 +31,28 @@ const getResponses = {
 };
 
 
+const getTeamResponses = {
+	type: new GraphQLList(types.responseType),
+	description: 'Get a user\'s team\'s responses for a challenge item',
+	args: {
+		challengeKey: {
+			name: 'challengeKey',
+			description: 'The challenge key',
+			type: new GraphQLNonNull(GraphQLString)
+		},
+		itemKey: {
+			name: 'itemKey',
+			description: 'The challenge item key',
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.responseResolver.getTeamResponses(root, params, ctx, options);
+	}
+};
+
+
 export default {
-	getResponses
+	getResponses,
+	getTeamResponses
 };
