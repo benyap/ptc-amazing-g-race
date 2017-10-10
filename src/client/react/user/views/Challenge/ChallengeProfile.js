@@ -58,7 +58,7 @@ class ChallengeProfile extends React.Component {
 
 			items = (
 				challenge.items.map((item) => {
-					return <ChallengeItem key={item.key} order={item.order} item={item}/>
+					return <ChallengeItem key={item.key} order={item.order} challengeKey={challenge.key} item={item}/>
 				}).sort((a, b) => {
 					if (a.props.order > b.props.order) return 1;
 					else if (a.props.order < b.props.order) return -1;
