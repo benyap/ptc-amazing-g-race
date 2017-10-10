@@ -326,7 +326,7 @@ const createChallengeItem = async function(user, key, itemKey, title, order, typ
 	// Validate parameters
 	if (!key) return new Error('A challenge key is required.');
 	if (!itemKey) return new Error('A challenge item key is required.');
-	if (!title) return new Error('A challenge key is required.');
+	if (!title) return new Error('A challenge item title is required.');
 	if (order === null || order.length < 1) return new Error('A challenge order is required.');
 	else if (isNaN(order)) return new Error('Challenge order must be a valid integer.');
 
