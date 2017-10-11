@@ -9,7 +9,8 @@ import upload from './upload';
 /**
  * Get challenge responses (admin only)
  * @param {*} user 
- * @param {String} key
+ * @param {String} challengeKey
+ * @param {String} itemKey
  */
 const getResponses = async function(user, challengeKey, itemKey) {
 	if (!user) return new Error('No user logged in');
@@ -36,7 +37,8 @@ const getResponses = async function(user, challengeKey, itemKey) {
 /**
  * Get a team's responses to a challenge
  * @param {*} user 
- * @param {String} key
+ * @param {String} challengeKey
+ * @param {String} itemKey
  */
 const getTeamResponses = async function(user, challengeKey, itemKey) {
 	if (!user) return new Error('No user logged in');
@@ -69,9 +71,13 @@ const getTeamResponses = async function(user, challengeKey, itemKey) {
 
 
 /**
- * Add a response for a challenge item
+ * Add a new response to a challenge item
  * @param {*} user 
- * @param {String} key
+ * @param {String} challengeKey 
+ * @param {String} itemKey 
+ * @param {String} responseType 
+ * @param {String} responseValue 
+ * @param {*} object 
  */
 const addResponse = async function(user, challengeKey, itemKey, responseType, responseValue, object) {
 	if (!user) return new Error('No user logged in');
