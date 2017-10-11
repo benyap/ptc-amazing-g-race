@@ -47,7 +47,7 @@ class ChallengeProfile extends React.Component {
 			description = (
 				<div>
 					<Button text={`${this.state.showDescription?'Hide':'Show'} description`} className='pt-fill pt-minimal' style={{margin: '0.5rem 0'}}
-						iconName={this.state.showDescription?'chevron-up':'chevron-down'} onClick={this.toggleCollapse('Description')}/>
+						iconName={this.state.showDescription?'chevron-down':'chevron-right'} onClick={this.toggleCollapse('Description')}/>
 					<Collapse isOpen={this.state.showDescription}>
 						<div className='instruction-panel'>
 							<MarkdownRenderer className='markdown-content' src={challenge.description}/>

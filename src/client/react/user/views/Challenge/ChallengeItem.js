@@ -35,7 +35,7 @@ class ChallengeItem extends React.Component {
 
 		return (
 			<div style={{marginBottom:'0.5rem'}}>
-				<Button text={item.title} className='pt-fill' onClick={this.onClick} iconName={this.state.showItem?'chevron-up':'chevron-down'}/>
+				<Button text={item.title} className='pt-fill' onClick={this.onClick} iconName={this.state.showItem?'chevron-down':'chevron-right'}/>
 				<Collapse isOpen={this.state.showItem}>
 					<div className='instruction-panel'>
 						<MarkdownRenderer className='markdown-content' src={item.description}/>
