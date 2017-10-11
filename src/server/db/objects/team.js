@@ -258,11 +258,67 @@ const setTeamPoints = async function(user, teamId, points) {
 }
 
 
+/**
+ * Add points to a team
+ * @param {*} user 
+ * @param {*} teamId 
+ * @param {Number} points 
+ */
+const addTeamPoints = async function(user, teamId, points) {
+	if (!user) return new Error('No user logged in');
+	
+	const authorized = await permission.checkPermission(user, ['admin:modify-team']);
+	if (authorized !== true) return authorized;
+
+	if (isNaN(parseFloat(points))) {
+		return new Error(`Invalid points value ${points}`);
+	}
+
+	const db = await connect();
+	
+	// Check that team exists
+	const teamCheck = await db.collection('teams').findOne({_id: Mongo.ObjectID(teamId)});
+	if (!teamCheck) {
+		return new Error(`A team with the id \'${teamId}\' does not exist.`);
+	}
+
+	const result = await db.collection('teams').update(
+		{_id: Mongo.ObjectID(teamId)}, 
+		{$set: { points: teamCheck.points + points }});
+	
+	if (result.result.nModified > 0) {
+		// Log action
+		const action = {
+			action: 'Add team points',
+			target: teamId,
+			targetCollection: 'teams',
+			date: new Date(),
+			who: user.username,
+			infoJSONString: JSON.stringify({ teamId, teamName: teamCheck.teamName, prevPoints: teamCheck.points, add: points })
+		};
+	
+		db.collection('actions').insert(action);
+		
+		return { 
+			ok: true,
+			action: action
+		}
+	}
+	else {
+		return {
+			ok: false,
+			failureMessage: `Unable to modify team '${teamId}' points.`
+		}
+	}
+}
+
+
 export default {
 	getTeam,
 	getTeams,
 	addTeam,
 	removeTeam,
 	setTeamName,
-	setTeamPoints
+	setTeamPoints,
+	addTeamPoints
 }

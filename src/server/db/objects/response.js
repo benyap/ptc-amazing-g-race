@@ -4,6 +4,7 @@ import connect from '../connect';
 import permission from '../permission';
 
 import upload from './upload';
+import team from './team';
 
 
 /**
@@ -163,8 +164,73 @@ const addResponse = async function(user, challengeKey, itemKey, responseType, re
 }
 
 
+/**
+ * Check a challenge item response
+ * @param {*} user 
+ * @param {String} responseId 
+ * @param {Boolean} responseValid 
+ * @param {Boolean} retry 
+ * @param {Number} pointsAwarded 
+ */
+const checkResponse = async function(user, responseId, responseValid, retry, pointsAwarded) {
+	if (!user) return new Error('No user logged in');
+
+	const authorized = await permission.checkPermission(user, ['admin:modify-responses']);
+	if (authorized !== true) return authorized;
+
+	// Validate parameters
+	if (!responseId) return new Error('A response id is required.');
+	if (responseValid!==true&&responseValid!==false) return new Error('Invalid response valid value.');
+	if (retry!==true&&retry!==false) return new Error('Invalid retry value.');
+	if (isNaN(pointsAwarded)) return new Error('Invalid pointsAwarded value.');
+
+	const db = await connect();
+	
+	// Check that response exists
+	const responseCheck = await db.collection('responses').findOne({_id: Mongo.ObjectID(responseId)});
+	if (!responseCheck) return new Error(`A response with the key '${responseCheck}' does not exist.`);
+	
+	// Update response
+	const difference = -responseCheck.pointsAwarded + pointsAwarded;
+	db.collection('responses').update(
+		// Selector
+		{_id: Mongo.ObjectID(responseId)},
+		// Update
+		{ $set: { responseValid, retry, pointsAwarded, checked: true, checkedBy: user.username } }
+	);
+
+	// Update team points if necessary
+	if (difference !== 0) {
+		team.addTeamPoints(user, responseCheck.teamId, difference);
+	}
+
+	// Log action
+	const action = {
+		action: `Check response`,
+		target: responseId,
+		targetCollection: 'responses',
+		date: new Date(),
+		who: user.username,
+		infoJSONString: JSON.stringify({
+			challengeKey: responseCheck.challengeKey,
+			itemKey: responseCheck.itemKey,
+			responseValid,
+			retry, 
+			pointsAwarded
+		})
+	}
+	db.collection('actions').insert(action);
+
+	return {
+		ok: true,
+		action
+	}
+}
+
+
 export default {
 	getResponses,
 	getTeamResponses,
-	addResponse
+	addResponse,
+	checkResponse
 }

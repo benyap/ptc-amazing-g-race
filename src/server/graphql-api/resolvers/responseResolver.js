@@ -17,9 +17,15 @@ const addResponse = function(root, params, ctx, options) {
 		params.responseType, params.responseValue, ctx.files ? ctx.files.file : null);
 }
 
+// Check a challenge response
+const checkResponse = function(root, params, ctx, options) {
+	return database.response.checkResponse(ctx.user, params.responseId, params.responseValid, params.retry, params.pointsAwarded);
+}
+
 
 export default {
 	getResponses,
 	getTeamResponses,
-	addResponse
+	addResponse,
+	checkResponse
 };
