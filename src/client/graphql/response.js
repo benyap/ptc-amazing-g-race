@@ -12,6 +12,13 @@ const getTeamResponses = (params) => {
 	}`;
 }
 
+const getResponse = (params) => {
+	return gql`
+	query GetResponse($responseId:ID!){
+		getResponse(responseId:$responseId){ ${params} }
+	}`;
+}
+
 const getResponses = (params) => {
 	return gql`
 	query GetResponses($challengeKey:String,$itemKey:String){
@@ -31,9 +38,18 @@ const addResponse = (params) => {
 	}`;
 }
 
+const checkResponse = (params) => {
+	return gql`
+	mutation CheckResponse($responseId:ID!,$responseValid:Boolean!,$retry:Boolean!,$pointsAwarded:Float!){
+		checkResponse(responseId:$responseId,responseValid:$responseValid,retry:$retry,pointsAwarded:$pointsAwarded){ ${params} }
+	}`;
+}
+
 
 export {
 	getTeamResponses,
+	getResponse,
 	getResponses,
-	addResponse
+	addResponse,
+	checkResponse
 };
