@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { Spinner, Button, Intent, Icon, Collapse } from '@blueprintjs/core';
 import MarkdownRenderer from '../../../../../../lib/react/components/MarkdownRenderer';
-import ChallengeUpload from './ChallengeUpload';
+import ChallengeResponse from './ChallengeResponse';
 
 
 @autobind
@@ -31,18 +31,7 @@ class ChallengeItem extends React.Component {
 
 	render() {
 		let { item, challengeKey } = this.props;
-		let response;
-
-		switch (item.type) {
-			case 'upload': {
-				response = <ChallengeUpload challengeKey={challengeKey} itemKey={item.key}/>;
-				break;
-			}
-			case 'phrase': {
-				response = <div className='pt-text-muted'>Enter a phrase.</div>;
-				break;
-			}
-		}
+		let response = <ChallengeResponse responseType={item.type} challengeKey={challengeKey} itemKey={item.key}/>;
 
 		return (
 			<div style={{marginBottom:'0.5rem'}}>

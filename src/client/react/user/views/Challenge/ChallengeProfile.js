@@ -46,7 +46,7 @@ class ChallengeProfile extends React.Component {
 		if (challenge.items.length > 0) {
 			description = (
 				<div>
-					<Button text={`${this.state.showDescription?'Hide':'Show'} description`} className='pt-fill pt-minimal' style={{marginTop: '0.5rem'}}
+					<Button text={`${this.state.showDescription?'Hide':'Show'} description`} className='pt-fill pt-minimal' style={{margin: '0.5rem 0'}}
 						iconName={this.state.showDescription?'chevron-up':'chevron-down'} onClick={this.toggleCollapse('Description')}/>
 					<Collapse isOpen={this.state.showDescription}>
 						<div className='instruction-panel'>
