@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
-import { Spinner } from '@blueprintjs/core';
+import { Spinner, Button } from '@blueprintjs/core';
 import { getTeamResponses } from '../../../../graphql/response';
 import ResponseUpload from './ResponseUpload';
 
@@ -28,6 +28,10 @@ class ChallengeResponse extends React.Component {
 		responseType: PropTypes.oneOf([
 			'upload', 'phrase'
 		]).isRequired
+	}
+
+	refetch() {
+		this.props.QueryGetTeamResponses.refetch();
 	}
 
 	render() {
@@ -92,8 +96,10 @@ class ChallengeResponse extends React.Component {
 		}
 
 		return (
-			<div className='pt-card' style={{padding:'0.5rem'}}>
+			<div className='pt-card' style={{padding:'0.5rem',marginTop:'-0.3rem',background:'#0d0d0c'}}>
 				<div className={classNames} style={{marginBottom:'0'}}>
+					<Button iconName='refresh' loading={this.props.QueryGetTeamResponses.loading} className='pt-minimal' 
+						style={{float:'right',margin:'-0.6rem',padding:'0'}} onClick={this.refetch}/>
 					<h5>{title}</h5>
 					{text}
 					{canRespond?response:null}
