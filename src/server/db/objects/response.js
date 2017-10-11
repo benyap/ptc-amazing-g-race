@@ -82,7 +82,7 @@ const getTeamResponses = async function(user, challengeKey, itemKey) {
 const addResponse = async function(user, challengeKey, itemKey, responseType, responseValue, object) {
 	if (!user) return new Error('No user logged in');
 
-	const authorized = await permission.checkPermission(user, ['user:access‑challenges']);
+	const authorized = await permission.checkPermission(user, ['user:access-challenges']);
 	if (authorized !== true) return authorized;
 
 	// Validate parameters
