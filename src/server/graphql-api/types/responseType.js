@@ -41,7 +41,7 @@ const responseType = new GraphQLObjectType({
 			description: 'The user who uploaded the response'
 		},
 		checked: {
-			type: new GraphQLNonNull(GraphQLString),
+			type: new GraphQLNonNull(GraphQLBoolean),
 			description: 'True if the response has been checked by an admin'
 		},
 		responseValid: {
