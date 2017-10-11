@@ -31,7 +31,7 @@ class Challenge extends React.Component {
 			</div>
 		);
 
-		let { loading, getChallengeById } = this.props.QueryGetChallengeById
+		const { loading, getChallengeById } = this.props.QueryGetChallengeById
 
 		if (getChallengeById) {
 			content = (

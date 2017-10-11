@@ -20,7 +20,7 @@ class ChallengeCard extends React.Component {
 	}
 
 	render() {
-		let { challenge } = this.props;
+		const { challenge } = this.props;
 		return (
 			<div style={{marginBottom:'0.5rem'}}>
 				<div className='pt-card pt-elevation-0 pt-interactive'>

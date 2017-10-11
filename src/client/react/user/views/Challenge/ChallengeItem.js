@@ -30,8 +30,8 @@ class ChallengeItem extends React.Component {
 	}
 
 	render() {
-		let { item, challengeKey } = this.props;
-		let response = <ChallengeResponse responseType={item.type} challengeKey={challengeKey} itemKey={item.key}/>;
+		const { item, challengeKey } = this.props;
+		const response = <ChallengeResponse responseType={item.type} challengeKey={challengeKey} itemKey={item.key}/>;
 
 		return (
 			<div style={{marginBottom:'0.5rem'}}>

@@ -39,8 +39,8 @@ class ResponseUpload extends React.Component {
 
 	async uploadFile() {
 		this.setState({ uploading: true, uploadError: null });
-		let { challengeKey, itemKey, teamName } = this.props;
-		let { image } = this.state;
+		const { challengeKey, itemKey, teamName } = this.props;
+		const { image } = this.state;
 
 		const mutation = 
 		`mutation AddResponse($challengeKey:String!,$itemKey:String!,$responseType:String!,$responseValue:String){

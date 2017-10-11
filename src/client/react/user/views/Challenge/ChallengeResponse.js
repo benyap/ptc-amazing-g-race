@@ -35,8 +35,8 @@ class ChallengeResponse extends React.Component {
 	}
 
 	render() {
-		let { itemKey, challengeKey, responseType } = this.props;
-		let { loading, getTeamResponses } = this.props.QueryGetTeamResponses;
+		const { itemKey, challengeKey, responseType } = this.props;
+		const { loading, getTeamResponses } = this.props.QueryGetTeamResponses;
 		let classNames, title, text, canRespond;
 		let response, helpPhrase;
 

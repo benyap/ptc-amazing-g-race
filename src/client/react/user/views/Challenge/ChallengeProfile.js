@@ -34,7 +34,7 @@ class ChallengeProfile extends React.Component {
 	}
 
 	render() {
-		let { challenge } = this.props;
+		const { challenge } = this.props;
 		
 		let items;
 		let description = (
