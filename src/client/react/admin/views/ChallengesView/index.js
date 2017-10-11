@@ -33,7 +33,6 @@ class ChallengesView extends React.Component {
 	}
 
 	state = {
-		loading: false,
 		viewProfile: null,
 		refetching: false,
 		showCreateChallenge: false,
@@ -60,7 +59,6 @@ class ChallengesView extends React.Component {
 				this.props.dispatch(saveState());
 			})
 			.catch((err) => {
-				if (this.mounted) this.setState({loading: false});
 				NotificationToaster.show({
 					intent: Intent.DANGER,
 					message: err.toString()
@@ -125,35 +123,25 @@ class ChallengesView extends React.Component {
 
 		const { loading, error, getAllChallenges } = this.props.QueryGetAllChallenges;
 
-		if (loading || this.state.loading) {
+		if (error) {
+			content = <ViewError error={error}/>;
+		}
+		else if (this.state.viewProfile) {
+			content = <ChallengeProfile challenge={this.state.viewProfile} closeProfile={this.closeProfile}/>;
+		}
+		else if (getAllChallenges) {
 			content = (
-				<div className='loading-spinner'>
-					<Spinner/>
+				<div className='view-list'>
+					{ getAllChallenges.map((challenge) => {
+						return <ChallengeCard key={challenge.key} challenge={challenge} renderProfile={this.renderProfile}/>;
+					})}
+					<Button text='Create new challenge' iconName='add' className='pt-fill pt-minimal' 
+						intent={Intent.PRIMARY} onClick={this.toggleCreateChallenge}/>
 				</div>
 			);
 		}
-		else {
-			if (error) {
-				content = <ViewError error={error}/>
-			}
-			else if (this.state.viewProfile) {
-				content = (
-					<ChallengeProfile challenge={this.state.viewProfile} closeProfile={this.closeProfile}/>
-				);
-			}
-			else {
-				content = (
-					<div className='view-list'>
-						{ this.props.QueryGetAllChallenges.getAllChallenges.map((challenge) => {
-							return (
-								<ChallengeCard key={challenge.key} challenge={challenge} renderProfile={this.renderProfile}/>
-							);
-						})}
-						<Button text='Create new challenge' iconName='add' className='pt-fill pt-minimal' 
-							intent={Intent.PRIMARY} onClick={this.toggleCreateChallenge}/>
-					</div>
-				);
-			}
+		else if (loading) {
+			content = <div className='loading-spinner'><Spinner/></div>;
 		}
 
 		return (

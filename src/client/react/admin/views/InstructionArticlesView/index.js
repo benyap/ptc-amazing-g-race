@@ -95,66 +95,58 @@ class InstructionArticlesView extends React.Component {
 	render() {
 		let content = null;
 		const { loading, error, getArticles } = this.props.QueryGetArticles;
-
-		if (loading) {
+		
+		if (error) {
+			content = <ViewError error={error}/>;
+		}
+		else if (this.state.viewProfile) {
+			content = <InstructionArticleProfile article={this.state.viewProfile} closeProfile={this.closeProfile}/>;
+		}
+		else if (getArticles) {
 			content = (
-				<div className='loading-spinner'>
-					<Spinner/>
+				<div>
+					<div className='pt-callout pt-icon-info-sign' style={{marginBottom: '0.5rem'}}>
+						These instruction articles are displayed on the 'Instructions' tab on the app.
+						They should not contain any challenge-specific instructions, 
+						as they are not protected and are accessible to all teams at any time.
+						These articles will appear in the order they appear here.
+					</div>
+					<div className='view-list'>
+						{
+							getArticles.map((article) => {
+								return (
+									<InstructionArticleCard key={article._id} article={article} renderProfile={this.renderProfile}/>
+								);
+							})
+						}
+						<Button text='Create Article' onClick={this.toggleAddArticle} intent={Intent.PRIMARY} iconName='clipboard' className='pt-minimal pt-fill'/>
+					</div>
+
+					{/* Add article dialog */}
+					<Dialog title='Create a new article' isOpen={this.state.showAddArticle} onClose={this.toggleAddArticle}>
+						<div className='pt-dialog-body'>
+							{this.state.addArticleError ? 
+								<div className='pt-callout pt-intent-danger pt-icon-error'>
+									{this.state.addArticleError}
+								</div>
+								:null}
+							<b>Article title:</b> <FormInput id='addArticle' value={this.state.addArticleTitle} onChange={this.addArticleTitleEdit} 
+							intent={this.state.addArticleError ? Intent.DANGER : Intent.NONE}/>
+						</div>
+						<div className='pt-dialog-footer'>
+							<div className='pt-dialog-footer-actions'>
+								<Button className='pt-minimal' text='Cancel' onClick={this.toggleAddArticle} disabled={this.state.addArticleLoading}/>
+								<Button intent={Intent.PRIMARY} text='Create' onClick={this.submitAddArticle} loading={this.state.addArticleLoading}/>
+							</div>
+						</div>
+					</Dialog>
 				</div>
 			);
 		}
-		else {
-			if (error) {
-				content = <ViewError error={error}/>
-			}
-			else {
-				if (this.state.viewProfile) {
-					content = <InstructionArticleProfile article={this.state.viewProfile} closeProfile={this.closeProfile}/>;
-				}
-				else {
-					content = (
-						<div>
-							<div className='pt-callout pt-icon-info-sign' style={{marginBottom: '0.5rem'}}>
-								These instruction articles are displayed on the 'Instructions' tab on the app.
-								They should not contain any challenge-specific instructions, 
-								as they are not protected and are accessible to all teams at any time.
-								These articles will appear in the order they appear here.
-							</div>
-							<div className='view-list'>
-								{
-									getArticles.map((article) => {
-										return (
-											<InstructionArticleCard key={article._id} article={article} renderProfile={this.renderProfile}/>
-										);
-									})
-								}
-								<Button text='Create Article' onClick={this.toggleAddArticle} intent={Intent.PRIMARY} iconName='clipboard' className='pt-minimal pt-fill'/>
-							</div>
-
-							{/* Add article dialog */}
-							<Dialog title='Create a new article' isOpen={this.state.showAddArticle} onClose={this.toggleAddArticle}>
-								<div className='pt-dialog-body'>
-									{this.state.addArticleError ? 
-										<div className='pt-callout pt-intent-danger pt-icon-error'>
-											{this.state.addArticleError}
-										</div>
-										:null}
-									<b>Article title:</b> <FormInput id='addArticle' value={this.state.addArticleTitle} onChange={this.addArticleTitleEdit} 
-									intent={this.state.addArticleError ? Intent.DANGER : Intent.NONE}/>
-								</div>
-								<div className='pt-dialog-footer'>
-									<div className='pt-dialog-footer-actions'>
-										<Button className='pt-minimal' text='Cancel' onClick={this.toggleAddArticle} disabled={this.state.addArticleLoading}/>
-										<Button intent={Intent.PRIMARY} text='Create' onClick={this.submitAddArticle} loading={this.state.addArticleLoading}/>
-									</div>
-								</div>
-							</Dialog>
-						</div>
-					);
-				}
-			}
+		else if (loading) {
+			content = <div className='loading-spinner'><Spinner/></div>;
 		}
-
+		
 		return (
 			<div id='dashboard-instructions' className='dashboard-tab'>
 				<h4>Instruction Articles</h4>

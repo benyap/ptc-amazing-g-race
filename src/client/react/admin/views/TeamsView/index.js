@@ -87,59 +87,49 @@ class TeamsView extends React.Component {
 		let content = null;
 		const { loading, error, getTeams } = this.props.QueryGetTeams;
 
-		if (loading) {
+		if (error) {
+			content = <ViewError error={error}/>;
+		}
+		else if (this.state.viewProfile) {
+			content = <TeamProfile team={this.state.viewProfile} closeProfile={this.closeProfile} reload={this.props.QueryGetTeams.refetch}/>;
+		}
+		else if (getTeams) {
 			content = (
-				<div className='loading-spinner'>
-					<Spinner/>
+				<div className='view-list'>
+					{getTeams.map((team) => {
+						return (
+							<TeamCard key={team._id} team={team} renderProfile={this.renderProfile}/>
+						);
+					})}
+					<Button text='Create new team' iconName='add' className='pt-fill pt-minimal' intent={Intent.PRIMARY} onClick={this.toggleCreateTeamDialog}/>
+
+					{/* Create new team dialog */}
+					<Dialog isOpen={this.state.showCreateTeamDialog} iconName='add' title='Create a new team' onClose={this.toggleCreateTeamDialog}>
+						<div className='pt-dialog-body'>
+							{this.state.createTeamError ? 
+								<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'0.5rem'}}>
+									{this.state.createTeamError}
+								</div>
+								:null}
+							<label className='pt-label'>
+								<b>Team name:</b> 
+								<FormInput id={'new-team'} value={this.state.teamName} onChange={this.editTeamName}/>
+							</label>
+						</div>
+						<div className='pt-dialog-footer'>
+							<div className='pt-dialog-footer-actions'>
+								<Button onClick={this.toggleCreateTeamDialog} text='Cancel' className='pt-minimal' disabled={this.state.createTeamLoading}/>
+								<Button onClick={this.submitCreateTeam} text='Create' intent={Intent.PRIMARY} loading={this.state.createTeamLoading}/>
+							</div>
+						</div>
+					</Dialog>
 				</div>
 			);
 		}
-		else {
-			if (error) {
-				content = <ViewError error={error}/>
-			}
-			else {
-				if (this.state.viewProfile) {
-					content = (
-						<TeamProfile team={this.state.viewProfile} closeProfile={this.closeProfile} reload={this.props.QueryGetTeams.refetch}/>
-					);
-				}
-				else {
-					content = (
-						<div className='view-list'>
-							{getTeams.map((team) => {
-								return (
-									<TeamCard key={team._id} team={team} renderProfile={this.renderProfile}/>
-								);
-							})}
-							<Button text='Create new team' iconName='add' className='pt-fill pt-minimal' intent={Intent.PRIMARY} onClick={this.toggleCreateTeamDialog}/>
-
-							{/* Create new team dialog */}
-							<Dialog isOpen={this.state.showCreateTeamDialog} iconName='add' title='Create a new team' onClose={this.toggleCreateTeamDialog}>
-								<div className='pt-dialog-body'>
-									{this.state.createTeamError ? 
-										<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'0.5rem'}}>
-											{this.state.createTeamError}
-										</div>
-										:null}
-									<label className='pt-label'>
-										<b>Team name:</b> 
-										<FormInput id={'new-team'} value={this.state.teamName} onChange={this.editTeamName}/>
-									</label>
-								</div>
-								<div className='pt-dialog-footer'>
-									<div className='pt-dialog-footer-actions'>
-										<Button onClick={this.toggleCreateTeamDialog} text='Cancel' className='pt-minimal' disabled={this.state.createTeamLoading}/>
-										<Button onClick={this.submitCreateTeam} text='Create' intent={Intent.PRIMARY} loading={this.state.createTeamLoading}/>
-									</div>
-								</div>
-							</Dialog>
-						</div>
-					);
-				}
-			}
+		else if (loading) {
+			content = <div className='loading-spinner'><Spinner/></div>;
 		}
-
+		
 		return (
 			<div id='dashboard-teams' className='dashboard-tab'>
 				<h4>Teams</h4>

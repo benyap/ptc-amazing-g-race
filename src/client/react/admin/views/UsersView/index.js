@@ -162,29 +162,17 @@ class UsersView extends React.Component {
 	render() {
 		let content = null;
 		let summary = null;
-		const { loading, error, getUsers } = this.props.QueryUsers;
-		const loadingPayment = this.props.QueryPaymentAmount.loading;
+		const { loading: loadingUsers, error, getUsers } = this.props.QueryUsers;
+		const { loading: loadingPayment, getSetting } = this.props.QueryPaymentAmount;
 
-		if (loading || loadingPayment) {
-			content = (
-				<div className='loading-spinner'>
-					<Spinner/>
-				</div>
-			);
+		if (error) {
+			content = <ViewError error={error}/>;
 		}
-		else {
-			let paymentAmount = 0;
-			if (this.props.QueryPaymentAmount.getSetting) {
-				paymentAmount = parseFloat(this.props.QueryPaymentAmount.getSetting.value);
-			}
+		else if (getUsers && getSetting) {
+			const paymentAmount = parseFloat(this.props.QueryPaymentAmount.getSetting.value);
 
-			if (error) {
-				content = <ViewError error={error}/>
-			}
-			else if (this.state.viewProfile) {
-				content = (
-					<UserProfile user={this.state.viewProfile} closeProfile={this.closeProfile} paymentAmount={paymentAmount}/>
-				);
+			if (this.state.viewProfile) {
+				content = <UserProfile user={this.state.viewProfile} closeProfile={this.closeProfile} paymentAmount={paymentAmount}/>;
 			}
 			else {
 				summary = (
@@ -219,6 +207,9 @@ class UsersView extends React.Component {
 					setTimeout(() => { this.setState({displayCount, displayPaidCount}) }, 0);
 				}
 			}
+		}
+		else if (loadingUsers || loadingPayment) {
+			content = <div className='loading-spinner'><Spinner/></div>;
 		}
 
 		return (

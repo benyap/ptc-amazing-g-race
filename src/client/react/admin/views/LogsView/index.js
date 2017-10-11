@@ -118,50 +118,44 @@ class LogsView extends React.Component {
 
 	render() {
 		let content = null;
-		const { error, getActions } = this.props.QueryActions;
+		const { loading, error, getActions } = this.props.QueryActions;
 
-		if (this.state.loading) {
+		if (error) {
+			content = <ViewError error={error}/>;
+		}
+		else if (getActions) {
+			let startDate;
+			let results;
+
+			if (this.state.nodes.length > 0) {
+				let endDate = DateFormat(new Date(this.state.nodes[0].id), 'mmmm d');
+
+				if (this.state.nodes.length > 1) {
+					startDate = DateFormat(new Date(this.state.nodes[this.state.nodes.length-1].id), 'mmmm d');
+				}
+				else startDate = endDate;
+
+				results = `Showing ${this.state.nodes.length} results from ${startDate} to ${endDate}`;
+			}
+			else {
+				results = 'No results found.';
+			}
+
 			content = (
-				<div className='loading-spinner'>
-					<Spinner/>
+				<div>
+					<div className='results-info'style={{margin:'0.8rem 0'}}>
+						<em>{results}</em>
+					</div>
+					<Tree
+						contents={this.state.nodes}
+						onNodeCollapse={this.onNodeCollapse}
+						onNodeExpand={this.onNodeExpand}
+					/>
 				</div>
 			);
 		}
-		else {
-			if (error) {
-				content = <ViewError error={error}/>
-			}
-			else {
-				let startDate;
-				let results;
-
-				if (this.state.nodes.length > 0) {
-					let endDate = DateFormat(new Date(this.state.nodes[0].id), 'mmmm d');
-
-					if (this.state.nodes.length > 1) {
-						startDate = DateFormat(new Date(this.state.nodes[this.state.nodes.length-1].id), 'mmmm d');
-					}
-					else startDate = endDate;
-
-					results = `Showing ${this.state.nodes.length} results from ${startDate} to ${endDate}`;
-				}
-				else {
-					results = 'No results found.';
-				}
-
-				content = (
-					<div>
-						<div className='results-info'style={{margin:'0.8rem 0'}}>
-							<em>{results}</em>
-						</div>
-						<Tree
-							contents={this.state.nodes}
-							onNodeCollapse={this.onNodeCollapse}
-							onNodeExpand={this.onNodeExpand}
-						/>
-					</div>
-				);
-			}
+		else if (loading || this.state.loading) {
+			content = <div className='loading-spinner'><Spinner/></div>;
 		}
 
 		const variables = {
