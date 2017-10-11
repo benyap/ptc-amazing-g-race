@@ -10,6 +10,22 @@ import types from '../types';
 import resolvers from '../resolvers';
 
 
+const getResponse = {
+	type: types.responseType,
+	description: 'Get a response for a challenge by id',
+	args: {
+		responseId: {
+			name: 'responseId',
+			description: 'The response id',
+			type: new GraphQLNonNull(GraphQLID)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.responseResolver.getResponse(root, params, ctx, options);
+	}
+};
+
+
 const getResponses = {
 	type: new GraphQLList(types.responseType),
 	description: 'Get responses for a challenge',
@@ -53,6 +69,7 @@ const getTeamResponses = {
 
 
 export default {
+	getResponse,
 	getResponses,
 	getTeamResponses
 };

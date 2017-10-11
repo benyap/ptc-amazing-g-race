@@ -8,6 +8,23 @@ import team from './team';
 
 
 /**
+ * Get a challenge response by id (admin only)
+ * @param {*} user 
+ * @param {String} responseId
+ */
+const getResponse = async function(user, responseId) {
+	if (!user) return new Error('No user logged in');
+
+	const authorized = await permission.checkPermission(user, ['admin:view-responses']);
+	if (authorized !== true) return authorized;
+		
+	const db = await connect();
+
+	return db.collection('responses').findOne({ _id: Mongo.ObjectID(responseId) });
+}
+
+
+/**
  * Get challenge responses (admin only)
  * @param {*} user 
  * @param {String} challengeKey
@@ -229,6 +246,7 @@ const checkResponse = async function(user, responseId, responseValid, retry, poi
 
 
 export default {
+	getResponse,
 	getResponses,
 	getTeamResponses,
 	addResponse,
