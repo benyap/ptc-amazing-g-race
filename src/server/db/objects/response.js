@@ -29,7 +29,7 @@ const getResponses = async function(user, challengeKey, itemKey) {
 	if (challengeKey) findParams.challengeKey = challengeKey;
 	if (itemKey) findParams.itemKey = itemKey;
 
-	return db.collection('responses').find(findParams).toArray();
+	return db.collection('responses').find(findParams).sort({uploadDate:1}).toArray();
 }
 
 
