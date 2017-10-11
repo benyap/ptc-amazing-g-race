@@ -38,16 +38,18 @@ class ChallengeResponse extends React.Component {
 		let { itemKey, challengeKey, responseType } = this.props;
 		let { loading, getTeamResponses } = this.props.QueryGetTeamResponses;
 		let classNames, title, text, canRespond;
-		let response;
+		let response, helpPhrase;
 
 		// Create response element
 		switch (responseType) {
 			case 'upload': {
-				response = <ResponseUpload itemKey={itemKey} challengeKey={challengeKey}/>;
+				helpPhrase = 'This item requires you to upload an image for us to verify.';
+				response = <ResponseUpload itemKey={itemKey} challengeKey={challengeKey} onSuccess={this.refetch}/>;
 				break;
 			}
 			case 'phrase': {
-
+				helpPhrase = 'This item requires you enter a phrase for us to verify.';
+				// TODO: Add response phrase component
 				break;
 			}
 		}
@@ -64,8 +66,9 @@ class ChallengeResponse extends React.Component {
 		}
 		else if (!getTeamResponses.length) {
 			// No responses yet
-			classNames = 'pt-callout pt-icon-inbox';
-			text = 'Your team has not given a response yet.';
+			classNames = 'pt-callout pt-icon-error';
+			title = 'Incomplete';
+			text = `${helpPhrase} Your team has not given a response yet.`;
 			canRespond = true;
 		}
 		else {
@@ -96,7 +99,7 @@ class ChallengeResponse extends React.Component {
 		}
 
 		return (
-			<div className='pt-card' style={{padding:'0.5rem',marginTop:'-0.3rem',background:'#0d0d0c'}}>
+			<div className='pt-card' style={{padding:'0.5rem',background:'#0d0d0c'}}>
 				<div className={classNames} style={{marginBottom:'0'}}>
 					<Button iconName='refresh' loading={this.props.QueryGetTeamResponses.loading} className='pt-minimal' 
 						style={{float:'right',margin:'-0.6rem',padding:'0'}} onClick={this.refetch}/>

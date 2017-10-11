@@ -17,7 +17,15 @@ const getTeamResponses = (params) => {
 //	MUTATIONS
 // ===========
 
+const addResponse = (params) => {
+	return gql`
+	mutation AddResponse($challengeKey:String!,$itemKey:String!,$responseType:String!,$responseValue:String){
+		addResponse(challengeKey:$challengeKey,itemKey:$itemKey,responseType:$responseType,responseValue:$responseValue){ ${params} }
+	}`;
+}
+
 
 export {
-	getTeamResponses
+	getTeamResponses,
+	addResponse
 };

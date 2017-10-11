@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Button, Dialog } from '@blueprintjs/core';
 import API from '../../../../API';
 import ImageUploader from '../../../../../../lib/react/components/ImageUploader';
+import { addResponse } from '../../../../graphql/response';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -21,7 +22,8 @@ class ResponseUpload extends React.Component {
 	static propTypes = {
 		itemKey: PropTypes.string.isRequired,
 		challengeKey: PropTypes.string.isRequired,
-		teamName: PropTypes.string
+		teamName: PropTypes.string,
+		onSuccess: PropTypes.func
 	}
 
 	state = {
@@ -40,17 +42,15 @@ class ResponseUpload extends React.Component {
 		let { challengeKey, itemKey, teamName } = this.props;
 		let { image } = this.state;
 
-		const mutation =
-		`mutation UploadObject($collection:String!,$key:String!,$name:String!){
-			_uploadObject(collection:$collection,key:$key,name:$name){
-				ok failureMessage
-			}
+		const mutation = 
+		`mutation AddResponse($challengeKey:String!,$itemKey:String!,$responseType:String!,$responseValue:String){
+			addResponse(challengeKey:$challengeKey,itemKey:$itemKey,responseType:$responseType,responseValue:$responseValue){ ok }
 		}`;
 		
 		const variables = { 
-			collection: `images/${challengeKey}`, 
-			key: `[${teamName}] ${itemKey}.${image.type.substring(image.type.indexOf('/')+1)}`,
-			name: this.state.image.name
+			challengeKey: challengeKey,
+			itemKey: itemKey,
+			responseType: 'upload'
 		};
 
 		const formData = new FormData();
@@ -71,16 +71,17 @@ class ResponseUpload extends React.Component {
 
 		try {
 			const result = await axios(config);
-			const { data: { data: { _uploadObject }, errors } } = result;
+			const { data: { data: { addResponse }, errors } } = result;
 
 			if (errors) {
 				this.setState({ uploading: false, uploadError: errors[0].message });
 			}
-			else if (_uploadObject.ok) {
-				this.setState({ uploading: false });
+			else if (addResponse.ok) {
+				this.setState({ uploading: false, showWindow: false });
+				if (this.props.onSuccess) this.props.onSuccess();
 			}
 			else {
-				this.setState({ uploading: false, uploadError: _uploadObject.failureMessage });
+				this.setState({ uploading: false, uploadError: addResponse.failureMessage });
 			}
 		}
 		catch (err) {
