@@ -1,0 +1,13 @@
+#dashboard-responses {
+	.response-card.new span.pt-icon::before {
+		color: red;
+	}
+
+	.response-card.valid span.pt-icon::before {
+		color: green;
+	}
+
+	.response-card.error span.pt-icon::before {
+		color: darkred;
+	}
+}
