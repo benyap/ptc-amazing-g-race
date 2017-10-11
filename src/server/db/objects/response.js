@@ -16,17 +16,17 @@ const getResponses = async function(user, challengeKey, itemKey) {
 
 	const authorized = await permission.checkPermission(user, ['admin:view-responses']);
 	if (authorized !== true) return authorized;
-	
-	// Validate parameters
-	if (!challengeKey) return new Error('A challenge key is required.');
-	
+		
 	const db = await connect();
 
-	// Ensure challenge exists
-	let challengeCheck = await db.collection('challenges').findOne({key: challengeKey});
-	if (!challengeCheck) return new Error(`A challenge with the key '${challengeKey}' does not exist.`);
+	if (challengeKey) {
+		// Ensure challenge exists
+		let challengeCheck = await db.collection('challenges').findOne({key: challengeKey});
+		if (!challengeCheck) return new Error(`A challenge with the key '${challengeKey}' does not exist.`);
+	}
 
-	let findParams = {challengeKey};
+	let findParams = {};
+	if (challengeKey) findParams.challengeKey = challengeKey;
 	if (itemKey) findParams.itemKey = itemKey;
 
 	return db.collection('responses').find(findParams).toArray();

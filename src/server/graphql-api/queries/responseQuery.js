@@ -17,7 +17,7 @@ const getResponses = {
 		challengeKey: {
 			name: 'challengeKey',
 			description: 'The challenge key',
-			type: new GraphQLNonNull(GraphQLString)
+			type: GraphQLString
 		},
 		itemKey: {
 			name: 'itemKey',
