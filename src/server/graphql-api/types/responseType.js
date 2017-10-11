@@ -40,10 +40,6 @@ const responseType = new GraphQLObjectType({
 			type: new GraphQLNonNull(GraphQLString),
 			description: 'The user who uploaded the response'
 		},
-		checked: {
-			type: new GraphQLNonNull(GraphQLBoolean),
-			description: 'True if the response has been checked by an admin'
-		},
 		responseValid: {
 			type: new GraphQLNonNull(GraphQLBoolean),
 			description: 'True if the response has been checked and is valid'
@@ -52,9 +48,17 @@ const responseType = new GraphQLObjectType({
 			type: new GraphQLNonNull(GraphQLBoolean),
 			description: 'True if the team is allowed to give another response once checked'
 		},
+		checked: {
+			type: new GraphQLNonNull(GraphQLBoolean),
+			description: 'True if the response has been checked by an admin'
+		},
 		checkedBy: {
 			type: GraphQLString,
 			description: 'The user who checked the response'
+		},
+		checkedOn: {
+			type: GraphQLDateTime,
+			description: 'The date the response was checked'
 		},
 		pointsAwarded: {
 			type: GraphQLInt,

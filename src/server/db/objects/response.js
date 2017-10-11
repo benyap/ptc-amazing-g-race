@@ -155,10 +155,11 @@ const addResponse = async function(user, challengeKey, itemKey, responseType, re
 		teamId: userCheck.teamId,
 		uploadDate: new Date(),
 		uploadedBy: user.username,
-		checked: false,
 		responseValid: false,
 		retry: false,
+		checked: false,
 		checkedBy: null,
+		checkedOn: null,
 		pointsAwarded: 0
 	}
 	db.collection('responses').insert(response);
@@ -213,7 +214,7 @@ const checkResponse = async function(user, responseId, responseValid, retry, poi
 		// Selector
 		{_id: Mongo.ObjectID(responseId)},
 		// Update
-		{ $set: { responseValid, retry, pointsAwarded, checked: true, checkedBy: user.username } }
+		{ $set: { responseValid, retry, pointsAwarded, checked: true, checkedBy: user.username, checkedOn: new Date() } }
 	);
 
 	// Update team points if necessary
