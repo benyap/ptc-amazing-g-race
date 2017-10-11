@@ -38,6 +38,7 @@ class AdminRoot extends React.Component {
 							
 							<Route exact path='/admin' component={LoginPage}/>
 							<Route exact path='/admin/dashboard' component={DashboardPage}/>
+							<Route path='/admin/dashboard/:view/:item' component={DashboardPage}/>
 							<Route path='/admin/dashboard/:view' component={DashboardPage}/>
 							
 							<Route component={NotFoundPage}/>

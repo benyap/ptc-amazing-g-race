@@ -1,16 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { Spinner } from '@blueprintjs/core';
+import { Spinner, Button, Intent } from '@blueprintjs/core';
 import { graphql } from 'react-apollo';
 import { getResponses } from '../../../../graphql/response';
 import RefreshBar from '../../components/RefreshBar';
+import ViewError from '../../components/ViewError';
 import ResponseCard from './ResponseCard';
+import ResponseProfile from './RepsonseProfile';
 
 import '../../scss/views/_response-view.scss';
 
 
-const QueryGetResponsesParams = '_id challengeKey itemKey teamId uploadDate checked checkedBy responseValid retry';
+const QueryGetResponsesParams = '_id challengeKey teamId itemKey checked checkedBy responseValid retry';
 
 const QueryGetResponsesOptions = {
 	name: 'QueryGetResponses',
@@ -21,11 +23,19 @@ const QueryGetResponsesOptions = {
 @autobind
 class ResponsesView extends React.Component {
 	render() {
-		let { loading, error, getResponses } = this.props.QueryGetResponses;
+		const { loading, error, getResponses } = this.props.QueryGetResponses;
 		let content;
 		
 		if (error) {
 			content = <ViewError error={error}/>;
+		}
+		else if (this.props.item) {
+			if (getResponses) {
+				content = <ResponseProfile responseId={this.props.item}/>;
+			}
+			else {
+				content = <div className='loading-spinner'><Spinner/></div>;
+			}
 		}
 		else if (getResponses) {
 			content = (

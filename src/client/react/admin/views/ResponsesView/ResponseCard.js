@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
+import { Link } from 'react-router-dom';
 import { graphql } from 'react-apollo';
 import { getTeam } from '../../../../graphql/team';
 
@@ -20,25 +21,20 @@ const QueryGetTeamOptions = {
 class ResponseCard extends React.Component {
 	static propTypes = {
 		response: PropTypes.shape({
+			_id: PropTypes.string.isRequired,
 			challengeKey: PropTypes.string.isRequired,
 			itemKey: PropTypes.string.isRequired,
 			teamId: PropTypes.string.isRequired,
-			uploadDate: PropTypes.string.isRequired,
 			checked: PropTypes.bool,
 			checkedBy: PropTypes.string,
 			responseValid: PropTypes.bool,
 			retry: PropTypes.bool
-		}),
-		renderProfile: PropTypes.func.isRequired
-	}
-
-	openProfile(e) {
-		this.props.renderProfile(this.props.response);
+		})
 	}
 
 	render() {
-		const { challengeKey, itemKey, teamId, checked, checkedBy, responseValid, retry } = this.props.response;
-		const { loading, getTeam } = this.props.QueryGetTeam;
+		const { challengeKey, itemKey, checked, checkedBy, responseValid, retry } = this.props.response;
+		const { getTeam } = this.props.QueryGetTeam;
 		let iconName = 'upload';
 		let className = 'new';
 		let checkedByName = 'Not checked';
@@ -57,16 +53,18 @@ class ResponseCard extends React.Component {
 		}
 
 		return (
-			<div className={`pt-card pt-elevation-0 pt-interactive response-card ${className}`} onClick={this.openProfile}>
-				<h5>
-					<span className={`pt-icon pt-icon-${iconName}`}></span>&nbsp;
-					<b>{`[${challengeKey}]`}</b> {itemKey}
-				</h5>
-				<div className='pt-text-muted'>
-					{`${getTeam?`From ${getTeam.teamName}`:'Getting team name...'}`}<br/>
-					{`${checkedByName}`}
+			<Link to={`/admin/dashboard/responses/${this.props.response._id}`} style={{textDecoration:'none'}}>
+				<div className={`pt-card pt-elevation-0 pt-interactive response-card ${className}`}>
+					<h5>
+						<span className={`pt-icon pt-icon-${iconName}`}></span>&nbsp;
+						<b>{`[${challengeKey}]`}</b> {itemKey}
+					</h5>
+					<div className='pt-text-muted'>
+						{`${getTeam?`From ${getTeam.teamName}`:'Getting team name...'}`}<br/>
+						{`${checkedByName}`}
+					</div>
 				</div>
-			</div>
+			</Link>
 		);
 	}}
 
