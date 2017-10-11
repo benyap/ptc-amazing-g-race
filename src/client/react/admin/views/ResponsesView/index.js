@@ -58,7 +58,7 @@ class ResponsesView extends React.Component {
 		return (
 			<div id='dashboard-responses' className='dashboard-tab'>
 				<h4>Responses</h4>
-				<RefreshBar query={this.props.QueryGetResponses} shouldRefresh={this.props.shouldRefresh}/>
+				<RefreshBar query={this.props.QueryGetResponses} shouldRefresh={this.props.shouldRefresh} disabled={this.props.item}/>
 				{content}
 			</div>
 		);
