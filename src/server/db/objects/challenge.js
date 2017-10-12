@@ -520,6 +520,96 @@ const _editChallengeItemProperty = async function(user, key, itemKey, property, 
 }
 
 
+/**
+ * Attempt to unlock a challenge
+ * @param {*} user 
+ * @param {String} phrase 
+ */
+const unlockAttempt = async function(user, phrase) {
+	if (!user) return new Error('No user logged in');
+
+	const authorized = await permission.checkPermission(user, ['user:access-challenges']);
+	if (authorized !== true) return authorized;
+	
+	// Validate parameters
+	if (!phrase) return new Error('A phrase is required.');
+
+	const db = await connect();
+
+	// Check that the user is in a team
+	const userCheck = await db.collection('users').findOne({username: user.username});
+	if (!userCheck.teamId) return new Error(`${username} is not in a team.`);
+
+	const team = await db.collection('teams').findOne({_id:Mongo.ObjectID(userCheck.teamId)});
+
+	// Check if the phrase exists
+	const challenge = await db.collection('challenges').findOne({ public: false, passphrase: phrase.toLowerCase() });
+
+	if (!challenge) {
+		// Phrase not found
+		// Log action
+		const action = {
+			action: 'Incorrect passphrase entered',
+			target: 'null',
+			targetCollection: 'null',
+			date: new Date(),
+			who: user.username,
+			infoJSONString: JSON.stringify({ phraseEntered: phrase, teamId: team._id, teamName: team.teamName })
+		};
+		db.collection('actions').insert(action);
+
+		return {
+			ok: false,
+			failureMessage: 'Incorrect passphrase entered.'
+		}
+	}
+	else {
+		// Phrase found
+		// Check if team is already unlocked
+		let found = false;
+		challenge.teams.forEach(id => {
+			if (!found) { if (id.toString() === userCheck.teamId.toString()) found = true; }
+		});
+
+		if (found) {
+			return {
+				ok: false,
+				failureMessage: 'You have already used this passphrase!'
+			}
+		}
+
+		// Add team to challenge
+		const result = await db.collection('challenges').update(
+			// Selector
+			{ key: challenge.key },
+			// Update
+			{ $push: { teams: userCheck.teamId.toString() } }
+		);
+		
+		// Log action
+		const action = {
+			action: 'Correct passphrase entered',
+			target: challenge.key,
+			targetCollection: 'challenges',
+			date: new Date(),
+			who: user.username,
+			infoJSONString: JSON.stringify({ 
+				phraseEntered: phrase, 
+				teamId: team._id, 
+				teamName: team.teamName,
+				challengeKey: challenge.key
+			})
+		};
+		db.collection('actions').insert(action);
+	
+		return {
+			ok: true,
+			action: action
+		}
+	}
+}
+
+
 export default {
 	createChallenge,
 	deleteChallenge,
@@ -532,5 +622,6 @@ export default {
 	removeTeamFromUnlocked,
 	createChallengeItem,
 	deleteChallengeItem,
-	_editChallengeItemProperty
+	_editChallengeItemProperty,
+	unlockAttempt
 }

@@ -268,6 +268,22 @@ const setChallengeItemDescription = _editChallengeItemProperty(
 );
 
 
+const unlockAttempt = {
+	type: types.confirmType,
+	description: 'Attempt to unlock a challenge',
+	args: {
+		phrase: {
+			name: 'phrase',
+			description: 'The passphrase',
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.challengeResolver.unlockAttempt(root, params, ctx, options);
+	}
+}
+
+
 export default {
 	createChallenge,
 	deleteChallenge,
@@ -283,5 +299,6 @@ export default {
 	deleteChallengeItem,
 	setChallengeItemOrder,
 	setChallengeItemTitle,
-	setChallengeItemDescription
+	setChallengeItemDescription,
+	unlockAttempt
 };

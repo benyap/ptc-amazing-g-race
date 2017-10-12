@@ -63,6 +63,11 @@ const _editChallengeItemProperty = function(root, params, ctx, options) {
 	return database.challenge._editChallengeItemProperty(ctx.user, params.key, params.itemKey, params.property, params.value);
 }
 
+// Attempt to unlock a challenge
+const unlockAttempt = function(root, params, ctx, options) {
+	return database.challenge.unlockAttempt(ctx.user, params.phrase);
+}
+
 
 export default {
 	createChallenge,
@@ -77,4 +82,5 @@ export default {
 	createChallengeItem,
 	deleteChallengeItem,
 	_editChallengeItemProperty,
+	unlockAttempt
 };
