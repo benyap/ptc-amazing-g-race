@@ -3,6 +3,7 @@ import {
 	GraphQLID,
 	GraphQLList,
 	GraphQLInt,
+	GraphQLBoolean,
   GraphQLNonNull
 } from 'graphql';
 
@@ -55,6 +56,11 @@ const getResponses = {
 			name: 'itemKey',
 			description: 'The challenge item key (optional)',
 			type: GraphQLString
+		},
+		uncheckedOnly: {
+			name: 'uncheckedOnly',
+			description: 'True if the query should only return unchecked responses (default is false)',
+			type: GraphQLBoolean
 		}
 	},
 	resolve(root, params, ctx, options) {

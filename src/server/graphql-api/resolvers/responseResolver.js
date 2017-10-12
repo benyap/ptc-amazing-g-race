@@ -13,7 +13,7 @@ const getResponseData = function(root, params, ctx, options) {
 
 // Get challenge responses
 const getResponses = function(root, params, ctx, options) {
-	return database.response.getResponses(ctx.user, params.challengeKey, params.itemKey);
+	return database.response.getResponses(ctx.user, params.challengeKey, params.itemKey, params.uncheckedOnly);
 }
 
 // Get user's team's responses for a challenge item

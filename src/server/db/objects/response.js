@@ -74,7 +74,7 @@ const getResponseData = async function(user, responseId) {
  * @param {String} challengeKey
  * @param {String} itemKey
  */
-const getResponses = async function(user, challengeKey, itemKey) {
+const getResponses = async function(user, challengeKey, itemKey, uncheckedOnly = false) {
 	if (!user) return new Error('No user logged in');
 
 	const authorized = await permission.checkPermission(user, ['admin:view-responses']);
@@ -91,6 +91,7 @@ const getResponses = async function(user, challengeKey, itemKey) {
 	let findParams = {};
 	if (challengeKey) findParams.challengeKey = challengeKey;
 	if (itemKey) findParams.itemKey = itemKey;
+	if (uncheckedOnly) findParams.checked = false;
 
 	return db.collection('responses').find(findParams).sort({uploadDate:1}).toArray();
 }
