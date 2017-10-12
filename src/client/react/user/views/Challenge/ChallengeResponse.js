@@ -5,6 +5,7 @@ import { graphql } from 'react-apollo';
 import { Spinner, Button } from '@blueprintjs/core';
 import { getTeamResponses } from '../../../../graphql/response';
 import ResponseUpload from './ResponseUpload';
+import ResponsePhrase from './ResponsePhrase';
 
 
 const QueryGetTeamResponsesParams = 'responseType responseValue uploadDate uploadedBy checked responseValid pointsAwarded retry';
@@ -49,7 +50,7 @@ class ChallengeResponse extends React.Component {
 			}
 			case 'phrase': {
 				helpPhrase = 'This item requires you enter a phrase for us to verify.';
-				// TODO: Add response phrase component
+				response = <ResponsePhrase itemKey={itemKey} challengeKey={challengeKey} onSuccess={this.refetch}/>;
 				break;
 			}
 		}
