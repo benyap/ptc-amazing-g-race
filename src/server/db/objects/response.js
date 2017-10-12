@@ -2,6 +2,7 @@ import DateFormat from 'dateformat';
 import Mongo from 'mongodb';
 import connect from '../connect';
 import permission from '../permission';
+import { s3, s3Admin, AWS_S3_BUCKET, AWS_S3_UPLOAD_LOCATION } from '../s3';
 
 import upload from './upload';
 import team from './team';
@@ -21,6 +22,49 @@ const getResponse = async function(user, responseId) {
 	const db = await connect();
 
 	return db.collection('responses').findOne({ _id: Mongo.ObjectID(responseId) });
+}
+
+
+/**
+ * Get a challenge response by id (admin only)
+ * @param {*} user 
+ * @param {String} responseId
+ */
+const getResponseData = async function(user, responseId) {
+	if (!user) return new Error('No user logged in');
+
+	const authorized = await permission.checkPermission(user, ['admin:view-responses']);
+	if (authorized !== true) return authorized;
+	
+	const db = await connect();
+
+	const response = await db.collection('responses').findOne({ _id: Mongo.ObjectID(responseId) });
+	if (!response) return new Error(`The response with the id '${responseId}' does not exist.`);
+
+	switch (response.responseType) {
+		case 'upload': {
+			// Retrieve object from AWS S3
+			const params = {
+				Bucket: `${AWS_S3_BUCKET}/${AWS_S3_UPLOAD_LOCATION}/images/${response.challengeKey}`, 
+				Key: response.responseValue,
+				Expires: 3600
+			};
+			
+			// Get download url
+			const url = s3.getSignedUrl('getObject', params);
+
+			return {
+				data: url,
+				date: new Date()
+			}
+		}
+		case 'phrase': {
+			return {
+				data: response.responseValue,
+				date: new Date()
+			}
+		}
+	}
 }
 
 
@@ -248,6 +292,7 @@ const checkResponse = async function(user, responseId, responseValid, retry, poi
 
 export default {
 	getResponse,
+	getResponseData,
 	getResponses,
 	getTeamResponses,
 	addResponse,

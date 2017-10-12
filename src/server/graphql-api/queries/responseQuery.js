@@ -26,6 +26,22 @@ const getResponse = {
 };
 
 
+const getResponseData = {
+	type: types.responseDataType,
+	description: 'Gets the data from a response (admin only)',
+	args: {
+		responseId: {
+			name: 'responseId',
+			description: 'The response id',
+			type: new GraphQLNonNull(GraphQLID)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.responseResolver.getResponseData(root, params, ctx, options);
+	}
+};
+
+
 const getResponses = {
 	type: new GraphQLList(types.responseType),
 	description: 'Get responses for a challenge',
@@ -70,6 +86,7 @@ const getTeamResponses = {
 
 export default {
 	getResponse,
+	getResponseData,
 	getResponses,
 	getTeamResponses
 };
