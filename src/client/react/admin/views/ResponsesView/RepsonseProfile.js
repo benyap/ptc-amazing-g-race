@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
+import DateFormat from 'dateformat';
 import { Link } from 'react-router-dom';
-import { graphql, withApollo } from 'react-apollo';
-import { Spinner, Intent } from '@blueprintjs/core';
-import { getResponse } from '../../../../graphql/response';
+import { compose, graphql, withApollo } from 'react-apollo';
+import { Spinner, Intent, Button, Collapse, Switch } from '@blueprintjs/core';
+import { getResponse, checkResponse } from '../../../../graphql/response';
 import { getTeam } from '../../../../graphql/team';
+import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import NotificationToaster from '../../../components/NotificationToaster';
 
 
@@ -19,9 +21,12 @@ const QueryGetResponseOptions = {
 	}
 }
 
-const QueryGetResponseParams = '_id challengeKey itemKey teamId uploadedBy uploadDate checked checkedBy responseValid retry';
+const QueryGetResponseParams = '_id challengeKey itemKey teamId uploadedBy uploadDate checked checkedBy checkedOn pointsAwarded responseValid retry';
 
-@graphql(getResponse(QueryGetResponseParams), QueryGetResponseOptions)
+@compose(
+	graphql(getResponse(QueryGetResponseParams), QueryGetResponseOptions),
+	graphql(checkResponse('ok'), { name: 'MutationCheckResponse' })
+)
 @withApollo
 @autobind
 class ResponseProfile extends React.Component {
@@ -30,25 +35,81 @@ class ResponseProfile extends React.Component {
 	}
 
 	state = {
-		teamInfo: null
+		teamInfo: null,
+		showResponse: false,
+		showModifyResponse: false,
+		checkResponseLoading: false,
+		checkResponseError: null,
+
+		loaded: false,
+		responseValid: false,
+		retry: false,
+		pointsAwarded: '0'
 	}
 
 	async componentDidUpdate() {
 		const { getResponse } = this.props.QueryGetResponse;
 
-		if (getResponse && !this.state.teamInfo) {
-			try {
-				const result = await this.props.client.query({
-					query: getTeam('teamName points'),
-					variables: { teamId: getResponse.teamId },
-					fetchPolicy: 'network-only'
-				});
-				this.setState({ teamInfo: result.data.getTeam });
+		if (getResponse) {
+			if (!this.state.teamInfo) {
+				try {
+					const result = await this.props.client.query({
+						query: getTeam('teamName'),
+						variables: { teamId: getResponse.teamId }
+					});
+					this.setState({ teamInfo: result.data.getTeam	});
+				}
+				catch (err) {
+					NotificationToaster.show({
+						intent: Intent.DANGER,
+						message: err.toString()
+					});
+				}
 			}
-			catch (err) {
+
+			if (!this.state.loaded) {
+				this.setState({
+					loaded: true,
+					responseValid: getResponse.responseValid,
+					retry: getResponse.retry,
+					pointsAwarded: getResponse.pointsAwarded
+				});
+			}
+		}
+	}
+
+	toggle(state) {
+		return () => {
+			this.setState((prevState) => {
+				return { [state]: !prevState[state] };
+			});
+		}
+	}
+
+	onPointsAwardedChange(e) {
+		this.setState({ pointsAwarded: e.target.value });
+	}
+
+	async submitCheckResponse() {
+		try {
+			this.setState({ checkResponseError: null, checkResponseLoading: true });
+			await this.props.MutationCheckResponse({
+				variables: {
+					responseId: this.props.responseId,
+					responseValid: this.state.responseValid, 
+					retry: this.state.retry,
+					pointsAwarded: this.state.pointsAwarded
+				}
+			});
+			await this.props.QueryGetResponse.refetch();
+			this.setState({ checkResponseLoading: false });
+		}
+		catch (err) {
+			this.setState({ checkResponseLoading: false, checkResponseError: err.toString() });
+			if (!this.state.showModifyResponse) {
 				NotificationToaster.show({
 					intent: Intent.DANGER,
-					message: err.toString()
+					message: `Unable to modify response state: ${err.toString()}`
 				});
 			}
 		}
@@ -57,19 +118,121 @@ class ResponseProfile extends React.Component {
 	render() {
 		const { loading, getResponse } = this.props.QueryGetResponse;
 		const { teamInfo } = this.state;
-		let content;
+		let heading, receivedDate, content, response, action, warning;
 
 		if (getResponse) {
-			let heading = <span>Response from <span className='pt-text-muted'>{getResponse.teamId} (fetching...)</span></span>;
+			receivedDate = `Recieved ${DateFormat(new Date(getResponse.uploadDate), 'hh:MM:ss TT (mmm dd yyyy)')}`
+			heading = <span><b>Response from </b><span className='pt-text-muted'>{getResponse.teamId} (fetching...)</span></span>;
+
 			if (teamInfo) {
-				heading = <span>Response from {teamInfo.teamName}</span>;
+				heading = <span><b>Response from {teamInfo.teamName}</b></span>;
+			}
+
+			if (getResponse.checked) {
+				warning = (
+					<div className='pt-callout pt-intent-warning pt-icon-warning-sign' style={{margin:'0.5rem 0'}}>
+						<h5>Response checked</h5>
+						<div>
+							This response has already been checked. 
+							Avoid modifying a checked response unless it is absolutely necessary.
+							Team point correction will be applied upon saving the modification.
+						</div>
+					</div>
+				);
+			}
+			else {
+				warning = (
+					<div className='pt-callout pt-intent-primary pt-icon-info-sign' style={{margin:'0.5rem 0'}}>
+						<h5>Modifying the responses status</h5>
+						<div>
+							Modifying this response and saving it will apply the point change to the team and cause your verdict to be reflected on the user's dashboard.
+							Please check your action is correct before proceeding.
+						</div>
+					</div>
+				);
 			}
 			
 			content = (
 				<div>
-					<h5>{heading}</h5>
-					<b>Challenge: </b>{getResponse.challengeKey}<br/>
-					<b>Item: </b>{getResponse.itemKey}<br/>
+					<table className='pt-table pt-striped'>
+						<tbody>
+							<tr>
+								<td>Challenge</td>
+								<td>{getResponse.challengeKey}</td>
+							</tr>
+							<tr>
+								<td>Item</td>
+								<td>{getResponse.itemKey}</td>
+							</tr>
+							<tr>
+								<td>Uplaoded by</td>
+								<td>{getResponse.uploadedBy}</td>
+							</tr>
+							<tr>
+								<td>Status</td>
+								<td>
+									{
+										getResponse.checked ?
+										<span style={{color:'green'}}>Checked by {getResponse.checkedBy}<br/>{DateFormat(new Date(getResponse.checkedOn), 'hh:MM:ss TT mmm dd yyyy')}</span> :
+										<span style={{color:'red'}}><b>Not checked</b></span>
+									}
+								</td>
+							</tr>
+							<tr>
+								<td>Response valid</td>
+								<td>
+									{
+										getResponse.responseValid ?
+										<span style={{color:'green'}}>Valid</span> :
+										<span style={{color:'darkred'}}>Invalid</span>
+									}
+								</td>
+							</tr>
+							<tr>
+								<td>Retry</td>
+								<td>
+									{
+										getResponse.retry ?
+										<span style={{color:'green'}}>Can retry</span> :
+										<span style={{color:'darkred'}}>Cannot retry</span>
+									}
+								</td>
+							</tr>
+							<tr>
+								<td>Points awarded</td>
+								<td>{getResponse.pointsAwarded}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			);
+
+			response = (
+				<div style={{marginTop:'1rem'}}>
+					<Button className='pt-fill' iconName='upload' text='See response' onClick={this.toggle('showResponse')}/>
+				</div>
+			);
+
+			action = (
+				<div style={{marginTop:'1rem'}}>
+					<Button className='pt-fill' iconName={this.state.showModifyResponse?'chevron-down':'chevron-right'} 
+						text='Modify response status' onClick={this.toggle('showModifyResponse')}/>
+					<Collapse isOpen={this.state.showModifyResponse}>
+						{warning}
+						<Switch checked={this.state.responseValid} label='Response valid' onChange={this.toggle('responseValid')} className='pt-large'/>
+						<Switch checked={this.state.retry} label='Retry' onChange={this.toggle('retry')} className='pt-large'/>
+						<div class='pt-form-group pt-inline'>
+							<label class='pt-label' for='points'>
+								Points Awarded
+							</label>
+							<div class='pt-form-content'>
+								<div class='pt-input-group' style={{maxWidth:'5rem'}}>
+									<input id='points' class='pt-input' type='text' value={this.state.pointsAwarded} onChange={this.onPointsAwardedChange}/>
+								</div>
+							</div>
+						</div>
+						<Button intent={Intent.DANGER} className='pt-fill' text='Save' onClick={this.submitCheckResponse} loading={this.state.checkResponseLoading}/>
+					</Collapse>
 				</div>
 			);
 		}
@@ -80,7 +243,11 @@ class ResponseProfile extends React.Component {
 		return (
 			<div className='pt-card'>
 				<Link className='pt-minimal pt-button pt-icon pt-icon-cross' to='/admin/dashboard/responses' style={{float:'right'}}/>
+				<h5>{heading}</h5>
+				<p className='pt-text-muted'>{receivedDate}</p>
 				{content}
+				{response}
+				{action}
 			</div>
 		);
 	}
