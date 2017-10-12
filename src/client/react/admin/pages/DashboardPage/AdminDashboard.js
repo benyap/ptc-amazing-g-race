@@ -84,12 +84,10 @@ class AdminDashboard extends React.Component {
 	}
 	
 	_startPollingResponses() {
-		this.props.QueryGetResponses.startPolling(POLL_RESPONSE_INTERVAL);
 		this.pollResponses = setInterval(this._handlePollResponses, POLL_RESPONSE_INTERVAL);		
 	}
 
 	_clearPollingResponses() {
-		this.props.QueryGetResponses.stopPolling();
 		clearInterval(this.pollResponses);
 	}
 
@@ -98,15 +96,18 @@ class AdminDashboard extends React.Component {
 		this.setState({selectedTabId: 'responses'});
 	}
 	
-	_handlePollResponses() {
-		const { error, getResponses } = this.props.QueryGetResponses;
-		if (getResponses) {
-			const difference = getResponses.length - this.state.uncheckedResponses;
+	async _handlePollResponses() {
+		try {
+			const result = await this.props.QueryGetResponses.refetch();
 
+			const { data: { error, getResponses } } = result;
+			
+			const difference = getResponses.length - this.state.uncheckedResponses;
+			
 			if (difference > 0) {
 				UncheckedResponseToaster.show({
 					intent: Intent.SUCCESS,
-					message: `There are ${difference} new unchecked responses (${getResponses.length} total).`,
+					message: `There ${difference>1?'are':'is'} ${difference} new unchecked ${difference>1?'responses':'response'} (${getResponses.length} total).`,
 					action: {
 						onClick: this._handleResponseAction,
 						text: 'View'
@@ -116,16 +117,17 @@ class AdminDashboard extends React.Component {
 			else if (getResponses.length > 0) {
 				UncheckedResponseToaster.show({
 					intent: Intent.PRIMARY,
-					message: `There are ${getResponses.length} unchecked responses.`,
+					message: `There ${getResponses.length===1?'is':'are'} ${getResponses.length} unchecked ${getResponses.length===1?'response':'responses'}.`,
 					action: {
 						onClick: this._handleResponseAction,
 						text: 'View'
 					}
 				});
 			}
+
 			this.setState({ uncheckedResponses: getResponses.length });
 		}
-		else if (error) {
+		catch (err) {
 			NotificationToaster.show({
 				intent: Intent.DANGER,
 				message: error.toString()
