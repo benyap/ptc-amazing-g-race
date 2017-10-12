@@ -12,7 +12,7 @@ import ResponseProfile from './RepsonseProfile';
 import '../../scss/views/_response-view.scss';
 
 
-const POLL_RESPONSE_INTERVAL = 30 * 1000; 
+const POLL_RESPONSE_INTERVAL = 60 * 1000; 
 
 const QueryGetResponsesParams = '_id challengeKey teamId itemKey checked checkedBy responseValid retry';
 

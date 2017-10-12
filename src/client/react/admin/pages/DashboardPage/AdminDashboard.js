@@ -20,7 +20,7 @@ import UncheckedResponseToaster from '../../../components/UncheckedResponseToast
 import { getResponses } from '../../../../graphql/response';
 
 
-const POLL_RESPONSE_INTERVAL = 30 * 1000; 
+const POLL_RESPONSE_INTERVAL = 60 * 1000; 
 
 const VIEWS = [
 	'users', 
@@ -115,6 +115,7 @@ class AdminDashboard extends React.Component {
 			if (this.props.showResponses) {
 				if (difference > 0) {
 					UncheckedResponseToaster.show({
+						timeout: 20000,
 						intent: Intent.SUCCESS,
 						message: `There ${difference>1?'are':'is'} ${difference} new unchecked ${difference>1?'responses':'response'} (${getResponses.length} total).`,
 						action: {
@@ -125,6 +126,7 @@ class AdminDashboard extends React.Component {
 				}
 				else if (getResponses.length > 0) {
 					UncheckedResponseToaster.show({
+						timeout: 20000,						
 						intent: Intent.PRIMARY,
 						message: `There ${getResponses.length===1?'is':'are'} ${getResponses.length} unchecked ${getResponses.length===1?'response':'responses'}.`,
 						action: {
