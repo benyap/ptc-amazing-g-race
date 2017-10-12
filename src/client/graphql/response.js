@@ -28,8 +28,8 @@ const getResponseData = (params) => {
 
 const getResponses = (params) => {
 	return gql`
-	query GetResponses($challengeKey:String,$itemKey:String){
-		getResponses(challengeKey:$challengeKey,itemKey:$itemKey){ ${params} }
+	query GetResponses($challengeKey:String,$itemKey:String,$uncheckedOnly:Boolean){
+		getResponses(challengeKey:$challengeKey,itemKey:$itemKey,uncheckedOnly:$uncheckedOnly){ ${params} }
 	}`;
 }
 
