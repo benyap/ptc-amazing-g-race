@@ -1,13 +1,20 @@
 #dashboard-responses {
-	.response-card.new span.pt-icon::before {
-		color: red;
-	}
+	.view-list {
+		
+		.pt-card.response-card.new {
+			background-color: rgba(255,255,0,0.15);
+		}
 
-	.response-card.valid span.pt-icon::before {
-		color: green;
-	}
+		.pt-card.response-card.new span.pt-icon::before {
+			color: red;
+		}
 
-	.response-card.error span.pt-icon::before {
-		color: darkred;
+		.pt-card.response-card.valid span.pt-icon::before {
+			color: green;
+		}
+		
+		.pt-card.response-card.error span.pt-icon::before {
+			color: darkred;
+		}
 	}
 }
