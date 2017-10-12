@@ -1,8 +1,9 @@
 import React from 'react';
 import autobind from 'core-decorators/es/autobind';
-import { Tab2, Tabs2, Intent } from '@blueprintjs/core';
 import MediaQuery from 'react-responsive';
 import { withRouter } from 'react-router-dom';
+import { graphql } from 'react-apollo';
+import { Tab2, Tabs2, Intent } from '@blueprintjs/core';
 import bp from '../../../../../../lib/react/components/utility/bp';
 import UsersView from '../../views/UsersView';
 import TeamsView from '../../views/TeamsView';
@@ -14,7 +15,11 @@ import ChallengesView from '../../views/ChallengesView';
 import LogsView from '../../views/LogsView';
 import ResponsesView from '../../views/ResponsesView';
 import NotificationToaster from '../../../components/NotificationToaster';
+import UncheckedResponseToaster from '../../../components/UncheckedResponseToaster';
+import { getResponses } from '../../../../graphql/response';
 
+
+const POLL_RESPONSE_INTERVAL = 30 * 1000; 
 
 const VIEWS = [
 	'users', 
@@ -28,14 +33,27 @@ const VIEWS = [
 	'responses'
 ];
 
+const QueryGetResponsesOptions = {
+	name: 'QueryGetResponses',
+	options: {
+		fetchPolicy: 'network-only',
+		variables: { uncheckedOnly: true }
+	}
+}
+
+@graphql(getResponses('checked'), QueryGetResponsesOptions)
 @withRouter
 @autobind
 class AdminDashboard extends React.Component {
 	state = {
-		selectedTabId: 'users'
+		selectedTabId: 'users',
+		uncheckedResponses: 0
 	}
 
 	componentWillMount() {
+		this._clearPollingResponses();
+		this._startPollingResponses();
+
 		const { params } = this.props.match;
 		if (params) {
 			// Ensure view exists
@@ -58,6 +76,60 @@ class AdminDashboard extends React.Component {
 					message: `The view '${params.view}' does not exist. You have been redirected to the 'users' view.`
 				});
 			}
+		}
+	}
+
+	componentWillUnmount() {
+		this._clearPollingResponses();
+	}
+	
+	_startPollingResponses() {
+		this.props.QueryGetResponses.startPolling(POLL_RESPONSE_INTERVAL);
+		this.pollResponses = setInterval(this._handlePollResponses, POLL_RESPONSE_INTERVAL);		
+	}
+
+	_clearPollingResponses() {
+		this.props.QueryGetResponses.stopPolling();
+		clearInterval(this.pollResponses);
+	}
+
+	_handleResponseAction() {
+		this.props.history.push(`/admin/dashboard/responses`);
+		this.setState({selectedTabId: 'responses'});
+	}
+	
+	_handlePollResponses() {
+		const { error, getResponses } = this.props.QueryGetResponses;
+		if (getResponses) {
+			const difference = getResponses.length - this.state.uncheckedResponses;
+
+			if (difference > 0) {
+				UncheckedResponseToaster.show({
+					intent: Intent.SUCCESS,
+					message: `There are ${difference} new unchecked responses (${getResponses.length} total).`,
+					action: {
+						onClick: this._handleResponseAction,
+						text: 'View'
+					}
+				});
+			}
+			else if (getResponses.length > 0) {
+				UncheckedResponseToaster.show({
+					intent: Intent.PRIMARY,
+					message: `There are ${getResponses.length} unchecked responses.`,
+					action: {
+						onClick: this._handleResponseAction,
+						text: 'View'
+					}
+				});
+			}
+			this.setState({ uncheckedResponses: getResponses.length });
+		}
+		else if (error) {
+			NotificationToaster.show({
+				intent: Intent.DANGER,
+				message: error.toString()
+			});
 		}
 	}
 
