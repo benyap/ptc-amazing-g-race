@@ -136,6 +136,9 @@ const _editChallengeProperty = async function(user, key, property, value) {
 	let challengeCheck = await db.collection('challenges').findOne({key});
 	if (!challengeCheck) return new Error(`A challenge with the key '${key}' does not exist.`);
 	
+	// Convert passphrase to lowercase
+	if (property === 'passphrase') value = value.toLowerCase();
+
 	//Update the challenge property
 	db.collection('challenges').update({key}, { $set: { [property]: value } });
 	

@@ -333,7 +333,7 @@ class ChallengeProfile extends React.Component {
 										<td><Switch checked={this.state.locked} onChange={(e)=>{this.handleChange('locked')(e.target.value==='on'!==this.state.locked)}} disabled={loading}/></td>
 									</tr>
 									<tr>
-										<td>Passphrase</td>
+										<td>Passphrase<br/>(lowercase only)</td>
 										<td>
 											{ loading ? <span className='pt-text-muted'>Loading...</span> :
 												<EditableText value={this.state.passphrase} onChange={this.handleChange('passphrase')}/>
@@ -367,11 +367,11 @@ class ChallengeProfile extends React.Component {
 										<td>Teams with access</td>
 										<td>
 											{ loading ? <span className='pt-text-muted'>Loading...</span> :
-												<ul>
+												<div>
 													{getChallenge.teams.map((team) => {
-														return <li key={team}>{team}</li>
+														return <div key={team}>{team}</div>
 													})}
-												</ul>
+												</div>
 											}
 										</td>
 									</tr>
