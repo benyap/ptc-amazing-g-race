@@ -137,6 +137,14 @@ const deleteChallengeItem = (params) => {
 }
 
 
+const unlockAttempt = (params) => {
+	return gql`
+	mutation UnlockAttempt($phrase:String!){
+		unlockAttempt(phrase:$phrase){ ${params} }
+	}`;
+}
+
+
 export {
 	getChallenge,
 	getChallengeById,
@@ -154,5 +162,6 @@ export {
 	deleteChallengeItem,
 	setChallengeItemOrder,
 	setChallengeItemTitle,
-	setChallengeItemDescription
+	setChallengeItemDescription,
+	unlockAttempt
 };
