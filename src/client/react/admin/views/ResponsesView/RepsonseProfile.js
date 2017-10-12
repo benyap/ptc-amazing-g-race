@@ -65,7 +65,7 @@ class ResponseProfile extends React.Component {
 			if (!this.state.teamInfo) {
 				try {
 					const result = await this.props.client.query({
-						query: getTeam('teamName'),
+						query: getTeam('_id teamName'),
 						variables: { teamId: getResponse.teamId }
 					});
 					this.setState({ teamInfo: result.data.getTeam	});

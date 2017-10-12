@@ -16,7 +16,7 @@ const QueryGetTeamOptions = {
 	}
 }
 
-@graphql(getTeam('teamName'), QueryGetTeamOptions)
+@graphql(getTeam('_id teamName'), QueryGetTeamOptions)
 @autobind
 class ResponseCard extends React.Component {
 	static propTypes = {
