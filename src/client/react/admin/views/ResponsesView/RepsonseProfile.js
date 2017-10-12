@@ -230,7 +230,12 @@ class ResponseProfile extends React.Component {
 				);
 			}
 			else if (getResponse.responseType === 'phrase') {
-
+				responseData = (
+					<div>
+						<p>{`Retrieved from server at ${DateFormat(new Date(getResponseData.date), 'hh:MM TT mmm dd yyyy')}`}</p>
+						<FormInput id='phrase' readOnly large value={getResponseData.data}/>
+					</div>
+				);
 			}
 
 			response = (
