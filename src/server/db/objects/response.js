@@ -224,7 +224,7 @@ const checkResponse = async function(user, responseId, responseValid, retry, poi
 
 	// Log action
 	const action = {
-		action: `Check response`,
+		action: `Check response: ${responseCheck.itemKey}`,
 		target: responseId,
 		targetCollection: 'responses',
 		date: new Date(),
