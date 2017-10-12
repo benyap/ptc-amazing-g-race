@@ -105,38 +105,39 @@ class AdminDashboard extends React.Component {
 	}
 	
 	async _handlePollResponses() {
+		// Only request data if notifications are turned on
+		if (!this.props.showResponses) return;
+
 		try {
 			const result = await this.props.QueryGetResponses.refetch();
 
 			const { data: { error, getResponses } } = result;
 			
 			const difference = getResponses.length - this.state.uncheckedResponses;
-			
-			if (this.props.showResponses) {
-				if (difference > 0) {
-					UncheckedResponseToaster.show({
-						timeout: 20000,
-						intent: Intent.SUCCESS,
-						message: `There ${difference>1?'are':'is'} ${difference} new unchecked ${difference>1?'responses':'response'} (${getResponses.length} total).`,
-						action: {
-							onClick: this._handleResponseAction,
-							text: 'View'
-						}
-					});
-				}
-				else if (getResponses.length > 0) {
-					UncheckedResponseToaster.show({
-						timeout: 20000,						
-						intent: Intent.PRIMARY,
-						message: `There ${getResponses.length===1?'is':'are'} ${getResponses.length} unchecked ${getResponses.length===1?'response':'responses'}.`,
-						action: {
-							onClick: this._handleResponseAction,
-							text: 'View'
-						}
-					});
-				}
+		
+			if (difference > 0) {
+				UncheckedResponseToaster.show({
+					timeout: 20000,
+					intent: Intent.SUCCESS,
+					message: `There ${difference>1?'are':'is'} ${difference} new unchecked ${difference>1?'responses':'response'} (${getResponses.length} total).`,
+					action: {
+						onClick: this._handleResponseAction,
+						text: 'View'
+					}
+				});
 			}
-
+			else if (getResponses.length > 0) {
+				UncheckedResponseToaster.show({
+					timeout: 20000,						
+					intent: Intent.PRIMARY,
+					message: `There ${getResponses.length===1?'is':'are'} ${getResponses.length} unchecked ${getResponses.length===1?'response':'responses'}.`,
+					action: {
+						onClick: this._handleResponseAction,
+						text: 'View'
+					}
+				});
+			}
+			
 			this.setState({ uncheckedResponses: getResponses.length });
 		}
 		catch (err) {
