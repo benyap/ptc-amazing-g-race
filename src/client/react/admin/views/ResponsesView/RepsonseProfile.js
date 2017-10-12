@@ -254,6 +254,13 @@ class ResponseProfile extends React.Component {
 					<Button className='pt-fill' iconName={this.state.showModifyResponse?'chevron-down':'chevron-right'} 
 						text='Modify response status' onClick={this.toggle('showModifyResponse')}/>
 					<Collapse isOpen={this.state.showModifyResponse}>
+						{ this.state.checkResponseError ? 
+							<div className='pt-callout pt-intent-danger pt-icon-error' style={{margin:'0.5rem 0'}}>
+								<h5>Error</h5>
+								{this.state.checkResponseError}
+							</div>
+							: null
+						}
 						{warning}
 						<Switch checked={this.state.responseValid} label='Response valid' onChange={this.toggle('responseValid')} className='pt-large'/>
 						<Switch checked={this.state.retry} label='Retry' onChange={this.toggle('retry')} className='pt-large'/>
