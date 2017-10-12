@@ -123,7 +123,7 @@ class LogsView extends React.Component {
 		if (error) {
 			content = <ViewError error={error}/>;
 		}
-		else if (getActions) {
+		else if (this.state.nodes) {
 			let startDate;
 			let results;
 
@@ -168,7 +168,7 @@ class LogsView extends React.Component {
 		return (
 			<div id='dashboard-logs' className='dashboard-tab'>
 				<h4>Server Action Log</h4>
-				<RefreshBar query={this.props.QueryActions} shouldRefresh={this.props.shouldRefresh}/>
+				{/* <RefreshBar query={this.props.QueryActions} shouldRefresh={this.props.shouldRefresh}/> */}
 				<Filters onChange={this.onChange} onFilter={this.onFilter} loading={this.props.QueryActions.loading}
 					action={this.state.action} username={this.state.username} skip={this.state.skip} limit={this.state.limit}/>
 				{content}
