@@ -2,6 +2,7 @@ import React from 'react';
 import autobind from 'core-decorators/es/autobind';
 import MediaQuery from 'react-responsive';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { Tab2, Tabs2, Intent } from '@blueprintjs/core';
 import bp from '../../../../../../lib/react/components/utility/bp';
@@ -41,6 +42,13 @@ const QueryGetResponsesOptions = {
 	}
 }
 
+const mapStateToProps = (state, ownProps) => {
+	return { 
+		showResponses: state.settings.showNotifications
+	}
+}
+
+@connect(mapStateToProps)
 @graphql(getResponses('checked'), QueryGetResponsesOptions)
 @withRouter
 @autobind
@@ -104,25 +112,27 @@ class AdminDashboard extends React.Component {
 			
 			const difference = getResponses.length - this.state.uncheckedResponses;
 			
-			if (difference > 0) {
-				UncheckedResponseToaster.show({
-					intent: Intent.SUCCESS,
-					message: `There ${difference>1?'are':'is'} ${difference} new unchecked ${difference>1?'responses':'response'} (${getResponses.length} total).`,
-					action: {
-						onClick: this._handleResponseAction,
-						text: 'View'
-					}
-				});
-			}
-			else if (getResponses.length > 0) {
-				UncheckedResponseToaster.show({
-					intent: Intent.PRIMARY,
-					message: `There ${getResponses.length===1?'is':'are'} ${getResponses.length} unchecked ${getResponses.length===1?'response':'responses'}.`,
-					action: {
-						onClick: this._handleResponseAction,
-						text: 'View'
-					}
-				});
+			if (this.props.showResponses) {
+				if (difference > 0) {
+					UncheckedResponseToaster.show({
+						intent: Intent.SUCCESS,
+						message: `There ${difference>1?'are':'is'} ${difference} new unchecked ${difference>1?'responses':'response'} (${getResponses.length} total).`,
+						action: {
+							onClick: this._handleResponseAction,
+							text: 'View'
+						}
+					});
+				}
+				else if (getResponses.length > 0) {
+					UncheckedResponseToaster.show({
+						intent: Intent.PRIMARY,
+						message: `There ${getResponses.length===1?'is':'are'} ${getResponses.length} unchecked ${getResponses.length===1?'response':'responses'}.`,
+						action: {
+							onClick: this._handleResponseAction,
+							text: 'View'
+						}
+					});
+				}
 			}
 
 			this.setState({ uncheckedResponses: getResponses.length });
