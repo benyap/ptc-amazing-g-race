@@ -10,10 +10,7 @@ import { addResponse } from '../../../../graphql/response';
 
 
 const mapStateToProps = (state, ownProps) => {
-	return { 
-		access: state.auth.tokens.access,
-		teamName: state.userInfo.teamName
-	}
+	return { access: state.auth.tokens.access }
 }
 
 @connect(mapStateToProps)
@@ -22,7 +19,6 @@ class ResponseUpload extends React.Component {
 	static propTypes = {
 		itemKey: PropTypes.string.isRequired,
 		challengeKey: PropTypes.string.isRequired,
-		teamName: PropTypes.string,
 		onSuccess: PropTypes.func
 	}
 
@@ -39,7 +35,7 @@ class ResponseUpload extends React.Component {
 
 	async uploadFile() {
 		this.setState({ uploading: true, uploadError: null });
-		const { challengeKey, itemKey, teamName } = this.props;
+		const { challengeKey, itemKey } = this.props;
 		const { image } = this.state;
 
 		const mutation = 
