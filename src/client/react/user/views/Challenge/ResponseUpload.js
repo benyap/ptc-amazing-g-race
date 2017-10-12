@@ -102,16 +102,18 @@ class ResponseUpload extends React.Component {
 			<div style={{marginTop:'0.5rem'}}>
 				<Button text='Upload an image' className='pt-fill pt-intent-primary' iconName='cloud-upload' onClick={this.toggleWindow}/>
 				<Dialog title='Upload an image' isOpen={this.state.showWindow} onClose={this.toggleWindow}>
-					{ this.state.uploadError ? 
-						<div className='pt-callout pt-intent-danger pt-icon-error'>
-							<h5>Upload error</h5>
-							{this.state.uploadError}
-						</div>
-						:null
-					}
-					<ImageUploader preview showFilesize compress onChange={this.setImage} disabled={this.state.uploading}/>
-					<Button className='pt-fill pt-intent-primary' text='Upload' onClick={this.uploadFile} 
-						loading={this.state.uploading} disabled={!this.state.image}/>
+					<div className='pt-dialog-body'>
+						{ this.state.uploadError ? 
+							<div className='pt-callout pt-intent-danger pt-icon-error'>
+								<h5>Upload error</h5>
+								{this.state.uploadError}
+							</div>
+							:null
+						}
+						<ImageUploader preview showFilesize compress onChange={this.setImage} disabled={this.state.uploading}/>
+						<Button className='pt-fill pt-intent-primary' text='Upload' onClick={this.uploadFile} 
+							loading={this.state.uploading} disabled={!this.state.image}/>
+					</div>
 				</Dialog>
 			</div>
 		);
