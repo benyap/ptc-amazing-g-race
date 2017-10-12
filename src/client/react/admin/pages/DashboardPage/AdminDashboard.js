@@ -48,9 +48,9 @@ const mapStateToProps = (state, ownProps) => {
 	}
 }
 
-@connect(mapStateToProps)
 @graphql(getResponses('checked'), QueryGetResponsesOptions)
 @withRouter
+@connect(mapStateToProps)
 @autobind
 class AdminDashboard extends React.Component {
 	state = {
