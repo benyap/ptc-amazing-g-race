@@ -26,7 +26,7 @@ class Filters extends React.Component {
 					<FormInput id='skip' label='Skip' value={this.props.skip} onChange={this.props.onChange} disabled={this.props.loading}/>
 					<FormInput id='limit' label='Limit' value={this.props.limit} onChange={this.props.onChange} disabled={this.props.loading}/>
 				</div>
-				<Button text='Apply filter' iconName='filter' className='pt-fill pt-minimal' onClick={this.props.onFilter} disabled={this.props.loading}/>
+				<Button text='Get logs' iconName='cloud-download' className='pt-fill pt-minimal' onClick={this.props.onFilter} loading={this.props.loading}/>
 			</div>
 		);
 	}
