@@ -12,6 +12,8 @@ import ResponseProfile from './RepsonseProfile';
 import '../../scss/views/_response-view.scss';
 
 
+const POLL_RESPONSE_INTERVAL = 30 * 1000; 
+
 const QueryGetResponsesParams = '_id challengeKey teamId itemKey checked checkedBy responseValid retry';
 
 const QueryGetResponsesOptions = {
@@ -22,6 +24,14 @@ const QueryGetResponsesOptions = {
 @graphql(getResponses(QueryGetResponsesParams), QueryGetResponsesOptions)
 @autobind
 class ResponsesView extends React.Component {
+	componentDidMount() {
+		this.props.QueryGetResponses.startPolling(POLL_RESPONSE_INTERVAL);
+	}
+
+	componentWillUnmount() {
+		this.props.QueryGetResponses.stopPolling();
+	}
+
 	render() {
 		const { loading, error, getResponses } = this.props.QueryGetResponses;
 		let content;
