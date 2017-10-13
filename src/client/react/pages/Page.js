@@ -24,7 +24,7 @@ class Page extends React.Component {
 	render() {
 		return (
 			<div role='page' id={this.props.pageId}>
-				{this.renderPage(this.props['0'])}
+				{this.renderPage()}
 			</div>
 		);
 	}
