@@ -121,7 +121,7 @@ const getTeamResponses = async function(user, challengeKey, itemKey) {
 
 	// Ensure user is in a team 
 	let userCheck = await db.collection('users').findOne({username: user.username});
-	if (!userCheck.teamId) return new Error(`${user.username} is not in a team.`);
+	if (!userCheck.teamId) return new Error(`You are not in a team.`);
 
 	const findParams = { 
 		challengeKey, 
@@ -163,7 +163,7 @@ const addResponse = async function(user, challengeKey, itemKey, responseType, re
 	
 	// Ensure user is in a team 
 	let userCheck = await db.collection('users').findOne({username: user.username});
-	if (!userCheck.teamId) return new Error(`${username} is not in a team.`);
+	if (!userCheck.teamId) return new Error(`You are not in a team.`);
 
 	// Ensure challenge exists
 	let challengeCheck = await db.collection('challenges').findOne({key: challengeKey});
