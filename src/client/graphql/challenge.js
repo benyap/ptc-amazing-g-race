@@ -12,6 +12,13 @@ const getChallenge = (params) => {
 	}`;
 }
 
+const getChallengeById = (params) => {
+	return gql`
+	query GetChallengeById($id:ID!){
+		getChallengeById(id:$id){ ${params} }
+	}`;
+}
+
 const getChallenges = (params) => {
 	return gql`
 	query GetChallenges{
@@ -33,8 +40,8 @@ const getAllChallenges = (params) => {
 
 const createChallenge = (params) => {
 	return gql`
-	mutation CreateChallenge($key:String!,$group:String!,$type:String!,$passphrase:String,$title:String,$description:String){
-		createChallenge(key:$key,group:$group,type:$type,passphrase:$passphrase,title:$title,description:$description){
+	mutation CreateChallenge($key:String!,$order: Int!,$passphrase:String,$title:String,$description:String){
+		createChallenge(key:$key,order:$order,passphrase:$passphrase,title:$title,description:$description){
 			${params}
 		}
 	}`;
@@ -47,24 +54,17 @@ const deleteChallenge = (params) => {
 	}`;
 }
 
-const setChallengeGroup = (params) => {
-	return gql`
-	mutation SetChallengeGroup($key:String!,$value:String!){
-		setChallengeGroup(key:$key,value:$value){ ${params} }
-	}`;
-}
-
-const setChallengeType = (params) => {
-	return gql`
-	mutation SetChallengeType($key:String!,$value:String!){
-		setChallengeType(key:$key,value:$value){ ${params} }
-	}`;
-}
-
 const setChallengePublic = (params) => {
 	return gql`
 	mutation SetChallengePublic($key:String!,$value:Boolean!){
 		setChallengePublic(key:$key,value:$value){ ${params} }
+	}`;
+}
+
+const setChallengeOrder = (params) => {
+	return gql`
+	mutation SetChallengeOrder($key:String!,$value:Int!){
+		setChallengeOrder(key:$key,value:$value){ ${params} }
 	}`;
 }
 
@@ -97,17 +97,88 @@ const setChallengeLocked = (params) => {
 }
 
 
+const setChallengeItemOrder = (params) => {
+	return gql`
+	mutation SetChalItemOrder($key:String!,$itemKey:String!,$value:Int!){
+		setChallengeItemOrder(key:$key,itemKey:$itemKey,value:$value){ ${params} }
+	}`;
+}
+
+
+const setChallengeItemTitle = (params) => {
+	return gql`
+	mutation SetChalItemTitle($key:String!,$itemKey:String!,$value:String!){
+		setChallengeItemTitle(key:$key,itemKey:$itemKey,value:$value){ ${params} }
+	}`;
+}
+
+
+const setChallengeItemDescription = (params) => {
+	return gql`
+	mutation SetChalItemDescription($key:String!,$itemKey:String!,$value:String!){
+		setChallengeItemDescription(key:$key,itemKey:$itemKey,value:$value){ ${params} }
+	}`;
+}
+
+
+const createChallengeItem = (params) => {
+	return gql`
+	mutation CreateChallengeItem($key:String!,$itemKey:String!,$order:Int!,$type:String!,$title:String!){
+		createChallengeItem(key:$key,itemKey:$itemKey,order:$order,title:$title,type:$type){ ${params} } 
+	}`;
+}
+
+
+const deleteChallengeItem = (params) => {
+	return gql`
+	mutation DeleteChallengeItem($key:String!,$itemKey:String!){
+		deleteChallengeItem(key:$key,itemKey:$itemKey){ ${params} }
+	}`;
+}
+
+const removeTeamFromUnlocked = (params) => {
+	return gql`
+	mutation RemoveTeamFromUnlocked($key:String!,$teamId:ID!){
+		removeTeamFromUnlocked(key:$key,teamId:$teamId){ ${params} }
+	}`;
+}
+
+
+const addTeamToUnlocked = (params) => {
+	return gql`
+	mutation AddTeamToUnlocked($key:String!,$teamId:ID!){
+		addTeamToUnlocked(key:$key,teamId:$teamId){ ${params} }
+	}`;
+}
+
+
+const unlockAttempt = (params) => {
+	return gql`
+	mutation UnlockAttempt($phrase:String!){
+		unlockAttempt(phrase:$phrase){ ${params} }
+	}`;
+}
+
+
 export {
 	getChallenge,
+	getChallengeById,
 	getChallenges,
 	getAllChallenges,
 	createChallenge,
 	deleteChallenge,
-	setChallengeGroup,
-	setChallengeType,
 	setChallengePublic,
+	setChallengeOrder,
 	setChallengePassphrase,
 	setChallengeTitle,
 	setChallengeDescription,
 	setChallengeLocked,
+	createChallengeItem,
+	deleteChallengeItem,
+	setChallengeItemOrder,
+	setChallengeItemTitle,
+	setChallengeItemDescription,
+	removeTeamFromUnlocked,
+	addTeamToUnlocked,
+	unlockAttempt
 };

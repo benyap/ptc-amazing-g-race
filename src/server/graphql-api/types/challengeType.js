@@ -3,14 +3,17 @@ import {
 	GraphQLNonNull,
 	GraphQLString,
 	GraphQLID,
+	GraphQLInt,
 	GraphQLBoolean,
 	GraphQLList
 } from 'graphql';
 
+import ChallengeItem from './challengeItemType';
+
 
 const challengeType = new GraphQLObjectType({
 	name: 'Challenge',
-	description: 'Contains information about a challenge that can be completed by participants',
+	description: 'Contains information about a group of challenge items.',
 	fields: {
 		_id: {
 			type: new GraphQLNonNull(GraphQLID)
@@ -19,13 +22,9 @@ const challengeType = new GraphQLObjectType({
 			type: new GraphQLNonNull(GraphQLString),
 			description: 'A unique identifier for the challenge'
 		},
-		group: {
-			type: new GraphQLNonNull(GraphQLString),
-			description: 'The group the challenge belongs to'
-		},
-		type: {
-			type: new GraphQLNonNull(GraphQLString), // TODO: Make this an enum
-			description: 'The type of input required to complete the challenge'
+		order: {
+			type: new GraphQLNonNull(GraphQLInt),
+			description: 'A number used to order how the challenges are displayed'
 		},
 		public: {
 			type: new GraphQLNonNull(GraphQLBoolean),
@@ -46,6 +45,10 @@ const challengeType = new GraphQLObjectType({
 		locked: {
 			type: new GraphQLNonNull(GraphQLBoolean),
 			description: 'True if the challenge is locked'
+		},
+		items: {
+			type: new GraphQLNonNull(new GraphQLList(ChallengeItem)),
+			description: 'A list of challenge items the participants can complete'
 		},
 		teams: {
 			type: new GraphQLNonNull(new GraphQLList(GraphQLID)),

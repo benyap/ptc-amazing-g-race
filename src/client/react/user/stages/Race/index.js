@@ -16,6 +16,10 @@ class Race extends React.Component {
 						<Route exact path='/'>
 							<Login notAnimated/>
 						</Route>
+						<Route exact path='/login'>
+							<Login notAnimated/>
+						</Route>
+
 						<Route path='/dashboard' component={Dashboard}/>
 						
 						<Route component={NotFoundPage}/>

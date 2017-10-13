@@ -6,9 +6,8 @@ import { graphql, compose } from 'react-apollo';
 import { 
 	getChallenge, 
 	deleteChallenge,
-	setChallengeGroup,
-	setChallengeType,
 	setChallengePublic,
+	setChallengeOrder,
 	setChallengePassphrase,
 	setChallengeTitle,
 	setChallengeDescription,
@@ -16,6 +15,10 @@ import {
 } from '../../../../graphql/challenge';
 import NotificationToaster from '../../../components/NotificationToaster';
 import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEditor';
+import ChallengeItemProfile from './ChallengeItemProfile';
+import TeamAccessCard from './TeamAccessCard';
+import AddTeamAccess from './AddTeamAccess';
+import AddChallengeItem from './AddChallengeItem';
 
 import '../../../user/scss/components/_instruction-panel.scss';
 import '../../scss/components/_markdown-preview.scss';
@@ -32,11 +35,10 @@ const QueryGetChallengeOptions = {
 }
 
 @compose(
-	graphql(getChallenge('group type public passphrase title description locked teams'), QueryGetChallengeOptions),
+	graphql(getChallenge('key public order passphrase title description locked teams items{key type order title description}'), QueryGetChallengeOptions),
 	graphql(deleteChallenge('ok'), { name: 'MutationDeleteChallenge' }),
-	graphql(setChallengeGroup('ok'), { name: 'MutationSetChallengeGroup' }),
-	graphql(setChallengeType('ok'), { name: 'MutationSetChallengeType' }),
 	graphql(setChallengePublic('ok'), { name: 'MutationSetChallengePublic' }),
+	graphql(setChallengeOrder('ok'), { name: 'MutationSetChallengeOrder' }),
 	graphql(setChallengePassphrase('ok'), { name: 'MutationSetChallengePassphrase' }),
 	graphql(setChallengeTitle('ok'), { name: 'MutationSetChallengeTitle' }),
 	graphql(setChallengeDescription('ok'), { name: 'MutationSetChallengeDescription' }),
@@ -46,8 +48,9 @@ const QueryGetChallengeOptions = {
 class ChallengeProfile extends React.Component {
 	static propTypes = {
 		challenge: PropTypes.shape({
+			_id: PropTypes.string.isRequired,
 			key: PropTypes.string.isRequired,
-			group: PropTypes.string.isRequired,
+			order: PropTypes.number.isRequired,
 			title: PropTypes.string.isRequired,
 			public: PropTypes.bool.isRequired,
 			locked: PropTypes.bool.isRequired
@@ -71,11 +74,12 @@ class ChallengeProfile extends React.Component {
 		showConfirmDelete: false,
 		deleteLoading: false,
 		deleteError: null,
-		key: this.props.challenge.key,
 
-		// Editable values
-		group: this.props.challenge.group,
-		modified_group: false,
+		editChallengeItem: null,
+
+		// Edit challenge values
+		order: this.props.challenge.order,
+		modified_order: false,
 
 		public: this.props.challenge.public,
 		modified_public: false,
@@ -90,9 +94,7 @@ class ChallengeProfile extends React.Component {
 		modified_description: false,
 
 		passphrase: '',
-		modified_passphrase: false,
-
-		teams: [],
+		modified_passphrase: false
 	}
 
 	confirmClose() {
@@ -107,7 +109,10 @@ class ChallengeProfile extends React.Component {
 	toggleDialog(key) {
 		return () => {
 			this.setState((prevState) => {
-				return { [`show${key}`]: !prevState[`show${key}`], deleteError: null }
+				return { 
+					[`show${key}`]: !prevState[`show${key}`],
+					deleteError: null
+				}
 			});
 		}
 	}
@@ -163,7 +168,7 @@ class ChallengeProfile extends React.Component {
 		this.setState({ saving: true });
 		const promises = [];
 
-		['Group','Type','Passphrase','Title','Description','Public','Locked'].map((property) => {
+		['Order','Passphrase','Title','Description','Public','Locked'].map((property) => {
 			if (this.state[`modified_${property.toLowerCase()}`]) {
 				const promise = this.props[`MutationSetChallenge${property}`]({
 					variables: {
@@ -193,8 +198,18 @@ class ChallengeProfile extends React.Component {
 		}
 	}
 
+	editChallengeItem(itemKey) {
+		return () => {
+			this.setState({editChallengeItem: itemKey});
+		}
+	}
+	
+	closeChallengeItem() {
+		this.setState({editChallengeItem: null});
+	}
+
 	render() {
-		const { key, group, title, locked } = this.props.challenge;
+		const { key, title, locked } = this.props.challenge;
 		const { loading, getChallenge } = this.props.QueryGetChallenge;
 
 		let icon = 'pt-icon-lock ';
@@ -216,6 +231,14 @@ class ChallengeProfile extends React.Component {
 		if (this.state.deleteLoading) content = (
 			<div className='pt-text-muted' style={{margin:'1rem 0'}}>Deleting challenge...</div>
 		);
+		else if (this.state.editChallengeItem) {
+			content = (
+				<div>
+					<ChallengeItemProfile itemKey={this.state.editChallengeItem} QueryGetChallenge={this.props.QueryGetChallenge}
+						challenge={getChallenge} closeItem={this.closeChallengeItem}/>
+				</div>
+			);
+		}
 		else {
 			try {
 				content = (
@@ -226,9 +249,6 @@ class ChallengeProfile extends React.Component {
 									The <code>key</code> will not be visible to the user, 
 									but the <code>title</code> will be visible - 
 									so make sure it doesn't give away anything unintentionally.
-								</li>
-								<li>
-									Challenges in the same <code>group</code> will be presented as one group to the user.
 								</li>
 								<li>
 									If the challenge is not <code>public</code>, a team can enter the <code>passphrase</code> to unlock the challenge.
@@ -242,23 +262,27 @@ class ChallengeProfile extends React.Component {
 							<table className='pt-table pt-striped content'>
 								<tbody>
 									<tr>
-										<td>Key</td>
-										<td>{this.state.key}</td>
+										<td>Id</td>
+										<td>{this.props.challenge._id}</td>
 									</tr>
 									<tr>
-										<td>Group</td>
-										<td><EditableText value={this.state.group} onChange={this.handleChange('group')}/></td>
+										<td>Key</td>
+										<td>{this.props.challenge.key}</td>
+									</tr>
+									<tr>
+										<td>Order</td>
+										<td><EditableText value={this.state.order} onChange={this.handleChange('order')} disabled={loading}/></td>
 									</tr>
 									<tr>
 										<td>Public</td>
-										<td><Switch checked={this.state.public} onChange={(e)=>{this.handleChange('public')(e.target.value==='on'!==this.state.public)}}/></td>
+										<td><Switch checked={this.state.public} onChange={(e)=>{this.handleChange('public')(e.target.value==='on'!==this.state.public)}} disabled={loading}/></td>
 									</tr>
 									<tr>
 										<td>Locked</td>
-										<td><Switch checked={this.state.locked} onChange={(e)=>{this.handleChange('locked')(e.target.value==='on'!==this.state.locked)}}/></td>
+										<td><Switch checked={this.state.locked} onChange={(e)=>{this.handleChange('locked')(e.target.value==='on'!==this.state.locked)}} disabled={loading}/></td>
 									</tr>
 									<tr>
-										<td>Passphrase</td>
+										<td>Passphrase<br/>(lowercase only)</td>
 										<td>
 											{ loading ? <span className='pt-text-muted'>Loading...</span> :
 												<EditableText value={this.state.passphrase} onChange={this.handleChange('passphrase')}/>
@@ -266,14 +290,40 @@ class ChallengeProfile extends React.Component {
 										</td>
 									</tr>
 									<tr>
-										<td>Teams with access</td>
+										<td>
+											Items<br/>
+											<AddChallengeItem challengeKey={this.props.challenge.key} refetch={this.props.QueryGetChallenge.refetch}/>
+										</td>
 										<td>
 											{ loading ? <span className='pt-text-muted'>Loading...</span> :
-												<ul>
-													{getChallenge.teams.map((team) => {
-														return <li key={team}>{team}</li>
+												<div>
+													{getChallenge.items.map((item) => {
+														return (
+															<div key={item.key} order={item.order}>
+																<a onClick={this.editChallengeItem(item.key)}>{item.title} ({item.key})</a>
+															</div>
+														)
+													}).sort((a, b) => {
+														if (a.props.order > b.props.order) return 1;
+														else if (a.props.order < b.props.order) return -1;
+														else return 0;
 													})}
-												</ul>
+												</div>
+											}
+										</td>
+									</tr>
+									<tr>
+										<td>
+											Teams with access<br/>
+											<AddTeamAccess challengeKey={this.props.challenge.key} refetch={this.props.QueryGetChallenge.refetch}/>
+										</td>
+										<td>
+											{ loading ? <span className='pt-text-muted'>Loading...</span> :
+												<div>
+													{getChallenge.teams.map((teamId) => {
+														return <TeamAccessCard key={teamId} teamId={teamId} challengeKey={this.props.challenge.key} refetch={this.props.QueryGetChallenge.refetch}/>
+													})}
+												</div>
 											}
 										</td>
 									</tr>
@@ -306,9 +356,9 @@ class ChallengeProfile extends React.Component {
 
 		return (
 			<div className='pt-card challenge-profile'>
-				<Button className='pt-minimal' intent={Intent.NONE} iconName='cross' onClick={this.confirmClose} style={{float:'right'}}/>
-				<Button className='pt-minimal' intent={Intent.PRIMARY} iconName='floppy-disk' onClick={this.saveContent} style={{float:'right'}} disabled={!this.state.modified||this.state.saving}/>
-				<Button className='pt-minimal' intent={Intent.DANGER} iconName='trash' onClick={this.toggleDialog('ConfirmDelete')} style={{float:'right'}} disabled={this.state.deleteLoading}/>
+				<Button className='pt-minimal' intent={Intent.NONE} iconName='cross' onClick={this.confirmClose} style={{float:'right'}} disabled={this.state.editChallengeItem}/>
+				<Button className='pt-minimal' intent={Intent.PRIMARY} iconName='floppy-disk' onClick={this.saveContent} style={{float:'right'}} disabled={!this.state.modified||this.state.saving||this.state.editChallengeItem}/>
+				<Button className='pt-minimal' intent={Intent.DANGER} iconName='trash' onClick={this.toggleDialog('ConfirmDelete')} style={{float:'right'}} disabled={this.state.deleteLoading||this.state.editChallengeItem}/>
 				{loading || this.state.saving ? 
 					<div style={{float:'right'}}>
 						<Spinner className='pt-small'/>
@@ -316,7 +366,7 @@ class ChallengeProfile extends React.Component {
 				: null }
 				<h5>
 					<span className={`pt-icon ${icon}`}></span>&nbsp;
-					<b><EditableText value={this.state.title} onChange={this.handleChange('title')} disabled={this.state.deleteLoading}/></b>
+					Title: <b><EditableText value={this.state.title} onChange={this.handleChange('title')} disabled={this.state.deleteLoading||this.state.editChallengeItem}/></b>
 				</h5>
 
 				{content}

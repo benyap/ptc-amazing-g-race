@@ -3,8 +3,8 @@ import database from '../../db';
 
 // Create a challenge
 const createChallenge = function(root, params, ctx, options) {
-	return database.challenge.createChallenge(ctx.user, params.key, params.group, 
-		params.type, params.passphrase, params.title, params.description);
+	return database.challenge.createChallenge(ctx.user, params.key, params.order, 
+		params.passphrase, params.title, params.description);
 }
 
 // Delete a challenge
@@ -32,6 +32,11 @@ const getChallenge = function(root, params, ctx, options) {
 	return database.challenge.getChallenge(ctx.user, params.key);
 }
 
+// Get challenge by Id
+const getChallengeById = function(root, params, ctx, options) {
+	return database.challenge.getChallengeById(ctx.user, params.id);
+}
+
 // Add a team to the list of unlocked teams
 const addTeamToUnlocked = function(root, params, ctx, options) {
 	return database.challenge.addTeamToUnlocked(ctx.user, params.key, params.teamId);
@@ -43,6 +48,27 @@ const removeTeamFromUnlocked = function(root, params, ctx, options) {
 }
 
 
+// Create a challenge
+const createChallengeItem = function(root, params, ctx, options) {
+	return database.challenge.createChallengeItem(ctx.user, params.key, params.itemKey, params.title, params.order, params.type);
+}
+
+// Delete a challenge
+const deleteChallengeItem = function(root, params, ctx, options) {
+	return database.challenge.deleteChallengeItem(ctx.user, params.key, params.itemKey);
+}
+
+// Edit a challenge's property
+const _editChallengeItemProperty = function(root, params, ctx, options) {
+	return database.challenge._editChallengeItemProperty(ctx.user, params.key, params.itemKey, params.property, params.value);
+}
+
+// Attempt to unlock a challenge
+const unlockAttempt = function(root, params, ctx, options) {
+	return database.challenge.unlockAttempt(ctx.user, params.phrase);
+}
+
+
 export default {
 	createChallenge,
 	deleteChallenge,
@@ -50,6 +76,11 @@ export default {
 	getAllChallenges,
 	getChallenges,
 	getChallenge,
+	getChallengeById,
 	addTeamToUnlocked,
-	removeTeamFromUnlocked
+	removeTeamFromUnlocked,
+	createChallengeItem,
+	deleteChallengeItem,
+	_editChallengeItemProperty,
+	unlockAttempt
 };

@@ -14,7 +14,7 @@ import Filters from './Filters';
 import '../../scss/views/_logs-view.scss';
 
 
-const QueryActionsParams = 'action target who date infoJSONString';
+const QueryActionsParams = '_id action target who date infoJSONString';
 
 const QueryActionsOptions = {
 	name: 'QueryActions', 
@@ -34,14 +34,13 @@ class LogsView extends React.Component {
 
 	state = {
 		skip: '0',
-		limit: '10',
+		limit: '20',
 		username: '',
 		action: '',
 		nodes: []
 	}
 
 	componentDidMount() {
-		this.setState({ loading: true });
 		this.fetchActions();
 	}
 
@@ -81,7 +80,7 @@ class LogsView extends React.Component {
 			const childNodes = [
 				{ id: 'who', iconName: 'person', label: `WHO: ${action.who}` },
 				{ id: 'action', iconName: 'take-action', label: `ACTION: ${action.action}` },
-				{ id: 'when', iconName: 'time', label: `WHEN: ${DateFormat(new Date(action.date), 'mmm dd yyyy hh:MM TT')}` },
+				{ id: 'when', iconName: 'time', label: `WHEN: ${DateFormat(new Date(action.date), 'hh:MM TT mmm dd yyyy')}` },
 				{ id: 'target', iconName: 'locate', label: `TARGET: ${action.target}` }
 			];
 
@@ -90,7 +89,8 @@ class LogsView extends React.Component {
 			}
 
 			return {
-				id: action.date,
+				id: action._id,
+				date: action.date,
 				hasCaret: true,
 				label: `[${DateFormat(new Date(action.date), 'mmm dd')}] [${action.who}] ${action.action}`,
 				childNodes: childNodes
@@ -118,50 +118,44 @@ class LogsView extends React.Component {
 
 	render() {
 		let content = null;
-		const { error, getActions } = this.props.QueryActions;
+		const { loading, error, getActions } = this.props.QueryActions;
 
-		if (this.state.loading) {
+		if (error) {
+			content = <ViewError error={error}/>;
+		}
+		else if (this.state.nodes) {
+			let startDate;
+			let results;
+
+			if (this.state.nodes.length > 0) {
+				let endDate = DateFormat(new Date(this.state.nodes[0].date), 'mmmm d');
+
+				if (this.state.nodes.length > 1) {
+					startDate = DateFormat(new Date(this.state.nodes[this.state.nodes.length-1].date), 'mmmm d');
+				}
+				else startDate = endDate;
+
+				results = `Showing ${this.state.nodes.length} results from ${startDate} to ${endDate}`;
+			}
+			else {
+				results = 'No logs to show.';
+			}
+
 			content = (
-				<div className='loading-spinner'>
-					<Spinner/>
+				<div>
+					<div className='results-info'style={{margin:'0.8rem 0'}}>
+						<em>{results}</em>
+					</div>
+					<Tree
+						contents={this.state.nodes}
+						onNodeCollapse={this.onNodeCollapse}
+						onNodeExpand={this.onNodeExpand}
+					/>
 				</div>
 			);
 		}
-		else {
-			if (error) {
-				content = <ViewError error={error}/>
-			}
-			else {
-				let startDate;
-				let results;
-
-				if (this.state.nodes.length > 0) {
-					let endDate = DateFormat(new Date(this.state.nodes[0].id), 'mmmm d');
-
-					if (this.state.nodes.length > 1) {
-						startDate = DateFormat(new Date(this.state.nodes[this.state.nodes.length-1].id), 'mmmm d');
-					}
-					else startDate = endDate;
-
-					results = `Showing ${this.state.nodes.length} results from ${startDate} to ${endDate}`;
-				}
-				else {
-					results = 'No results found.';
-				}
-
-				content = (
-					<div>
-						<div className='results-info'style={{margin:'0.8rem 0'}}>
-							<em>{results}</em>
-						</div>
-						<Tree
-							contents={this.state.nodes}
-							onNodeCollapse={this.onNodeCollapse}
-							onNodeExpand={this.onNodeExpand}
-						/>
-					</div>
-				);
-			}
+		else if (loading) {
+			content = <div className='loading-spinner'><Spinner/></div>;
 		}
 
 		const variables = {
@@ -174,7 +168,7 @@ class LogsView extends React.Component {
 		return (
 			<div id='dashboard-logs' className='dashboard-tab'>
 				<h4>Server Action Log</h4>
-				<RefreshBar query={this.props.QueryActions} shouldRefresh={this.props.shouldRefresh}/>
+				{/* <RefreshBar query={this.props.QueryActions} shouldRefresh={this.props.shouldRefresh}/> */}
 				<Filters onChange={this.onChange} onFilter={this.onFilter} loading={this.props.QueryActions.loading}
 					action={this.state.action} username={this.state.username} skip={this.state.skip} limit={this.state.limit}/>
 				{content}

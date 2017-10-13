@@ -16,7 +16,7 @@ import '../../scss/views/_gamestate-view.scss';
 const QueryRaceStateOptions = {
 	name: 'QueryRaceState',
 	options: {
-		fetchPolicy: 'network-only',
+		fetchPolicy: 'cache-and-network',
 		variables: { key: 'race_state' }
 	}
 }
@@ -29,46 +29,36 @@ class GameStateView extends React.Component {
 		shouldRefresh: PropTypes.bool
 	}
 
-	state = {
-		loading: false
-	}
-
 	render() {
 		let content = null;
 		let currentState = '...';
-		const { loading, error, getSettings } = this.props.QueryRaceState;
+		const { loading, error, getPublicSetting } = this.props.QueryRaceState;
 		
-		if (loading || this.state.loading) {
+		if (error) {
+			content = <ViewError error={error}/>;
+		}
+		else if (getPublicSetting) {
+			currentState = this.props.QueryRaceState.getPublicSetting.value;
 			content = (
-				<div className='loading-spinner'>
-					<Spinner/>
+				<div>
+					<div className='pt-callout pt-intent-warning pt-icon-warning-sign' style={{marginBottom: '0.5rem'}}>
+						<h5>Warning</h5>
+						Clicking on one of the following states will change the game state.
+						The current game state is <code>{currentState}</code>.
+					</div>
+					<div className='state-list'>
+						<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.rego_not_open}/>
+						<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.rego_open}/>
+						<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.rego_closed}/>
+						<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.race}/>
+						<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.post_race}/>
+						<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.closed}/>
+					</div>
 				</div>
 			);
 		}
-		else {
-			if (error) {
-				content = <ViewError error={error}/>
-			}
-			else {
-				currentState = this.props.QueryRaceState.getPublicSetting.value;
-				content = (
-					<div>
-						<div className='pt-callout pt-intent-warning pt-icon-warning-sign' style={{marginBottom: '0.5rem'}}>
-							<h5>Warning</h5>
-							Clicking on one of the following states will change the game state.
-							The current game state is <code>{currentState}</code>.
-						</div>
-						<div className='state-list'>
-							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.rego_not_open}/>
-							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.rego_open}/>
-							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.rego_closed}/>
-							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.race}/>
-							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.post_race}/>
-							<State currentState={currentState} reload={this.props.QueryRaceState.refetch} state={GameState.closed}/>
-						</div>
-					</div>
-				);
-			}
+		else if (loading) {
+			content = <div className='loading-spinner'><Spinner/></div>;
 		}
 
 		return (

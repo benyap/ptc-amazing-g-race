@@ -2,6 +2,7 @@ import {
 	GraphQLString,
 	GraphQLNonNull,
 	GraphQLBoolean,
+	GraphQLInt,
 	GraphQLID
 } from 'graphql';
 
@@ -18,15 +19,10 @@ const createChallenge = {
 			description: 'A unique identifier for the challenge',
 			type: new GraphQLNonNull(GraphQLString)
 		},
-		group: {
-			name: 'group',
-			description: 'A key to use to group challenges together',
-			type: new GraphQLNonNull(GraphQLString)
-		},
-		type: {
-			name: 'type',
-			description: 'The type of input required by the challenge',
-			type: new GraphQLNonNull(GraphQLString) // TODO: Make this an enum
+		order: {
+			name: 'order',
+			description: 'A number used to order how the challenges are listed',
+			type: new GraphQLNonNull(GraphQLInt)
 		},
 		passphrase: {
 			name: 'passphrase',
@@ -73,7 +69,7 @@ const _editChallengeProperty = (description, propertyName, valueType) => {
 		args: {
 			key: {
 				name: 'key',
-				description: 'The unique identifier of the challenge to delete',
+				description: 'The unique identifier of the challenge to modify',
 				type: new GraphQLNonNull(GraphQLString)
 			},
 			value: {
@@ -90,21 +86,15 @@ const _editChallengeProperty = (description, propertyName, valueType) => {
 }
 
 
-const setChallengeGroup = _editChallengeProperty(
-	'Set the group the challenge belongs to', 'group',
-	new GraphQLNonNull(GraphQLString)
-);
-
-
-const setChallengeType = _editChallengeProperty(
-	'Set the challenge type', 'type',
-	new GraphQLNonNull(GraphQLString) // TODO: Make this an enum
-);
-
-
 const setChallengePublic = _editChallengeProperty(
 	'Set whether the challenge is publicly available', 'public',
 	new GraphQLNonNull(GraphQLBoolean)
+);
+
+
+const setChallengeOrder = _editChallengeProperty(
+	'Set the challenge order', 'order',
+	new GraphQLNonNull(GraphQLInt)
 );
 
 
@@ -174,16 +164,141 @@ const removeTeamFromUnlocked = {
 }
 
 
+const createChallengeItem = {
+	type: types.confirmType,
+	description: 'Create a challenge item and add it to a challenge',
+	args: {
+		key: {
+			name: 'key',
+			description: 'The key of the challenge to create the item in',
+			type: new GraphQLNonNull(GraphQLString)
+		},
+		itemKey: {
+			name: 'itemKey',
+			description: 'A unique identifier for the challenge item',
+			type: new GraphQLNonNull(GraphQLString)
+		},
+		title: {
+			name: 'title',
+			description: 'The title of the challenge item',
+			type: new GraphQLNonNull(GraphQLString)
+		},
+		order: {
+			name: 'order',
+			description: 'The order the challenge item should appear in',
+			type: new GraphQLNonNull(GraphQLInt)
+		},
+		type: {
+			name: 'type',
+			description: 'The challenge type',
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.challengeResolver.createChallengeItem(root, params, ctx, options);
+	}
+}
+
+
+const deleteChallengeItem = {
+	type: types.confirmType,
+	description: 'Delete a challenge item from a challenge',
+	args: {
+		key: {
+			name: 'key',
+			description: 'The key of the challenge to delete the item from',
+			type: new GraphQLNonNull(GraphQLString)
+		},
+		itemKey: {
+			name: 'itemKey',
+			description: 'The key of the challenge item to delete',
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.challengeResolver.deleteChallengeItem(root, params, ctx, options);
+	}
+}
+
+
+const _editChallengeItemProperty = (description, propertyName, valueType) => {
+	return {
+		type: types.confirmType,
+		description: description,
+		args: {
+			key: {
+				name: 'key',
+				description: 'The unique identifier of the challenge to modify',
+				type: new GraphQLNonNull(GraphQLString)
+			},
+			itemKey: {
+				name: 'itemKey',
+				description: 'The key of the challenge item to modify',
+				type: new GraphQLNonNull(GraphQLString)
+			},
+			value: {
+				name: 'value',
+				description: `The value to set ${propertyName} to`,
+				type: valueType
+			}
+		},
+		resolve(root, params, ctx, options) {
+			params.property = propertyName;	// Set the property name
+			return resolvers.challengeResolver._editChallengeItemProperty(root, params, ctx, options);
+		}
+	}
+}
+
+
+const setChallengeItemOrder = _editChallengeItemProperty(
+	'Set the order the challenge item should appear in', 'order',
+	new GraphQLNonNull(GraphQLInt)
+);
+
+
+const setChallengeItemTitle = _editChallengeItemProperty(
+	'Set the challenge item title', 'title',
+	new GraphQLNonNull(GraphQLString)
+);
+
+
+const setChallengeItemDescription = _editChallengeItemProperty(
+	'Set the challenge item description', 'description',
+	new GraphQLNonNull(GraphQLString)
+);
+
+
+const unlockAttempt = {
+	type: types.confirmType,
+	description: 'Attempt to unlock a challenge',
+	args: {
+		phrase: {
+			name: 'phrase',
+			description: 'The passphrase',
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.challengeResolver.unlockAttempt(root, params, ctx, options);
+	}
+}
+
+
 export default {
 	createChallenge,
 	deleteChallenge,
-	setChallengeGroup,
-	setChallengeType,
+	setChallengeOrder,
 	setChallengePublic,
 	setChallengePassphrase,
 	setChallengeTitle,
 	setChallengeDescription,
 	setChallengeLocked,
 	addTeamToUnlocked,
-	removeTeamFromUnlocked
+	removeTeamFromUnlocked,
+	createChallengeItem,
+	deleteChallengeItem,
+	setChallengeItemOrder,
+	setChallengeItemTitle,
+	setChallengeItemDescription,
+	unlockAttempt
 };

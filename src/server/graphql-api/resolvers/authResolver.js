@@ -26,6 +26,11 @@ const changePassword = function(root, params, ctx, options) {
 	return database.auth.changePassword(ctx.user, params.currentPassword, params.newPassword, params.confirmPassword);
 }
 
+// Reset a user's password
+const resetPassword = function(root, params, ctx, options) {
+	return database.auth.resetPassword(ctx.user, params.username, params.newPassword, params.confirmPassword);
+}
+
 // Check authentication
 const authenticate = function(root, params, ctx, options) {
 	return database.auth.authenticate(ctx.user);
@@ -38,5 +43,6 @@ export default {
 	refresh,
 	logout,
 	changePassword,
+	resetPassword,
 	authenticate
 };

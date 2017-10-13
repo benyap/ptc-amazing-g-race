@@ -5,6 +5,7 @@ import teamResolver from './teamResolver';
 import articleResolver from './articleResolver';
 import uploadResolver from './uploadResolver';
 import challengeResolver from './challengeResolver';
+import responseResolver from './responseResolver';
 
 
 export default {
@@ -14,5 +15,6 @@ export default {
 	teamResolver,
 	articleResolver,
 	uploadResolver,
-	challengeResolver
+	challengeResolver,
+	responseResolver
 };

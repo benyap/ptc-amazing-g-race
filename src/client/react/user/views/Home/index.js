@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Spinner, Button } from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core';
 import { graphql, withApollo } from 'react-apollo';
 import { getUserByEmail } from '../../../../graphql/user';
 import { getTeam } from '../../../../graphql/team';
@@ -123,8 +123,7 @@ class Home extends React.Component {
 				<div className='content'>
 					<h2>
 						{ this.props.teamName ? this.props.teamName : 'Your Team' }
-						{ this.state.loading ? <Spinner className='pt-small info-loading'/> : null }
-						<Button className='helper-button pt-small pt-minimal pt-intent-warning' iconName='refresh' onClick={this.refresh} disabled={this.state.loading}/>
+						<Button className='helper-button pt-small pt-minimal pt-intent-warning' iconName='refresh' onClick={this.refresh} loading={this.state.loading} style={{padding:'0'}}/>
 						<Button className='helper-button pt-small pt-minimal pt-intent-primary' iconName='help' onClick={this.toggleShowHelp}/>
 					</h2>
 					{ this.state.showHelp ? 

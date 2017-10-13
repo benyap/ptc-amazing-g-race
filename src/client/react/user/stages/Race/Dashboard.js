@@ -7,7 +7,9 @@ import HelpMenu from '../../components/HelpMenu';
 import Home from '../../views/Home';
 import Help from '../../views/Help';
 import Instructions from '../../views/Instructions';
-import ImageUploaderTest from '../../views/ImageUploaderTest';
+import Feed from '../../views/Feed';
+import Challenges from '../../views/Challenges';
+import Challenge from '../../views/Challenge';
 import NotFound from '../../views/NotFound';
 
 
@@ -35,14 +37,14 @@ class Dashboard extends React.Component {
 				<Base/>
 				<HelpMenu/>
 				<Switch>
-					<Route exact path={`${url}`} component={()=><Home/>}/>
-					<Route path={`${url}/instructions`} component={()=><Instructions/>}/>
-					<Route path={`${url}/feed`} component={()=>null}/>
-					<Route path={`${url}/challenges`} component={()=>null}/>
-					<Route path={`${url}/help`} component={()=><Help/>}/>
-					<Route path={`${url}/image`} component={()=><ImageUploaderTest/>}/>
-					<Route component={()=><NotFound/>}/>
-				</Switch>
+					<Route exact path={`${url}`} component={Home}/>
+					<Route exact path={`${url}/instructions`} component={Instructions}/>
+					<Route exact path={`${url}/feed`} component={Feed}/>
+					<Route exact path={`${url}/challenges`} component={Challenges}/>
+					<Route exact path={`${url}/challenges/:id`} component={Challenge}/>
+					<Route exact path={`${url}/help`} component={Help}/>
+					<Route component={NotFound}/>
+			</Switch>
 			</div>
 		);
 	}

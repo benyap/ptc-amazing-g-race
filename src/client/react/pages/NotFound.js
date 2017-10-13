@@ -3,7 +3,7 @@ import Page from './Page';
 
 
 class NotFound extends Page {
-	renderPage(route) {
+	renderPage() {
 		return (
 			<main id='not-found' style={{paddingTop: '20vh'}}>
 				<div className='pt-non-ideal-state not-found'>
@@ -12,7 +12,7 @@ class NotFound extends Page {
 					</div>
 					<h4 className='pt-non-ideal-state-title'>Page Not Found</h4>
 					<div className='pt-non-ideal-state-description'>
-						The page at <code>{route.location.pathname}</code> could not be found.
+						The page at <code>{this.props.location.pathname}</code> could not be found.
 						<br/>
 						Please ensure the URL is correct.
 					</div>

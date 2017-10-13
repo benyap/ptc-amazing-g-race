@@ -108,10 +108,37 @@ const changePassword = {
 }
 
 
+const resetPassword = {
+	type: types.confirmType,
+	description: 'Reset a user\'s password',
+	args: {
+		username: {
+			name: 'username',
+			description: 'The user\'s username',
+			type: new GraphQLNonNull(GraphQLString)
+		},
+		newPassword: {
+			name: 'newPassword',
+			description: 'A new password',
+			type: new GraphQLNonNull(GraphQLString)
+		},
+		confirmPassword: {
+			name: 'confirmPassword',
+			description: 'Confirm the new password',
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.authResolver.resetPassword(root, params, ctx, options);
+	}
+}
+
+
 export default {
 	login,
 	adminLogin,
 	refresh,
 	logout,
-	changePassword
+	changePassword,
+	resetPassword
 };
