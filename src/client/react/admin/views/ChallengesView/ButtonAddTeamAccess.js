@@ -5,7 +5,7 @@ import { graphql } from 'react-apollo';
 import { Button, Intent, Dialog } from '@blueprintjs/core';
 import { getTeams } from '../../../../graphql/team';
 import { addTeamToUnlocked } from '../../../../graphql/challenge';
-import TeamsDropdown from './TeamsDropdown';
+import DropdownTeams from './DropdownTeams';
 
 
 const QueryGetTeamsOptions = {
@@ -18,7 +18,7 @@ const QueryGetTeamsOptions = {
 
 @graphql(addTeamToUnlocked('ok'), { name: 'MutationAddTeamToUnlocked' })
 @autobind
-class AddTeamAccess extends React.Component {
+class ButtonAddTeamAccess extends React.Component {
 	static propTypes = {
 		challengeKey: PropTypes.string.isRequired,
 		refetch: PropTypes.func.isRequired
@@ -71,7 +71,7 @@ class AddTeamAccess extends React.Component {
 						<p>
 							Team to give access to this challenge:
 						</p>
-						<TeamsDropdown onChange={this.modifyTeamSelected}/>
+						<DropdownTeams onChange={this.modifyTeamSelected}/>
 					</div>
 					<div className='pt-dialog-footer'>
 						<div className='pt-dialog-footer-actions'>
@@ -86,4 +86,4 @@ class AddTeamAccess extends React.Component {
 }
 
 
-export default AddTeamAccess;
+export default ButtonAddTeamAccess;

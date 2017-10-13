@@ -19,7 +19,7 @@ import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEdito
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import ChallengeItemProfile from './ChallengeItemProfile';
 import TeamAccessCard from './TeamAccessCard';
-import AddTeamAcess from './AddTeamAccess';
+import ButtonAddTeamAccess from './ButtonAddTeamAccess';
 
 import '../../../user/scss/components/_instruction-panel.scss';
 import '../../scss/components/_markdown-preview.scss';
@@ -373,7 +373,7 @@ class ChallengeProfile extends React.Component {
 									<tr>
 										<td>
 											Teams with access<br/>
-											<AddTeamAcess challengeKey={this.props.challenge.key} refetch={this.props.QueryGetChallenge.refetch}/>
+											<ButtonAddTeamAccess challengeKey={this.props.challenge.key} refetch={this.props.QueryGetChallenge.refetch}/>
 										</td>
 										<td>
 											{ loading ? <span className='pt-text-muted'>Loading...</span> :

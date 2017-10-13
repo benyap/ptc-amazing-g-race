@@ -15,7 +15,7 @@ const QueryGetTeamsOptions = {
 
 @graphql(getTeams('_id teamName'), QueryGetTeamsOptions)
 @autobind
-class TeamsDropdown extends React.Component {
+class DropdownTeams extends React.Component {
 	static propTypes = {
 		onChange: PropTypes.func.isRequired
 	}
@@ -49,4 +49,4 @@ class TeamsDropdown extends React.Component {
 }
 
 
-export default TeamsDropdown;
+export default DropdownTeams;
