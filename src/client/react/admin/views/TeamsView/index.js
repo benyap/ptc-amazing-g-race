@@ -101,10 +101,10 @@ class TeamsView extends React.Component {
 							<TeamCard key={team._id} team={team} renderProfile={this.renderProfile}/>
 						);
 					})}
-					<Button text='Create new team' iconName='add' className='pt-fill pt-minimal' intent={Intent.PRIMARY} onClick={this.toggleCreateTeamDialog}/>
+					<Button text='Create new team' iconName='people' className='pt-fill pt-minimal' intent={Intent.PRIMARY} onClick={this.toggleCreateTeamDialog}/>
 
 					{/* Create new team dialog */}
-					<Dialog isOpen={this.state.showCreateTeamDialog} iconName='add' title='Create a new team' onClose={this.toggleCreateTeamDialog}>
+					<Dialog isOpen={this.state.showCreateTeamDialog} iconName='people' title='Create a new team' onClose={this.toggleCreateTeamDialog}>
 						<div className='pt-dialog-body'>
 							{this.state.createTeamError ? 
 								<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'0.5rem'}}>

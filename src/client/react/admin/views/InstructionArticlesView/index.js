@@ -123,7 +123,7 @@ class InstructionArticlesView extends React.Component {
 					</div>
 
 					{/* Add article dialog */}
-					<Dialog title='Create a new article' isOpen={this.state.showAddArticle} onClose={this.toggleAddArticle}>
+					<Dialog title='Create a new article' isOpen={this.state.showAddArticle} iconName='clipboard' onClose={this.toggleAddArticle}>
 						<div className='pt-dialog-body'>
 							{this.state.addArticleError ? 
 								<div className='pt-callout pt-intent-danger pt-icon-error'>

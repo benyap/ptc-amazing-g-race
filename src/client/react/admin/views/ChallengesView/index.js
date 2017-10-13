@@ -135,7 +135,7 @@ class ChallengesView extends React.Component {
 					{ getAllChallenges.map((challenge) => {
 						return <ChallengeCard key={challenge.key} challenge={challenge} renderProfile={this.renderProfile}/>;
 					})}
-					<Button text='Create new challenge' iconName='add' className='pt-fill pt-minimal' 
+					<Button text='Create new challenge' iconName='map' className='pt-fill pt-minimal' 
 						intent={Intent.PRIMARY} onClick={this.toggleCreateChallenge}/>
 				</div>
 			);
@@ -152,7 +152,7 @@ class ChallengesView extends React.Component {
 				{content}
 
 				{/* Create Challenge dialog */}
-				<Dialog isOpen={this.state.showCreateChallenge} title='Create a new challenge' onClose={this.toggleCreateChallenge}>
+				<Dialog isOpen={this.state.showCreateChallenge} title='Create a new challenge' iconName='map' onClose={this.toggleCreateChallenge}>
 					<div className='pt-dialog-body'>
 						{this.state.createChallengeError ? 
 							<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'0.5rem'}}>
