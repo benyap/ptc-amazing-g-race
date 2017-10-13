@@ -49,7 +49,7 @@ class Contacts extends React.Component {
 					
 					{
 						this.props.QueryGetUser.getUserByEmail ? 
-						<ContactsTeam user={this.props.QueryGetUser.getUserByEmail}/> : null
+						<ContactsTeam teamId={this.props.QueryGetUser.getUserByEmail.teamId}/> : null
 					}
 				</div>
 			</main>
