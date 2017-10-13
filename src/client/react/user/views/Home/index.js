@@ -53,16 +53,14 @@ class Home extends React.Component {
 		showHelp: false
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		this._mounted = true;
 
 		// Fetch team once user email is loaded
-		this.props.QueryGetUserByEmail.refetch()
-		.then(() => {
-			if (this.props.QueryGetUserByEmail.getUserByEmail) {
-				this.refetchTeam(this.props.QueryGetUserByEmail.getUserByEmail.teamId);
-			}
-		});
+		await this.props.QueryGetUserByEmail.refetch();
+		if (this.props.QueryGetUserByEmail.getUserByEmail) {
+			this.refetchTeam(this.props.QueryGetUserByEmail.getUserByEmail.teamId);
+		}
 	}
 
 	componentWillUnmount() {
