@@ -17,7 +17,7 @@ import NotificationToaster from '../../../components/NotificationToaster';
 import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEditor';
 import ChallengeItemProfile from './ChallengeItemProfile';
 import TeamAccessCard from './TeamAccessCard';
-import ButtonAddTeamAccess from './ButtonAddTeamAccess';
+import AddTeamAccess from './AddTeamAccess';
 import AddChallengeItem from './AddChallengeItem';
 
 import '../../../user/scss/components/_instruction-panel.scss';
@@ -94,10 +94,7 @@ class ChallengeProfile extends React.Component {
 		modified_description: false,
 
 		passphrase: '',
-		modified_passphrase: false,
-
-		teams: [],
-
+		modified_passphrase: false
 	}
 
 	confirmClose() {
@@ -318,7 +315,7 @@ class ChallengeProfile extends React.Component {
 									<tr>
 										<td>
 											Teams with access<br/>
-											<ButtonAddTeamAccess challengeKey={this.props.challenge.key} refetch={this.props.QueryGetChallenge.refetch}/>
+											<AddTeamAccess challengeKey={this.props.challenge.key} refetch={this.props.QueryGetChallenge.refetch}/>
 										</td>
 										<td>
 											{ loading ? <span className='pt-text-muted'>Loading...</span> :

@@ -18,7 +18,7 @@ const QueryGetTeamsOptions = {
 
 @graphql(addTeamToUnlocked('ok'), { name: 'MutationAddTeamToUnlocked' })
 @autobind
-class ButtonAddTeamAccess extends React.Component {
+class AddTeamAccess extends React.Component {
 	static propTypes = {
 		challengeKey: PropTypes.string.isRequired,
 		refetch: PropTypes.func.isRequired
@@ -86,4 +86,4 @@ class ButtonAddTeamAccess extends React.Component {
 }
 
 
-export default ButtonAddTeamAccess;
+export default AddTeamAccess;
