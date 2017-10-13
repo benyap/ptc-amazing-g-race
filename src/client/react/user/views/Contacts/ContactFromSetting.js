@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import { Spinner } from '@blueprintjs/core';
 import { getProtectedSetting } from '../../../../graphql/setting';
 

@@ -1,10 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import autobind from 'core-decorators/es/autobind';
 import ContactFromSetting from './ContactFromSetting';
 
 
-@autobind
 class ContactsEvent extends React.Component {
 	render() {
 		return (
