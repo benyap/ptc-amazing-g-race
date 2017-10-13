@@ -188,6 +188,10 @@ const getChallenges = async function(user) {
 	const db = await connect();
 
 	const userProfile = await db.collection('users').findOne({username: user.username});
+
+	// Ensure user is in a team
+	if (!userProfile.teamId) return new Error('You are not in a team.');
+
 	return db.collection('challenges').find({ 
 		$or: [{ teams: userProfile.teamId.toString() }, { public: true }]
 	}).sort({order: 1}).toArray();
