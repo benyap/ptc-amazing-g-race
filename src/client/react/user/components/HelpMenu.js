@@ -48,7 +48,7 @@ class HelpMenu extends React.Component {
 		this._mounted = true;
 	}
 
-	componentWillUnmoun() {
+	componentWillUnmount() {
 		this._mounted = false;
 	}
 
