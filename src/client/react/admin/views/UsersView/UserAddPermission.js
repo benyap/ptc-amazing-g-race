@@ -13,7 +13,8 @@ import NotificationToaster from '../../../components/NotificationToaster';
 @autobind
 class UserAddPermission extends React.Component {
 	static propTypes = {
-		username: PropTypes.string.isRequired
+		username: PropTypes.string.isRequired,
+		refetch: PropTypes.func.isRequired
 	}
 
 	state = {
