@@ -4,6 +4,7 @@ require("babel-polyfill");
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import connect from '../connect';
+import permission from '../permission';
 
 
 const login = function(user, email, password) {
@@ -434,6 +435,70 @@ const changePassword = async function(user, currentPassword, newPassword, confir
 
 
 /**
+ * Change a user's password. Their current password must be provided.
+ * @param {*} user 
+ * @param {String} username
+ * @param {String} newPassword 
+ * @param {String} confirmPassword 
+ */
+const resetPassword = async function(user, username, newPassword, confirmPassword) {
+	if (!user) return new Error('Not logged in');
+
+	const authorized = await permission.checkPermission(user, ['admin:resetpassword-user']);
+	if (authorized !== true) return authorized;
+
+	// Validate parameters
+	if (!username) return new Error('Username required.');
+	if (!newPassword) return new Error('Password required.');
+	if (!confirmPassword) return new Error('Confirm password required.');
+	if (newPassword !== confirmPassword) return new Error('Passwords do not match.');
+
+	const db = await connect();
+
+	// Ensure user exists
+	const userauthentication = await db.collection('userauthentications').findOne({username});
+	if (!userauthentication) return new Error(`User '${username}' not found.`);
+
+	// Password validation
+	
+	// Verify length
+	const minLength_raw = await db.collection('settings').findOne({key:'auth_password_min_length'});
+	const minLength = minLength_raw.value;
+
+	if (newPassword.length < minLength) return new Error(`Password must be at least ${minLength} characters.`);
+	
+	// Password validated
+	const salt = await bcrypt.genSalt(10);
+	const hash = await bcrypt.hash(newPassword, salt);
+
+	// Update password
+	const result = await db.collection('userauthentications').update(
+		{ username: username },
+		{ $set: { password: hash } }
+	);
+
+	if (result.result.nModified === 1) {
+		// Log change password action
+		const action = {
+			action: 'Reset password',
+			target: username,
+			targetCollection: 'userauthentications',
+			date: new Date(),
+			who: user.username
+		};
+
+		db.collection('actions').insert(action);
+
+		return {
+			ok: true,
+			action: action
+		}
+	}
+	else return new Error('Unable to change password: database error');
+}
+
+
+/**
  * Check if authentication was successful
  * @param {*} user 
  */
@@ -453,5 +518,6 @@ export default {
 	refresh,
 	logout,
 	changePassword,
+	resetPassword,
 	authenticate
 }
