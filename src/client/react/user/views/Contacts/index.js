@@ -7,8 +7,6 @@ import { getUserByEmail } from '../../../../graphql/user';
 import ContactsEvent from './ContactsEvent';
 import ContactsTeam from './ContactsTeam';
 
-import '../../scss/views/_help.scss';
-
 
 const mapStateToProps = (state, ownProps) => {
 	return { email: state.auth.login.email }

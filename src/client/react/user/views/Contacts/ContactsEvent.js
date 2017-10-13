@@ -7,7 +7,7 @@ class ContactsEvent extends React.Component {
 		return (
 			<div>
 				<h5>Event contacts</h5>
-				<table className='pt-table pt-striped' style={{marginBottom:'1rem'}}>
+				<table className='pt-table pt-striped' style={{marginBottom:'1rem',width:'100%'}}>
 					<tbody>
 						<tr>
 							<td>Event Co&#8209;ordinator</td>
