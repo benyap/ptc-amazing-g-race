@@ -18,6 +18,7 @@ import NotificationToaster from '../../../components/NotificationToaster';
 import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEditor';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import ChallengeItemProfile from './ChallengeItemProfile';
+import TeamAccessCard from './TeamAccessCard';
 
 import '../../../user/scss/components/_instruction-panel.scss';
 import '../../scss/components/_markdown-preview.scss';
@@ -84,7 +85,12 @@ class ChallengeProfile extends React.Component {
 		addItemTitle: '',
 		addItemOrder: '',
 		addItemType: 'phrase',
-				
+		
+		showAddTeam: false,
+		addTeamLoading: false,
+		addTeamError: null,
+		addTeamId: '',
+
 		// Edit challenge values
 		order: this.props.challenge.order,
 		modified_order: false,
@@ -364,12 +370,15 @@ class ChallengeProfile extends React.Component {
 										</td>
 									</tr>
 									<tr>
-										<td>Teams with access</td>
+										<td>
+											Teams with access<br/>
+											<Button style={{marginTop: '0.5rem'}} text='Add team' className='pt-small' onClick={this.toggleDialog('AddTeam')}/>
+										</td>
 										<td>
 											{ loading ? <span className='pt-text-muted'>Loading...</span> :
 												<div>
-													{getChallenge.teams.map((team) => {
-														return <div key={team}>{team}</div>
+													{getChallenge.teams.map((teamId) => {
+														return <TeamAccessCard key={teamId} teamId={teamId} challengeKey={this.props.challenge.key} refetch={this.props.QueryGetChallenge.refetch}/>
 													})}
 												</div>
 											}
