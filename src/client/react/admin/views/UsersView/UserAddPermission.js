@@ -11,7 +11,7 @@ import NotificationToaster from '../../../components/NotificationToaster';
 
 @graphql(addPermission('ok'), {name: 'MutationAddPermission'})
 @autobind
-class PermissionAdd extends React.Component {
+class UserAddPermission extends React.Component {
 	static propTypes = {
 		username: PropTypes.string.isRequired
 	}
@@ -97,4 +97,4 @@ class PermissionAdd extends React.Component {
 }
 
 
-export default PermissionAdd;
+export default UserAddPermission;

@@ -7,7 +7,7 @@ import { Button, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTa
 import { getUserByEmail, setUserPaidAmount, addPermission, removePermission } from '../../../../graphql/user';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import NotificationToaster from '../../../components/NotificationToaster';
-import PermissionAdd from './PermissionAdd';
+import UserAddPermission from './UserAddPermission';
 import UserPermissionCard from './UserPermissionCard';
 
 
@@ -195,7 +195,7 @@ class UserProfile extends React.Component {
 							<tr>
 								<td>
 									Account Permissions<br/>
-									<PermissionAdd username={this.props.user.username} refetch={this.props.QueryUser.refetch}/>
+									<UserAddPermission username={this.props.user.username} refetch={this.props.QueryUser.refetch}/>
 								</td>
 								<td>
 									<ul>
