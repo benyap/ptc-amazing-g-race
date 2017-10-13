@@ -9,6 +9,7 @@ import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import NotificationToaster from '../../../components/NotificationToaster';
 import UserAddPermission from './UserAddPermission';
 import UserPermissionCard from './UserPermissionCard';
+import UserPasswordReset from './UserPasswordReset';
 
 
 const QueryUserParams = 
@@ -191,6 +192,10 @@ class UserProfile extends React.Component {
 							<tr>
 								<td>Admin</td>
 								<td><code>{isAdmin ? 'true':'false'}</code></td>
+							</tr>
+							<tr>
+								<td>Password</td>
+								<td><UserPasswordReset username={this.props.user.username}/></td>
 							</tr>
 							<tr>
 								<td>
