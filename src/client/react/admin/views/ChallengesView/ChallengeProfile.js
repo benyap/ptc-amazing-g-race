@@ -11,15 +11,14 @@ import {
 	setChallengePassphrase,
 	setChallengeTitle,
 	setChallengeDescription,
-	setChallengeLocked,
-	createChallengeItem
+	setChallengeLocked
 } from '../../../../graphql/challenge';
 import NotificationToaster from '../../../components/NotificationToaster';
 import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEditor';
-import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import ChallengeItemProfile from './ChallengeItemProfile';
 import TeamAccessCard from './TeamAccessCard';
 import ButtonAddTeamAccess from './ButtonAddTeamAccess';
+import AddChallengeItem from './AddChallengeItem';
 
 import '../../../user/scss/components/_instruction-panel.scss';
 import '../../scss/components/_markdown-preview.scss';
@@ -43,8 +42,7 @@ const QueryGetChallengeOptions = {
 	graphql(setChallengePassphrase('ok'), { name: 'MutationSetChallengePassphrase' }),
 	graphql(setChallengeTitle('ok'), { name: 'MutationSetChallengeTitle' }),
 	graphql(setChallengeDescription('ok'), { name: 'MutationSetChallengeDescription' }),
-	graphql(setChallengeLocked('ok'), { name: 'MutationSetChallengeLocked' }),
-	graphql(createChallengeItem('ok'), { name: 'MutationCreateChallengeItem' })
+	graphql(setChallengeLocked('ok'), { name: 'MutationSetChallengeLocked' })
 )
 @autobind
 class ChallengeProfile extends React.Component {
@@ -78,19 +76,6 @@ class ChallengeProfile extends React.Component {
 		deleteError: null,
 
 		editChallengeItem: null,
-
-		showAddItem: false,
-		addItemLoading: false,
-		addItemError: null,
-		addItemKey: '',
-		addItemTitle: '',
-		addItemOrder: '',
-		addItemType: 'phrase',
-		
-		showAddTeam: false,
-		addTeamLoading: false,
-		addTeamError: null,
-		addTeamId: '',
 
 		// Edit challenge values
 		order: this.props.challenge.order,
@@ -129,14 +114,7 @@ class ChallengeProfile extends React.Component {
 			this.setState((prevState) => {
 				return { 
 					[`show${key}`]: !prevState[`show${key}`],
-
-					// Reset to dialog defaults
-					deleteError: null, 
-					addItemError: null,
-					addItemKey: '',
-					addItemTitle: '',
-					addItemOrder: '',
-					addItemType: 'phrase'
+					deleteError: null
 				}
 			});
 		}
@@ -233,39 +211,6 @@ class ChallengeProfile extends React.Component {
 		this.setState({editChallengeItem: null});
 	}
 
-	onAddItemValueChange(value) {
-		return (e) => {
-			this.setState({[value]: e.target.value});
-		}
-	}
-
-	async submitAddItem() {
-		this.setState({addItemLoading: true, addItemError: false});
-		try {
-			await this.props.MutationCreateChallengeItem({
-				variables: { 
-					key: this.props.challenge.key,
-					itemKey: this.state.addItemKey,
-					title: this.state.addItemTitle,
-					order: this.state.addItemOrder,
-					type: this.state.addItemType
-				}
-			});
-			await this.props.QueryGetChallenge.refetch();
-			this.setState({addItemLoading: false, showAddItem: false});
-		}
-		catch (err) {
-			if (this._mounted && this.state.showAddItem) this.setState({ addItemLoading: false, addItemError: err.toString() });
-			else {
-				this.setState({ addItemLoading: false });
-				NotificationToaster.show({
-					intent: Intent.DANGER,
-					message: err.toString()
-				});
-			}
-		}
-	}
-
 	render() {
 		const { key, title, locked } = this.props.challenge;
 		const { loading, getChallenge } = this.props.QueryGetChallenge;
@@ -350,7 +295,7 @@ class ChallengeProfile extends React.Component {
 									<tr>
 										<td>
 											Items<br/>
-											<Button style={{marginTop: '0.5rem'}} text='Add item' className='pt-small' onClick={this.toggleDialog('AddItem')}/>
+											<AddChallengeItem challengeKey={this.props.challenge.key} refetch={this.props.QueryGetChallenge.refetch}/>
 										</td>
 										<td>
 											{ loading ? <span className='pt-text-muted'>Loading...</span> :
@@ -459,37 +404,6 @@ class ChallengeProfile extends React.Component {
 						</div>
 					</div>
 				</Dialog>
-
-				{/* Add item dialog */}
-				<Dialog isOpen={this.state.showAddItem} onClose={this.toggleDialog('AddItem')} title='Add challenge item'>
-					<div className='pt-dialog-body'>
-						{ this.state.addItemError ? 
-							<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'1rem'}}>
-								{ this.state.addItemError }
-							</div> 
-							: null
-						}
-						<FormInput id='key' value={this.state.addItemKey} label='Challenge item key' onChange={this.onAddItemValueChange('addItemKey')} disabled={this.state.addItemLoading}/>
-						<FormInput id='title' value={this.state.addItemTitle} label='Challenge item title' onChange={this.onAddItemValueChange('addItemTitle')} disabled={this.state.addItemLoading}/>
-						<FormInput id='order' value={this.state.addItemOrder} label='Challenge item order' onChange={this.onAddItemValueChange('addItemOrder')} disabled={this.state.addItemLoading}/>
-						<label className='pt-label'>
-							Challenge item type
-							<div className='pt-select pt-fill'>
-								<select onChange={this.onAddItemValueChange('addItemType')} disabled={this.state.addItemLoading}>
-									<option value='phrase'>Phrase</option>
-									<option value='upload'>Upload</option>
-								</select>
-							</div>
-						</label>
-					</div>
-					<div className='pt-dialog-footer'>
-						<div className='pt-dialog-footer-actions'>
-							<Button text='Close' onClick={this.toggleDialog('AddItem')} className='pt-minimal' disabled={this.state.addItemLoading}/>
-							<Button text='Add item' onClick={this.submitAddItem} intent={Intent.PRIMARY} loading={this.state.addItemLoading}/>
-						</div>
-					</div>
-				</Dialog>
-
 			</div>
 		);
 	}
