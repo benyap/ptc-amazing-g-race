@@ -275,7 +275,7 @@ const registerUser = async function(user, {firstname, lastname, username, studen
 	}
 
 	if (!password) errors.push(new Error('Password is required'));
-	else if (password.length < 6) errors.push(new Error('Password must be longer than 6 characeters'));
+	else if (password.length < 6) errors.push(new Error('Password must be at least 6 characters'));
 	
 	if (!confirmPassword) errors.push(new Error('Confirm password is required'));
 	else if (password !== confirmPassword) errors.push(new Error('Passwords do not match'));
