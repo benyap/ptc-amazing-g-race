@@ -36,10 +36,10 @@ class TeamsDropdown extends React.Component {
 
 		return (
 			<div className='pt-select pt-fill'>
-				<select onChange={this.onChange} disabled={loading}>
-					{ loading ?
-						<option key={'null'} value={null}>Loading teams...</option>:
-						<option key={'null'} value={null}>Select a team...</option>
+				<select onChange={this.onChange} disabled={!teams}>
+					{ teams ?
+						<option key={'null'} value={null}>Select a team...</option>:
+						<option key={'null'} value={null}>Loading teams...</option>
 					}
 					{options}
 				</select>
