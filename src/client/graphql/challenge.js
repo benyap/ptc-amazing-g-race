@@ -136,6 +136,21 @@ const deleteChallengeItem = (params) => {
 	}`;
 }
 
+const removeTeamFromUnlocked = (params) => {
+	return gql`
+	mutation RemoveTeamFromUnlocked($key:String!,$teamId:ID!){
+		removeTeamFromUnlocked(key:$key,teamId:$teamId){ ${params} }
+	}`;
+}
+
+
+const addTeamToUnlocked = (params) => {
+	return gql`
+	mutation AddTeamToUnlocked($key:String!,$teamId:ID!){
+		addTeamToUnlocked(key:$key,teamId:$teamId){ ${params} }
+	}`;
+}
+
 
 const unlockAttempt = (params) => {
 	return gql`
@@ -163,5 +178,7 @@ export {
 	setChallengeItemOrder,
 	setChallengeItemTitle,
 	setChallengeItemDescription,
+	removeTeamFromUnlocked,
+	addTeamToUnlocked,
 	unlockAttempt
 };
