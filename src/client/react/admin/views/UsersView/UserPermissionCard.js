@@ -13,7 +13,7 @@ class UserPermissionCard extends React.Component {
 	static propTypes = {
 		username: PropTypes.string.isRequired,
 		permission: PropTypes.string.isRequired,
-		refetch: PropTypes.func.isRequired
+		refetchUser: PropTypes.func.isRequired
 	}
 
 	state = {
@@ -40,7 +40,7 @@ class UserPermissionCard extends React.Component {
 					permission: this.props.permission
 				}
 			});
-			await this.props.refetch();
+			await this.props.refetchUser();
 
 			this.setState({removePermissionLoading: false, showRemovePermission: false});
 		}

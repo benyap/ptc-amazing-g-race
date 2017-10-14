@@ -13,6 +13,28 @@ const _listObjectsFromS3 = (params) => {
 }
 
 
+const _getObject = (params) => {
+	return gql`
+	query GetObject($key:String!){  
+		_getObject(key:$key){ ${params} }
+	}`;
+}
+
+
+// =============
+//	 MUTATIONS
+// =============
+
+const _deleteObject = (params) => {
+	return gql`
+	mutation DeleteObject($collection:String!,$key:String!){
+		_deleteObject(collection:$collection,key:$key){ ${params} }
+	}`;
+}
+
+
 export {
-	_listObjectsFromS3
+	_listObjectsFromS3,
+	_getObject,
+	_deleteObject
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { Spinner, Button, Intent, Icon, Collapse } from '@blueprintjs/core';
+import { Button, Collapse } from '@blueprintjs/core';
 import MarkdownRenderer from '../../../../../../lib/react/components/MarkdownRenderer';
 import ChallengeResponse from './ChallengeResponse';
 
@@ -31,7 +31,6 @@ class ChallengeItem extends React.Component {
 
 	render() {
 		const { item, challengeKey } = this.props;
-		const response = <ChallengeResponse responseType={item.type} challengeKey={challengeKey} itemKey={item.key}/>;
 
 		return (
 			<div style={{marginBottom:'0.5rem'}}>
@@ -40,7 +39,7 @@ class ChallengeItem extends React.Component {
 					<div className='instruction-panel'>
 						<MarkdownRenderer className='markdown-content' src={item.description}/>
 					</div>
-					{response}
+					<ChallengeResponse responseType={item.type} challengeKey={challengeKey} itemKey={item.key}/>
 				</Collapse>
 			</div>
 		);

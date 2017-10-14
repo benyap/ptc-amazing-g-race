@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import DateFormat from 'dateformat';
 import { graphql, compose } from 'react-apollo';
-import { Button, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTarget, Toaster, Position } from '@blueprintjs/core';
+import { Button, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import { getUserByEmail, setUserPaidAmount, addPermission, removePermission } from '../../../../graphql/user';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import NotificationToaster from '../../../components/NotificationToaster';
@@ -200,12 +200,12 @@ class UserProfile extends React.Component {
 							<tr>
 								<td>
 									Account Permissions<br/>
-									<UserAddPermission username={this.props.user.username} refetch={this.props.QueryUser.refetch}/>
+									<UserAddPermission username={this.props.user.username} refetchUser={this.props.QueryUser.refetch}/>
 								</td>
 								<td>
 									<ul>
 										{ permissions.map((permission, index) => {
-												return <UserPermissionCard key={index} username={this.props.user.username} permission={permission} refetch={this.props.QueryUser.refetch}/>;
+												return <UserPermissionCard key={index} username={this.props.user.username} permission={permission} refetchUser={this.props.QueryUser.refetch}/>;
 										}) }
 									</ul>
 								</td>

@@ -1,5 +1,6 @@
 import {
 	GraphQLString,
+	GraphQLNonNull,
 	GraphQLInt
 } from 'graphql';
 
@@ -33,6 +34,23 @@ const _listObjectsFromS3 = {
 };
 
 
+const _getObject = {
+	type: types.uploadDataType,
+	description: 'Get the data from an uploaded object',
+	args: {
+		key: {
+			name: 'key',
+			description: 'The full key of the object (including the collection)',
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.uploadResolver._getObject(root, params, ctx, options);
+	}
+}
+
+
 export default {
-	_listObjectsFromS3
+	_listObjectsFromS3,
+	_getObject
 };

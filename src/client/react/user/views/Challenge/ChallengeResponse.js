@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
-import { Spinner, Button } from '@blueprintjs/core';
+import { Spinner, NonIdealState, Button, Intent } from '@blueprintjs/core';
 import { getTeamResponses } from '../../../../graphql/response';
+import NotificationToaster from '../../../components/NotificationToaster';
 import ResponseUpload from './ResponseUpload';
 import ResponsePhrase from './ResponsePhrase';
 
@@ -31,8 +32,16 @@ class ChallengeResponse extends React.Component {
 		]).isRequired
 	}
 
-	refetch() {
-		this.props.QueryGetTeamResponses.refetch();
+	async refetch() {
+		try {
+			await this.props.QueryGetTeamResponses.refetch();
+		}
+		catch (err) {
+			NotificationToaster.show({
+				intent: Intent.DANGER,
+				message: err.toString()
+			});
+		}
 	}
 
 	render() {
@@ -59,8 +68,8 @@ class ChallengeResponse extends React.Component {
 			if (loading) {
 				// Query loading
 				return (
-					<div style={{textAlign:'center'}}>
-						<Spinner/>
+					<div style={{margin:'3rem 0'}}>
+						<NonIdealState title='Loading...' visual={<Spinner/>}/>
 					</div>
 				);
 			}

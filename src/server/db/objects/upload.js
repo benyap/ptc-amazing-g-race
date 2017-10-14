@@ -35,7 +35,14 @@ const _uploadObject = async function(user, object, collection, key, name) {
 			}
 		};
 
-		const uploadResult = await s3.putObject(params).promise();
+		let s3User = s3;
+
+		const isAdmin = await permission.checkPermission(user, ['admin:upload-asset']);
+		if (isAdmin === true) {
+			s3User = s3Admin;
+		}
+
+		const uploadResult = await s3User.putObject(params).promise();
 
 		const db = await connect();
 
@@ -98,6 +105,7 @@ const _uploadObject = async function(user, object, collection, key, name) {
 	}
 }
 
+
 /**
  * Delete an object from S3
  * @param {*} user 
@@ -125,14 +133,16 @@ const _deleteObject = async function(user, collection, key) {
 
 		// Remove object from database
 		const result = await db.collection('uploads').remove({ collection, key });
-
+		
+		let actionString;
 		if (result.result.n < 1) {
-			return new Error(`Object with the key '${key}' was not deleted because it was not found.`);
+			// This can occur when a user response object is removed from S3
+			actionString = 'Delete untracked object';
 		}
+		else actionString = 'Delete object';
 
-		// Log action
 		const action = {
-			action: 'Delete object',
+			action: actionString,
 			target: key,
 			targetCollection: 'uploads',
 			who: user.username,
@@ -143,8 +153,9 @@ const _deleteObject = async function(user, collection, key) {
 				version: deleteResult.VersionId
 			})
 		};
-		db.collection('actions').insert(action);
 		
+		db.collection('actions').insert(action);
+
 		return {
 			ok: true,
 			action: action
@@ -152,6 +163,39 @@ const _deleteObject = async function(user, collection, key) {
 	}
 	catch (err) {
 		return new Error(err.toString());
+	}
+}
+
+
+/**
+ * Get a signed URL to retrieve an uploaded object from S3
+ * @param {*} user 
+ * @param {String} key 
+ */
+const _getObject = async function(user, key) {
+	if (!user) return new Error('No user logged in');
+	
+	const authorized = await permission.checkPermission(user, ['admin:get-objectsFromS3']);
+	if (authorized !== true) return authorized;
+	
+	if (!key) return new Error('Object key is required.');
+
+	// Remove prefix if it exists
+	const prefix = 'uploads/';
+	const startFrom = key.indexOf(prefix) >= 0 ? key.indexOf(prefix) + prefix.length : 0;
+
+	const params = {
+		Bucket: `${AWS_S3_BUCKET}/uploads`, 
+		Key: key.substring(startFrom),
+		Expires: 60
+	};
+	
+	// Get download url
+	const url = s3.getSignedUrl('getObject', params);
+
+	return {
+		data: url,
+		date: new Date()
 	}
 }
 
@@ -166,7 +210,7 @@ const _deleteObject = async function(user, collection, key) {
 const _listObjectsFromS3 = async function(user, MaxKeys, Prefix, StartAfter) {
 	if (!user) return new Error('No user logged in');
 	
-	const authorized = await permission.checkPermission(user, ['admin:view-objectsFromS3']);
+	const authorized = await permission.checkPermission(user, ['admin:list-objectsFromS3']);
 	if (authorized !== true) return authorized;
 	
 	const params = {
@@ -184,5 +228,6 @@ const _listObjectsFromS3 = async function(user, MaxKeys, Prefix, StartAfter) {
 export default {
 	_uploadObject,
 	_deleteObject,
+	_getObject,
 	_listObjectsFromS3
 }

@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { compose, graphql } from 'react-apollo';
-import { Spinner, Button, Intent, Dialog } from '@blueprintjs/core';
+import { graphql } from 'react-apollo';
+import { Spinner, NonIdealState } from '@blueprintjs/core';
 import { getTeams, addTeam } from '../../../../graphql/team';
-import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import ViewError from '../../components/ViewError';
 import RefreshBar from '../../components/RefreshBar';
 import TeamCard from './TeamCard';
 import TeamProfile from './TeamProfile';
+import TeamCreate from './TeamCreate';
 
 import '../../scss/views/_teams-view.scss';
 
@@ -20,10 +20,7 @@ const QueryGetTeamsOptions = {
 	}
 }
 
-@compose(
-	graphql(getTeams('_id teamName points memberCount'), QueryGetTeamsOptions),
-	graphql(addTeam('ok'), { name: 'MutationCreateTeam' })
-)
+@graphql(getTeams('_id teamName points memberCount'), QueryGetTeamsOptions)
 @autobind
 class TeamsView extends React.Component {
 	static propTypes = {
@@ -32,13 +29,9 @@ class TeamsView extends React.Component {
 
 	state = {
 		viewProfile: null,
-		refetching: false,
-		showCreateTeamDialog: false,
-		createTeamLoading: false,
-		createTeamError: null,
-		teamName: ''
+		refetching: false
 	}
-
+	
 	renderProfile(team) {
 		this.setState({ viewProfile: team });
 	}
@@ -49,40 +42,6 @@ class TeamsView extends React.Component {
 		this.setState({ refetching: false });
 	}
 
-	toggleCreateTeamDialog() {
-		this.setState((prevState) => {
-			return { 
-				showCreateTeamDialog: !prevState.showCreateTeamDialog,
-				createTeamError: null,
-				teamName: ''
-			};
-		});
-	}
-	
-	editTeamName(e) {
-		this.setState({ teamName: e.target.value });
-	}
-
-	async submitCreateTeam() {
-		this.setState({ createTeamLoading: true });
-		try {
-			await this.props.MutationCreateTeam({ variables: { teamName: this.state.teamName.trim() } });
-			await this.props.QueryGetTeams.refetch();
-			this.setState({
-				showCreateTeamDialog: false,
-				createTeamLoading: false, 
-				createTeamError: null,
-				teamName: ''
-			});
-		}
-		catch (e) {
-			this.setState({
-				createTeamLoading: false,
-				createTeamError: e.toString()
-			});
-		}
-	}
-
 	render() {
 		let content = null;
 		const { loading, error, getTeams } = this.props.QueryGetTeams;
@@ -91,43 +50,25 @@ class TeamsView extends React.Component {
 			content = <ViewError error={error}/>;
 		}
 		else if (this.state.viewProfile) {
-			content = <TeamProfile team={this.state.viewProfile} closeProfile={this.closeProfile} reload={this.props.QueryGetTeams.refetch}/>;
+			content = <TeamProfile team={this.state.viewProfile} closeProfile={this.closeProfile} refetchTeams={this.props.QueryGetTeams.refetch}/>;
 		}
 		else if (getTeams) {
 			content = (
 				<div className='view-list'>
 					{getTeams.map((team) => {
-						return (
-							<TeamCard key={team._id} team={team} renderProfile={this.renderProfile}/>
-						);
+						return <TeamCard key={team._id} team={team} renderProfile={this.renderProfile}/>;
 					})}
-					<Button text='Create new team' iconName='people' className='pt-fill pt-minimal' intent={Intent.PRIMARY} onClick={this.toggleCreateTeamDialog}/>
 
-					{/* Create new team dialog */}
-					<Dialog isOpen={this.state.showCreateTeamDialog} iconName='people' title='Create a new team' onClose={this.toggleCreateTeamDialog}>
-						<div className='pt-dialog-body'>
-							{this.state.createTeamError ? 
-								<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'0.5rem'}}>
-									{this.state.createTeamError}
-								</div>
-								:null}
-							<label className='pt-label'>
-								<b>Team name:</b> 
-								<FormInput id={'new-team'} value={this.state.teamName} onChange={this.editTeamName}/>
-							</label>
-						</div>
-						<div className='pt-dialog-footer'>
-							<div className='pt-dialog-footer-actions'>
-								<Button onClick={this.toggleCreateTeamDialog} text='Cancel' className='pt-minimal' disabled={this.state.createTeamLoading}/>
-								<Button onClick={this.submitCreateTeam} text='Create' intent={Intent.PRIMARY} loading={this.state.createTeamLoading}/>
-							</div>
-						</div>
-					</Dialog>
+					<TeamCreate refetchTeams={this.props.QueryGetTeams.refetch}/>
 				</div>
 			);
 		}
 		else if (loading) {
-			content = <div className='loading-spinner'><Spinner/></div>;
+			content = (
+				<div style={{margin:'3rem 0'}}>
+					<NonIdealState title='Loading...' visual={<Spinner/>}/>
+				</div>
+			);
 		}
 		
 		return (

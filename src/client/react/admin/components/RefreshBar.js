@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import DateFormat from 'dateformat';
 import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
-import { Button, Intent, Spinner, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
+import { Button, Intent, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import { saveState } from '../../../actions/stateActions';
 import NotificationToaster from '../../components/NotificationToaster';
 

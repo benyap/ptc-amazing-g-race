@@ -4,7 +4,7 @@ import autobind from 'core-decorators/es/autobind';
 import DateFormat from 'dateformat';
 import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
-import { Spinner, Button, Intent, Tree, ITreeNode } from '@blueprintjs/core';
+import { Spinner, NonIdealState, Intent, Tree } from '@blueprintjs/core';
 import { getActions } from '../../../../graphql/user';
 import ViewError from '../../components/ViewError';
 import NotificationToaster from '../../../components/NotificationToaster';
@@ -155,7 +155,11 @@ class LogsView extends React.Component {
 			);
 		}
 		else if (loading) {
-			content = <div className='loading-spinner'><Spinner/></div>;
+			content = (
+				<div style={{margin:'3rem 0'}}>
+					<NonIdealState title='Loading...' visual={<Spinner/>}/>
+				</div>
+			);
 		}
 
 		const variables = {

@@ -31,9 +31,7 @@ class ChallengeItemProfile extends React.Component {
 			})).isRequired
 		}),
 		closeItem: PropTypes.func.isRequired,
-		QueryGetChallenge: PropTypes.shape({
-			refetch: PropTypes.func.isRequired
-		}).isRequired
+		refetchChallenges: PropTypes.func.isRequired
 	}
 
 	state = {
@@ -123,7 +121,7 @@ class ChallengeItemProfile extends React.Component {
 		try {
 			// Wait till all values have been saved
 			await Promise.all(promises);
-			await this.props.QueryGetChallenge.refetch();
+			await this.props.refetchChallenges();
 			this.setState({saving: false, modified: false});
 		}
 		catch (err) {
@@ -141,7 +139,7 @@ class ChallengeItemProfile extends React.Component {
 			await this.props.MutationDeleteChallengeItem({
 				variables: { key: this.props.challenge.key, itemKey: this.props.itemKey }
 			});
-			await this.props.QueryGetChallenge.refetch();
+			await this.props.refetchChallenges();
 			this.setState({ deleteLoading: false, deleteError: null });
 			this.props.closeItem();
 		}
@@ -168,7 +166,7 @@ class ChallengeItemProfile extends React.Component {
 						<Spinner className='pt-small'/>
 					</div>
 				: null }
-				<h5>Editing challenge item</h5>
+				<h5 style={{fontWeight:'bold',marginBottom:'0.7rem'}}>Editing challenge item</h5>
 				<table className='pt-table pt-striped content'>
 					<tbody>
 						<tr>

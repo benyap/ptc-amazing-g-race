@@ -23,7 +23,7 @@ const QueryGetTeamOptions = {
 
 @graphql(getTeam('_id teamName points'), QueryGetTeamOptions)
 @autobind
-class TeamPanel extends React.Component {
+class TeamPointsPanel extends React.Component {
 	static propTypes = {
 		user: PropTypes.shape({
 			firstname: PropTypes.string.isRequired,
@@ -99,7 +99,8 @@ class TeamPanel extends React.Component {
 				<Button className='helper-button pt-small pt-minimal pt-intent-warning' iconName='refresh' onClick={this.refresh} loading={QueryGetTeam?QueryGetTeam.loading:false} style={{padding:'0'}}/>
 				<Button className='helper-button pt-small pt-minimal pt-intent-primary' iconName='help' onClick={this.toggleShowHelp}/>
 				<h2>{teamName}</h2>
-				<HelpBox showHelp={this.state.showHelp} username={this.props.user.firstname}/>
+				<HelpBox showHelp={this.state.showHelp}/>
+				<p>Hey {this.props.user.firstname}! Welcome to your team dashboard.</p>
 				<div id='dashboard-team-panel'>
 					{teamPoints}
 				</div>
@@ -109,4 +110,4 @@ class TeamPanel extends React.Component {
 }
 
 
-export default TeamPanel;
+export default TeamPointsPanel;

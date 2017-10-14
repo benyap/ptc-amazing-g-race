@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { Button, Intent, Spinner, EditableText, Switch, Dialog } from '@blueprintjs/core';
+import { Button, Intent, EditableText, Switch, Dialog } from '@blueprintjs/core';
 import { graphql } from 'react-apollo';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import { createChallengeItem } from '../../../../graphql/challenge';
@@ -13,7 +13,7 @@ import NotificationToaster from '../../../components/NotificationToaster';
 class AddChallengeItem extends React.Component {
 	static propTypes = {
 		challengeKey: PropTypes.string.isRequired,
-		refetch: PropTypes.func.isRequired
+		refetchChallenges: PropTypes.func.isRequired
 	}
 
 	state = {
@@ -57,7 +57,7 @@ class AddChallengeItem extends React.Component {
 					type: this.state.addItemType
 				}
 			});
-			await this.props.refetch();
+			await this.props.refetchChallenges();
 			this.setState({addItemLoading: false, showAddItem: false});
 		}
 		catch (err) {
@@ -84,9 +84,32 @@ class AddChallengeItem extends React.Component {
 							</div> 
 							: null
 						}
-						<FormInput id='key' value={this.state.addItemKey} label='Challenge item key' onChange={this.onAddItemValueChange('addItemKey')} disabled={this.state.addItemLoading}/>
+
+						<div className='pt-callout pt-icon-info-sign' style={{marginBottom:'0.5rem'}}>
+							<ul style={{margin: '0', padding: '0 0 0 1rem'}}>
+								<li>
+									The <b>item key</b> is used to uniquely identify the item. Users do not see the item key.
+								</li>
+								<li>
+									The <b>title</b> is what the users will see when they look at this item.
+								</li>
+								<li>
+									The <b>order</b> determines the order in which the item will be displayed to the user.
+								</li>
+								<li>
+									The <b>type</b> determines the required response from the user for this item.
+								</li>
+							</ul>
+						</div>
+
+						<FormInput id='key' value={this.state.addItemKey} label='Challenge item key' onChange={this.onAddItemValueChange('addItemKey')} disabled={this.state.addItemLoading}
+							helperText='Use the format <challenge name>_<item name>'/>
+
 						<FormInput id='title' value={this.state.addItemTitle} label='Challenge item title' onChange={this.onAddItemValueChange('addItemTitle')} disabled={this.state.addItemLoading}/>
-						<FormInput id='order' value={this.state.addItemOrder} label='Challenge item order' onChange={this.onAddItemValueChange('addItemOrder')} disabled={this.state.addItemLoading}/>
+
+						<FormInput id='order' value={this.state.addItemOrder} label='Challenge item order' onChange={this.onAddItemValueChange('addItemOrder')} disabled={this.state.addItemLoading}
+							helperText='Must be an integer.'/>
+
 						<label className='pt-label'>
 							Challenge item type
 							<div className='pt-select pt-fill'>

@@ -45,9 +45,9 @@ const getResponseData = async function(user, responseId) {
 		case 'upload': {
 			// Retrieve object from AWS S3
 			const params = {
-				Bucket: `${AWS_S3_BUCKET}/${AWS_S3_UPLOAD_LOCATION}/images/${response.challengeKey}`, 
+				Bucket: `${AWS_S3_BUCKET}/${AWS_S3_UPLOAD_LOCATION}/responses/${response.challengeKey}`, 
 				Key: response.responseValue,
-				Expires: 3600
+				Expires: 60
 			};
 			
 			// Get download url
@@ -121,7 +121,7 @@ const getTeamResponses = async function(user, challengeKey, itemKey) {
 
 	// Ensure user is in a team 
 	let userCheck = await db.collection('users').findOne({username: user.username});
-	if (!userCheck.teamId) return new Error(`${user.username} is not in a team.`);
+	if (!userCheck.teamId) return new Error(`You are not in a team.`);
 
 	const findParams = { 
 		challengeKey, 
@@ -163,7 +163,7 @@ const addResponse = async function(user, challengeKey, itemKey, responseType, re
 	
 	// Ensure user is in a team 
 	let userCheck = await db.collection('users').findOne({username: user.username});
-	if (!userCheck.teamId) return new Error(`${username} is not in a team.`);
+	if (!userCheck.teamId) return new Error(`You are not in a team.`);
 
 	// Ensure challenge exists
 	let challengeCheck = await db.collection('challenges').findOne({key: challengeKey});
@@ -178,7 +178,7 @@ const addResponse = async function(user, challengeKey, itemKey, responseType, re
 		case 'upload': {
 			if (!object) return new Error('No object uploaded.');
 			responseValue = `[${userCheck.teamId}] ${itemKey} ${parseInt(new Date().getTime()/1000)}.${object.mimetype.substring(object.mimetype.indexOf('/')+1)}`;
-			const uploadResponse = await upload._uploadObject(user, object, `images/${challengeKey}`, responseValue, responseValue);
+			const uploadResponse = await upload._uploadObject(user, object, `responses/${challengeKey}`, responseValue, responseValue);
 			if (!uploadResponse.ok) {
 				// FIXME: Improve error handling
 				console.log(uploadResponse);

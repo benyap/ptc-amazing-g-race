@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
-import { Spinner, Intent } from '@blueprintjs/core';
+import { Spinner, Intent, NonIdealState } from '@blueprintjs/core';
 import { getAllChallenges } from '../../../../graphql/challenge';
 import { saveState } from '../../../../actions/stateActions';
 import RefreshBar from '../../components/RefreshBar';
@@ -77,7 +77,7 @@ class ChallengesView extends React.Component {
 			content = <ViewError error={error}/>;
 		}
 		else if (this.state.viewProfile) {
-			content = <ChallengeProfile challenge={this.state.viewProfile} closeProfile={this.closeProfile}/>;
+			content = <ChallengeProfile challenge={this.state.viewProfile} closeProfile={this.closeProfile} refetchChallenges={this.props.QueryGetAllChallenges.refetch}/>;
 		}
 		else if (getAllChallenges) {
 			content = (
@@ -85,12 +85,16 @@ class ChallengesView extends React.Component {
 					{ getAllChallenges.map((challenge) => {
 						return <ChallengeCard key={challenge.key} challenge={challenge} renderProfile={this.renderProfile}/>;
 					})}
-					<AddChallenge refetch={this.props.QueryGetAllChallenges.refetch}/>
+					<AddChallenge refetchChallenges={this.props.QueryGetAllChallenges.refetch}/>
 				</div>
 			);
 		}
 		else if (loading) {
-			content = <div className='loading-spinner'><Spinner/></div>;
+			content = (
+				<div style={{margin:'3rem 0'}}>
+					<NonIdealState title='Loading...' visual={<Spinner/>}/>
+				</div>
+			);
 		}
 
 		return (

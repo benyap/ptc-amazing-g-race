@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
-import { Spinner } from '@blueprintjs/core';
+import { Spinner, NonIdealState } from '@blueprintjs/core';
 import { getUserByEmail } from '../../../../graphql/user';
-import TeamPanel from './TeamPanel';
+import TeamPointsPanel from './TeamPointsPanel';
 
 import '../../scss/views/_main.scss'
 import '../../scss/views/_home.scss';
@@ -36,25 +35,23 @@ class Home extends React.Component {
 	
 	render() {
 		const { loading, getUserByEmail: user } = this.props.QueryGetUser;
-
-		let content = (
-			<div style={{textAlign:'center',margin:'3rem'}}>
-				<Spinner className='pt-large'/>
-			</div>
-		);
+		let teamPointsPanel;
 
 		if (user) {
-			content = <TeamPanel user={user}/>;
+			teamPointsPanel = <TeamPointsPanel user={user}/>;
+		}
+		else {
+			teamPointsPanel = (
+				<div style={{margin:'3rem 0'}}>
+					<NonIdealState title='Loading...' visual={<Spinner/>}/>
+				</div>
+			);
 		}
 
 		return (
 			<main id='home' className='dashboard'>
 				<div className='content'>
-					{content}
-					<h5>Important contacts</h5>
-					<p>
-						Go to the <Link to='/dashboard/help'>help page</Link> for important contact details.
-					</p>
+					{teamPointsPanel}
 				</div>
 			</main>
 		);

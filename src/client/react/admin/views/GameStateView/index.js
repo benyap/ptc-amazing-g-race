@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
-import { Spinner } from '@blueprintjs/core';
+import { Spinner, NonIdealState } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import * as GameState from './gameStates';
 import State from './State';
@@ -58,7 +58,11 @@ class GameStateView extends React.Component {
 			);
 		}
 		else if (loading) {
-			content = <div className='loading-spinner'><Spinner/></div>;
+			content = (
+				<div style={{margin:'3rem 0'}}>
+					<NonIdealState title='Loading...' visual={<Spinner/>}/>
+				</div>
+			);
 		}
 
 		return (

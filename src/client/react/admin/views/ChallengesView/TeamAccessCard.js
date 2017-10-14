@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { Button, Intent, Spinner, Dialog } from '@blueprintjs/core';
+import { Button, Intent, Dialog } from '@blueprintjs/core';
 import { graphql, compose } from 'react-apollo';
 import { getTeam } from '../../../../graphql/team';
 import { removeTeamFromUnlocked } from '../../../../graphql/challenge';
@@ -23,7 +23,7 @@ class TeamAccessCard extends React.Component {
 	static propTypes  = {
 		teamId: PropTypes.string.isRequired,
 		challengeKey: PropTypes.string.isRequired,
-		refetch: PropTypes.func.isRequired
+		refetchChallenges: PropTypes.func.isRequired
 	}
 
 	state = {
@@ -41,11 +41,11 @@ class TeamAccessCard extends React.Component {
 	async submitRemoveTeamAccess() {
 		this.setState({ removeTeamAccessLoading: true, removeTeamAccessError: null });
 		try {
-			const { teamId, challengeKey, refetch } = this.props;
+			const { teamId, challengeKey, refetchChallenges } = this.props;
 			await this.props.MutationRemoveTeamFromUnlocked({
 				variables: { key: challengeKey, teamId }
 			});
-			await refetch();
+			await refetchChallenges();
 			this.setState({ removeTeamAccessLoading: false, showRemoveTeamAccess: false });
 		}
 		catch (err) {

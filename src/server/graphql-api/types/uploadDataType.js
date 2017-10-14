@@ -9,9 +9,9 @@ import {
 } from 'graphql-iso-date';
 
 
-const responseDataType = new GraphQLObjectType({
-	name: 'ResponseData',
-	description: 'The data in a challenge item response',
+const uploadDataType = new GraphQLObjectType({
+	name: 'UploadData',
+	description: 'The data contained in an upload',
 	fields: {
 		date: {
 			type: new GraphQLNonNull(GraphQLDateTime),
@@ -19,10 +19,10 @@ const responseDataType = new GraphQLObjectType({
 		},
 		data: {
 			type: new GraphQLNonNull(GraphQLString),
-			description: 'The response data'
+			description: 'The upload data'
 		}
 	}
 });
 
 
-export default responseDataType;
+export default uploadDataType;

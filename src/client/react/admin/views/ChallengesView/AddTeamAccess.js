@@ -21,7 +21,7 @@ const QueryGetTeamsOptions = {
 class AddTeamAccess extends React.Component {
 	static propTypes = {
 		challengeKey: PropTypes.string.isRequired,
-		refetch: PropTypes.func.isRequired
+		refetchChallenges: PropTypes.func.isRequired
 	}
 
 	state = {
@@ -47,7 +47,7 @@ class AddTeamAccess extends React.Component {
 			await this.props.MutationAddTeamToUnlocked({
 				variables: { key: this.props.challengeKey, teamId: this.state.addTeamId }
 			});
-			await this.props.refetch();
+			await this.props.refetchChallenges();
 			this.setState({ addTeamLoading: false, showAddTeam: false });
 		}
 		catch (err) {
