@@ -67,7 +67,7 @@ class TeamProfile extends React.Component {
 				let stateUpdate = {};
 				if (!this.state.teamNameEditing) stateUpdate.teamName = getTeam.teamName;
 				if (!this.state.pointsEditing) stateUpdate.points = getTeam.points;
-				this.setState(stateUpdate);
+				if (this._mounted) this.setState(stateUpdate);
 			}
 		}
 		catch (err) {
