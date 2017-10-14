@@ -13,6 +13,15 @@ const _listObjectsFromS3 = (params) => {
 }
 
 
+const _getObject = (params) => {
+	return gql`
+	query GetObject($key:String!){  
+		_getObject(key:$key){ ${params} }
+	}`;
+}
+
+
 export {
-	_listObjectsFromS3
+	_listObjectsFromS3,
+	_getObject
 };
