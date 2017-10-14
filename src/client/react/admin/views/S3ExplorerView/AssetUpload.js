@@ -117,7 +117,7 @@ class AssetUpload extends React.Component {
 	render() {
 		return (
 			<div style={{marginBottom:'0.5rem'}}>
-				<Button text='Upload a public asset' className='pt-fill' iconName='cloud-upload' onClick={this.toggleShowAssetUpload}/>
+				<Button text='Upload a public asset' className='pt-fill pt-minimal pt-intent-primary' iconName='cloud-upload' onClick={this.toggleShowAssetUpload}/>
 				<Dialog title='Upload a public asset' isOpen={this.state.showAssetUpload} onClose={this.toggleShowAssetUpload}>
 					<div className='pt-dialog-body'>
 
