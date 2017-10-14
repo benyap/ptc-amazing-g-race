@@ -173,7 +173,7 @@ const _deleteObject = async function(user, collection, key) {
 const _listObjectsFromS3 = async function(user, MaxKeys, Prefix, StartAfter) {
 	if (!user) return new Error('No user logged in');
 	
-	const authorized = await permission.checkPermission(user, ['admin:view-objectsFromS3']);
+	const authorized = await permission.checkPermission(user, ['admin:list-objectsFromS3']);
 	if (authorized !== true) return authorized;
 	
 	const params = {
