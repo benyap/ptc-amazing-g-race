@@ -5,10 +5,11 @@ import DateFormat from 'dateformat';
 import { Link } from 'react-router-dom';
 import { compose, graphql, withApollo } from 'react-apollo';
 import { Spinner, Intent, Button, Collapse, Switch, Dialog } from '@blueprintjs/core';
-import { getResponse, getResponseData, checkResponse } from '../../../../graphql/response';
+import { getResponse, checkResponse } from '../../../../graphql/response';
 import { getTeam } from '../../../../graphql/team';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import NotificationToaster from '../../../components/NotificationToaster';
+import ResponsePreview from './ResponsePreview';
 
 
 const QueryGetResponseOptions = {
@@ -21,21 +22,10 @@ const QueryGetResponseOptions = {
 	}
 }
 
-const QueryGetResponseDataOptions = {
-	name: 'QueryGetResponseData',
-	options: (props) => {
-		return { 
-			fetchPolicy: 'cache-and-network',
-			variables: { responseId: props.responseId } 
-		}
-	}
-}
-
 const QueryGetResponseParams = '_id responseType challengeKey itemKey teamId uploadedBy uploadDate checked checkedBy checkedOn pointsAwarded responseValid retry';
 
 @compose(
 	graphql(getResponse(QueryGetResponseParams), QueryGetResponseOptions),
-	graphql(getResponseData('data date'), QueryGetResponseDataOptions),
 	graphql(checkResponse('ok'), { name: 'MutationCheckResponse' })
 )
 @withApollo
@@ -47,7 +37,6 @@ class ResponseProfile extends React.Component {
 
 	state = {
 		teamInfo: null,
-		showResponseData: false,
 		showModifyResponse: false,
 		checkResponseLoading: false,
 		checkResponseError: null,
@@ -128,11 +117,10 @@ class ResponseProfile extends React.Component {
 
 	render() {
 		const { loading, getResponse } = this.props.QueryGetResponse;
-		const { loading: dataLoading , getResponseData } = this.props.QueryGetResponseData;
 		const { teamInfo } = this.state;
-		let heading, receivedDate, content, response, responseData, action, warning;
+		let heading, receivedDate, content, responsePreview, action, warning;
 
-		if (getResponse && getResponseData) {
+		if (getResponse) {
 			receivedDate = `Recieved ${DateFormat(new Date(getResponse.uploadDate), 'hh:MM:ss TT (mmm dd yyyy)')}`
 			heading = <span><b>Response from </b><span className='pt-text-muted'>{getResponse.teamId} (fetching...)</span></span>;
 
@@ -219,38 +207,14 @@ class ResponseProfile extends React.Component {
 				</div>
 			);
 
-			// Create response data
-			if (getResponse.responseType === 'upload') {
-				responseData = (
-					<div>
-						<p>{`Retrieved from server at ${DateFormat(new Date(getResponseData.date), 'hh:MM TT mmm dd yyyy')}`}</p>
-						<img style={{maxWidth:'100%', maxHeight:'100%'}} 
-							src={getResponseData.data} alt={`Response uploaded by ${getResponse.uploadedBy}`}/>
-					</div>
-				);
-			}
-			else if (getResponse.responseType === 'phrase') {
-				responseData = (
-					<div>
-						<p>{`Retrieved from server at ${DateFormat(new Date(getResponseData.date), 'hh:MM TT mmm dd yyyy')}`}</p>
-						<FormInput id='phrase' readOnly large value={getResponseData.data}/>
-					</div>
-				);
-			}
-
-			response = (
-				<div style={{marginTop:'1rem'}}>
-					<Button className='pt-fill' iconName='upload' text='See response' onClick={this.toggle('showResponseData')}/>
-					<Dialog title={`[${getResponse.uploadedBy}] ${getResponse.challengeKey}: ${getResponse.itemKey}`} isOpen={this.state.showResponseData} onClose={this.toggle('showResponseData')}>
-						<div className='pt-dialog-body'>
-							{responseData}
-						</div>
-					</Dialog>
+			responsePreview = (
+				<div style={{marginTop:'0.5rem'}}>
+					<ResponsePreview response={getResponse}/>
 				</div>
 			);
 
 			action = (
-				<div style={{marginTop:'1rem'}}>
+				<div style={{marginTop:'0.5rem'}}>
 					<Button className='pt-fill' iconName={this.state.showModifyResponse?'chevron-down':'chevron-right'} 
 						text='Modify response status' onClick={this.toggle('showModifyResponse')}/>
 					<Collapse isOpen={this.state.showModifyResponse}>
@@ -280,7 +244,7 @@ class ResponseProfile extends React.Component {
 			);
 		}
 		else if (loading || dataLoading) {
-			content = <div style={{margin:'2rem 0',textAlign:'center'}}><Spinner/></div>;
+			content = <div style={{margin:'3rem 0',textAlign:'center'}}><Spinner/></div>;
 		}
 
 		return (
@@ -289,7 +253,7 @@ class ResponseProfile extends React.Component {
 				<h5>{heading}</h5>
 				<p className='pt-text-muted'>{receivedDate}</p>
 				{content}
-				{response}
+				{responsePreview}
 				{action}
 			</div>
 		);
