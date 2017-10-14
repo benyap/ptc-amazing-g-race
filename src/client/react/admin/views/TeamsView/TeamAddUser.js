@@ -36,9 +36,12 @@ class TeamAddUser extends React.Component {
 	toggleAddUsers() {
 		this.setState((prevState) => {
 			const state = { addUsersDialogOpen: !prevState.addUsersDialogOpen, addUserError: null };
-
+			
 			// Reset user to add if dialog is opened
-			if (state.addUsersDialogOpen) state.userToAdd = 'NONE';
+			if (state.addUsersDialogOpen) {
+				state.userToAdd = 'NONE';
+				this.props.QueryUsers.refetch();
+			}
 			else state.userToAdd = null;
 
 			return state;

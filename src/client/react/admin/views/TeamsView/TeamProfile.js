@@ -6,9 +6,9 @@ import { compose, graphql } from 'react-apollo';
 import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core';
 import { saveState } from '../../../../actions/stateActions';
 import { getTeam, setTeamName, setTeamPoints, removeTeam } from '../../../../graphql/team';
-import { removeUserTeam } from '../../../../graphql/user';
 import NotificationToaster from '../../../components/NotificationToaster';
 import TeamAddUser from './TeamAddUser';
+import TeamUser from './TeamUser';
 
 
 const QueryTeamParams = '_id teamName members{username firstname lastname} memberCount points';
@@ -21,20 +21,11 @@ const QueryTeamOptions = {
 	})
 }
 
-const QueryUsersOptions = {
-	name: 'QueryUsers',
-	options: { 
-		variables: { skip: 0, limit: 0 },
-		fetchPolicy: 'network-only'
-	}
-}
-
 @compose(
 	graphql(getTeam(QueryTeamParams), QueryTeamOptions),
 	graphql(setTeamName('ok failureMessage'), {name: 'MutationSetTeamName'}),
 	graphql(setTeamPoints('ok failureMessage'), {name: 'MutationSetTeamPoints'}),
-	graphql(removeTeam('ok'), {name: 'MutationRemoveTeam'}),
-	graphql(removeUserTeam('ok'), {name: 'MutationRemoveUserTeam'})
+	graphql(removeTeam('ok'), {name: 'MutationRemoveTeam'})
 )
 @connect()
 @autobind
@@ -57,11 +48,6 @@ class TeamProfile extends React.Component {
 		points: null,
 		pointsModified: false,
 		saving: false,
-
-		removeUserDialogOpen: false,
-		removeUserLoading: false,
-		removeUserError: null,
-		userToRemove: null,
 
 		removeTeamDialogOpen: false,
 		removeTeamLoading: false,
@@ -156,37 +142,6 @@ class TeamProfile extends React.Component {
 			});
 	}
 
-	toggleRemoveUser(userToRemove) {
-		return () => {
-			this.setState((prevState) => {
-				return { 
-					removeUserDialogOpen: !prevState.removeUserDialogOpen, 
-					removeUserError: null,
-					userToRemove: userToRemove
-				};
-			});
-		}
-	}
-
-	submitRemoveUser() {
-		this.setState({removeUserLoading: true});
-		this.props.MutationRemoveUserTeam({ variables: { username: this.state.userToRemove }})
-		.then(async (result) => {
-			await this.props.QueryUsers.refetch()
-			await this.props.QueryTeam.refetch() 
-			this.props.dispatch(saveState());
-			if (this._mounted) this.setState({removeUserLoading: false, removeUserDialogOpen: false});
-		})
-		.catch((err) => {
-			if (this._mounted) {
-				this.setState({
-					removeUserLoading: false,
-					removeUserError: err.toString()
-				});
-			}
-		});
-	}
-
 	toggleRemoveTeam() {
 		this.setState((prevState) => {
 			return { removeTeamDialogOpen: !prevState.removeTeamDialogOpen, removeTeamError: null };
@@ -242,17 +197,7 @@ class TeamProfile extends React.Component {
 				<div>
 					{members.length ? 
 						members.map((member) => {
-							return (
-								<div className='member' key={member.username}>
-									<div className='name'>
-										{`${member.firstname} ${member.lastname}`}
-									</div>
-									<div className='actions'>
-										<Button className='pt-minimal' iconName='remove' 
-											onClick={this.toggleRemoveUser(member.username)}/>
-									</div>
-								</div>
-							);
+							return <TeamUser key={member.username} member={member} refetch={this.props.QueryTeam.refetch}/>;
 						})
 						:
 						<div>
@@ -303,26 +248,6 @@ class TeamProfile extends React.Component {
 				</div>
 
 				{content}
-
-				{/* Remove user dialog */}
-				<Dialog isOpen={this.state.removeUserDialogOpen} onClose={this.toggleRemoveUser()} title='Remove user from team' iconName='warning-sign'>
-					<div className='pt-dialog-body'>
-						{this.state.removeUserError ? 
-							<div className='pt-callout pt-intent-danger pt-icon-error'>
-								{this.state.removeUserError}
-							</div>
-							:null}
-						<p>
-							Are you sure you want to remove <code>{this.state.userToRemove}</code> from this team?
-						</p>
-					</div>
-					<div className='pt-dialog-footer'>
-						<div className='pt-dialog-footer-actions'>
-							<Button onClick={this.toggleRemoveUser()} text='Cancel' className='pt-minimal' disabled={this.state.removeUserLoading}/>
-							<Button onClick={this.submitRemoveUser} text='Remove user' intent={Intent.DANGER} loading={this.state.removeUserLoading}/>
-						</div>
-					</div>
-				</Dialog>
 
 				{/* Remove team dialog */}
 				<Dialog isOpen={this.state.removeTeamDialogOpen} onClose={this.toggleRemoveTeam} title='Remove team' iconName='warning-sign'>
