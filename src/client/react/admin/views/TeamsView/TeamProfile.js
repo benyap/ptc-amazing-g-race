@@ -51,6 +51,18 @@ class TeamProfile extends React.Component {
 
 	async componentDidMount() {
 		this._mounted = true;
+
+		// Check if there is data available
+		const { getTeam } = this.props.QueryTeam;
+
+		if (this.props.QueryTeam.getTeam) {
+			this.setState({ 
+				points: getTeam.points,
+				teamName: getTeam.teamName
+			});
+		}
+
+		// Fetch latest data
 		try {
 			const { data: { getTeam } } = await this.props.QueryTeam.refetch();
 			if (getTeam) {
