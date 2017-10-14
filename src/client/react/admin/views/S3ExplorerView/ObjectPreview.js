@@ -94,7 +94,7 @@ class ObjectPreview extends React.Component {
 		if (url) {
 			markup = (
 				<div className='pt-callout pt-intent-primary pt-icon-share'>
-					Copy this markup to use this image in Markdown. 
+					Copy the text below to use this image in Markdown. 
 					Please note that the link will only work if this is a <b>public asset</b>.
 					<FormInput id='url' readOnly value={`![](${url.value}/${this.props.objectKey})`} helperText={date}/>
 				</div>
@@ -120,7 +120,7 @@ class ObjectPreview extends React.Component {
 		return (
 			<div>
 				<Dialog isOpen={this.props.objectKey} title='Upload preview' onClose={this.close}>
-					<div className='pt-dialog-body'>
+					<div className='pt-dialog-body object-preview-dialog'>
 						{this.state.getObjectError ? 
 							<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'0.5rem'}}>
 								{this.state.getObjectError}
