@@ -136,31 +136,31 @@ class TeamProfile extends React.Component {
 		this._save(this.props.MutationSetTeamName, 'setTeamName', variables);
 	}
 
-	_save(mutation, mutationName, variables) {
+	async _save(mutation, mutationName, variables) {
 		this.setState({saving: true});
 		
 		// Execute mutation
-		mutation({ variables })
-			.then(async (result) => {
-				if (result.data[mutationName].ok) {
-					await this.props.QueryTeam.refetch();
-					if (this._mounted) this.setState({saving: false, teamNameModified: false, pointsModified: false });
-				}
-				else {
-					if (this._mounted) this.setState({saving: false});
-					NotificationToaster.show({
-						intent: Intent.DANGER,
-						message: result.data[mutationName].failureMessage
-					});
-				}
-			})
-			.catch((err) => {
+		try {
+			const result = await mutation({ variables });
+			if (result.data[mutationName].ok) {
+				await this.props.QueryTeam.refetch();
+				if (this._mounted) this.setState({saving: false, teamNameModified: false, pointsModified: false });
+			}
+			else {
 				if (this._mounted) this.setState({saving: false});
 				NotificationToaster.show({
 					intent: Intent.DANGER,
-					message: err.toString()
+					message: result.data[mutationName].failureMessage
 				});
+			}
+		}
+		catch (err) {
+			if (this._mounted) this.setState({saving: false});
+			NotificationToaster.show({
+				intent: Intent.DANGER,
+				message: err.toString()
 			});
+		}
 	}
 
 	toggleRemoveTeam() {
