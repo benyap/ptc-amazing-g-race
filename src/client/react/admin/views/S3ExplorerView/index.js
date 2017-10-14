@@ -2,12 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
-import { _listObjectsFromS3 } from '../../../../graphql/upload';
 import { Spinner } from '@blueprintjs/core';
 import S3Explorer from '../../../../../../lib/react/components/S3Explorer';
-import RefreshBar from '../../components/RefreshBar';
+import { _listObjectsFromS3 } from '../../../../graphql/upload';
+import { getProtectedSetting } from '../../../../graphql/setting';
 import ViewError from '../../components/ViewError';
+import RefreshBar from '../../components/RefreshBar';
 import AssetUpload from './AssetUpload';
+import ObjectPreview from './ObjectPreview';
 
 import '../../scss/views/_s3explorer-view.scss';
 
@@ -21,16 +23,24 @@ class S3ExplorerView extends React.Component {
 		shouldRefresh: PropTypes.bool.isRequired
 	}
 
+	state = {
+		previewObject: null
+	}
+
 	navigateTo(Prefix) {
 		return (e) => {
 			this.props.QueryS3Objects.refetch({ Prefix });
 		}
 	}
 
-	open(Key) {
+	openPreview(Key) {
 		return (e) => {
-			console.log(Key);
+			this.setState({ previewObject: Key });
 		}
+	}
+
+	closePreview() {
+		this.setState({ previewObject: null });
 	}
 
 	render() {
@@ -38,7 +48,7 @@ class S3ExplorerView extends React.Component {
 		if (this.props.QueryS3Objects.loading) {
 			if (this.objects) {
 				content = (
-					<S3Explorer root={'uploads/'} objects={this.objects} navigateTo={this.navigateTo} open={this.open} loading/>
+					<S3Explorer root={'uploads/'} objects={this.objects} navigateTo={this.navigateTo} open={this.openPreview} loading/>
 				);
 			}
 			else {
@@ -59,7 +69,7 @@ class S3ExplorerView extends React.Component {
 				this.objects = this.props.QueryS3Objects._listObjectsFromS3
 				content = (
 					<S3Explorer root={'uploads/'} objects={this.props.QueryS3Objects._listObjectsFromS3} 
-						navigateTo={this.navigateTo} open={this.open}/>
+						navigateTo={this.navigateTo} open={this.openPreview}/>
 				);
 			}
 		}
@@ -83,6 +93,7 @@ class S3ExplorerView extends React.Component {
 					</ul>
 				</div>
 				<AssetUpload refetchAssets={this.props.QueryS3Objects.refetch}/>
+				<ObjectPreview objectKey={this.state.previewObject} close={this.closePreview}/> 
 				{content}
 			</div>
 		);
