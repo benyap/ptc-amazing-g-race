@@ -36,7 +36,7 @@ const createChallenge = async function(user, key, order, passphrase = null, titl
 		passphrase: passphrase,
 		title: title,
 		description: description,
-		locked: false,
+		locked: true,
 		items: [],
 		teams: []
 	};
