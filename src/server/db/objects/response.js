@@ -47,7 +47,7 @@ const getResponseData = async function(user, responseId) {
 			const params = {
 				Bucket: `${AWS_S3_BUCKET}/${AWS_S3_UPLOAD_LOCATION}/images/${response.challengeKey}`, 
 				Key: response.responseValue,
-				Expires: 3600
+				Expires: 60
 			};
 			
 			// Get download url
