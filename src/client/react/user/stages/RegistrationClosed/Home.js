@@ -24,7 +24,7 @@ const QueryMeOptions = {
 }
 
 @connect(mapStateToProps)
-@graphql(getUserByEmail('firstname lastname username'), QueryMeOptions)
+@graphql(getUserByEmail('_id firstname lastname username'), QueryMeOptions)
 class Home extends React.Component {
 	render() {
 		let name;
