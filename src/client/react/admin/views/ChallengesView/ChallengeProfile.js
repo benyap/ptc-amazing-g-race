@@ -328,7 +328,7 @@ class ChallengeProfile extends React.Component {
 				<Button className='pt-minimal' intent={Intent.NONE} iconName='cross' onClick={this.confirmClose} style={{float:'right'}} disabled={this.state.editChallengeItem}/>
 				<Button className='pt-minimal' intent={Intent.PRIMARY} iconName='floppy-disk' onClick={this.saveContent} style={{float:'right'}} disabled={!this.state.modified||this.state.saving||this.state.editChallengeItem}/>
 				<span style={{float:'right'}}>
-					<ChallengeRemove challengeKey={this.props.challenge.key} disabled={this.state.editChallengeItem} refetchChallenges={this.props.refetchChallenges} closeProfile={this.props.closeProfile}/>
+					<ChallengeRemove challengeKey={this.props.challenge.key} disabled={this.state.editChallengeItem?true:false} refetchChallenges={this.props.refetchChallenges} closeProfile={this.props.closeProfile}/>
 				</span>
 				{loading || this.state.saving ? 
 					<div style={{float:'right'}}>
