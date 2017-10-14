@@ -175,8 +175,7 @@ class TeamProfile extends React.Component {
 				<h4><b>
 					{
 						this.state.teamName ? 
-						<EditableText selectAllOnFocus 
-							value={this.state.teamName} 
+						<EditableText value={this.state.teamName} 
 							onEdit={this.onEdit('teamName')}
 							onChange={this.onChange('teamName')} 
 							onConfirm={this.confirmName}/> :
@@ -193,8 +192,7 @@ class TeamProfile extends React.Component {
 						<span>Points:&nbsp;</span>
 						{ this.state.points === null ? 
 							<span className='pt-text-muted'>Loading...</span> :
-							<EditableText selectAllOnFocus 
-								value={this.state.points} 
+							<EditableText value={this.state.points} 
 								onEdit={this.onEdit('points')}
 								onChange={this.onChange('points')} 
 								onConfirm={this.confirmPoints}/>
