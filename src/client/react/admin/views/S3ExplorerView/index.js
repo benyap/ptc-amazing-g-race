@@ -65,6 +65,20 @@ class S3ExplorerView extends React.Component {
 			<div id='dashboard-s3explorer' className='dashboard-tab'>
 				<h4>AWS S3 uploads explorer</h4>
 				<RefreshBar query={this.props.QueryS3Objects} shouldRefresh={this.props.shouldRefresh}/>
+				<div className='pt-callout pt-icon-info-sign' style={{marginBottom:'0.5rem'}}>
+					<ul style={{margin:'0',padding:'0 0 0 1rem'}}>
+						<li>
+							User responses are uploaded to the <code>images</code> directory.
+						</li>
+						<li>
+							Public assets are uplaoded to the <code>assets</code> directory.
+						</li>
+						<li>
+							To use a custom image in a challenge description, 
+							upload a <b>public asset</b> and click on it to get the Markdown markup to insert the image.
+						</li>
+					</ul>
+				</div>
 				{content}
 			</div>
 		);
