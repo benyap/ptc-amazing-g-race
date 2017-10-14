@@ -223,7 +223,7 @@ class ChallengeProfile extends React.Component {
 									The <code>passphrase</code> can be entered to unlock this challenge if it is <b>not</b> public.
 								</li>
 								<li>
-									<code>Locked</code> challenges are viewable but do not accept responses.
+									<code>Locked</code> challenges are hidden from users (even if they enter the matching passphrase).
 								</li>
 							</ul>
 						</div>
