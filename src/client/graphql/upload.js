@@ -21,7 +21,20 @@ const _getObject = (params) => {
 }
 
 
+// =============
+//	 MUTATIONS
+// =============
+
+const _deleteObject = (params) => {
+	return gql`
+	mutation DeleteObject($collection:String!,$key:String!){
+		_deleteObject(collection:$collection,key:$key){ ${params} }
+	}`;
+}
+
+
 export {
 	_listObjectsFromS3,
-	_getObject
+	_getObject,
+	_deleteObject
 };
