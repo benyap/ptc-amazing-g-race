@@ -1,0 +1,18 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import autobind from 'core-decorators/es/autobind';
+
+
+@autobind
+class ResponsePanel extends React.Component {
+	render() {
+		return (
+			<div>
+				
+			</div>
+		);
+	}
+}
+
+
+export default ResponsePanel;
