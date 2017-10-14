@@ -36,12 +36,7 @@ class ChallengeProfile extends React.Component {
 	render() {
 		const { challenge } = this.props;
 		
-		let items;
-		let description = (
-			<div className='instruction-panel'>
-				<MarkdownRenderer className='markdown-content' src={challenge.description}/>
-			</div>
-		);
+		let items, description;
 		
 		if (challenge.items.length > 0) {
 			description = (
@@ -64,6 +59,13 @@ class ChallengeProfile extends React.Component {
 					else if (a.props.order < b.props.order) return -1;
 					else return 0;
 				})
+			);
+		}
+		else {
+			description = (
+				<div className='instruction-panel'>
+					<MarkdownRenderer className='markdown-content' src={challenge.description}/>
+				</div>
 			);
 		}
 
