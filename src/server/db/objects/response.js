@@ -45,7 +45,7 @@ const getResponseData = async function(user, responseId) {
 		case 'upload': {
 			// Retrieve object from AWS S3
 			const params = {
-				Bucket: `${AWS_S3_BUCKET}/${AWS_S3_UPLOAD_LOCATION}/images/${response.challengeKey}`, 
+				Bucket: `${AWS_S3_BUCKET}/${AWS_S3_UPLOAD_LOCATION}/responses/${response.challengeKey}`, 
 				Key: response.responseValue,
 				Expires: 60
 			};
@@ -178,7 +178,7 @@ const addResponse = async function(user, challengeKey, itemKey, responseType, re
 		case 'upload': {
 			if (!object) return new Error('No object uploaded.');
 			responseValue = `[${userCheck.teamId}] ${itemKey} ${parseInt(new Date().getTime()/1000)}.${object.mimetype.substring(object.mimetype.indexOf('/')+1)}`;
-			const uploadResponse = await upload._uploadObject(user, object, `images/${challengeKey}`, responseValue, responseValue);
+			const uploadResponse = await upload._uploadObject(user, object, `responses/${challengeKey}`, responseValue, responseValue);
 			if (!uploadResponse.ok) {
 				// FIXME: Improve error handling
 				console.log(uploadResponse);

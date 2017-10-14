@@ -105,6 +105,7 @@ const _uploadObject = async function(user, object, collection, key, name) {
 	}
 }
 
+
 /**
  * Delete an object from S3
  * @param {*} user 
@@ -132,14 +133,16 @@ const _deleteObject = async function(user, collection, key) {
 
 		// Remove object from database
 		const result = await db.collection('uploads').remove({ collection, key });
-
+		
+		let actionString;
 		if (result.result.n < 1) {
-			return new Error(`Object with the key '${key}' was not deleted because it was not found.`);
+			// This can occur when a user response object is removed from S3
+			actionString = 'Delete untracked object';
 		}
+		else actionString = 'Delete object';
 
-		// Log action
 		const action = {
-			action: 'Delete object',
+			action: actionString,
 			target: key,
 			targetCollection: 'uploads',
 			who: user.username,
@@ -150,8 +153,9 @@ const _deleteObject = async function(user, collection, key) {
 				version: deleteResult.VersionId
 			})
 		};
-		db.collection('actions').insert(action);
 		
+		db.collection('actions').insert(action);
+
 		return {
 			ok: true,
 			action: action
@@ -161,7 +165,6 @@ const _deleteObject = async function(user, collection, key) {
 		return new Error(err.toString());
 	}
 }
-
 
 
 /**
