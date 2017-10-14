@@ -95,7 +95,7 @@ class ObjectPreview extends React.Component {
 				<div className='pt-callout pt-intent-primary pt-icon-share'>
 					Copy this markup to use this image in Markdown. 
 					Please note that the link will only work if this is a <b>public asset</b>.
-					<FormInput readOnly value={`![](${url.value}/${this.props.objectKey})`} helperText={date}/>
+					<FormInput id='url' readOnly value={`![](${url.value}/${this.props.objectKey})`} helperText={date}/>
 				</div>
 			);
 		}
@@ -104,7 +104,7 @@ class ObjectPreview extends React.Component {
 				<div className='pt-callout pt-intent-primary pt-icon-share'>
 					Copy the text below to use this image in Markdown. 
 					Please note that this will only work if it is a <b>public asset</b>.
-					<FormInput readOnly disabled value='Loading...'/>
+					<FormInput id='url' readOnly disabled value='Loading...'/>
 				</div>
 			);
 		}
