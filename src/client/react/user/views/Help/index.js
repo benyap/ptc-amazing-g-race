@@ -6,7 +6,7 @@ class Help extends React.Component {
 		return (
 			<main id='help' className='dashboard'>
 				<div className='content'>
-					
+					<h2>Help</h2>
 				</div>
 			</main>
 		);
