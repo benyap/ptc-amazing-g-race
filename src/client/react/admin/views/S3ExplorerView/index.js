@@ -7,6 +7,9 @@ import { Spinner } from '@blueprintjs/core';
 import S3Explorer from '../../../../../../lib/react/components/S3Explorer';
 import RefreshBar from '../../components/RefreshBar';
 import ViewError from '../../components/ViewError';
+import AssetUpload from './AssetUpload';
+
+import '../../scss/views/_s3explorer-view.scss';
 
 
 const QueryS3ObjectsParams = 'Name Prefix KeyCount Contents{Key LastModified Size} CommonPrefixes{Prefix}';
@@ -40,7 +43,7 @@ class S3ExplorerView extends React.Component {
 			}
 			else {
 				content = (
-					<div className='loading-spinner'>
+					<div style={{textAlign:'center',margin:'3rem'}}>
 						<Spinner/>
 					</div>
 				);
@@ -71,7 +74,7 @@ class S3ExplorerView extends React.Component {
 							User responses are uploaded to the <code>images</code> directory.
 						</li>
 						<li>
-							Public assets are uplaoded to the <code>assets</code> directory.
+							Public assets are uploaded to the <code>assets</code> directory.
 						</li>
 						<li>
 							To use a custom image in a challenge description, 
@@ -79,6 +82,7 @@ class S3ExplorerView extends React.Component {
 						</li>
 					</ul>
 				</div>
+				<AssetUpload refetchAssets={this.props.QueryS3Objects.refetch}/>
 				{content}
 			</div>
 		);
