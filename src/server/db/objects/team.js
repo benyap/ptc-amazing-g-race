@@ -171,34 +171,29 @@ const setTeamName = async function(user, teamId, name) {
 		return new Error(`A team with the id \'${teamId}\' does not exist.`);
 	}
 
+	if (teamCheck.teamName === name) return new Error(`Team '${teamId}' already has that name.`);
+
 	const oldName = teamCheck.teamName;
 
 	const result = await db.collection('teams').update(
 		{_id: Mongo.ObjectID(teamId)}, 
-		{$set: { teamName: name }});
+		{$set: { teamName: name }}
+	);
 	
-	if (result.result.nModified > 0) {
-		// Log action
-		const action = {
-			action: 'Set team name',
-			target: teamId,
-			targetCollection: 'teams',
-			date: new Date(),
-			who: user.username,
-			infoJSONString: JSON.stringify({ teamId, oldName, newName: name })
-		};
-		db.collection('actions').insert(action);
-		
-		return { 
-			ok: true,
-			action: action
-		}
-	}
-	else {
-		return {
-			ok: false,
-			failureMessage: `Team '${teamId}' already has that name.`
-		}
+	// Log action
+	const action = {
+		action: 'Set team name',
+		target: teamId,
+		targetCollection: 'teams',
+		date: new Date(),
+		who: user.username,
+		infoJSONString: JSON.stringify({ teamId, oldName, newName: name })
+	};
+	db.collection('actions').insert(action);
+	
+	return { 
+		ok: true,
+		action: action
 	}
 }
 
@@ -227,33 +222,28 @@ const setTeamPoints = async function(user, teamId, points) {
 		return new Error(`A team with the id \'${teamId}\' does not exist.`);
 	}
 
+	if (teamCheck.points === points) return new Error(`'${teamCheck.teamName}' already has ${points} points.`);
+
 	const result = await db.collection('teams').update(
 		{_id: Mongo.ObjectID(teamId)}, 
-		{$set: { points }});
-	
-	if (result.result.nModified > 0) {
-		// Log action
-		const action = {
-			action: 'Set team points',
-			target: teamId,
-			targetCollection: 'teams',
-			date: new Date(),
-			who: user.username,
-			infoJSONString: JSON.stringify({ teamId, teamName: teamCheck.teamName, points })
-		};
-	
-		db.collection('actions').insert(action);
-		
-		return { 
-			ok: true,
-			action: action
-		}
-	}
-	else {
-		return {
-			ok: false,
-			failureMessage: `Team '${teamId}' already has ${points} points.`
-		}
+		{$set: { points }}
+	);
+
+	// Log action
+	const action = {
+		action: 'Set team points',
+		target: teamId,
+		targetCollection: 'teams',
+		date: new Date(),
+		who: user.username,
+		infoJSONString: JSON.stringify({ teamId, teamName: teamCheck.teamName, points })
+	};
+
+	db.collection('actions').insert(action);
+
+	return { 
+		ok: true,
+		action: action
 	}
 }
 
@@ -284,31 +274,24 @@ const addTeamPoints = async function(user, teamId, points) {
 
 	const result = await db.collection('teams').update(
 		{_id: Mongo.ObjectID(teamId)}, 
-		{$set: { points: teamCheck.points + points }});
+		{$set: { points: teamCheck.points + points }}
+	);
 	
-	if (result.result.nModified > 0) {
-		// Log action
-		const action = {
-			action: 'Add team points',
-			target: teamId,
-			targetCollection: 'teams',
-			date: new Date(),
-			who: user.username,
-			infoJSONString: JSON.stringify({ teamId, teamName: teamCheck.teamName, prevPoints: teamCheck.points, add: points })
-		};
+	// Log action
+	const action = {
+		action: 'Add team points',
+		target: teamId,
+		targetCollection: 'teams',
+		date: new Date(),
+		who: user.username,
+		infoJSONString: JSON.stringify({ teamId, teamName: teamCheck.teamName, prevPoints: teamCheck.points, add: points })
+	};
+
+	db.collection('actions').insert(action);
 	
-		db.collection('actions').insert(action);
-		
-		return { 
-			ok: true,
-			action: action
-		}
-	}
-	else {
-		return {
-			ok: false,
-			failureMessage: `Unable to modify team '${teamId}' points.`
-		}
+	return { 
+		ok: true,
+		action: action
 	}
 }
 
