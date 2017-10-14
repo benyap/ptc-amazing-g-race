@@ -19,6 +19,7 @@ import ChallengeItemProfile from './ChallengeItemProfile';
 import TeamAccessCard from './TeamAccessCard';
 import AddTeamAccess from './AddTeamAccess';
 import AddChallengeItem from './AddChallengeItem';
+import ChallengeRemove from './ChallengeRemove';
 
 import '../../../user/scss/components/_instruction-panel.scss';
 import '../../scss/components/_markdown-preview.scss';
@@ -55,6 +56,7 @@ class ChallengeProfile extends React.Component {
 			public: PropTypes.bool.isRequired,
 			locked: PropTypes.bool.isRequired
 		}),
+		refetchChallenges: PropTypes.func.isRequired,
 		closeProfile: PropTypes.func.isRequired
 	}
 
@@ -70,10 +72,7 @@ class ChallengeProfile extends React.Component {
 		saving: false,
 		loaded: false,
 		modified: false,
-		showConfimClose: false,
-		showConfirmDelete: false,
-		deleteLoading: false,
-		deleteError: null,
+		showConfirmClose: false,
 
 		editChallengeItem: null,
 
@@ -99,43 +98,17 @@ class ChallengeProfile extends React.Component {
 
 	confirmClose() {
 		if (this.state.modified) {
-			this.toggleDialog('ConfirmClose')();
+			this.toggleConfirmClose();
 		}
 		else {
 			this.props.closeProfile();
 		}
 	}
 
-	toggleDialog(key) {
-		return () => {
-			this.setState((prevState) => {
-				return { 
-					[`show${key}`]: !prevState[`show${key}`],
-					deleteError: null
-				}
-			});
-		}
-	}
-
-	async submitDeleteChallenge() {
-		this.setState({ deleteLoading: true, deleteError: null, modified: false });
-		try {
-			await this.props.MutationDeleteChallenge({
-				variables: { key: this.props.challenge.key }
-			});
-			this.setState({ deleteLoading: false, deleteError: null });
-			this.props.closeProfile();
-		}
-		catch (err) {
-			if (this._mounted && this.state.showConfirmDelete) this.setState({ deleteLoading: false, deleteError: err.toString() });
-			else {
-				this.setState({ deleteLoading: false });
-				NotificationToaster.show({
-					intent: Intent.DANGER,
-					message: err.toString()
-				});
-			}
-		}
+	toggleConfirmClose() {
+		this.setState((prevState) => {
+			return { showConfirmClose: !prevState.showConfirmClose };
+		});
 	}
 
 	_loadValues(challenge) {
@@ -228,10 +201,7 @@ class ChallengeProfile extends React.Component {
 
 		let content;
 
-		if (this.state.deleteLoading) content = (
-			<div className='pt-text-muted' style={{margin:'1rem 0'}}>Deleting challenge...</div>
-		);
-		else if (this.state.editChallengeItem) {
+		if (this.state.editChallengeItem) {
 			content = (
 				<div>
 					<ChallengeItemProfile itemKey={this.state.editChallengeItem} refetchChallenges={this.props.QueryGetChallenge.refetch}
@@ -359,7 +329,9 @@ class ChallengeProfile extends React.Component {
 			<div className='pt-card challenge-profile'>
 				<Button className='pt-minimal' intent={Intent.NONE} iconName='cross' onClick={this.confirmClose} style={{float:'right'}} disabled={this.state.editChallengeItem}/>
 				<Button className='pt-minimal' intent={Intent.PRIMARY} iconName='floppy-disk' onClick={this.saveContent} style={{float:'right'}} disabled={!this.state.modified||this.state.saving||this.state.editChallengeItem}/>
-				<Button className='pt-minimal' intent={Intent.DANGER} iconName='trash' onClick={this.toggleDialog('ConfirmDelete')} style={{float:'right'}} disabled={this.state.deleteLoading||this.state.editChallengeItem}/>
+				<span style={{float:'right'}}>
+					<ChallengeRemove challengeKey={this.props.challenge.key} disabled={this.state.editChallengeItem} refetchChallenges={this.props.refetchChallenges} closeProfile={this.props.closeProfile}/>
+				</span>
 				{loading || this.state.saving ? 
 					<div style={{float:'right'}}>
 						<Spinner className='pt-small'/>
@@ -367,38 +339,20 @@ class ChallengeProfile extends React.Component {
 				: null }
 				<h5>
 					<span className={`pt-icon ${icon}`}></span>&nbsp;
-					Title: <b><EditableText value={this.state.title} onChange={this.handleChange('title')} disabled={this.state.deleteLoading||this.state.editChallengeItem}/></b>
+					Title: <b><EditableText value={this.state.title} onChange={this.handleChange('title')} disabled={this.state.editChallengeItem}/></b>
 				</h5>
 
 				{content}
 
 				{/* Confirm close dialog */}
-				<Dialog isOpen={this.state.showConfirmClose} onClose={this.toggleDialog('ConfirmClose')} title='Unsaved changes'>
+				<Dialog isOpen={this.state.showConfirmClose} onClose={this.toggleConfirmClose} title='Unsaved changes'>
 					<div className='pt-dialog-body'>
 						Are you sure you want to close? Your changes have not been saved yet.
 					</div>
 					<div className='pt-dialog-footer'>
 						<div className='pt-dialog-footer-actions'>
 							<Button intent={Intent.DANGER} className='pt-minimal' text='Close' onClick={this.props.closeProfile}/>
-							<Button intent={Intent.PRIMARY} text='Cancel' onClick={this.toggleDialog('ConfirmClose')}/>
-						</div>
-					</div>
-				</Dialog>
-
-				{/* Confirm delete dialog */}
-				<Dialog isOpen={this.state.showConfirmDelete} onClose={this.toggleDialog('ConfirmDelete')} title='Delete challenge'>
-					<div className='pt-dialog-body'>
-						{ this.state.deleteError ? 
-							<div className='pt-callout pt-intent-danger pt-icon-error'>
-								{ this.state.deleteError }
-							</div> 
-							: 'Are you sure you want to delete this challenge? This action is irreversible.'
-						}
-					</div>
-					<div className='pt-dialog-footer'>
-						<div className='pt-dialog-footer-actions'>
-							<Button text='Close' onClick={this.toggleDialog('ConfirmDelete')} className='pt-minimal' disabled={this.state.deleteLoading}/>
-							<Button text='Delete' onClick={this.submitDeleteChallenge} intent={Intent.DANGER} loading={this.state.deleteLoading}/>
+							<Button intent={Intent.PRIMARY} text='Cancel' onClick={this.toggleConfirmClose}/>
 						</div>
 					</div>
 				</Dialog>

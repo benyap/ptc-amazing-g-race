@@ -77,7 +77,7 @@ class ChallengesView extends React.Component {
 			content = <ViewError error={error}/>;
 		}
 		else if (this.state.viewProfile) {
-			content = <ChallengeProfile challenge={this.state.viewProfile} closeProfile={this.closeProfile}/>;
+			content = <ChallengeProfile challenge={this.state.viewProfile} closeProfile={this.closeProfile} refetchChallenges={this.props.QueryGetAllChallenges.refetch}/>;
 		}
 		else if (getAllChallenges) {
 			content = (
