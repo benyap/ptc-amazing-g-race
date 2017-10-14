@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { Spinner, Button, Intent } from '@blueprintjs/core';
+import { Button, Intent } from '@blueprintjs/core';
 import { graphql } from 'react-apollo';
 import { getChallenges } from '../../../../graphql/challenge';
 import NotificationToaster from '../../../components/NotificationToaster';
-import ChallengeCard from './ChallengeCard';
 import ChallengeUnlock from './ChallengeUnlock';
+import ChallengeList from './ChallengeList';
 
 
 const QueryGetChallengesOptions = {
@@ -60,19 +60,8 @@ class Challenges extends React.Component {
 						: null
 					}
 
-					{ this.props.QueryGetChallenges.getChallenges ?
-						this.props.QueryGetChallenges.getChallenges.map((challenge) => {
-							return <ChallengeCard key={challenge.key} order={challenge.order} challenge={challenge}/>
-						}).sort((a, b) => {
-							if (a.props.order > b.props.order) return 1;
-							else if (a.props.order < b.props.order) return -1;
-							else return 0;
-						})
-						:
-						<div style={{textAlign:'center',margin:'2rem'}}>
-							<Spinner/>
-						</div>
-					}
+					<ChallengeList challenges={this.props.QueryGetChallenges.getChallenges}/>
+					
 				</div>
 			</main>
 		);
