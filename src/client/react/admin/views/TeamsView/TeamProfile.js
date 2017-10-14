@@ -6,8 +6,9 @@ import { compose, graphql } from 'react-apollo';
 import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core';
 import { saveState } from '../../../../actions/stateActions';
 import { getTeam, setTeamName, setTeamPoints, removeTeam } from '../../../../graphql/team';
-import { getUsers, setUserTeam, removeUserTeam } from '../../../../graphql/user';
+import { removeUserTeam } from '../../../../graphql/user';
 import NotificationToaster from '../../../components/NotificationToaster';
+import TeamAddUser from './TeamAddUser';
 
 
 const QueryTeamParams = '_id teamName members{username firstname lastname} memberCount points';
@@ -30,11 +31,9 @@ const QueryUsersOptions = {
 
 @compose(
 	graphql(getTeam(QueryTeamParams), QueryTeamOptions),
-	graphql(getUsers('firstname lastname username teamId'), QueryUsersOptions),
 	graphql(setTeamName('ok failureMessage'), {name: 'MutationSetTeamName'}),
 	graphql(setTeamPoints('ok failureMessage'), {name: 'MutationSetTeamPoints'}),
 	graphql(removeTeam('ok'), {name: 'MutationRemoveTeam'}),
-	graphql(setUserTeam('ok'), {name: 'MutationSetUserTeam'}),
 	graphql(removeUserTeam('ok'), {name: 'MutationRemoveUserTeam'})
 )
 @connect()
@@ -58,11 +57,6 @@ class TeamProfile extends React.Component {
 		points: null,
 		pointsModified: false,
 		saving: false,
-
-		addUsersDialogOpen: false,
-		addUserLoading: false,
-		addUserError: null,
-		userToAdd: null,
 
 		removeUserDialogOpen: false,
 		removeUserLoading: false,
@@ -160,41 +154,6 @@ class TeamProfile extends React.Component {
 					message: err.toString()
 				});
 			});
-	}
-
-	toggleAddUsers() {
-		this.setState((prevState) => {
-			const state = { addUsersDialogOpen: !prevState.addUsersDialogOpen, addUserError: null };
-			if (state.addUsersDialogOpen) state.userToAdd = 'NONE';
-			else state.userToAdd = null;
-			return state;
-		});
-	}
-
-	submitAddUser() {
-		this.setState({ addUserLoading: true });
-
-		const variables = { 
-			teamId: this.props.team._id,
-			username: this.state.userToAdd 
-		};
-
-		// Save points
-		this.props.MutationSetUserTeam({ variables })
-			.then(async (result) => {
-				await this.props.QueryUsers.refetch();
-				await this.props.QueryTeam.refetch()
-				this.props.dispatch(saveState());
-				if (this._mounted) this.setState({addUserLoading: false, addUsersDialogOpen: false, addUserError: null});
-			})
-			.catch((err) => {
-				if (this._mounted) this.setState({addUserLoading: false, addUserError: err.toString()});
-				else console.warn(err);
-			});
-	}
-
-	changeUserToAdd({ target: { value } }) {
-		this.setState({ userToAdd: value });
 	}
 
 	toggleRemoveUser(userToRemove) {
@@ -324,7 +283,7 @@ class TeamProfile extends React.Component {
 							onConfirm={this.confirmName}/> :
 						this.props.team.teamName
 					}
-					<Button className='pt-minimal action-button' iconName='new-person' intent={Intent.PRIMARY} onClick={this.toggleAddUsers}/>
+					<TeamAddUser teamId={this.props.team._id} refetch={this.props.QueryTeam.refetch}/>
 				</b></h4>
 
 				<div className='manage'>
@@ -344,41 +303,6 @@ class TeamProfile extends React.Component {
 				</div>
 
 				{content}
-
-				{/* Add user dialog */}
-				<Dialog isOpen={this.state.addUsersDialogOpen} onClose={this.toggleAddUsers} title='Add user' iconName='new-person'>
-					<div className='pt-dialog-body'>
-						{this.state.addUserError ? 
-							<div className='pt-callout pt-intent-danger pt-icon-error'>
-								{this.state.addUserError}
-							</div>
-							:null}
-						<label className='pt-label'>
-							Add user: 
-							<div className='pt-select'>
-								<select onChange={this.changeUserToAdd} disabled={this.state.addUserLoading}>
-									{this.props.QueryUsers.loading ? 
-										<option value='NONE'>Loading...</option>:
-										<option value='NONE'>Select a user...</option>
-									}
-									{this.props.QueryUsers.loading ? 
-									null:
-									this.props.QueryUsers.getUsers.map((user) => {
-										if (!user.teamId) {	// Only add users without a team
-											return <option key={user.username} value={user.username}>{`${user.firstname} ${user.lastname}`}</option>
-										}
-									})}
-								</select>
-							</div>
-						</label>
-					</div>
-					<div className='pt-dialog-footer'>
-						<div className='pt-dialog-footer-actions'>
-							<Button onClick={this.toggleAddUsers} text='Cancel' className='pt-minimal' disabled={this.state.addUserLoading}/>
-							<Button onClick={this.submitAddUser} text='Add' intent={Intent.PRIMARY} loading={this.state.addUserLoading}/>
-						</div>
-					</div>
-				</Dialog>
 
 				{/* Remove user dialog */}
 				<Dialog isOpen={this.state.removeUserDialogOpen} onClose={this.toggleRemoveUser()} title='Remove user from team' iconName='warning-sign'>
