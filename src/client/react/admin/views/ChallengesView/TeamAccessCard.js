@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { Button, Intent, Spinner, Dialog } from '@blueprintjs/core';
+import { Button, Intent, Dialog } from '@blueprintjs/core';
 import { graphql, compose } from 'react-apollo';
 import { getTeam } from '../../../../graphql/team';
 import { removeTeamFromUnlocked } from '../../../../graphql/challenge';

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { Spinner, Button } from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core';
 
 
 @autobind

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import DateFormat from 'dateformat';
 import { graphql, compose } from 'react-apollo';
-import { Button, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTarget, Toaster, Position } from '@blueprintjs/core';
+import { Button, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import { getUserByEmail, setUserPaidAmount, addPermission, removePermission } from '../../../../graphql/user';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import NotificationToaster from '../../../components/NotificationToaster';

@@ -1,12 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import autobind from 'core-decorators/es/autobind';
 import { Link } from 'react-router-dom';
-import { Spinner, Button, Intent, Icon, Collapse } from '@blueprintjs/core';
-import MarkdownRenderer from '../../../../../../lib/react/components/MarkdownRenderer';
 
 
-@autobind
 class ChallengeCard extends React.Component {
 	static propTypes = {
 		challenge: PropTypes.shape({

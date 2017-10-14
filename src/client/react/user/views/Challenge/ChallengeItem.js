@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { Spinner, Button, Intent, Icon, Collapse } from '@blueprintjs/core';
+import { Button, Collapse } from '@blueprintjs/core';
 import MarkdownRenderer from '../../../../../../lib/react/components/MarkdownRenderer';
 import ChallengeResponse from './ChallengeResponse';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { Button, Intent, Spinner, EditableText, Switch, Dialog } from '@blueprintjs/core';
+import { Button, Intent, EditableText, Switch, Dialog } from '@blueprintjs/core';
 import { graphql, compose } from 'react-apollo';
 import { deleteChallenge } from '../../../../graphql/challenge';
 import NotificationToaster from '../../../components/NotificationToaster';
