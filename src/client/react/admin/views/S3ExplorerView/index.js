@@ -93,7 +93,7 @@ class S3ExplorerView extends React.Component {
 					</ul>
 				</div>
 				<AssetUpload refetchAssets={this.props.QueryS3Objects.refetch}/>
-				<ObjectPreview objectKey={this.state.previewObject} close={this.closePreview}/> 
+				<ObjectPreview objectKey={this.state.previewObject} close={this.closePreview} refetchObjects={this.props.QueryS3Objects.refetch}/> 
 				{content}
 			</div>
 		);

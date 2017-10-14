@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import DateFormat from 'dateformat';
 import autobind from 'core-decorators/es/autobind';
 import { graphql, withApollo } from 'react-apollo';
-import { Button, Dialog, Spinner } from '@blueprintjs/core';
+import { Button, Dialog, Spinner, Intent } from '@blueprintjs/core';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import { _getObject } from '../../../../graphql/upload';
 import { getProtectedSetting } from '../../../../graphql/setting';
+import ObjectDelete from './ObjectDelete';
 
 
 const imgContainerStyle = {
@@ -33,6 +34,7 @@ const QueryS3BucketUrlOptions = {
 class ObjectPreview extends React.Component {
 	static propTypes = {
 		objectKey: PropTypes.string,
+		refetchObjects: PropTypes.func.isRequired,
 		close: PropTypes.func.isRequired
 	}
 
@@ -128,6 +130,12 @@ class ObjectPreview extends React.Component {
 							: null }
 						{content}
 						{markup}
+					</div>
+					<div className='pt-dialog-footer'>
+						<div className='pt-dialog-footer-actions'>
+							<ObjectDelete objectKey={this.props.objectKey} closeObjectPreview={this.close} refetchObjects={this.props.refetchObjects}/>
+							<Button text='Close' intent={Intent.PRIMARY} loading={this.props.deleteLoading} onClick={this.close}/>
+						</div>
 					</div>
 				</Dialog>
 			</div>
