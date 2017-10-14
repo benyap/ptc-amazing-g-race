@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { Spinner } from '@blueprintjs/core';
 import { getUserByEmail } from '../../../../graphql/user';
-import TeamPanel from './TeamPanel';
+import TeamPointsPanel from './TeamPointsPanel';
 
 import '../../scss/views/_main.scss'
 import '../../scss/views/_home.scss';
@@ -35,21 +35,23 @@ class Home extends React.Component {
 	
 	render() {
 		const { loading, getUserByEmail: user } = this.props.QueryGetUser;
-
-		let teamPanel = (
-			<div style={{textAlign:'center',margin:'3rem'}}>
-				<Spinner className='pt-large'/>
-			</div>
-		);
+		let teamPointsPanel;
 
 		if (user) {
-			teamPanel = <TeamPanel user={user}/>;
+			teamPointsPanel = <TeamPointsPanel user={user}/>;
+		}
+		else {
+			teamPointsPanel = (
+				<div style={{textAlign:'center',margin:'3rem'}}>
+					<Spinner className='pt-large'/>
+				</div>
+			);
 		}
 
 		return (
 			<main id='home' className='dashboard'>
 				<div className='content'>
-					{teamPanel}
+					{teamPointsPanel}
 				</div>
 			</main>
 		);
