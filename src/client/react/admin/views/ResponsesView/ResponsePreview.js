@@ -7,6 +7,15 @@ import { Spinner, Button, Dialog } from '@blueprintjs/core';
 import { getResponseData } from '../../../../graphql/response';
 
 
+const imgContainerStyle = {
+	textAlign: 'center',
+	background: 'rgba(0, 0, 0, 0.8)',
+	color: 'white',
+	padding: '0.5rem',
+	borderRadius: '0.3rem',
+	marginBottom: '0.5rem'
+}
+
 const QueryGetResponseDataOptions = {
 	name: 'QueryGetResponseData',
 	options: (props) => {
@@ -56,8 +65,8 @@ class ResponsePreview extends React.Component {
 				responseData = (
 					<div>
 						{date}
-						<div>
-							<img style={{maxWidth:'100%', maxHeight:'100%'}} src={getResponseData.data} alt={`Response uploaded by ${uploadedBy}`}/>
+						<div style={imgContainerStyle}>
+							<img src={getResponseData.data} alt={`Response uploaded by ${uploadedBy} (loading...)`} style={{maxWidth:'100%',maxHeight:'70vh'}}/>
 						</div>
 					</div>
 				);
