@@ -166,7 +166,7 @@ class ChallengeItemProfile extends React.Component {
 						<Spinner className='pt-small'/>
 					</div>
 				: null }
-				<h5>Editing challenge item</h5>
+				<h5 style={{fontWeight:'bold',marginBottom:'0.7rem'}}>Editing challenge item</h5>
 				<table className='pt-table pt-striped content'>
 					<tbody>
 						<tr>

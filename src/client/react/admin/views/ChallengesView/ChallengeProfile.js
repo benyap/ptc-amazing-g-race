@@ -336,8 +336,8 @@ class ChallengeProfile extends React.Component {
 					</div>
 				: null }
 				<h5>
-					<span className={`pt-icon ${icon}`}></span>&nbsp;
-					Title: <b><EditableText value={this.state.title} onChange={this.handleChange('title')} disabled={this.state.editChallengeItem}/></b>
+					<span className={`pt-icon ${icon}`}></span>&nbsp;Title:
+					<b> <EditableText value={this.state.title} onChange={this.handleChange('title')} disabled={this.state.editChallengeItem}/></b>
 				</h5>
 
 				{content}
