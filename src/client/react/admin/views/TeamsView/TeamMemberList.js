@@ -5,6 +5,7 @@ import { graphql } from 'react-apollo';
 import { Intent, Spinner } from '@blueprintjs/core';
 import { getTeam } from '../../../../graphql/team';
 import TeamUser from './TeamUser';
+import TeamAddUser from './TeamAddUser';
 
 
 const QueryTeamOptions = {
@@ -29,8 +30,9 @@ class TeamMemberList extends React.Component {
 			if (getTeam.members.length) {
 				return (
 					<div>
+						<TeamAddUser teamId={this.props.teamId} refetchTeam={this.props.QueryTeam.refetch}/>
 						{getTeam.members.map((member) => {
-							return <TeamUser key={member.username} member={member} refetch={this.props.QueryTeam.refetch}/>;
+							return <TeamUser key={member.username} member={member} refetchTeam={this.props.QueryTeam.refetch}/>;
 						})}
 					</div>
 				);

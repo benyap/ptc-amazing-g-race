@@ -50,7 +50,7 @@ class TeamsView extends React.Component {
 			content = <ViewError error={error}/>;
 		}
 		else if (this.state.viewProfile) {
-			content = <TeamProfile team={this.state.viewProfile} closeProfile={this.closeProfile} refetch={this.props.QueryGetTeams.refetch}/>;
+			content = <TeamProfile team={this.state.viewProfile} closeProfile={this.closeProfile} refetchTeams={this.props.QueryGetTeams.refetch}/>;
 		}
 		else if (getTeams) {
 			content = (
@@ -59,7 +59,7 @@ class TeamsView extends React.Component {
 						return <TeamCard key={team._id} team={team} renderProfile={this.renderProfile}/>;
 					})}
 
-					<TeamCreate refetch={this.props.QueryGetTeams.refetch}/>
+					<TeamCreate refetchTeams={this.props.QueryGetTeams.refetch}/>
 				</div>
 			);
 		}

@@ -16,7 +16,7 @@ class TeamUser extends React.Component {
 			firstname: PropTypes.string.isRequired,
 			lastname: PropTypes.string.isRequired
 		}).isRequired,
-		refetch: PropTypes.func.isRequired
+		refetchTeam: PropTypes.func.isRequired
 	}
 
 	state = {
@@ -41,7 +41,7 @@ class TeamUser extends React.Component {
 			await this.props.MutationRemoveUserTeam({ 
 				variables: { username: this.props.member.username }
 			});
-			await this.props.refetch();
+			await this.props.refetchTeam();
 			this.setState({removeUserLoading: false, removeUserDialogOpen: false});
 		}
 		catch (err) {
@@ -60,10 +60,8 @@ class TeamUser extends React.Component {
 
 		return (
 			<div className='member'>
-				<div className='name'>{firstname} {lastname}</div>
-				<div className='actions'>
-					<Button className='pt-minimal' iconName='remove' onClick={this.toggleRemoveUser}/>
-				</div>
+				<Button className='pt-minimal pt-small pt-intent-danger' iconName='remove' onClick={this.toggleRemoveUser} loading={this.state.removeUserLoading} style={{padding:'0'}}/>
+				<span> {firstname} {lastname}</span>
 
 				<Dialog isOpen={this.state.removeUserDialogOpen} onClose={this.toggleRemoveUser} title='Remove user from team' iconName='warning-sign'>
 					<div className='pt-dialog-body'>

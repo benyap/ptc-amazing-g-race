@@ -11,7 +11,7 @@ import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 @autobind
 class TeamCreate extends React.Component {
 	static propTypes = {
-		refetch: PropTypes.func.isRequired
+		refetchTeams: PropTypes.func.isRequired
 	}
 
 	state = {
@@ -39,7 +39,7 @@ class TeamCreate extends React.Component {
 		this.setState({ createTeamLoading: true, createTeamError: null });
 		try {
 			await this.props.MutationCreateTeam({ variables: { teamName: this.state.teamName.trim() } });
-			await this.props.refetch();
+			await this.props.refetchTeams();
 			this.setState({
 				showCreateTeamDialog: false,
 				createTeamLoading: false, 

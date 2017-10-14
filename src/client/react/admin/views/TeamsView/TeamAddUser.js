@@ -23,7 +23,7 @@ const QueryUsersOptions = {
 class TeamAddUser extends React.Component {
 	static propTypes = {
 		teamId: PropTypes.string.isRequired,
-		refetch: PropTypes.func.isRequired
+		refetchTeam: PropTypes.func.isRequired
 	}
 
 	state = {
@@ -59,7 +59,7 @@ class TeamAddUser extends React.Component {
 					username: this.state.userToAdd 
 				}
 			});
-			await this.props.refetch();
+			await this.props.refetchTeam();
 			if (this.state.addUsersDialogOpen) this.setState({addUserLoading: false, addUsersDialogOpen: false});
 			this.props.QueryUsers.refetch();
 		}
@@ -80,8 +80,8 @@ class TeamAddUser extends React.Component {
 
 	render() {
 		return (
-			<span>
-				<Button className='pt-minimal action-button' iconName='new-person' intent={Intent.PRIMARY} onClick={this.toggleAddUsers}/>
+			<div>
+				<Button className='pt-minimal pt-fill' text='Add member' iconName='new-person' intent={Intent.PRIMARY} onClick={this.toggleAddUsers}/>
 
 				<Dialog isOpen={this.state.addUsersDialogOpen} onClose={this.toggleAddUsers} title='Add user' iconName='new-person'>
 					<div className='pt-dialog-body'>
@@ -117,7 +117,7 @@ class TeamAddUser extends React.Component {
 						</div>
 					</div>
 				</Dialog>
-			</span>
+			</div>
 		);
 	}
 }

@@ -12,7 +12,7 @@ import NotificationToaster from '../../../components/NotificationToaster';
 class TeamRemove extends React.Component {
 	static propTypes = {
 		teamId: PropTypes.string.isRequired,
-		refetch: PropTypes.func.isRequired,
+		refetchTeams: PropTypes.func.isRequired,
 		closeProfile: PropTypes.func.isRequired
 	}
 
@@ -32,7 +32,7 @@ class TeamRemove extends React.Component {
 		this.setState({removeTeamLoading: true, removeTeamError: null});
 		try {
 			await this.props.MutationRemoveTeam({ variables: { teamId: this.props.teamId }});
-			await this.props.refetch();
+			await this.props.refetchTeams();
 			this.props.closeProfile();
 		}
 		catch (err) {
