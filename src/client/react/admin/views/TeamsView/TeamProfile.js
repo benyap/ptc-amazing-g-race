@@ -136,18 +136,9 @@ class TeamProfile extends React.Component {
 		
 		// Execute mutation
 		try {
-			const result = await mutation({ variables });
-			if (result.data[mutationName].ok) {
-				await this.props.QueryTeam.refetch();
-				if (this._mounted) this.setState({saving: false, teamNameModified: false, pointsModified: false });
-			}
-			else {
-				if (this._mounted) this.setState({saving: false});
-				NotificationToaster.show({
-					intent: Intent.DANGER,
-					message: result.data[mutationName].failureMessage
-				});
-			}
+			await mutation({ variables });
+			await this.props.QueryTeam.refetch();
+			if (this._mounted) this.setState({saving: false, teamNameModified: false, pointsModified: false });
 		}
 		catch (err) {
 			if (this._mounted) this.setState({saving: false});
