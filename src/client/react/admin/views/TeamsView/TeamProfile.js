@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { compose, graphql } from 'react-apollo';
-import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core';
-import { getTeam, setTeamName, setTeamPoints, removeTeam } from '../../../../graphql/team';
+import { Button, Intent, Spinner, EditableText } from '@blueprintjs/core';
+import { getTeam, setTeamName, setTeamPoints } from '../../../../graphql/team';
 import NotificationToaster from '../../../components/NotificationToaster';
 import TeamMemberList from './TeamMemberList';
 import TeamAddUser from './TeamAddUser';
 import TeamUser from './TeamUser';
+import TeamRemove from './TeamRemove';
 
 
 const QueryTeamParams = '_id teamName memberCount points';
@@ -23,8 +24,7 @@ const QueryTeamOptions = {
 @compose(
 	graphql(getTeam(QueryTeamParams), QueryTeamOptions),
 	graphql(setTeamName('ok failureMessage'), {name: 'MutationSetTeamName'}),
-	graphql(setTeamPoints('ok failureMessage'), {name: 'MutationSetTeamPoints'}),
-	graphql(removeTeam('ok'), {name: 'MutationRemoveTeam'})
+	graphql(setTeamPoints('ok failureMessage'), {name: 'MutationSetTeamPoints'})
 )
 @autobind
 class TeamProfile extends React.Component {
@@ -34,7 +34,7 @@ class TeamProfile extends React.Component {
 			teamName: PropTypes.string.isRequired
 		}).isRequired,
 		closeProfile: PropTypes.func.isRequired,
-		reload: PropTypes.func.isRequired
+		refetch: PropTypes.func.isRequired
 	}
 	
 	state = {
@@ -42,11 +42,7 @@ class TeamProfile extends React.Component {
 		teamNameModified: false,
 		points: null,
 		pointsModified: false,
-		saving: false,
-
-		removeTeamDialogOpen: false,
-		removeTeamLoading: false,
-		removeTeamError: null
+		saving: false
 	}
 
 	async componentDidMount() {
@@ -85,7 +81,6 @@ class TeamProfile extends React.Component {
 	}
 
 	closeProfile() {
-		this.props.reload();
 		this.props.closeProfile();
 	}
 
@@ -163,28 +158,12 @@ class TeamProfile extends React.Component {
 		}
 	}
 
-	toggleRemoveTeam() {
-		this.setState((prevState) => {
-			return { removeTeamDialogOpen: !prevState.removeTeamDialogOpen, removeTeamError: null };
-		});
-	}
-	
-	submitRemoveTeam() {
-		this.setState({removeTeamLoading: true, removeTeamError: null});
-		this.props.MutationRemoveTeam({ variables: { teamId: this.props.team._id }})
-			.then(() => {
-				this.props.closeProfile();
-			})
-			.catch((err) => {
-				if (this._mounted) this.setState({ removeTeamLoading: false, removeTeamError: err.toString() });
-			});
-	}
-
 	render() {
 		return (
 			<div id='team-profile' className='pt-card team-profile'>
 				<Button className='pt-minimal' intent={Intent.NONE} iconName='cross' onClick={this.closeProfile} style={{float:'right'}}/>
-				<Button className='pt-minimal' intent={Intent.DANGER} iconName='trash' onClick={this.toggleRemoveTeam} style={{float:'right'}}/>
+				<span style={{float:'right'}}><TeamRemove teamId={this.props.team._id} closeProfile={this.closeProfile} refetch={this.props.refetch}/></span>
+
 				{this.props.QueryTeam.loading || this.state.saving ? 
 					<div style={{float:'right'}}>
 						<Spinner className='pt-small'/>
@@ -220,26 +199,6 @@ class TeamProfile extends React.Component {
 				</div>
 
 				<TeamMemberList teamId={this.props.team._id}/>
-
-				{/* Remove team dialog */}
-				<Dialog isOpen={this.state.removeTeamDialogOpen} onClose={this.toggleRemoveTeam} title='Remove team' iconName='warning-sign'>
-					<div className='pt-dialog-body'>
-						{this.state.removeTeamError ? 
-							<div className='pt-callout pt-intent-danger pt-icon-error'>
-								{this.state.removeTeamError}
-							</div>
-							:null}
-						<p>
-							Are you sure you want to remove this team?
-						</p>
-					</div>
-					<div className='pt-dialog-footer'>
-						<div className='pt-dialog-footer-actions'>
-							<Button onClick={this.toggleRemoveTeam} text='Cancel' className='pt-minimal' disabled={this.state.removeTeamLoading}/>
-							<Button onClick={this.submitRemoveTeam} text='Remove team' intent={Intent.DANGER} loading={this.state.removeTeamLoading}/>
-						</div>
-					</div>
-				</Dialog>
 			</div>
 		);
 	}

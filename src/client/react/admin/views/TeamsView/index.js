@@ -50,7 +50,7 @@ class TeamsView extends React.Component {
 			content = <ViewError error={error}/>;
 		}
 		else if (this.state.viewProfile) {
-			content = <TeamProfile team={this.state.viewProfile} closeProfile={this.closeProfile} reload={this.props.QueryGetTeams.refetch}/>;
+			content = <TeamProfile team={this.state.viewProfile} closeProfile={this.closeProfile} refetch={this.props.QueryGetTeams.refetch}/>;
 		}
 		else if (getTeams) {
 			content = (
