@@ -11,6 +11,7 @@ import { getProtectedSetting } from '../../../../graphql/setting';
 
 const imgContainerStyle = {
 	textAlign: 'center',
+	color: 'white',	
 	background: 'rgba(0, 0, 0, 0.8)',
 	padding: '0.5rem',
 	borderRadius: '0.3rem',
