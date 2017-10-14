@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { connect } from 'react-redux';
 import { compose, graphql } from 'react-apollo';
 import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core';
-import { saveState } from '../../../../actions/stateActions';
 import { getTeam, setTeamName, setTeamPoints, removeTeam } from '../../../../graphql/team';
 import NotificationToaster from '../../../components/NotificationToaster';
 import TeamMemberList from './TeamMemberList';
@@ -28,7 +26,6 @@ const QueryTeamOptions = {
 	graphql(setTeamPoints('ok failureMessage'), {name: 'MutationSetTeamPoints'}),
 	graphql(removeTeam('ok'), {name: 'MutationRemoveTeam'})
 )
-@connect()
 @autobind
 class TeamProfile extends React.Component {
 	static propTypes = {
@@ -135,7 +132,6 @@ class TeamProfile extends React.Component {
 			.then(async (result) => {
 				if (result.data[mutationName].ok) {
 					await this.props.QueryTeam.refetch();
-					this.props.dispatch(saveState());
 					if (this._mounted) this.setState({saving: false, teamNameModified: false, pointsModified: false });
 				}
 				else {
