@@ -209,7 +209,11 @@ class UsersView extends React.Component {
 			}
 		}
 		else if (loadingUsers || loadingPayment) {
-			content = <div className='loading-spinner'><Spinner/></div>;
+			content = (
+				<div style={{textAlign:'center',margin:'3rem'}}>
+					<Spinner/>
+				</div>
+			);
 		}
 
 		return (

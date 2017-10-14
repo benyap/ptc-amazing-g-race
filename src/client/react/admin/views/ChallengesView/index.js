@@ -90,7 +90,11 @@ class ChallengesView extends React.Component {
 			);
 		}
 		else if (loading) {
-			content = <div className='loading-spinner'><Spinner/></div>;
+			content = (
+				<div style={{textAlign:'center',margin:'3rem'}}>
+					<Spinner/>
+				</div>
+			);
 		}
 
 		return (

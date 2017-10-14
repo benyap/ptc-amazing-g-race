@@ -44,7 +44,11 @@ class ResponsesView extends React.Component {
 				content = <ResponseProfile responseId={this.props.item}/>;
 			}
 			else {
-				content = <div className='loading-spinner'><Spinner/></div>;
+				content = (
+					<div style={{textAlign:'center',margin:'3rem'}}>
+						<Spinner/>
+					</div>
+				);
 			}
 		}
 		else if (getResponses) {
@@ -62,7 +66,11 @@ class ResponsesView extends React.Component {
 			);
 		}
 		else if (loading) {
-			content = <div className='loading-spinner'><Spinner/></div>;
+			content = (
+				<div style={{textAlign:'center',margin:'3rem'}}>
+					<Spinner/>
+				</div>
+			);
 		}
 		
 		return (
