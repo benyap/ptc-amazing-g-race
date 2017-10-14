@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Spinner } from '@blueprintjs/core';
+import { Spinner, NonIdealState } from '@blueprintjs/core';
 import ChallengeCard from './ChallengeCard';
 
 
@@ -25,8 +25,8 @@ class ChallengeList extends React.Component {
 			}
 			else {
 				return (
-					<div style={{textAlign:'center',margin:'3rem'}}>
-						<h4 className='pt-text-muted'>No challenges available.</h4>
+					<div style={{margin:'3rem 0'}}>
+						<NonIdealState title='No challenges' description='No challenges are currently available.' visual='map'/>
 					</div>
 				);
 			}
