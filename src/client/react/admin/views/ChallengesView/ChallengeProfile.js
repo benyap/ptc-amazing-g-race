@@ -5,7 +5,6 @@ import { Button, Intent, Spinner, EditableText, Switch, Dialog } from '@blueprin
 import { graphql, compose } from 'react-apollo';
 import { 
 	getChallenge, 
-	deleteChallenge,
 	setChallengePublic,
 	setChallengeOrder,
 	setChallengePassphrase,
@@ -37,7 +36,6 @@ const QueryGetChallengeOptions = {
 
 @compose(
 	graphql(getChallenge('key public order passphrase title description locked teams items{key type order title description}'), QueryGetChallengeOptions),
-	graphql(deleteChallenge('ok'), { name: 'MutationDeleteChallenge' }),
 	graphql(setChallengePublic('ok'), { name: 'MutationSetChallengePublic' }),
 	graphql(setChallengeOrder('ok'), { name: 'MutationSetChallengeOrder' }),
 	graphql(setChallengePassphrase('ok'), { name: 'MutationSetChallengePassphrase' }),
