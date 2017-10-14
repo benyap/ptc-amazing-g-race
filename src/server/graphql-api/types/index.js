@@ -10,7 +10,7 @@ import s3ObjectListType from './s3ObjectListType';
 import s3ObjectType from './s3ObjectType';
 import challengeType from './challengeType';
 import responseType from './responseType';
-import responseDataType from './responseDataType';
+import uploadDataType from './uploadDataType';
 
 
 export default {
@@ -26,5 +26,5 @@ export default {
 	s3ObjectType,
 	challengeType,
 	responseType,
-	responseDataType
+	uploadDataType
 };

@@ -28,7 +28,7 @@ const getResponse = {
 
 
 const getResponseData = {
-	type: types.responseDataType,
+	type: types.uploadDataType,
 	description: 'Gets the data from a response (admin only)',
 	args: {
 		responseId: {
