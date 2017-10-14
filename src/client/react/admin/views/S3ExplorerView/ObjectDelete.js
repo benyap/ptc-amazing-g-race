@@ -69,7 +69,11 @@ class ObjectDelete extends React.Component {
 								{this.state.deleteObjectError}
 							</div>
 							: null }
-							Are you sure you want to delete this object? Any links to this object will stop working. 
+							<div className='pt-callout pt-intent-warning pt-icon-warning-sign' style={{marginBottom:'0.5rem'}}>
+								<h5>Warning</h5>
+								Please ensure you <b>do not</b> delete user responses.
+							</div>
+							Are you sure you want to delete this object? This action is irreversible.
 					</div>
 					<div className='pt-dialog-footer'>
 						<div className='pt-dialog-footer-actions'>
