@@ -193,6 +193,7 @@ const getChallenges = async function(user) {
 	if (!userProfile.teamId) return new Error('You are not in a team.');
 
 	return db.collection('challenges').find({ 
+		locked: false,
 		$or: [{ teams: userProfile.teamId.toString() }, { public: true }]
 	}).sort({order: 1}).toArray();
 }
@@ -226,6 +227,7 @@ const getChallenge = async function(user, key) {
 	else {
 		return db.collection('challenges').findOne({ 
 			key,
+			locked: false,
 			$or: [{ teams: userProfile.teamId.toString() }, { public: true }]
 		});
 	}
@@ -547,7 +549,7 @@ const unlockAttempt = async function(user, phrase) {
 	const team = await db.collection('teams').findOne({_id:Mongo.ObjectID(userCheck.teamId)});
 
 	// Check if the phrase exists
-	const challenge = await db.collection('challenges').findOne({ public: false, passphrase: phrase.toLowerCase() });
+	const challenge = await db.collection('challenges').findOne({ public: false, passphrase: phrase.toLowerCase(), locked: false });
 
 	if (!challenge) {
 		// Phrase not found
