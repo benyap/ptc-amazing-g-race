@@ -7,11 +7,12 @@ import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core
 import { saveState } from '../../../../actions/stateActions';
 import { getTeam, setTeamName, setTeamPoints, removeTeam } from '../../../../graphql/team';
 import NotificationToaster from '../../../components/NotificationToaster';
+import TeamMemberList from './TeamMemberList';
 import TeamAddUser from './TeamAddUser';
 import TeamUser from './TeamUser';
 
 
-const QueryTeamParams = '_id teamName members{username firstname lastname} memberCount points';
+const QueryTeamParams = '_id teamName memberCount points';
 
 const QueryTeamOptions = {
 	name: 'QueryTeam',
@@ -32,12 +33,9 @@ const QueryTeamOptions = {
 class TeamProfile extends React.Component {
 	static propTypes = {
 		team: PropTypes.shape({
-			_id: PropTypes.string,
-			teamName: PropTypes.string,
-			memberCount: PropTypes.number,
-			members: PropTypes.array,
-			points: PropTypes.number
-		}),
+			_id: PropTypes.string.isRequired,
+			teamName: PropTypes.string.isRequired
+		}).isRequired,
 		closeProfile: PropTypes.func.isRequired,
 		reload: PropTypes.func.isRequired
 	}
@@ -175,26 +173,6 @@ class TeamProfile extends React.Component {
 	}
 
 	render() {
-		let content = null;
-
-		if (this.props.QueryTeam.getTeam) {
-			const { members } = this.props.QueryTeam.getTeam;
-			content = (
-				<div>
-					{members.length ? 
-						members.map((member) => {
-							return <TeamUser key={member.username} member={member} refetch={this.props.QueryTeam.refetch}/>;
-						})
-						:
-						<div>
-							<br/>
-							<em>There are no users in this team.</em>
-						</div>
-					}
-				</div>
-			);
-		}
-
 		return (
 			<div id='team-profile' className='pt-card team-profile'>
 				<Button className='pt-minimal' intent={Intent.NONE} iconName='cross' onClick={this.closeProfile} style={{float:'right'}}/>
@@ -233,7 +211,7 @@ class TeamProfile extends React.Component {
 					</div>
 				</div>
 
-				{content}
+				<TeamMemberList teamId={this.props.team._id}/>
 
 				{/* Remove team dialog */}
 				<Dialog isOpen={this.state.removeTeamDialogOpen} onClose={this.toggleRemoveTeam} title='Remove team' iconName='warning-sign'>
