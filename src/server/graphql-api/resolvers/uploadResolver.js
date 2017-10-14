@@ -9,6 +9,10 @@ const _deleteObject = async function(root, params, ctx, options) {
 	return database.upload._deleteObject(ctx.user, params.collection, params.key);
 }
 
+const _getObject = async function(root, params, ctx, options) {
+	return database.upload._getObject(ctx.user, params.key);
+}
+
 const _listObjectsFromS3 = async function(root, params, ctx, options) {
 	return database.upload._listObjectsFromS3(ctx.user, params.MaxKeys, params.Prefix, params.StartAfter);
 }
@@ -16,5 +20,6 @@ const _listObjectsFromS3 = async function(root, params, ctx, options) {
 export default {
 	_uploadObject,
 	_deleteObject,
+	_getObject,
 	_listObjectsFromS3
 };

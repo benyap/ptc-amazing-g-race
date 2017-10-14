@@ -163,6 +163,40 @@ const _deleteObject = async function(user, collection, key) {
 }
 
 
+
+/**
+ * Get a signed URL to retrieve an uploaded object from S3
+ * @param {*} user 
+ * @param {String} key 
+ */
+const _getObject = async function(user, key) {
+	if (!user) return new Error('No user logged in');
+	
+	const authorized = await permission.checkPermission(user, ['admin:get-objectsFromS3']);
+	if (authorized !== true) return authorized;
+	
+	if (!key) return new Error('Object key is required.');
+
+	// Remove prefix if it exists
+	const prefix = 'uploads/';
+	const startFrom = key.indexOf(prefix) >= 0 ? key.indexOf(prefix) + prefix.length : 0;
+
+	const params = {
+		Bucket: `${AWS_S3_BUCKET}/uploads`, 
+		Key: key.substring(startFrom),
+		Expires: 60
+	};
+	
+	// Get download url
+	const url = s3.getSignedUrl('getObject', params);
+
+	return {
+		data: url,
+		date: new Date()
+	}
+}
+
+
 /**
  * List uploaded objects from S3
  * @param {*} user 
@@ -191,5 +225,6 @@ const _listObjectsFromS3 = async function(user, MaxKeys, Prefix, StartAfter) {
 export default {
 	_uploadObject,
 	_deleteObject,
+	_getObject,
 	_listObjectsFromS3
 }
