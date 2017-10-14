@@ -44,7 +44,7 @@ class ContactsTeam extends React.Component {
 						<table className='pt-table pt-striped' style={{width:'100%'}}>
 							<tbody>
 								{QueryGetTeam.getTeam.members.map((member) => {
-									return <ContactFromTeam key={member._id} member={member}/>;
+									return <ContactFromTeam key={member.mobileNumber} member={member}/>;
 								})}
 							</tbody>
 						</table>
