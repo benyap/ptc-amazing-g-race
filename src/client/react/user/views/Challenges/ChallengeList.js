@@ -33,8 +33,8 @@ class ChallengeList extends React.Component {
 		}
 		else {
 			return (
-				<div style={{textAlign:'center',margin:'3rem'}}>
-					<Spinner/>
+				<div style={{margin:'3rem 0'}}>
+					<NonIdealState title='Loading...' visual={<Spinner/>}/>
 				</div>
 			);
 		}

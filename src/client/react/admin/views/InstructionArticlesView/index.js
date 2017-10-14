@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { Button, Intent, Spinner, Dialog } from '@blueprintjs/core';
+import { Button, Intent, Spinner, NonIdealState, Dialog } from '@blueprintjs/core';
 import { compose, graphql } from 'react-apollo'
 import { getArticles, addArticle } from '../../../../graphql/article';
 import RefreshBar from '../../components/RefreshBar';
@@ -145,8 +145,8 @@ class InstructionArticlesView extends React.Component {
 		}
 		else if (loading) {
 			content = (
-				<div style={{textAlign:'center',margin:'3rem'}}>
-					<Spinner/>
+				<div style={{margin:'3rem 0'}}>
+					<NonIdealState title='Loading...' visual={<Spinner/>}/>
 				</div>
 			);
 		}

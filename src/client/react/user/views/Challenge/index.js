@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
 import { Link } from 'react-router-dom';
-import { Spinner, Button, Intent, Icon, Collapse } from '@blueprintjs/core';
+import { Spinner, NonIdealState, Icon } from '@blueprintjs/core';
 import MarkdownRenderer from '../../../../../../lib/react/components/MarkdownRenderer';
 import NotificationToaster from '../../../components/NotificationToaster';
 import { getChallengeById } from '../../../../graphql/challenge';
@@ -25,9 +25,8 @@ const QueryGetChallengeByIdOptions = {
 class Challenge extends React.Component {
 	render() {
 		let content = (
-			<div style={{margin:'2rem',textAlign:'center'}}>
-				<h4 className='pt-text-muted' style={{marginBottom:'2rem'}}>Loading...</h4>
-				<Spinner/>
+			<div style={{margin:'3rem 0'}}>
+				<NonIdealState title='Loading...' visual={<Spinner/>}/>
 			</div>
 		);
 

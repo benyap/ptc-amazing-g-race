@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
-import { Spinner } from '@blueprintjs/core';
+import { Spinner, NonIdealState } from '@blueprintjs/core';
 import S3Explorer from '../../../../../../lib/react/components/S3Explorer';
 import { _listObjectsFromS3 } from '../../../../graphql/upload';
 import { getProtectedSetting } from '../../../../graphql/setting';
@@ -53,8 +53,8 @@ class S3ExplorerView extends React.Component {
 			}
 			else {
 				content = (
-					<div style={{textAlign:'center',margin:'3rem'}}>
-						<Spinner/>
+					<div style={{margin:'3rem 0'}}>
+						<NonIdealState title='Loading...' visual={<Spinner/>}/>
 					</div>
 				);
 			}

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { Spinner, Button, Intent } from '@blueprintjs/core';
+import { Spinner, NonIdealState } from '@blueprintjs/core';
 import { graphql } from 'react-apollo';
 import { getResponses } from '../../../../graphql/response';
 import RefreshBar from '../../components/RefreshBar';
@@ -45,8 +45,8 @@ class ResponsesView extends React.Component {
 			}
 			else {
 				content = (
-					<div style={{textAlign:'center',margin:'3rem'}}>
-						<Spinner/>
+					<div style={{margin:'3rem 0'}}>
+						<NonIdealState title='Loading...' visual={<Spinner/>}/>
 					</div>
 				);
 			}
@@ -67,8 +67,8 @@ class ResponsesView extends React.Component {
 		}
 		else if (loading) {
 			content = (
-				<div style={{textAlign:'center',margin:'3rem'}}>
-					<Spinner/>
+				<div style={{margin:'3rem 0'}}>
+					<NonIdealState title='Loading...' visual={<Spinner/>}/>
 				</div>
 			);
 		}

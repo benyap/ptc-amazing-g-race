@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
-import { Spinner, Intent } from '@blueprintjs/core';
+import { Spinner, Intent, NonIdealState } from '@blueprintjs/core';
 import { getAllChallenges } from '../../../../graphql/challenge';
 import { saveState } from '../../../../actions/stateActions';
 import RefreshBar from '../../components/RefreshBar';
@@ -91,8 +91,8 @@ class ChallengesView extends React.Component {
 		}
 		else if (loading) {
 			content = (
-				<div style={{textAlign:'center',margin:'3rem'}}>
-					<Spinner/>
+				<div style={{margin:'3rem 0'}}>
+					<NonIdealState title='Loading...' visual={<Spinner/>}/>
 				</div>
 			);
 		}

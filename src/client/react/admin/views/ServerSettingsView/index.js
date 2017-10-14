@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import DateFormat from 'dateformat';
 import { graphql } from 'react-apollo';
-import { Spinner, Button } from '@blueprintjs/core';
+import { Spinner, NonIdealState } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import { saveState } from '../../../../actions/stateActions';
 import { getSettings } from '../../../../graphql/setting';
@@ -61,8 +61,8 @@ class ServerSettingsView extends React.Component {
 		}
 		else if (loading) {
 			content = (
-				<div style={{textAlign:'center',margin:'3rem'}}>
-					<Spinner/>
+				<div style={{margin:'3rem 0'}}>
+					<NonIdealState title='Loading...' visual={<Spinner/>}/>
 				</div>
 			);
 		}

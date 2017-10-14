@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
-import { Spinner } from '@blueprintjs/core';
+import { Spinner, NonIdealState } from '@blueprintjs/core';
 import { getUserByEmail } from '../../../../graphql/user';
 import TeamPointsPanel from './TeamPointsPanel';
 
@@ -42,8 +42,8 @@ class Home extends React.Component {
 		}
 		else {
 			teamPointsPanel = (
-				<div style={{textAlign:'center',margin:'3rem'}}>
-					<Spinner className='pt-large'/>
+				<div style={{margin:'3rem 0'}}>
+					<NonIdealState title='Loading...' visual={<Spinner/>}/>
 				</div>
 			);
 		}

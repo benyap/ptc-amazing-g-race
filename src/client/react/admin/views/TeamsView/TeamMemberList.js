@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
-import { Intent, Spinner } from '@blueprintjs/core';
+import { Intent, Spinner, NonIdealState } from '@blueprintjs/core';
 import { getTeam } from '../../../../graphql/team';
 import TeamUser from './TeamUser';
 import TeamAddUser from './TeamAddUser';
@@ -60,8 +60,8 @@ class TeamMemberList extends React.Component {
 		}
 		else if (loading) {
 			return (
-				<div style={{textAlign:'center',margin:'2rem'}}>
-					<Spinner/>
+				<div style={{margin:'3rem 0'}}>
+					<NonIdealState title='Loading...' visual={<Spinner/>}/>
 				</div>
 			);
 		}

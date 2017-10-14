@@ -2,7 +2,7 @@ import React from 'react';
 import autobind from 'core-decorators/es/autobind';
 import { Link } from 'react-router-dom';
 import { graphql } from 'react-apollo';
-import { Button, Spinner } from '@blueprintjs/core';
+import { Button, Spinner, NonIdealState } from '@blueprintjs/core';
 import { getArticles } from '../../../../graphql/article';
 import InstructionCollapse from './InstructionCollapse';
 
@@ -51,8 +51,8 @@ class Instructions extends React.Component {
 							return <InstructionCollapse key={article._id} article={article}/>;
 						})
 						: 
-						<div style={{textAlign:'center', margin: '2rem'}}>
-							<Spinner/>
+						<div style={{margin:'3rem 0'}}>
+							<NonIdealState title='Loading...' visual={<Spinner/>}/>
 						</div>
 					}
 				</div>

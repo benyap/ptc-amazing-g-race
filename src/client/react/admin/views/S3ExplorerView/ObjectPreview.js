@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import DateFormat from 'dateformat';
 import autobind from 'core-decorators/es/autobind';
 import { graphql, withApollo } from 'react-apollo';
-import { Button, Dialog, Spinner, Intent } from '@blueprintjs/core';
+import { Button, Dialog, Spinner, NonIdealState, Intent } from '@blueprintjs/core';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import { _getObject } from '../../../../graphql/upload';
 import { getProtectedSetting } from '../../../../graphql/setting';
@@ -69,8 +69,8 @@ class ObjectPreview extends React.Component {
 
 		if (this.state.loading) {
 			content = (
-				<div style={{textAlign:'center',margin:'3rem'}}>
-					<Spinner/>
+				<div style={{margin:'3rem 0'}}>
+					<NonIdealState title='Loading...' visual={<Spinner/>}/>
 				</div>
 			);
 		}
