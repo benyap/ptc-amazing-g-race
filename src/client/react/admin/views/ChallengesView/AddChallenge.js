@@ -74,22 +74,31 @@ class AddChallenge extends React.Component {
 
 				<Dialog isOpen={this.state.showCreateChallenge} title='Create a new challenge' iconName='map' onClose={this.toggleCreateChallenge}>
 					<div className='pt-dialog-body'>
-						<div className='pt-callout pt-icon-info-sign' style={{marginBottom:'0.5rem'}}>
-							The <b>challenge key</b> should be a unique identifier for this challenge,
-							and cannot be changed once set.
-							The challenge <b>order</b> determines the order in which the challenge appears on the screen.
-						</div>
 						{this.state.createChallengeError ? 
 							<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'0.5rem'}}>
 								{this.state.createChallengeError}
 							</div>
 							:null}
-						<div>
-							<b>Challenge key:</b> 
-							<FormInput id='challenge-key' value={this.state.challengeKey} onChange={this.editValue('challengeKey')}/>
-							<b>Order:</b> 
-							<FormInput id='challenge-order' value={this.state.order} onChange={this.editValue('order')}/>
+
+						<div className='pt-callout pt-icon-info-sign' style={{marginBottom:'0.5rem'}}>
+							<ul style={{margin:'0',padding:'0 0 0 1rem'}}>
+								<li>
+									The <b>challenge key</b> should be a unique identifier for this challenge, and cannot be changed once set. 
+									Users will not see the challenge key (they see the challenge title, which can be set later).
+								</li>
+								<li>
+									The challenge <b>order</b> determines the order in which the challenge appears on the screen.
+								</li>
+							</ul>
 						</div>
+
+						<b>Challenge key:</b> 
+						<FormInput id='challenge-key' value={this.state.challengeKey} onChange={this.editValue('challengeKey')}
+							helperText='Use the format <type>_<name>, where <type> is one of [challenge, station].'/>
+
+						<b>Order:</b> 
+						<FormInput id='challenge-order' value={this.state.order} onChange={this.editValue('order')}/>
+
 					</div>
 					<div className='pt-dialog-footer'>
 						<div className='pt-dialog-footer-actions'>

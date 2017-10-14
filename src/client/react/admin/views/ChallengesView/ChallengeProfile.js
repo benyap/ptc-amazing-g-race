@@ -246,12 +246,13 @@ class ChallengeProfile extends React.Component {
 						<div className='pt-callout pt-intent-primary pt-icon-info-sign' style={{margin:'1rem 0'}}>
 							<ul style={{margin: '0', padding: '0 0 0 1rem'}}>
 								<li>
-									The <code>key</code> will not be visible to the user, 
-									but the <code>title</code> will be visible - 
-									so make sure it doesn't give away anything unintentionally.
+									The <code>title</code> is visible to the user, so make sure it remains cryptic if necessary.
 								</li>
 								<li>
-									If the challenge is not <code>public</code>, a team can enter the <code>passphrase</code> to unlock the challenge.
+									A <code>public</code> challenge is available to all teams (the passphrase is not used when it is public).
+								</li>
+								<li>
+									The <code>passphrase</code> can be entered to unlock this challenge if it is <b>not</b> public.
 								</li>
 								<li>
 									<code>Locked</code> challenges are viewable but do not accept responses.
@@ -282,7 +283,7 @@ class ChallengeProfile extends React.Component {
 										<td><Switch checked={this.state.locked} onChange={(e)=>{this.handleChange('locked')(e.target.value==='on'!==this.state.locked)}} disabled={loading}/></td>
 									</tr>
 									<tr>
-										<td>Passphrase<br/>(lowercase only)</td>
+										<td>Passphrase<br/><span className='pt-text-muted'>(lowercase only)</span></td>
 										<td>
 											{ loading ? <span className='pt-text-muted'>Loading...</span> :
 												<EditableText value={this.state.passphrase} onChange={this.handleChange('passphrase')}/>
@@ -300,7 +301,7 @@ class ChallengeProfile extends React.Component {
 													{getChallenge.items.map((item) => {
 														return (
 															<div key={item.key} order={item.order}>
-																<a onClick={this.editChallengeItem(item.key)}>{item.title} ({item.key})</a>
+																<a onClick={this.editChallengeItem(item.key)}>{item.key}</a>
 															</div>
 														)
 													}).sort((a, b) => {
