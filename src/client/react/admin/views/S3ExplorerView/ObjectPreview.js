@@ -7,17 +7,9 @@ import { Button, Dialog, Spinner, Intent } from '@blueprintjs/core';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import { _getObject } from '../../../../graphql/upload';
 import { getProtectedSetting } from '../../../../graphql/setting';
+import ImageContainer from '../../components/ImageContainer';
 import ObjectDelete from './ObjectDelete';
 
-
-const imgContainerStyle = {
-	textAlign: 'center',
-	color: 'white',	
-	background: 'rgba(0, 0, 0, 0.8)',
-	padding: '0.5rem',
-	borderRadius: '0.3rem',
-	marginBottom: '0.5rem'
-}
 
 const QueryS3ObjectsParams = 'Name Prefix KeyCount Contents{Key LastModified Size} CommonPrefixes{Prefix}';
 
@@ -83,11 +75,7 @@ class ObjectPreview extends React.Component {
 			);
 		}
 		else if (this.state.getObjectData) {
-			content = (
-				<div style={imgContainerStyle}>
-					<img src={this.state.getObjectData.data} alt={this.props.objectKey} style={{maxWidth:'100%',maxHeight:'50vh'}}/>
-				</div>
-			);
+			content = <ImageContainer src={this.state.getObjectData.data} alt={this.props.objectKey} imgStyle={{maxWidth:'100%',maxHeight:'50vh'}}/>;
 			date = `Retrieved from the server at ${DateFormat(new Date(this.state.getObjectData.date), 'hh:MM:ss TT (mmm dd yyyy)')}`;
 		}
 

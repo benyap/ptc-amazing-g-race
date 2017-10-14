@@ -5,6 +5,7 @@ import DateFormat from 'dateformat';
 import { graphql } from 'react-apollo';
 import { Spinner, Button, Dialog } from '@blueprintjs/core';
 import { getResponseData } from '../../../../graphql/response';
+import ImageContainer from '../../components/ImageContainer';
 
 
 const imgContainerStyle = {
@@ -65,9 +66,7 @@ class ResponsePreview extends React.Component {
 				responseData = (
 					<div>
 						{date}
-						<div style={imgContainerStyle}>
-							<img src={getResponseData.data} alt={`Response uploaded by ${uploadedBy} (loading...)`} style={{maxWidth:'100%',maxHeight:'70vh'}}/>
-						</div>
+						<ImageContainer src={getResponseData.data} alt={`Response uploaded by ${uploadedBy}`}/>
 					</div>
 				);
 			}
