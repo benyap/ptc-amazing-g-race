@@ -32,8 +32,20 @@ class TeamMemberList extends React.Component {
 					<div>
 						<TeamAddUser teamId={this.props.teamId} refetchTeam={this.props.QueryTeam.refetch}/>
 						{getTeam.members.map((member) => {
-							return <TeamUser key={member.username} member={member} refetchTeam={this.props.QueryTeam.refetch}/>;
-						})}
+								return <TeamUser key={member.username} member={member} refetchTeam={this.props.QueryTeam.refetch}/>;
+							})
+							.sort((member1, member2) => {
+								const { member: a } = member1.props;
+								const { member: b } = member2.props;
+
+								if (a.firstname > b.firstname) return 1;
+								else if (a.firstname < b.firstname) return -1;
+								else {
+									if (a.lastname > b.lastname) return 1;
+									else if (a.lastname < b.lastname) return -1;
+									else return 0;
+								}
+							})}
 					</div>
 				);
 			}

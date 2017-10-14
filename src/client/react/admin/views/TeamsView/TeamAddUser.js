@@ -102,9 +102,21 @@ class TeamAddUser extends React.Component {
 										this.props.QueryUsers.getUsers.map((user) => {
 											// Only add users without a team
 											if (!user.teamId) {
-												return <option key={user.username} value={user.username}>{`${user.firstname} ${user.lastname}`}</option>
+												return <option key={user.username} value={user.username} user={user}>{`${user.firstname} ${user.lastname}`}</option>
 											}
 										})
+										.sort((user1, user2) => {
+											const { user: a } = user1.props;
+											const { user: b } = user2.props;
+
+											if (a.firstname > b.firstname) return 1;
+											else if (a.firstname < b.firstname) return -1;
+											else {
+												if (a.lastname > b.lastname) return 1;
+												else if (a.lastname < b.lastname) return -1;
+												else return 0;
+											}
+										})}
 									}
 								</select>
 							</div>
