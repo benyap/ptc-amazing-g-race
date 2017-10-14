@@ -40,8 +40,10 @@ class TeamProfile extends React.Component {
 	state = {
 		teamName: null,
 		teamNameModified: false,
+		teamNameEditing: false,
 		points: null,
 		pointsModified: false,
+		pointsEditing: false,
 		saving: false
 	}
 
@@ -52,20 +54,20 @@ class TeamProfile extends React.Component {
 		const { getTeam } = this.props.QueryTeam;
 
 		if (this.props.QueryTeam.getTeam) {
-			this.setState({ 
-				points: getTeam.points,
-				teamName: getTeam.teamName
-			});
+			let stateUpdate = {};
+			if (!this.state.teamNameEditing) stateUpdate.teamName = getTeam.teamName;
+			if (!this.state.pointsEditing) stateUpdate.points = getTeam.points;
+			this.setState(stateUpdate);
 		}
 
 		// Fetch latest data
 		try {
 			const { data: { getTeam } } = await this.props.QueryTeam.refetch();
 			if (getTeam) {
-				this.setState({
-					points: getTeam.points,
-					teamName: getTeam.teamName
-				})
+				let stateUpdate = {};
+				if (!this.state.teamNameEditing) stateUpdate.teamName = getTeam.teamName;
+				if (!this.state.pointsEditing) stateUpdate.points = getTeam.points;
+				this.setState(stateUpdate);
 			}
 		}
 		catch (err) {
@@ -84,15 +86,23 @@ class TeamProfile extends React.Component {
 		this.props.closeProfile();
 	}
 
-	editPoints(value) {
-		this.setState({points: value, pointsModified: true});
+	onEdit(property) {
+		return () => {
+			this.setState({[`${property}Editing`]: true});
+		}
 	}
 
-	editName(value) {
-		this.setState({teamName: value, teamNameModified: true});
+	onChange(property) {
+		return (value) => {
+			this.setState({
+				[property]: value,
+				[`${property}Modified`]: true
+			});
+		}
 	}
 
 	confirmPoints(value) {
+		this.setState({pointsEditing: false});
 		if (value.length > 0 && this.state.pointsModified) {
 			const regex = /^[-0-9]+(\.|)[0-9]{0,2}$/;
 			if (regex.exec(value)) {
@@ -104,6 +114,7 @@ class TeamProfile extends React.Component {
 	}
 
 	confirmName(value) {
+		this.setState({teamNameEditing: false});
 		if (value.length > 0 && this.state.teamNameModified) {
 			this.saveName();
 			return;
@@ -166,7 +177,8 @@ class TeamProfile extends React.Component {
 						this.state.teamName ? 
 						<EditableText selectAllOnFocus 
 							value={this.state.teamName} 
-							onChange={this.editName} 
+							onEdit={this.onEdit('teamName')}
+							onChange={this.onChange('teamName')} 
 							onConfirm={this.confirmName}/> :
 						this.props.team.teamName
 					}
@@ -183,7 +195,8 @@ class TeamProfile extends React.Component {
 							<span className='pt-text-muted'>Loading...</span> :
 							<EditableText selectAllOnFocus 
 								value={this.state.points} 
-								onChange={this.editPoints} 
+								onEdit={this.onEdit('points')}
+								onChange={this.onChange('points')} 
 								onConfirm={this.confirmPoints}/>
 						}
 					</div>
