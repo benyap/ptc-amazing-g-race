@@ -35,7 +35,14 @@ const _uploadObject = async function(user, object, collection, key, name) {
 			}
 		};
 
-		const uploadResult = await s3.putObject(params).promise();
+		let s3User = s3;
+
+		const isAdmin = await permission.checkPermission(user, ['admin:upload-asset']);
+		if (isAdmin === true) {
+			s3User = s3Admin;
+		}
+
+		const uploadResult = await s3User.putObject(params).promise();
 
 		const db = await connect();
 
