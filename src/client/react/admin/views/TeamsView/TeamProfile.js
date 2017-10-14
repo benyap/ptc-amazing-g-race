@@ -54,14 +54,29 @@ class TeamProfile extends React.Component {
 		removeTeamError: null
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		this._mounted = true;
+		try {
+			const { data: { getTeam } } = await this.props.QueryTeam.refetch();
+			if (getTeam) {
+				this.setState({
+					points: getTeam.points,
+					teamName: getTeam.teamName
+				})
+			}
+		}
+		catch (err) {
+			NotificationToaster.show({
+				intent: Intent.DANGER,
+				message: err.toString()
+			});
+		}
 	}
 
 	componentWillUnmount() {
 		this._mounted = false;
 	}
-	
+
 	closeProfile() {
 		this.props.reload();
 		this.props.closeProfile();
@@ -162,37 +177,8 @@ class TeamProfile extends React.Component {
 	render() {
 		let content = null;
 
-		if (this.props.QueryTeam.error) {
-			if (this._mounted) {
-				setTimeout(() => {
-					this.props.closeProfile();
-					NotificationToaster.show({
-						intent: Intent.DANGER,
-						message: this.props.QueryTeam.error.toString()
-					});
-				}, 0);
-			}
-		}
-		else if (this.props.QueryTeam.getTeam) {
-			const {
-				teamName,
-				memberCount,
-				members,
-				points
-			} = this.props.QueryTeam.getTeam;
-
-			if (this.state.points === null) {
-				setTimeout(() => {
-					this.setState({points});
-				}, 0);
-			}
-
-			if (this.state.teamName === null) {
-				setTimeout(() => {
-					this.setState({teamName});
-				}, 0);
-			}
-
+		if (this.props.QueryTeam.getTeam) {
+			const { members } = this.props.QueryTeam.getTeam;
 			content = (
 				<div>
 					{members.length ? 
@@ -237,7 +223,7 @@ class TeamProfile extends React.Component {
 					</div>
 					<div className='manage-item'>
 						<span>Points:&nbsp;</span>
-						{ this.props.QueryTeam.getTeam ? 
+						{ this.state.points ? 
 							<EditableText selectAllOnFocus 
 								value={this.state.points} 
 								onChange={this.editPoints} 
