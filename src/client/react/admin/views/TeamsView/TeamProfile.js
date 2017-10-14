@@ -6,7 +6,6 @@ import { Button, Intent, Spinner, EditableText } from '@blueprintjs/core';
 import { getTeam, setTeamName, setTeamPoints } from '../../../../graphql/team';
 import NotificationToaster from '../../../components/NotificationToaster';
 import TeamMemberList from './TeamMemberList';
-import TeamAddUser from './TeamAddUser';
 import TeamUser from './TeamUser';
 import TeamRemove from './TeamRemove';
 
@@ -34,7 +33,7 @@ class TeamProfile extends React.Component {
 			teamName: PropTypes.string.isRequired
 		}).isRequired,
 		closeProfile: PropTypes.func.isRequired,
-		refetch: PropTypes.func.isRequired
+		refetchTeams: PropTypes.func.isRequired
 	}
 	
 	state = {
@@ -164,7 +163,7 @@ class TeamProfile extends React.Component {
 		return (
 			<div id='team-profile' className='pt-card team-profile'>
 				<Button className='pt-minimal' intent={Intent.NONE} iconName='cross' onClick={this.closeProfile} style={{float:'right'}}/>
-				<span style={{float:'right'}}><TeamRemove teamId={this.props.team._id} closeProfile={this.closeProfile} refetch={this.props.refetch}/></span>
+				<span style={{float:'right'}}><TeamRemove teamId={this.props.team._id} closeProfile={this.closeProfile} refetchTeams={this.props.refetchTeams}/></span>
 
 				{this.props.QueryTeam.loading || this.state.saving ? 
 					<div style={{float:'right'}}>
@@ -181,7 +180,6 @@ class TeamProfile extends React.Component {
 							onConfirm={this.confirmName}/> :
 						this.props.team.teamName
 					}
-					<TeamAddUser teamId={this.props.team._id} refetch={this.props.QueryTeam.refetch}/>
 				</b></h4>
 
 				<div className='manage'>

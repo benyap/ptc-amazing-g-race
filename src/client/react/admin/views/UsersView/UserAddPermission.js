@@ -14,7 +14,7 @@ import NotificationToaster from '../../../components/NotificationToaster';
 class UserAddPermission extends React.Component {
 	static propTypes = {
 		username: PropTypes.string.isRequired,
-		refetch: PropTypes.func.isRequired
+		refetchUser: PropTypes.func.isRequired
 	}
 
 	state = {
@@ -47,7 +47,7 @@ class UserAddPermission extends React.Component {
 					permission: this.state.addPermissionText
 				}
 			});
-			await this.props.refetch();
+			await this.props.refetchUser();
 
 			this.setState({addPermissionLoading: false, showAddPermission: false});
 		}

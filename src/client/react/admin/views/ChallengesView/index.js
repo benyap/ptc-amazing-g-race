@@ -85,7 +85,7 @@ class ChallengesView extends React.Component {
 					{ getAllChallenges.map((challenge) => {
 						return <ChallengeCard key={challenge.key} challenge={challenge} renderProfile={this.renderProfile}/>;
 					})}
-					<AddChallenge refetch={this.props.QueryGetAllChallenges.refetch}/>
+					<AddChallenge refetchChallenges={this.props.QueryGetAllChallenges.refetch}/>
 				</div>
 			);
 		}

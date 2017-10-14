@@ -200,12 +200,12 @@ class UserProfile extends React.Component {
 							<tr>
 								<td>
 									Account Permissions<br/>
-									<UserAddPermission username={this.props.user.username} refetch={this.props.QueryUser.refetch}/>
+									<UserAddPermission username={this.props.user.username} refetchUser={this.props.QueryUser.refetch}/>
 								</td>
 								<td>
 									<ul>
 										{ permissions.map((permission, index) => {
-												return <UserPermissionCard key={index} username={this.props.user.username} permission={permission} refetch={this.props.QueryUser.refetch}/>;
+												return <UserPermissionCard key={index} username={this.props.user.username} permission={permission} refetchUser={this.props.QueryUser.refetch}/>;
 										}) }
 									</ul>
 								</td>

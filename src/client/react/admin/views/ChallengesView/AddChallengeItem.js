@@ -13,7 +13,7 @@ import NotificationToaster from '../../../components/NotificationToaster';
 class AddChallengeItem extends React.Component {
 	static propTypes = {
 		challengeKey: PropTypes.string.isRequired,
-		refetch: PropTypes.func.isRequired
+		refetchChallenges: PropTypes.func.isRequired
 	}
 
 	state = {
@@ -57,7 +57,7 @@ class AddChallengeItem extends React.Component {
 					type: this.state.addItemType
 				}
 			});
-			await this.props.refetch();
+			await this.props.refetchChallenges();
 			this.setState({addItemLoading: false, showAddItem: false});
 		}
 		catch (err) {

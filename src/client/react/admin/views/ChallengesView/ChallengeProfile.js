@@ -234,7 +234,7 @@ class ChallengeProfile extends React.Component {
 		else if (this.state.editChallengeItem) {
 			content = (
 				<div>
-					<ChallengeItemProfile itemKey={this.state.editChallengeItem} QueryGetChallenge={this.props.QueryGetChallenge}
+					<ChallengeItemProfile itemKey={this.state.editChallengeItem} refetchChallenges={this.props.QueryGetChallenge.refetch}
 						challenge={getChallenge} closeItem={this.closeChallengeItem}/>
 				</div>
 			);
@@ -292,7 +292,7 @@ class ChallengeProfile extends React.Component {
 									<tr>
 										<td>
 											Items<br/>
-											<AddChallengeItem challengeKey={this.props.challenge.key} refetch={this.props.QueryGetChallenge.refetch}/>
+											<AddChallengeItem challengeKey={this.props.challenge.key} refetchChallenges={this.props.QueryGetChallenge.refetch}/>
 										</td>
 										<td>
 											{ loading ? <span className='pt-text-muted'>Loading...</span> :
@@ -315,13 +315,13 @@ class ChallengeProfile extends React.Component {
 									<tr>
 										<td>
 											Teams with access<br/>
-											<AddTeamAccess challengeKey={this.props.challenge.key} refetch={this.props.QueryGetChallenge.refetch}/>
+											<AddTeamAccess challengeKey={this.props.challenge.key} refetchChallenges={this.props.QueryGetChallenge.refetch}/>
 										</td>
 										<td>
 											{ loading ? <span className='pt-text-muted'>Loading...</span> :
 												<div>
 													{getChallenge.teams.map((teamId) => {
-														return <TeamAccessCard key={teamId} teamId={teamId} challengeKey={this.props.challenge.key} refetch={this.props.QueryGetChallenge.refetch}/>
+														return <TeamAccessCard key={teamId} teamId={teamId} challengeKey={this.props.challenge.key} refetchChallenges={this.props.QueryGetChallenge.refetch}/>
 													})}
 												</div>
 											}

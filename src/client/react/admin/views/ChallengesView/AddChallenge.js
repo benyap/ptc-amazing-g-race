@@ -12,7 +12,7 @@ import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 @autobind
 class AddChallenge extends React.Component {
 	static propTypes = {
-		refetch: PropTypes.func.isRequired
+		refetchChallenges: PropTypes.func.isRequired
 	}
 
 	state = {
@@ -50,7 +50,7 @@ class AddChallenge extends React.Component {
 					description: `## Challenge ${id}`
 				}
 			});
-			await this.props.refetch();
+			await this.props.refetchChallenges();
 			this.setState({ createChallengeLoading: false, showCreateChallenge: false, challengeKey: '' });
 		}
 		catch (err) {
