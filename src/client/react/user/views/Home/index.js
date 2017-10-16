@@ -46,7 +46,7 @@ class Home extends React.Component {
 		}
 
 		return (
-			<main id='home' className='dashboard'>
+			<main id='dashboard-home' className='dashboard'>
 				<div className='content'>
 					{teamPointsPanel}
 					<TeamResponsesPanel/>

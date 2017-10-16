@@ -7,8 +7,6 @@ import { Button, Intent } from '@blueprintjs/core';
 import NotificationToaster from '../../../components/NotificationToaster';
 import HelpBox from './HelpBox';
 
-import '../../scss/views/_team-panel.scss';
-
 
 const QueryGetTeamOptions = {
 	name: 'QueryGetTeam',
@@ -56,6 +54,8 @@ class TeamPointsPanel extends React.Component {
 
 	render() {
 		const { QueryGetTeam, user } = this.props;
+		const loadingStyle = {color:'#bfccd6'};
+
 		let teamName = 'Your Team';
 		let teamPoints = (
 			<div className='pt-callout pt-icon-error'>
@@ -76,12 +76,13 @@ class TeamPointsPanel extends React.Component {
 					</div>
 				);
 			}
+			
 			if (QueryGetTeam.loading) {
 				if (QueryGetTeam.getTeam) {
 					teamPoints = (
 						<div className='pt-callout'>
 							<div className='points'>
-								<span style={{color:'#888'}}>{QueryGetTeam.getTeam.points} points</span>
+								<span style={loadingStyle}>{QueryGetTeam.getTeam.points} points</span>
 							</div>
 						</div>
 					);
@@ -97,15 +98,13 @@ class TeamPointsPanel extends React.Component {
 		}
 
 		return (
-			<div id='dashboard-team-panel'>
+			<div id='team-points-panel'>
 				<Button className='helper-button pt-small pt-minimal pt-intent-warning' iconName='refresh' onClick={this.refresh} loading={QueryGetTeam?QueryGetTeam.loading:false} style={{padding:'0'}}/>
 				<Button className='helper-button pt-small pt-minimal pt-intent-primary' iconName='help' onClick={this.toggleShowHelp}/>
 				<h2>{teamName}</h2>
 				<HelpBox showHelp={this.state.showHelp}/>
 				<p>Hey {this.props.user.firstname}! Welcome to your team dashboard.</p>
-				<div id='dashboard-team-panel'>
-					{teamPoints}
-				</div>
+				{teamPoints}
 			</div>
 		);
 	}
