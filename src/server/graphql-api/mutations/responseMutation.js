@@ -64,6 +64,11 @@ const checkResponse = {
 			name: 'pointsAwarded',
 			description: 'The number of points the response should add to the team',
 			type: new GraphQLNonNull(GraphQLFloat)
+		},
+		comment: {
+			name: 'comment',
+			description: 'A comment for the team regarding their response',
+			type: new GraphQLNonNull(GraphQLString)
 		}
 	},
 	resolve(root, params, ctx, options) {
