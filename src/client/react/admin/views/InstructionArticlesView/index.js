@@ -45,7 +45,6 @@ class InstructionArticlesView extends React.Component {
 	
 	async closeProfile() {
 		this.setState({ viewProfile: null });
-		this.props.QueryGetArticles.refetch();
 	}
 
 	render() {
@@ -56,7 +55,7 @@ class InstructionArticlesView extends React.Component {
 			content = <ViewError error={error}/>;
 		}
 		else if (this.state.viewProfile) {
-			content = <InstructionArticleProfile article={this.state.viewProfile} closeProfile={this.closeProfile}/>;
+			content = <InstructionArticleProfile article={this.state.viewProfile} closeProfile={this.closeProfile} refetchArticles={this.props.QueryGetArticles.refetch}/>;
 		}
 		else if (getArticles) {
 			content = (

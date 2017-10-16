@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { compose, graphql } from 'react-apollo';
 import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core';
-import { getArticle, setArticleTitle, editArticle, removeArticle } from '../../../../graphql/article';
+import { getArticle, setArticleTitle, editArticle } from '../../../../graphql/article';
 import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEditor';
 import NotificationToaster from '../../../components/NotificationToaster';
+import DeleteInstructionArticle from './DeleteInstructionArticle';
 
 import '../../../user/scss/components/_instruction-panel.scss';
 import '../../scss/components/_markdown-preview.scss';
@@ -25,8 +26,7 @@ const QueryGetArticleOptions = {
 @compose(
 	graphql(getArticle(QueryGetArticleParams), QueryGetArticleOptions),
 	graphql(setArticleTitle('ok'), { name: 'MutationSetArticleTitle' }),
-	graphql(editArticle('ok'), { name: 'MutationEditArticle' }),
-	graphql(removeArticle('ok'), { name: 'MutationRemoveArticle' })
+	graphql(editArticle('ok'), { name: 'MutationEditArticle' })
 )
 @autobind
 class InstructionArticleProfile extends React.Component {
@@ -35,6 +35,7 @@ class InstructionArticleProfile extends React.Component {
 			_id: PropTypes.string.isRequired,
 			title: PropTypes.string.isRequired
 		}).isRequired,
+		refetchArticles: PropTypes.func.isRequired,
 		closeProfile: PropTypes.func.isRequired
 	}
 
@@ -43,9 +44,7 @@ class InstructionArticleProfile extends React.Component {
 		modified: false,
 		titleText: this.props.article.title,
 		content: null,
-		showConfirmClose: false,
-		showConfirmDelete: false,
-		deleteLoading: false
+		showConfirmClose: false
 	}
 
 	componentDidMount() {
@@ -71,32 +70,6 @@ class InstructionArticleProfile extends React.Component {
 			else {
 				this.closeProfile();
 			}
-		}
-	}
-
-	toggleConfirmDelete() {
-		this.setState((prevState) => {
-			return { showConfirmDelete: !prevState.showConfirmDelete };
-		});
-	}
-
-	async submitDeleteArticle() {
-		this.setState({ deleteLoading: true });
-		try {
-			await this.props.MutationRemoveArticle({
-				variables: {
-					articleId: this.props.article._id,
-					category: 'instructions'
-				}
-			});
-			this.props.closeProfile();
-		}
-		catch(e) {
-			this.setState({ deleteLoading: false });
-			NotificationToaster.show({
-				intent: Intent.DANGER,
-				message: e.toString()
-			});
 		}
 	}
 
@@ -165,12 +138,12 @@ class InstructionArticleProfile extends React.Component {
 
 	render() {
 		const { loading, getArticle } = this.props.QueryGetArticle;
-
+		
 		return (
 			<div className='pt-card instruction-article-profile'>
 				<Button className='pt-minimal' intent={Intent.NONE} iconName='cross' onClick={this.toggleConfirmClose} style={{float:'right'}}/>
 				<Button className='pt-minimal' intent={Intent.PRIMARY} iconName='floppy-disk' onClick={this.saveContent} style={{float:'right'}} disabled={!this.state.modified}/>
-				<Button className='pt-minimal' intent={Intent.DANGER} iconName='trash' onClick={this.toggleConfirmDelete} style={{float:'right'}}/>
+				<DeleteInstructionArticle articleId={this.props.article._id} refetchArticles={this.props.refetchArticles} closeProfile={this.closeProfile}/>
 				{loading || this.state.saving ? 
 					<div style={{float:'right'}}>
 						<Spinner className='pt-small'/>
@@ -197,19 +170,6 @@ class InstructionArticleProfile extends React.Component {
 						<div className='pt-dialog-footer-actions'>
 							<Button intent={Intent.DANGER} className='pt-minimal' text='Close' onClick={this.closeProfile}/>
 							<Button intent={Intent.PRIMARY} text='Cancel' onClick={this.toggleConfirmClose}/>
-						</div>
-					</div>
-				</Dialog>
-
-				{/* Confirm delete dialog */}
-				<Dialog isOpen={this.state.showConfirmDelete} onClose={this.toggleConfirmDelete} title='Delete article'>
-					<div className='pt-dialog-body'>
-						Are you sure you want to delete this article? This action is irreversible.
-					</div>
-					<div className='pt-dialog-footer'>
-						<div className='pt-dialog-footer-actions'>
-							<Button text='Close' onClick={this.toggleConfirmDelete} className='pt-minimal' disabled={this.state.deleteLoading}/>
-							<Button text='Delete' onClick={this.submitDeleteArticle} intent={Intent.DANGER} loading={this.state.deleteLoading}/>
 						</div>
 					</div>
 				</Dialog>
