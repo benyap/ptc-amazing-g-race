@@ -42,7 +42,7 @@ class Home extends React.Component {
 			content = (
 				<div>
 					<TeamPointsPanel user={user}/>
-					<TeamResponsesPanel/>
+					<TeamResponsesPanel user={user}/>
 				</div>
 			);
 		}

@@ -58,10 +58,9 @@ class TeamPointsPanel extends React.Component {
 
 		let teamName = 'Your Team';
 		let teamPoints = (
-			<div className='pt-callout pt-icon-error'>
-				<h5>No team</h5>
-				You have not been allocated into a team yet. 
-				Your team's stats will show up here once you are in a team.
+			<div className='pt-callout pt-intent-primary pt-icon-info-sign'>
+				<h5>Team points</h5>
+				This panel will display the number points your team has.
 			</div>
 		);
 

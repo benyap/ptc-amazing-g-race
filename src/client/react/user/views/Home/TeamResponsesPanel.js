@@ -19,27 +19,55 @@ const QueryGetTeamResponsesOptions = {
 @graphql(getTeamResponses(QueryGetTeamResponsesParams), QueryGetTeamResponsesOptions)
 @autobind
 class TeamResponsesPanel extends React.Component {
+	static propTypes = {
+		user: PropTypes.shape({
+			teamId: PropTypes.string
+		}).isRequired
+	}
+
 	constructor(props) {
 		super(props);
 		const { getTeamResponses } = props.QueryGetTeamResponses;
 
 		// Initialize inital state
-		if (getTeamResponses) {
-			this.state = this._countResponses(getTeamResponses);
-		}
-		else {
-			this.state = {
-				loaded: false,
-				pending: null,
-				valid: null, 
-				invalid: null,
-				retry: null
+		if (props.user.teamId) {
+			if (getTeamResponses) {
+				this.state = this._countResponses(getTeamResponses);
+			}
+			else {
+				this.state = {
+					loaded: false,
+					pending: null,
+					valid: null, 
+					invalid: null,
+					retry: null
+				}
 			}
 		}
 	}
 
 	async componentDidMount() {
-		this.refetch()
+		this.refetch();
+	}
+
+	async refetch() {
+		if (!this.props.user.teamId) return;
+
+		try {
+			const result = await this.props.QueryGetTeamResponses.refetch();
+			
+			// Count responses
+			if (result.data.getTeamResponses) {
+				const newState = this._countResponses(result.data.getTeamResponses);
+				this.setState(newState);
+			}
+		}
+		catch (err) {
+			NotificationToaster.show({
+				intent: Intent.DANGER,
+				message: err.toString()
+			});
+		}
 	}
 
 	_countResponses(responses) {
@@ -59,30 +87,20 @@ class TeamResponsesPanel extends React.Component {
 		return { loaded: true, pending, valid, invalid, retry };
 	}
 	
-	async refetch() {
-		try {
-			const result = await this.props.QueryGetTeamResponses.refetch();
-			
-			// Count responses
-			if (result.data.getTeamResponses) {
-				const newState = this._countResponses(result.data.getTeamResponses);
-				this.setState(newState);
-			}
-		}
-		catch (err) {
-			NotificationToaster.show({
-				intent: Intent.DANGER,
-				message: err.toString()
-			});
-		}
-	}
-
 	render() {
 		const { loading } = this.props.QueryGetTeamResponses;
 		let content;
 		let pending, valid, invalid, retry;
 
-		if (this.state.loaded) {
+		if (!this.props.user.teamId) {
+			content =  (
+				<div className='pt-callout pt-intent-primary pt-icon-info-sign'>
+					<h5>Challenges overview</h5>
+					This panel will show an overview of how your team is going in answering challenges in the race.
+				</div>
+			);
+		}
+		else if (this.state.loaded) {
 			const loadingStyle = {color:'#bfccd6'};
 
 			valid = (
