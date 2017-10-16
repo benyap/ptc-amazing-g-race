@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import autobind from 'core-decorators/es/autobind';
 
 
-@autobind
 class Search extends React.Component {
 	static propTypes = {
 		value: PropTypes.string.isRequired,

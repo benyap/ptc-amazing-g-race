@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import autobind from 'core-decorators/es/autobind';
-import { Popover, Button, Menu, Position, Intent } from '@blueprintjs/core';
 
 
-@autobind
 class Filter extends React.Component {
 	static propTypes = {
 		value: PropTypes.string.isRequired,
