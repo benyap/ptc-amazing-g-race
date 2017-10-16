@@ -69,10 +69,10 @@ class AddChallenge extends React.Component {
 	render() {
 		return (
 			<div>
-				<Button text='Create new challenge' iconName='map' className='pt-fill pt-minimal' 
+				<Button text='Create new challenge' iconName='flag' className='pt-fill pt-minimal' 
 					intent={Intent.PRIMARY} onClick={this.toggleCreateChallenge}/>
 
-				<Dialog isOpen={this.state.showCreateChallenge} title='Create a new challenge' iconName='map' onClose={this.toggleCreateChallenge}>
+				<Dialog isOpen={this.state.showCreateChallenge} title='Create a new challenge' iconName='flag' onClose={this.toggleCreateChallenge}>
 					<div className='pt-dialog-body'>
 						{this.state.createChallengeError ? 
 							<div className='pt-callout pt-intent-danger pt-icon-error' style={{marginBottom:'0.5rem'}}>
