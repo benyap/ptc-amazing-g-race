@@ -87,18 +87,32 @@ class ChallengeResponse extends React.Component {
 
 			if (latestResponse.checked) {
 				comment = latestResponse.comment;
+				canRespond = latestResponse.retry;
+
 				if (latestResponse.responseValid) {
 					// Response valid
 					classNames = 'pt-callout pt-intent-success pt-icon-tick-circle';
 					title = 'Accepted';
-					text = `You team was awarded ${latestResponse.pointsAwarded} ${latestResponse.pointsAwarded===1?'point':'points'} for your efforts.`;
+					if (latestResponse.pointsAwarded !== 0) {
+						text = `You team was awarded ${latestResponse.pointsAwarded} ${latestResponse.pointsAwarded===1?'point':'points'} for your answer.`;
+					}
+					else {
+						text = `Your team didn't get any points for your answer.`;
+					}
+
+					if (canRespond) {
+						text += ` You may enter another response if you want.`;
+					}
 				}
 				else {
 					// Response invalid
 					classNames = `pt-callout pt-icon-delete pt-intent-danger`;
-					title = 'Incorrect';
-					text = `Sorry, your team's response was not accepted. You ${latestResponse.retry?'may':'may not'} try again.`;
-					canRespond = latestResponse.retry;
+					title = 'Rejected';
+					text = `Sorry, your team's response not accepted. You ${latestResponse.retry?'may':'may not'} try again.`;
+
+					if (latestResponse.pointsAwarded !== 0) {
+						text += ` Oh, and you received ${latestResponse.pointsAwarded} ${latestResponse.pointsAwarded===1?'point':'points'}.`;
+					}
 				}
 			}
 			else {
@@ -110,19 +124,17 @@ class ChallengeResponse extends React.Component {
 		}
 
 		return (
-			<div className='pt-card' style={{padding:'0.5rem',background:'#0d0d0c'}}>
-				<div className={classNames} style={{marginBottom:'0'}}>
-					<Button iconName='refresh' loading={this.props.QueryGetTeamResponses.loading} className='pt-minimal' 
-						style={{float:'right',margin:'-0.6rem',padding:'0'}} onClick={this.refetch}/>
-					<h5>{title}</h5>
-					{text}
-					{canRespond?response:null}
-					{comment?
-						<div style={{marginTop:'0.5rem',background:'rgba(0,0,0,0.3)',padding:'0.5rem',borderRadius:'0.3rem'}}>
-							{comment}
-						</div> 
-						: null }
-				</div>
+			<div className={classNames} style={{marginBottom:'0'}}>
+				<Button iconName='refresh' loading={this.props.QueryGetTeamResponses.loading} className='pt-minimal' 
+					style={{float:'right',margin:'-0.6rem',padding:'0'}} onClick={this.refetch}/>
+				<h5>{title}</h5>
+				{text}
+				{comment?
+					<div style={{marginTop:'0.5rem',background:'rgba(0,0,0,0.3)',padding:'0.5rem',borderRadius:'0.3rem'}}>
+						{comment}
+					</div> 
+					: null }
+				{canRespond?response:null}
 			</div>
 		);
 	}
