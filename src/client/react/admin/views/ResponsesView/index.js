@@ -109,18 +109,18 @@ class ResponsesView extends React.Component {
 				if (getResponses.length) {
 					content = (
 						<div className='view-list'>
-						{ getResponses.map((response) => {
-								responseTotal += 1;
-								if (this._applyFilterResponse(response) && this._applySearchResponse(response)) {
-									responseCount += 1;
-									return <ResponseCard key={response._id} response={response}/>;
-								}
-							}).sort((a, b) => {
-								if (a.props.response.checked && b.props.response.checked) return 0;
-								else if (a.props.response.checked) return 1;
-								else if (b.props.response.checked) return -1;
-								else return 0;
-							})}
+							{ getResponses.map((response) => {
+									responseTotal += 1;
+									if (this._applyFilterResponse(response) && this._applySearchResponse(response)) {
+										responseCount += 1;
+										return <ResponseCard key={response._id} response={response}/>;
+									}
+								}).sort((a, b) => {
+									if (a.props.response.checked && b.props.response.checked) return 0;
+									else if (a.props.response.checked) return 1;
+									else if (b.props.response.checked) return -1;
+									else return 0;
+								})}
 						</div>
 					);
 					
