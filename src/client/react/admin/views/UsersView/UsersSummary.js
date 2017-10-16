@@ -28,15 +28,18 @@ class UserSummary extends React.Component {
 	}
 
 	render() {
+		const { displayPaidCount, displayCount, filterValue, searchValue } = this.props;
+		const descriptor = filterValue!=='all' || searchValue ? ' shown ' : ' total ';
 		let intent = 'pt-intent-danger';
-		if (this.props.displayPaidCount === this.props.displayCount) intent = 'pt-intent-success';
+
+		if (displayPaidCount === displayCount) intent = 'pt-intent-success';
 		
 		return (
 			<div className={'pt-callout summary-panel ' + intent}>
-				{this.props.displayPaidCount} out of {this.props.displayCount} users have paid.
+				{displayPaidCount} out of {displayCount}{descriptor}users have paid.
 				<div className='summary-controls'>
-					<UsersFilter value={this.props.filterValue} onChange={this.onFilterChange}/>
-					<Search value={this.props.searchValue} onChange={this.onSearchChange}/>
+					<UsersFilter value={filterValue} onChange={this.onFilterChange}/>
+					<Search value={searchValue} onChange={this.onSearchChange}/>
 				</div>
 			</div>
 		);
