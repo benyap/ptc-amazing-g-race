@@ -76,12 +76,12 @@ const getTeamResponses = {
 		challengeKey: {
 			name: 'challengeKey',
 			description: 'The challenge key',
-			type: new GraphQLNonNull(GraphQLString)
+			type: GraphQLString
 		},
 		itemKey: {
 			name: 'itemKey',
 			description: 'The challenge item key',
-			type: new GraphQLNonNull(GraphQLString)
+			type: GraphQLString
 		}
 	},
 	resolve(root, params, ctx, options) {
