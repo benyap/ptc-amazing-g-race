@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import DateFormat from 'dateformat';
 import { graphql } from 'react-apollo';
-import { Spinner, NonIdealState, Button, Dialog } from '@blueprintjs/core';
+import { Button, Dialog } from '@blueprintjs/core';
 import { getResponseData } from '../../../../graphql/response';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 import ImageContainer from '../../components/ImageContainer';
 
 
@@ -80,11 +81,7 @@ class ResponsePreview extends React.Component {
 			}
 		}
 		else if (loading) {
-			responseData = (
-				<div style={{margin:'3rem 0'}}>
-					<NonIdealState title='Loading...' visual={<Spinner/>}/>
-				</div>
-			);
+			responseData =  <LoadingSpinner/>;
 		}
 
 		return (

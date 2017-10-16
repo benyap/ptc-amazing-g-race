@@ -4,10 +4,11 @@ import autobind from 'core-decorators/es/autobind';
 import DateFormat from 'dateformat';
 import { Link } from 'react-router-dom';
 import { graphql, withApollo } from 'react-apollo';
-import { Spinner, NonIdealState, Intent } from '@blueprintjs/core';
+import { Intent } from '@blueprintjs/core';
 import { getResponse } from '../../../../graphql/response';
 import { getTeam } from '../../../../graphql/team';
 import NotificationToaster from '../../../components/NotificationToaster';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 import ResponsePreview from './ResponsePreview';
 import ResponseCheck from './ResponseCheck';
 
@@ -163,11 +164,7 @@ class ResponseProfile extends React.Component {
 			);
 		}
 		else if (loading || dataLoading) {
-			content = (
-				<div style={{margin:'3rem 0'}}>
-					<NonIdealState title='Loading...' visual={<Spinner/>}/>
-				</div>
-			);
+			content = <LoadingSpinner/>;
 		}
 
 		return (

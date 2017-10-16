@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
 import { Link } from 'react-router-dom';
-import { Spinner, NonIdealState, Icon } from '@blueprintjs/core';
+import { Icon } from '@blueprintjs/core';
 import MarkdownRenderer from '../../../../../../lib/react/components/MarkdownRenderer';
-import NotificationToaster from '../../../components/NotificationToaster';
 import { getChallengeById } from '../../../../graphql/challenge';
+import NotificationToaster from '../../../components/NotificationToaster';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 import ChallengeProfile from './ChallengeProfile';
 
 
@@ -24,11 +25,7 @@ const QueryGetChallengeByIdOptions = {
 @autobind
 class Challenge extends React.Component {
 	render() {
-		let content = (
-			<div style={{margin:'3rem 0'}}>
-				<NonIdealState title='Loading...' visual={<Spinner/>}/>
-			</div>
-		);
+		let content = <LoadingSpinner/>;
 
 		const { loading, getChallengeById } = this.props.QueryGetChallengeById
 

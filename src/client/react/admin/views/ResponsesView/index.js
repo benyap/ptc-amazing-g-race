@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { Spinner, NonIdealState } from '@blueprintjs/core';
 import { graphql } from 'react-apollo';
 import { getResponses } from '../../../../graphql/response';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 import RefreshBar from '../../components/RefreshBar';
 import ViewError from '../../components/ViewError';
 import ResponseCard from './ResponseCard';
@@ -44,11 +44,7 @@ class ResponsesView extends React.Component {
 				content = <ResponseProfile responseId={this.props.item}/>;
 			}
 			else {
-				content = (
-					<div style={{margin:'3rem 0'}}>
-						<NonIdealState title='Loading...' visual={<Spinner/>}/>
-					</div>
-				);
+				content = <LoadingSpinner/>;
 			}
 		}
 		else if (getResponses) {
@@ -66,11 +62,7 @@ class ResponsesView extends React.Component {
 			);
 		}
 		else if (loading) {
-			content = (
-				<div style={{margin:'3rem 0'}}>
-					<NonIdealState title='Loading...' visual={<Spinner/>}/>
-				</div>
-			);
+			content = <LoadingSpinner/>;
 		}
 		
 		return (

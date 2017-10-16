@@ -69,7 +69,7 @@ class ChallengeResponse extends React.Component {
 				// Query loading
 				return (
 					<div style={{margin:'3rem 0'}}>
-						<NonIdealState title='Loading...' visual={<Spinner/>}/>
+						<NonIdealState visual={<Spinner/>}/>
 					</div>
 				);
 			}

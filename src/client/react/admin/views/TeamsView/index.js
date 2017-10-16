@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
-import { Spinner, NonIdealState } from '@blueprintjs/core';
 import { getTeams, addTeam } from '../../../../graphql/team';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 import ViewError from '../../components/ViewError';
 import RefreshBar from '../../components/RefreshBar';
 import TeamCard from './TeamCard';
@@ -64,11 +64,7 @@ class TeamsView extends React.Component {
 			);
 		}
 		else if (loading) {
-			content = (
-				<div style={{margin:'3rem 0'}}>
-					<NonIdealState title='Loading...' visual={<Spinner/>}/>
-				</div>
-			);
+			content = <LoadingSpinner/>;
 		}
 		
 		return (

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Spinner, NonIdealState } from '@blueprintjs/core';
+import { NonIdealState } from '@blueprintjs/core';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 import ChallengeCard from './ChallengeCard';
 
 
@@ -32,11 +33,7 @@ class ChallengeList extends React.Component {
 			}
 		}
 		else {
-			return (
-				<div style={{margin:'3rem 0'}}>
-					<NonIdealState title='Loading...' visual={<Spinner/>}/>
-				</div>
-			);
+			return <LoadingSpinner/>;
 		}
 	}
 }

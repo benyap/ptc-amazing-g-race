@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { Button, Intent, Spinner, NonIdealState, Dialog } from '@blueprintjs/core';
+import { Button, Intent, Dialog } from '@blueprintjs/core';
 import { compose, graphql } from 'react-apollo'
+import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import { getArticles, addArticle } from '../../../../graphql/article';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 import RefreshBar from '../../components/RefreshBar';
 import ViewError from '../../components/ViewError';
 import InstructionArticleCard from './InstructionArticleCard';
 import InstructionArticleProfile from './InstructionArticleProfile';
-import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 
 import '../../scss/components/_markdown-preview.scss';
 
@@ -144,11 +145,7 @@ class InstructionArticlesView extends React.Component {
 			);
 		}
 		else if (loading) {
-			content = (
-				<div style={{margin:'3rem 0'}}>
-					<NonIdealState title='Loading...' visual={<Spinner/>}/>
-				</div>
-			);
+			content = <LoadingSpinner/>;
 		}
 		
 		return (

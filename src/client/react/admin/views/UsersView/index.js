@@ -4,12 +4,13 @@ import autobind from 'core-decorators/es/autobind';
 import DateFormat from 'dateformat';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
-import { Spinner, NonIdealState, Button, Intent, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
+import { Button, Intent, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
 import { saveState } from '../../../../actions/stateActions';
 import { getSetting } from '../../../../graphql/setting';
 import { getUsers } from '../../../../graphql/user';
-import ViewError from '../../components/ViewError';
 import NotificationToaster from '../../../components/NotificationToaster';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+import ViewError from '../../components/ViewError';
 import UserCard from './UserCard';
 import UserProfile from './UserProfile';
 import UsersSummary from './UsersSummary';
@@ -209,11 +210,7 @@ class UsersView extends React.Component {
 			}
 		}
 		else if (loadingUsers || loadingPayment) {
-			content = (
-				<div style={{margin:'3rem 0'}}>
-					<NonIdealState title='Loading...' visual={<Spinner/>}/>
-				</div>
-			);
+			content = <LoadingSpinner/>;
 		}
 
 		return (

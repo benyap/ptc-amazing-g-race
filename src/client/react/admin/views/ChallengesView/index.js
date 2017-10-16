@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
-import { Spinner, Intent, NonIdealState } from '@blueprintjs/core';
+import { Intent } from '@blueprintjs/core';
 import { getAllChallenges } from '../../../../graphql/challenge';
 import { saveState } from '../../../../actions/stateActions';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 import RefreshBar from '../../components/RefreshBar';
 import ViewError from '../../components/ViewError';
 import ChallengeCard from './ChallengeCard';
@@ -90,11 +91,7 @@ class ChallengesView extends React.Component {
 			);
 		}
 		else if (loading) {
-			content = (
-				<div style={{margin:'3rem 0'}}>
-					<NonIdealState title='Loading...' visual={<Spinner/>}/>
-				</div>
-			);
+			content = <LoadingSpinner/>;
 		}
 
 		return (
