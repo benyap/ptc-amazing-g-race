@@ -9,7 +9,7 @@ import ResponseUpload from './ResponseUpload';
 import ResponsePhrase from './ResponsePhrase';
 
 
-const QueryGetTeamResponsesParams = 'responseType responseValue uploadDate uploadedBy checked responseValid pointsAwarded comment retry';
+const QueryGetTeamResponsesParams = '_id responseType responseValue uploadDate uploadedBy checked responseValid pointsAwarded comment retry';
 
 const QueryGetTeamResponsesOptions = {
 	name: 'QueryGetTeamResponses',

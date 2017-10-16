@@ -6,6 +6,7 @@ import { graphql } from 'react-apollo';
 import { getUserByEmail } from '../../../../graphql/user';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import TeamPointsPanel from './TeamPointsPanel';
+import TeamResponsesPanel from './TeamResponsesPanel';
 
 import '../../scss/views/_main.scss'
 import '../../scss/views/_home.scss';
@@ -48,6 +49,7 @@ class Home extends React.Component {
 			<main id='home' className='dashboard'>
 				<div className='content'>
 					{teamPointsPanel}
+					<TeamResponsesPanel/>
 				</div>
 			</main>
 		);
