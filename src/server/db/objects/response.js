@@ -205,7 +205,8 @@ const addResponse = async function(user, challengeKey, itemKey, responseType, re
 		checked: false,
 		checkedBy: null,
 		checkedOn: null,
-		pointsAwarded: 0
+		pointsAwarded: 0,
+		comment: ''
 	}
 	db.collection('responses').insert(response);
 
@@ -235,7 +236,7 @@ const addResponse = async function(user, challengeKey, itemKey, responseType, re
  * @param {Boolean} retry 
  * @param {Number} pointsAwarded 
  */
-const checkResponse = async function(user, responseId, responseValid, retry, pointsAwarded) {
+const checkResponse = async function(user, responseId, responseValid, retry, pointsAwarded, comment) {
 	if (!user) return new Error('No user logged in');
 
 	const authorized = await permission.checkPermission(user, ['admin:modify-responses']);
@@ -259,7 +260,7 @@ const checkResponse = async function(user, responseId, responseValid, retry, poi
 		// Selector
 		{_id: Mongo.ObjectID(responseId)},
 		// Update
-		{ $set: { responseValid, retry, pointsAwarded, checked: true, checkedBy: user.username, checkedOn: new Date() } }
+		{ $set: { responseValid, retry, pointsAwarded, comment, checked: true, checkedBy: user.username, checkedOn: new Date() } }
 	);
 
 	// Update team points if necessary
@@ -279,7 +280,8 @@ const checkResponse = async function(user, responseId, responseValid, retry, poi
 			itemKey: responseCheck.itemKey,
 			responseValid,
 			retry, 
-			pointsAwarded
+			pointsAwarded,
+			comment
 		})
 	}
 	db.collection('actions').insert(action);

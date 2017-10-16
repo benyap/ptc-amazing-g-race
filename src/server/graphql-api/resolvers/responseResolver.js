@@ -29,7 +29,7 @@ const addResponse = function(root, params, ctx, options) {
 
 // Check a challenge response
 const checkResponse = function(root, params, ctx, options) {
-	return database.response.checkResponse(ctx.user, params.responseId, params.responseValid, params.retry, params.pointsAwarded);
+	return database.response.checkResponse(ctx.user, params.responseId, params.responseValid, params.retry, params.pointsAwarded, params.comment);
 }
 
 

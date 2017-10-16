@@ -7,13 +7,14 @@ import { Button, EditableText, Spinner, Icon, Intent, Hotkey, Hotkeys, HotkeysTa
 import { getUserByEmail, setUserPaidAmount, addPermission, removePermission } from '../../../../graphql/user';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import NotificationToaster from '../../../components/NotificationToaster';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 import UserAddPermission from './UserAddPermission';
 import UserPermissionCard from './UserPermissionCard';
 import UserPasswordReset from './UserPasswordReset';
 
 
 const QueryUserParams = 
-	'firstname lastname username email isAdmin university studentID ' + 
+	'_id firstname lastname username email isAdmin university studentID ' + 
 	'mobileNumber enabled registerDate paidAmount roles permissions ' + 
 	'raceDetails{hasSmartphone friends PTProficiency dietaryRequirements}';
 
@@ -37,11 +38,12 @@ class UserProfile extends React.Component {
 	static propTypes = {
 		user: PropTypes.object.isRequired,
 		closeProfile: PropTypes.func.isRequired,
-		paymentAmount: PropTypes.number.isRequired
+		paymentAmount: PropTypes.number.isRequired,
 	}
 
 	state = {
 		paidAmount: null,
+		paidAmountModified: false,
 		saving: false
 	}
 
@@ -58,22 +60,22 @@ class UserProfile extends React.Component {
 	}
 
 	editPaid(value) {
-		this.setState({paidAmount: value});
+		this.setState({ paidAmount: value, paidAmountModified: true });
 	}
 
 	confirmPaid(value) {
-		if (value.length > 0) {
+		if (value.length > 0 && this.state.paidAmountModified) {
 			const regex = /^[0-9]+(\.|)[0-9]{0,2}$/;
 			if (regex.exec(value)) {
 				this.savePaid();
 				return;
 			}
 		}
-		this.setState({paidAmount: this.props.QueryUser.getUserByEmail.paidAmount});
+		this.setState({ paidAmount: this.props.QueryUser.getUserByEmail.paidAmount, paidAmountModified: false });
 	}
 
 	async savePaid() {
-		this.setState({ saving: true });
+		this.setState({ saving: true, paidAmountModified: false });
 
 		const variables = {
 			username: this.props.QueryUser.getUserByEmail.username,
@@ -91,7 +93,7 @@ class UserProfile extends React.Component {
 			});
 		}
 
-		if (this._mounted) this.setState({saving: false});
+		if (this._mounted) this.setState({ saving: false });
 	}
 
 	renderHotkeys() {
@@ -109,14 +111,10 @@ class UserProfile extends React.Component {
 
 	render() {
 		const { firstname, lastname, email, university } = this.props.user;
+		const { loading, getUserByEmail } = this.props.QueryUser;
 		let content;
-		let showLoadingIndicator = false;
-		
-		if (this.props.QueryUser.loading) {
-			showLoadingIndicator = true;
-		}
 
-		if (this.props.QueryUser.getUserByEmail) {
+		if (getUserByEmail) {
 			const { 
 				username, mobileNumber, studentID, isAdmin,
 				registerDate, paidAmount, permissions,
@@ -124,7 +122,7 @@ class UserProfile extends React.Component {
 					PTProficiency, hasSmartphone, 
 					friends, dietaryRequirements 
 				} 
-			} = this.props.QueryUser.getUserByEmail;
+			} = getUserByEmail;
 
 			if (this.state.paidAmount === null) {
 				setTimeout(() => {
@@ -135,10 +133,6 @@ class UserProfile extends React.Component {
 			let paidIcon = <Icon iconName='error' intent={Intent.DANGER}/>;
 			if (parseFloat(this.state.paidAmount) >= this.props.paymentAmount) {
 				paidIcon = <Icon iconName='tick' intent={Intent.SUCCESS}/>;
-			}
-
-			if (this.state.saving) {
-				showLoadingIndicator = true;
 			}
 
 			content = (
@@ -215,11 +209,14 @@ class UserProfile extends React.Component {
 				</div>
 			);
 		}
+		else if (loading) {
+			content = <LoadingSpinner/>;
+		}
 
 		return (
 			<div className='pt-card user-profile'>
 				<Button className='pt-minimal' intent={Intent.NONE} iconName='cross' onClick={this.closeProfile} style={{float:'right'}}/>
-				{showLoadingIndicator ? 
+				{this.state.saving ? 
 					<div style={{float:'right'}}>
 						<Spinner className='pt-small'/>
 					</div>

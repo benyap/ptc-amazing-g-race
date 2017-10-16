@@ -58,8 +58,10 @@ class TeamPointsPanel extends React.Component {
 		const { QueryGetTeam, user } = this.props;
 		let teamName = 'Your Team';
 		let teamPoints = (
-			<div className='pt-callout pt-intent-danger pt-icon-error'>
-				You have not been allocated into a team.
+			<div className='pt-callout pt-icon-error'>
+				<h5>No team</h5>
+				You have not been allocated into a team yet. 
+				Your team's stats will show up here once you are in a team.
 			</div>
 		);
 

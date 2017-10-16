@@ -64,6 +64,10 @@ const responseType = new GraphQLObjectType({
 			type: GraphQLInt,
 			description: 'The number of points awarded to the team for the challenge'
 		},
+		comment: {
+			type: GraphQLString,
+			description: 'A comment for the team regarding their response'
+		},
 		responseType: {
 			type: new GraphQLNonNull(new GraphQLEnumType({
 				name: 'ResponseType',

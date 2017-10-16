@@ -18,7 +18,8 @@ class ResponseCheck extends React.Component {
 			responseValid: PropTypes.bool.isRequired,
 			checked: PropTypes.bool.isRequired,
 			retry: PropTypes.bool.isRequired,
-			pointsAwarded: PropTypes.number.isRequired
+			pointsAwarded: PropTypes.number.isRequired,
+			comment: PropTypes.string.isRequired
 		}).isRequired,
 		refetchResponse: PropTypes.func.isRequired
 	}
@@ -29,7 +30,8 @@ class ResponseCheck extends React.Component {
 		checkResponseError: null,
 		responseValid: this.props.response.responseValid,
 		retry: this.props.response.retry,
-		pointsAwarded: this.props.response.pointsAwarded
+		pointsAwarded: this.props.response.pointsAwarded,
+		comment: this.props.response.comment
 	}
 
 	toggle(state) {
@@ -44,6 +46,10 @@ class ResponseCheck extends React.Component {
 		this.setState({ pointsAwarded: e.target.value });
 	}
 
+	onCommentChange(e) {
+		this.setState({ comment: e.target.value });
+	}
+
 	async submitCheckResponse() {
 		try {
 			this.setState({ checkResponseError: null, checkResponseLoading: true });
@@ -52,7 +58,8 @@ class ResponseCheck extends React.Component {
 					responseId: this.props.response._id,
 					responseValid: this.state.responseValid, 
 					retry: this.state.retry,
-					pointsAwarded: this.state.pointsAwarded
+					pointsAwarded: this.state.pointsAwarded,
+					comment: this.state.comment
 				}
 			});
 			await this.props.refetchResponse();
@@ -74,7 +81,7 @@ class ResponseCheck extends React.Component {
 
 		if (this.props.response.checked) {
 			warning = (
-				<div className='pt-callout pt-intent-warning pt-icon-warning-sign' style={{margin:'0.5rem 0'}}>
+				<div className='pt-callout pt-intent-warning pt-icon-warning-sign' style={{marginBottom:'1rem'}}>
 					<h5>Response checked</h5>
 					<div>
 						This response has already been checked. 
@@ -86,7 +93,7 @@ class ResponseCheck extends React.Component {
 		}
 		else {
 			warning = (
-				<div className='pt-callout pt-intent-primary pt-icon-info-sign' style={{margin:'0.5rem 0'}}>
+				<div className='pt-callout pt-intent-primary pt-icon-info-sign' style={{marginBottom:'1rem'}}>
 					<h5>Modifying the response status</h5>
 					<div>
 						Modifying this response and saving it will apply the point change to the team and cause your verdict to be reflected on the user's dashboard.
@@ -101,27 +108,31 @@ class ResponseCheck extends React.Component {
 				<Button className='pt-fill' iconName={this.state.showCheckResponse?'chevron-down':'chevron-right'} 
 					text='Modify response status' onClick={this.toggle('showCheckResponse')}/>
 				<Collapse isOpen={this.state.showCheckResponse}>
-					{ this.state.checkResponseError ? 
-						<div className='pt-callout pt-intent-danger pt-icon-error' style={{margin:'0.5rem 0'}}>
-							<h5>Error</h5>
-							{this.state.checkResponseError}
-						</div>
-						: null
-					}
-					{warning}
-					<Switch checked={this.state.responseValid} label='Response valid' onChange={this.toggle('responseValid')} className='pt-large' disabled={this.state.checkResponseLoading}/>
-					<Switch checked={this.state.retry} label='Retry' onChange={this.toggle('retry')} className='pt-large' disabled={this.state.checkResponseLoading}/>
-					<div class='pt-form-group pt-inline'>
-						<label class='pt-label' for='points'>
-							Points Awarded
-						</label>
-						<div class='pt-form-content'>
-							<div class='pt-input-group' style={{maxWidth:'5rem'}}>
-								<input id='points' class='pt-input' type='text' value={this.state.pointsAwarded} onChange={this.onPointsAwardedChange} disabled={this.state.checkResponseLoading}/>
+					<div style={{marginTop:'1rem',padding:'1rem',background:'#f5f5f5',borderRadius:'0.3rem'}}>
+						{ this.state.checkResponseError ? 
+							<div className='pt-callout pt-intent-danger pt-icon-error' style={{margin:'0.5rem 0'}}>
+								<h5>Error</h5>
+								{this.state.checkResponseError}
+							</div>
+							: null
+						}
+						{warning}
+						<Switch checked={this.state.responseValid} label='Response valid' onChange={this.toggle('responseValid')} className='pt-large' disabled={this.state.checkResponseLoading}/>
+						<Switch checked={this.state.retry} label='Retry' onChange={this.toggle('retry')} className='pt-large' disabled={this.state.checkResponseLoading}/>
+						<div class='pt-form-group pt-inline' style={{marginBottom:'0.3rem'}}>
+							<label class='pt-label' for='points'>
+								Points Awarded
+							</label>
+							<div class='pt-form-content'>
+								<div class='pt-input-group' style={{maxWidth:'5rem'}}>
+									<input id='points' class='pt-input' type='text' value={this.state.pointsAwarded} onChange={this.onPointsAwardedChange} disabled={this.state.checkResponseLoading}/>
+								</div>
 							</div>
 						</div>
+						<FormInput id='comment' value={this.state.comment} onChange={this.onCommentChange} disabled={this.state.checkResponseLoading}
+							label='Comment' helperText='Teams will see this comment on their response'/>
+						<Button intent={Intent.DANGER} className='pt-fill' text='Save' onClick={this.submitCheckResponse} loading={this.state.checkResponseLoading}/>
 					</div>
-					<Button intent={Intent.DANGER} className='pt-fill' text='Save' onClick={this.submitCheckResponse} loading={this.state.checkResponseLoading}/>
 				</Collapse>
 			</div>
 		);

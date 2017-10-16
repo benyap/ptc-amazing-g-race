@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { Button, Intent, Spinner, NonIdealState, Dialog } from '@blueprintjs/core';
-import { compose, graphql } from 'react-apollo'
-import { getArticles, addArticle } from '../../../../graphql/article';
+import { NonIdealState } from '@blueprintjs/core';
+import { graphql } from 'react-apollo'
+import { getArticles } from '../../../../graphql/article';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 import RefreshBar from '../../components/RefreshBar';
 import ViewError from '../../components/ViewError';
 import InstructionArticleCard from './InstructionArticleCard';
 import InstructionArticleProfile from './InstructionArticleProfile';
-import FormInput from '../../../../../../lib/react/components/forms/FormInput';
+import AddInstructionArticle from './AddInstructionArticle';
 
 import '../../scss/components/_markdown-preview.scss';
 
@@ -19,14 +20,11 @@ const QueryGetArticlesOptions = {
 	name: 'QueryGetArticles',
 	options: {
 		variables: { category: 'instructions' },
-		fetchPolicy: 'network-and-cache'
+		fetchPolicy: 'cache-and-network'
 	}
 }
 
-@compose(
-	graphql(getArticles(QueryGetArticlesParams), QueryGetArticlesOptions),
-	graphql(addArticle('_id'), { name: 'MutationAddArticle' })
-)
+@graphql(getArticles(QueryGetArticlesParams), QueryGetArticlesOptions)
 @autobind
 class InstructionArticlesView extends React.Component {
 	static propTypes = {
@@ -34,13 +32,7 @@ class InstructionArticlesView extends React.Component {
 	}
 
 	state = {
-		viewProfile: null,
-		loading: false,
-		refetching: false,
-		showAddArticle: false,
-		addArticleTitle: '',
-		addArticleLoading: false,
-		addArticleError: null
+		viewProfile: null
 	}
 
 	renderProfile(article) {
@@ -48,113 +40,57 @@ class InstructionArticlesView extends React.Component {
 	}
 	
 	async closeProfile() {
-		this.setState({ viewProfile: null, refetching: true });
-		await this.props.QueryGetArticles.refetch();
-		this.setState({ refetching: false });
-	}
-
-	toggleAddArticle() {
-		this.setState((prevState) => {
-			return { 
-				showAddArticle: !prevState.showAddArticle, 
-				addArticleTitle: '',
-				addArticleError: null
-			};
-		});
-	}
-
-	addArticleTitleEdit(e) {
-		this.setState({ addArticleTitle: e.target.value });
-	}
-
-	async submitAddArticle() {
-		if (this.state.addArticleTitle.length < 1) {
-			this.setState({ addArticleError: 'Article title is required.' });
-		}
-		else {
-			this.setState({ addArticleLoading: true, addArticleError: false });
-			try {
-				await this.props.MutationAddArticle({
-					variables: {
-						title: this.state.addArticleTitle,
-						category: 'instructions',
-						content: `# ${this.state.addArticleTitle}\n`
-					}
-				});
-
-				this.setState({ addArticleLoading: false, showAddArticle: false, refetching: true });
-				await this.props.QueryGetArticles.refetch();
-				this.setState({ refetching: false });
-			}
-			catch (e) {
-				this.setState({ addArticleError: e.toString(), addArticleLoading: false });
-			}
-		}
+		this.setState({ viewProfile: null });
 	}
 
 	render() {
-		let content = null;
 		const { loading, error, getArticles } = this.props.QueryGetArticles;
+		let content;
 		
 		if (error) {
 			content = <ViewError error={error}/>;
 		}
 		else if (this.state.viewProfile) {
-			content = <InstructionArticleProfile article={this.state.viewProfile} closeProfile={this.closeProfile}/>;
+			content = <InstructionArticleProfile article={this.state.viewProfile} closeProfile={this.closeProfile} refetchArticles={this.props.QueryGetArticles.refetch}/>;
 		}
 		else if (getArticles) {
-			content = (
-				<div>
-					<div className='pt-callout pt-icon-info-sign' style={{marginBottom: '0.5rem'}}>
-						These instruction articles are displayed on the 'Instructions' tab on the app.
-						They should not contain any challenge-specific instructions, 
-						as they are not protected and are accessible to all teams at any time.
-						These articles will appear in the order they appear here.
-					</div>
+			if (getArticles.length) {
+				content = (
 					<div className='view-list'>
-						{
-							getArticles.map((article) => {
-								return (
-									<InstructionArticleCard key={article._id} article={article} renderProfile={this.renderProfile}/>
-								);
-							})
-						}
-						<Button text='Create Article' onClick={this.toggleAddArticle} intent={Intent.PRIMARY} iconName='clipboard' className='pt-minimal pt-fill'/>
+						{getArticles.map((article) => {
+							return (
+								<InstructionArticleCard key={article._id} article={article} renderProfile={this.renderProfile}/>
+							);
+						})}
+						<AddInstructionArticle refetchArticles={this.props.QueryGetArticles.refetch}/>
 					</div>
-
-					{/* Add article dialog */}
-					<Dialog title='Create a new article' isOpen={this.state.showAddArticle} iconName='clipboard' onClose={this.toggleAddArticle}>
-						<div className='pt-dialog-body'>
-							{this.state.addArticleError ? 
-								<div className='pt-callout pt-intent-danger pt-icon-error'>
-									{this.state.addArticleError}
-								</div>
-								:null}
-							<b>Article title:</b> <FormInput id='addArticle' value={this.state.addArticleTitle} onChange={this.addArticleTitleEdit} 
-							intent={this.state.addArticleError ? Intent.DANGER : Intent.NONE}/>
+				);
+			}
+			else {
+				content = (
+					<div>
+						<AddInstructionArticle refetchArticles={this.props.QueryGetArticles.refetch}/>
+						<div style={{margin:'3rem'}}>
+							<NonIdealState title='No instructions' description={`Poor souls. They are going to get so lost.`} visual='clipboard'/>
 						</div>
-						<div className='pt-dialog-footer'>
-							<div className='pt-dialog-footer-actions'>
-								<Button className='pt-minimal' text='Cancel' onClick={this.toggleAddArticle} disabled={this.state.addArticleLoading}/>
-								<Button intent={Intent.PRIMARY} text='Create' onClick={this.submitAddArticle} loading={this.state.addArticleLoading}/>
-							</div>
-						</div>
-					</Dialog>
-				</div>
-			);
+					</div>
+				);
+			}
 		}
 		else if (loading) {
-			content = (
-				<div style={{margin:'3rem 0'}}>
-					<NonIdealState title='Loading...' visual={<Spinner/>}/>
-				</div>
-			);
+			content = <LoadingSpinner/>;
 		}
 		
 		return (
 			<div id='dashboard-instructions' className='dashboard-tab'>
 				<h4>Instruction Articles</h4>
-				<RefreshBar query={this.props.QueryGetArticles} disabled={this.state.viewProfile} refetching={this.state.refetching} shouldRefresh={this.props.shouldRefresh}/>
+				<RefreshBar query={this.props.QueryGetArticles} disabled={this.state.viewProfile} shouldRefresh={this.props.shouldRefresh}/>
+				<div className='pt-callout pt-icon-info-sign' style={{marginBottom: '0.5rem'}}>
+					These instruction articles are displayed on the 'Instructions' tab on the app.
+					They should not contain any challenge-specific instructions, 
+					as they are not protected and are accessible to all teams at any time.
+					These articles will appear in the order they appear here.
+				</div>
 				{content}
 			</div>
 		);

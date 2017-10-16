@@ -61,7 +61,7 @@ class TeamUser extends React.Component {
 		return (
 			<div className='member'>
 				<Button className='pt-minimal pt-small pt-intent-danger' iconName='remove' onClick={this.toggleRemoveUser} loading={this.state.removeUserLoading} style={{padding:'0'}}/>
-				<span> {firstname} {lastname}</span>
+				<span>&nbsp;{firstname} {lastname}</span>
 
 				<Dialog isOpen={this.state.removeUserDialogOpen} onClose={this.toggleRemoveUser} title='Remove user from team' iconName='warning-sign'>
 					<div className='pt-dialog-body'>

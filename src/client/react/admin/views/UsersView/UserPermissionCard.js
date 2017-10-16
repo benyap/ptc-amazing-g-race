@@ -63,10 +63,10 @@ class UserPermissionCard extends React.Component {
 	render() {
 		return (
 			<div>
-				<span>
+				<span style={{whiteSpace:'nowrap'}}>
 					<Button iconName='remove' className='pt-small pt-minimal' intent={Intent.DANGER} style={{padding:'0'}}
 						onClick={this.toggleRemovePermission} loading={this.state.removePermissionLoading}/>
-					<code>{this.props.permission}</code>
+					<code style={{whiteSpace:'nowrap'}}>{this.props.permission}</code>
 				</span>
 
 				<Dialog title='Remove user permission' iconName='warning-sign'

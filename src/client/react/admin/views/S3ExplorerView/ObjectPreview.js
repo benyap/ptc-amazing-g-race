@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import DateFormat from 'dateformat';
 import autobind from 'core-decorators/es/autobind';
 import { graphql, withApollo } from 'react-apollo';
-import { Button, Dialog, Spinner, NonIdealState, Intent } from '@blueprintjs/core';
+import { Button, Dialog, Intent } from '@blueprintjs/core';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import { _getObject } from '../../../../graphql/upload';
 import { getProtectedSetting } from '../../../../graphql/setting';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 import ImageContainer from '../../components/ImageContainer';
 import ObjectDelete from './ObjectDelete';
 
@@ -68,11 +69,7 @@ class ObjectPreview extends React.Component {
 		let content, markup, date;
 
 		if (this.state.loading) {
-			content = (
-				<div style={{margin:'3rem 0'}}>
-					<NonIdealState title='Loading...' visual={<Spinner/>}/>
-				</div>
-			);
+			content = <LoadingSpinner/>;
 		}
 		else if (this.state.getObjectData) {
 			content = <ImageContainer src={this.state.getObjectData.data} alt={this.props.objectKey} imgStyle={{maxWidth:'100%',maxHeight:'50vh'}}/>;

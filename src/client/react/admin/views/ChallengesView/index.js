@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
-import { Spinner, Intent, NonIdealState } from '@blueprintjs/core';
+import { Intent, NonIdealState } from '@blueprintjs/core';
 import { getAllChallenges } from '../../../../graphql/challenge';
 import { saveState } from '../../../../actions/stateActions';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 import RefreshBar from '../../components/RefreshBar';
 import ViewError from '../../components/ViewError';
 import ChallengeCard from './ChallengeCard';
@@ -80,21 +81,29 @@ class ChallengesView extends React.Component {
 			content = <ChallengeProfile challenge={this.state.viewProfile} closeProfile={this.closeProfile} refetchChallenges={this.props.QueryGetAllChallenges.refetch}/>;
 		}
 		else if (getAllChallenges) {
-			content = (
-				<div className='view-list'>
-					{ getAllChallenges.map((challenge) => {
-						return <ChallengeCard key={challenge.key} challenge={challenge} renderProfile={this.renderProfile}/>;
-					})}
-					<AddChallenge refetchChallenges={this.props.QueryGetAllChallenges.refetch}/>
-				</div>
-			);
+			if (getAllChallenges.length) {
+				content = (
+					<div className='view-list'>
+						{ getAllChallenges.map((challenge) => {
+							return <ChallengeCard key={challenge.key} challenge={challenge} renderProfile={this.renderProfile}/>;
+						})}
+						<AddChallenge refetchChallenges={this.props.QueryGetAllChallenges.refetch}/>
+					</div>
+				);
+			}
+			else {
+				content = (
+					<div>
+						<AddChallenge refetchChallenges={this.props.QueryGetAllChallenges.refetch}/>
+						<div style={{margin:'3rem'}}>
+							<NonIdealState title='No challenges' description={`This is going to be a rather boring race if you don't add some challenges!`} visual='map'/>
+						</div>
+					</div>
+				);
+			}
 		}
 		else if (loading) {
-			content = (
-				<div style={{margin:'3rem 0'}}>
-					<NonIdealState title='Loading...' visual={<Spinner/>}/>
-				</div>
-			);
+			content = <LoadingSpinner/>;
 		}
 
 		return (

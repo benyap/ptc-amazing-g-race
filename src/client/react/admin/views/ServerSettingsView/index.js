@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import DateFormat from 'dateformat';
 import { graphql } from 'react-apollo';
-import { Spinner, NonIdealState } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import { saveState } from '../../../../actions/stateActions';
 import { getSettings } from '../../../../graphql/setting';
-import Setting from './Setting';
 import RefreshBar from '../../components/RefreshBar';
 import ViewError from '../../components/ViewError';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+import Setting from './Setting';
 
 
 const QueryGetSettingsParams = 'key valueType value values modified modifiedBy';
@@ -60,11 +60,7 @@ class ServerSettingsView extends React.Component {
 			);
 		}
 		else if (loading) {
-			content = (
-				<div style={{margin:'3rem 0'}}>
-					<NonIdealState title='Loading...' visual={<Spinner/>}/>
-				</div>
-			);
+			content = <LoadingSpinner/>;
 		}
 
 		return (

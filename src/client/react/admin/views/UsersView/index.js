@@ -4,12 +4,13 @@ import autobind from 'core-decorators/es/autobind';
 import DateFormat from 'dateformat';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
-import { Spinner, NonIdealState, Button, Intent, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
+import { Button, Intent, Hotkey, Hotkeys, HotkeysTarget, NonIdealState } from '@blueprintjs/core';
 import { saveState } from '../../../../actions/stateActions';
 import { getSetting } from '../../../../graphql/setting';
 import { getUsers } from '../../../../graphql/user';
-import ViewError from '../../components/ViewError';
 import NotificationToaster from '../../../components/NotificationToaster';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+import ViewError from '../../components/ViewError';
 import UserCard from './UserCard';
 import UserProfile from './UserProfile';
 import UsersSummary from './UsersSummary';
@@ -17,7 +18,7 @@ import UsersSummary from './UsersSummary';
 import '../../scss/views/_users-view.scss';
 
 
-const QueryUserParams = 'firstname lastname username email university enabled paidAmount teamId isAdmin';
+const QueryUserParams = '_id firstname lastname username email university enabled paidAmount teamId isAdmin raceDetails{dietaryRequirements}';
 
 const QueryUsersOptions = {
 	name: 'QueryUsers',
@@ -122,10 +123,11 @@ class UsersView extends React.Component {
 			const search = this.state.search.toLowerCase();
 			const matchFirst = user.firstname.toLowerCase().indexOf(search) >= 0;
 			const matchLast = user.lastname.toLowerCase().indexOf(search) >= 0;
+			const matchFull = `${user.firstname.toLowerCase()} ${user.lastname.toLowerCase()}`.indexOf(search) >= 0;
 			const matchUser = user.username.toLowerCase().indexOf(search) >= 0;
 			const matchUni = user.university.toLowerCase().indexOf(search) >= 0;
 
-			if (matchFirst || matchLast || matchUser || matchUni) return true;
+			if (matchFirst || matchLast || matchFull ||matchUser || matchUni) return true;
 			else return false;
 		}
 		else return true;
@@ -153,6 +155,9 @@ class UsersView extends React.Component {
 			}
 			case 'noteam': {
 				return user.teamId === null;
+			}
+			case 'dietaryrequirements': {
+				return user.raceDetails.dietaryRequirements && user.raceDetails.dietaryRequirements.length;
 			}
 			case 'all':
 			default: return true;
@@ -185,22 +190,39 @@ class UsersView extends React.Component {
 				let displayCount = 0;
 				let displayPaidCount = 0;
 
-				content = (
-					<div className='view-list'>
-						{getUsers.map((user) => {
-							if (this._applyFilterUser(user) && this._applySearchUser(user)) {
+				if (getUsers.length) {
+					content = (
+						<div className='view-list'>
+							{getUsers.map((user) => {
+								if (this._applyFilterUser(user) && this._applySearchUser(user)) {
+	
+									// Count users and paid users
+									displayCount++;
+									if (user.paidAmount >= paymentAmount) displayPaidCount++;
+	
+									return (
+										<UserCard key={user.email} user={user} paymentAmount={paymentAmount} renderProfile={this.renderProfile}/>
+									);
+								}
+							})}
+						</div>
+					);
 
-								// Count users and paid users
-								displayCount++;
-								if (user.paidAmount >= paymentAmount) displayPaidCount++;
-
-								return (
-									<UserCard key={user.email} user={user} paymentAmount={paymentAmount} renderProfile={this.renderProfile}/>
-								);
-							}
-						})}
-					</div>
-				);
+					if (displayCount < 1) {
+						content = (
+							<div style={{margin:'3rem'}}>
+								<NonIdealState title='No users match your query.' description='Did you make a typo?' visual='search'/>
+							</div>
+						);
+					}
+				}
+				else {
+					content = (
+						<div style={{margin:'3rem'}}>
+							<NonIdealState title='No users' description={`This can't actually be possible, because you are a user.`} visual='person'/>
+						</div>
+					);
+				}
 
 				if (this.state.displayCount !== displayCount || this.state.displayPaidCount !== displayPaidCount) {
 					// Update count if it has changed since last render
@@ -209,11 +231,7 @@ class UsersView extends React.Component {
 			}
 		}
 		else if (loadingUsers || loadingPayment) {
-			content = (
-				<div style={{margin:'3rem 0'}}>
-					<NonIdealState title='Loading...' visual={<Spinner/>}/>
-				</div>
-			);
+			content = <LoadingSpinner/>;
 		}
 
 		return (

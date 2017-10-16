@@ -103,7 +103,7 @@ class AddChallengeItem extends React.Component {
 						</div>
 
 						<FormInput id='key' value={this.state.addItemKey} label='Challenge item key' onChange={this.onAddItemValueChange('addItemKey')} disabled={this.state.addItemLoading}
-							helperText='Use the format <challenge name>_<item name>'/>
+							helperText='Use the format <challenge name>-<item name>'/>
 
 						<FormInput id='title' value={this.state.addItemTitle} label='Challenge item title' onChange={this.onAddItemValueChange('addItemTitle')} disabled={this.state.addItemLoading}/>
 

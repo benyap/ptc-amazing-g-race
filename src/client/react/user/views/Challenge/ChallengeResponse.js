@@ -9,7 +9,7 @@ import ResponseUpload from './ResponseUpload';
 import ResponsePhrase from './ResponsePhrase';
 
 
-const QueryGetTeamResponsesParams = 'responseType responseValue uploadDate uploadedBy checked responseValid pointsAwarded retry';
+const QueryGetTeamResponsesParams = 'responseType responseValue uploadDate uploadedBy checked responseValid pointsAwarded comment retry';
 
 const QueryGetTeamResponsesOptions = {
 	name: 'QueryGetTeamResponses',
@@ -47,7 +47,7 @@ class ChallengeResponse extends React.Component {
 	render() {
 		const { itemKey, challengeKey, responseType } = this.props;
 		const { loading, getTeamResponses } = this.props.QueryGetTeamResponses;
-		let classNames, title, text, canRespond;
+		let classNames, title, text, canRespond, comment;
 		let response, helpPhrase;
 
 		// Create response element
@@ -69,7 +69,7 @@ class ChallengeResponse extends React.Component {
 				// Query loading
 				return (
 					<div style={{margin:'3rem 0'}}>
-						<NonIdealState title='Loading...' visual={<Spinner/>}/>
+						<NonIdealState visual={<Spinner/>}/>
 					</div>
 				);
 			}
@@ -86,6 +86,7 @@ class ChallengeResponse extends React.Component {
 			const latestResponse = getTeamResponses[0];
 
 			if (latestResponse.checked) {
+				comment = latestResponse.comment;
 				if (latestResponse.responseValid) {
 					// Response valid
 					classNames = 'pt-callout pt-intent-success pt-icon-endorsed';
@@ -116,6 +117,11 @@ class ChallengeResponse extends React.Component {
 					<h5>{title}</h5>
 					{text}
 					{canRespond?response:null}
+					{comment?
+						<div style={{marginTop:'0.5rem',background:'rgba(0,0,0,0.3)',padding:'0.5rem',borderRadius:'0.3rem'}}>
+							{comment}
+						</div> 
+						: null }
 				</div>
 			</div>
 		);
