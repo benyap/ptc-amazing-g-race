@@ -4,7 +4,7 @@ import autobind from 'core-decorators/es/autobind';
 import DateFormat from 'dateformat';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
-import { Button, Intent, Hotkey, Hotkeys, HotkeysTarget } from '@blueprintjs/core';
+import { Button, Intent, Hotkey, Hotkeys, HotkeysTarget, NonIdealState } from '@blueprintjs/core';
 import { saveState } from '../../../../actions/stateActions';
 import { getSetting } from '../../../../graphql/setting';
 import { getUsers } from '../../../../graphql/user';
@@ -190,22 +190,39 @@ class UsersView extends React.Component {
 				let displayCount = 0;
 				let displayPaidCount = 0;
 
-				content = (
-					<div className='view-list'>
-						{getUsers.map((user) => {
-							if (this._applyFilterUser(user) && this._applySearchUser(user)) {
+				if (getUsers.length) {
+					content = (
+						<div className='view-list'>
+							{getUsers.map((user) => {
+								if (this._applyFilterUser(user) && this._applySearchUser(user)) {
+	
+									// Count users and paid users
+									displayCount++;
+									if (user.paidAmount >= paymentAmount) displayPaidCount++;
+	
+									return (
+										<UserCard key={user.email} user={user} paymentAmount={paymentAmount} renderProfile={this.renderProfile}/>
+									);
+								}
+							})}
+						</div>
+					);
 
-								// Count users and paid users
-								displayCount++;
-								if (user.paidAmount >= paymentAmount) displayPaidCount++;
-
-								return (
-									<UserCard key={user.email} user={user} paymentAmount={paymentAmount} renderProfile={this.renderProfile}/>
-								);
-							}
-						})}
-					</div>
-				);
+					if (displayCount < 1) {
+						content = (
+							<div style={{margin:'3rem'}}>
+								<NonIdealState title='No users match your query.' description='Did you make a typo?' visual='search'/>
+							</div>
+						);
+					}
+				}
+				else {
+					content = (
+						<div style={{margin:'3rem'}}>
+							<NonIdealState title='No users' description={`This can't actually be possible, because you are a user.`} visual='person'/>
+						</div>
+					);
+				}
 
 				if (this.state.displayCount !== displayCount || this.state.displayPaidCount !== displayPaidCount) {
 					// Update count if it has changed since last render
