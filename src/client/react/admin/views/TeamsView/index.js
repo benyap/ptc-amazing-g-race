@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
+import { NonIdealState } from '@blueprintjs/core';
 import { getTeams, addTeam } from '../../../../graphql/team';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import ViewError from '../../components/ViewError';
@@ -53,15 +54,26 @@ class TeamsView extends React.Component {
 			content = <TeamProfile team={this.state.viewProfile} closeProfile={this.closeProfile} refetchTeams={this.props.QueryGetTeams.refetch}/>;
 		}
 		else if (getTeams) {
-			content = (
-				<div className='view-list'>
-					{getTeams.map((team) => {
-						return <TeamCard key={team._id} team={team} renderProfile={this.renderProfile}/>;
-					})}
-
-					<TeamCreate refetchTeams={this.props.QueryGetTeams.refetch}/>
-				</div>
-			);
+			if (getTeams.length) {
+				content = (
+					<div className='view-list'>
+						{getTeams.map((team) => {
+							return <TeamCard key={team._id} team={team} renderProfile={this.renderProfile}/>;
+						})}
+						<TeamCreate refetchTeams={this.props.QueryGetTeams.refetch}/>
+					</div>
+				);
+			}
+			else {
+				content = (
+					<div>
+						<TeamCreate refetchTeams={this.props.QueryGetTeams.refetch}/>
+						<div style={{margin:'3rem'}}>
+							<NonIdealState title='No teams' description={`This is a team game so you better make some teams mate. Unless, no one has signed up yet...`} visual='people'/>
+						</div>
+					</div>
+				);
+			}
 		}
 		else if (loading) {
 			content = <LoadingSpinner/>;
