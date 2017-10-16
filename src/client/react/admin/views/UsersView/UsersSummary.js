@@ -5,6 +5,8 @@ import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import UsersFilter from './UsersFilter';
 import Search from '../../components/Search';
 
+import '../../scss/components/_summary-panel.scss';
+
 
 @autobind
 class UserSummary extends React.Component {
@@ -30,9 +32,9 @@ class UserSummary extends React.Component {
 		if (this.props.displayPaidCount === this.props.displayCount) intent = 'pt-intent-success';
 		
 		return (
-			<div id='user-summary' className={'pt-callout ' + intent}>
+			<div className={'pt-callout summary-panel ' + intent}>
 				{this.props.displayPaidCount} out of {this.props.displayCount} users have paid.
-				<div className='user-summary-controls'>
+				<div className='summary-controls'>
 					<UsersFilter value={this.props.filterValue} onChange={this.onFilterChange}/>
 					<Search value={this.props.searchValue} onChange={this.onSearchChange}/>
 				</div>

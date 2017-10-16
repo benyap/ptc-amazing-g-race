@@ -5,6 +5,8 @@ import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import ResponsesFilter from './ResponsesFilter';
 import Search from '../../components/Search';
 
+import '../../scss/components/_summary-panel.scss';
+
 
 @autobind
 class ResponsesSummary extends React.Component {
@@ -31,9 +33,9 @@ class ResponsesSummary extends React.Component {
 		const count = `Showing ${responseCount} out of ${responseTotal} ${responseTotal===1?'response.':'responses.'}`;
 
 		return (
-			<div id='responses-summary' className={'pt-callout'}>
+			<div className='pt-callout summary-panel'>
 				{count}
-				<div className='response-summary-controls'>
+				<div className='summary-controls'>
 					<ResponsesFilter value={this.props.filterValue} onChange={this.onFilterChange}/>
 					<Search value={this.props.searchValue} onChange={this.onSearchChange}/>
 				</div>
