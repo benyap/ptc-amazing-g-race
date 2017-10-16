@@ -6,6 +6,7 @@ import articleQuery from './articleQuery';
 import uploadQuery from './uploadQuery';
 import challengeQuery from './challengeQuery';
 import responseQuery from './responseQuery';
+import storyQuery from './storyQuery';
 
 
 export default {
@@ -20,5 +21,6 @@ export default {
 	...articleQuery,
 	...uploadQuery,
 	...challengeQuery,
-	...responseQuery
+	...responseQuery,
+	...storyQuery
 };

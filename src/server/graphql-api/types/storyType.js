@@ -15,6 +15,7 @@ import {
 } from 'graphql-iso-date';
 
 import storyTypeType from './storyTypeType';
+import storyIntentType from './storyIntentType';
 
 
 const storyType = new GraphQLObjectType({
@@ -41,12 +42,20 @@ const storyType = new GraphQLObjectType({
 			description: 'True if the story should be published to the public feed'
 		},
 		iconName: {
-			type: GraphQLString,
+			type: new GraphQLNonNull(GraphQLString),
 			description: 'Name of the icon to include with the story'
 		},
 		content: {
 			type: GraphQLString,
 			description: 'The content in the story (Markdown supported)'
+		},
+		intent: {
+			type: new GraphQLNonNull(storyIntentType),
+			description: 'The intent of the story (one of none, primary, success, danger or warning)'
+		},
+		edited: {
+			type: new GraphQLNonNull(GraphQLBoolean),
+			description: 'True if the story has been edited'
 		},
 		likes: {
 			type: new GraphQLNonNull(new GraphQLList(GraphQLString)),

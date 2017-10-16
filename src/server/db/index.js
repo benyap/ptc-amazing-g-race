@@ -8,6 +8,7 @@ import article from './objects/article';
 import upload from './objects/upload';
 import challenge from './objects/challenge';
 import response from './objects/response';
+import story from './objects/story';
 
 
 /**
@@ -24,5 +25,6 @@ export default {
 	article,
 	upload,
 	challenge,
-	response
+	response,
+	story
 };

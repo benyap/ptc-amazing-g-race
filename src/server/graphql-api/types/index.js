@@ -12,6 +12,8 @@ import challengeType from './challengeType';
 import responseType from './responseType';
 import uploadDataType from './uploadDataType';
 import storyType from './storyType';
+import storyTypeType from './storyTypeType';
+import storyIntentType from './storyIntentType';
 
 
 export default {
@@ -28,5 +30,7 @@ export default {
 	challengeType,
 	responseType,
 	uploadDataType,
-	storyType
+	storyType,
+	storyTypeType,
+	storyIntentType
 };
