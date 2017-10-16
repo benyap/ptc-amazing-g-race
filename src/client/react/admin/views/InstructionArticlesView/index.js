@@ -10,6 +10,7 @@ import RefreshBar from '../../components/RefreshBar';
 import ViewError from '../../components/ViewError';
 import InstructionArticleCard from './InstructionArticleCard';
 import InstructionArticleProfile from './InstructionArticleProfile';
+import AddInstructionArticle from './AddInstructionArticle';
 
 import '../../scss/components/_markdown-preview.scss';
 
@@ -20,7 +21,7 @@ const QueryGetArticlesOptions = {
 	name: 'QueryGetArticles',
 	options: {
 		variables: { category: 'instructions' },
-		fetchPolicy: 'network-and-cache'
+		fetchPolicy: 'cache-and-network'
 	}
 }
 
@@ -35,13 +36,7 @@ class InstructionArticlesView extends React.Component {
 	}
 
 	state = {
-		viewProfile: null,
-		loading: false,
-		refetching: false,
-		showAddArticle: false,
-		addArticleTitle: '',
-		addArticleLoading: false,
-		addArticleError: null
+		viewProfile: null
 	}
 
 	renderProfile(article) {
@@ -49,48 +44,8 @@ class InstructionArticlesView extends React.Component {
 	}
 	
 	async closeProfile() {
-		this.setState({ viewProfile: null, refetching: true });
-		await this.props.QueryGetArticles.refetch();
-		this.setState({ refetching: false });
-	}
-
-	toggleAddArticle() {
-		this.setState((prevState) => {
-			return { 
-				showAddArticle: !prevState.showAddArticle, 
-				addArticleTitle: '',
-				addArticleError: null
-			};
-		});
-	}
-
-	addArticleTitleEdit(e) {
-		this.setState({ addArticleTitle: e.target.value });
-	}
-
-	async submitAddArticle() {
-		if (this.state.addArticleTitle.length < 1) {
-			this.setState({ addArticleError: 'Article title is required.' });
-		}
-		else {
-			this.setState({ addArticleLoading: true, addArticleError: false });
-			try {
-				await this.props.MutationAddArticle({
-					variables: {
-						title: this.state.addArticleTitle,
-						category: 'instructions',
-						content: `# ${this.state.addArticleTitle}\n`
-					}
-				});
-
-				this.setState({ addArticleLoading: false, showAddArticle: false, refetching: true });
-				await this.props.QueryGetArticles.refetch();
-				this.setState({ refetching: false });
-			}
-			catch (e) {
-				this.setState({ addArticleError: e.toString(), addArticleLoading: false });
-			}
-		}
+		this.setState({ viewProfile: null });
+		this.props.QueryGetArticles.refetch();
 	}
 
 	render() {
@@ -120,27 +75,8 @@ class InstructionArticlesView extends React.Component {
 								);
 							})
 						}
-						<Button text='Create Article' onClick={this.toggleAddArticle} intent={Intent.PRIMARY} iconName='clipboard' className='pt-minimal pt-fill'/>
+						<AddInstructionArticle refetchArticles={this.props.QueryGetArticles.refetch}/>
 					</div>
-
-					{/* Add article dialog */}
-					<Dialog title='Create a new article' isOpen={this.state.showAddArticle} iconName='clipboard' onClose={this.toggleAddArticle}>
-						<div className='pt-dialog-body'>
-							{this.state.addArticleError ? 
-								<div className='pt-callout pt-intent-danger pt-icon-error'>
-									{this.state.addArticleError}
-								</div>
-								:null}
-							<b>Article title:</b> <FormInput id='addArticle' value={this.state.addArticleTitle} onChange={this.addArticleTitleEdit} 
-							intent={this.state.addArticleError ? Intent.DANGER : Intent.NONE}/>
-						</div>
-						<div className='pt-dialog-footer'>
-							<div className='pt-dialog-footer-actions'>
-								<Button className='pt-minimal' text='Cancel' onClick={this.toggleAddArticle} disabled={this.state.addArticleLoading}/>
-								<Button intent={Intent.PRIMARY} text='Create' onClick={this.submitAddArticle} loading={this.state.addArticleLoading}/>
-							</div>
-						</div>
-					</Dialog>
 				</div>
 			);
 		}
@@ -151,7 +87,7 @@ class InstructionArticlesView extends React.Component {
 		return (
 			<div id='dashboard-instructions' className='dashboard-tab'>
 				<h4>Instruction Articles</h4>
-				<RefreshBar query={this.props.QueryGetArticles} disabled={this.state.viewProfile} refetching={this.state.refetching} shouldRefresh={this.props.shouldRefresh}/>
+				<RefreshBar query={this.props.QueryGetArticles} disabled={this.state.viewProfile} shouldRefresh={this.props.shouldRefresh}/>
 				{content}
 			</div>
 		);
