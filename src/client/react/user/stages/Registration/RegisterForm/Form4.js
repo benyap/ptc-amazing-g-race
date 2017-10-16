@@ -99,7 +99,7 @@ class Form4 extends React.Component {
 
 				<FormInput id='friends' large value={this.state.friends} onChange={this.onChange} label='Name a friend or two you would like on your team.' sublabel='(no promises)' disabled={this.props.loading}/>
 
-				<FormInput id='dietaryRequirements' large value={this.state.dietaryRequirements} onChange={this.onChange} label='Any dietary requirements?' disabled={this.props.loading}/>
+				<FormInput id='dietaryRequirements' large value={this.state.dietaryRequirements} onChange={this.onChange} label='Any dietary requirements?' sublabel='(leave blank if none)' disabled={this.props.loading}/>
 
 				<Button onClick={this.props.submitForm} className='pt-large' text='Register' disabled={this.state.nextDisabled} loading={this.props.loading} intent={Intent.SUCCESS} style={{float:'right'}}/>
 				<Button onClick={this.props.back} className='pt-large pt-minimal' text='< Back' intent={Intent.PRIMARY} style={{float:'left'}} disabled={this.props.loading}/>
