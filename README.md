@@ -58,8 +58,6 @@ Credentials for access to cloud services are not committed to version control fo
 
 This project uses the [Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#feature-branch-workflow). Please ensure you are familiar with how it works before committing any code to this repository. 
 
-In addition to the standard `develop` branch in the Gitflow Workflow, there is also a `fed/develop` branch dedicated for Front-End Development, and a `bed/develop` branch dedicated for Back-End Development. Please create feature branches off one of these branches and **not** directly off `develop`. A **Pull Request** should be made to the respective `fed` or `bed` branches for review before any feautres are merged. A feature must be reviewed and tested on the repective `fed` or `bed` develop branches before being merged with another Pull Request to `develop`. 
-
 ### Conventions
 This project is written in JavaScript so standard JavaScript conventions should be followed for consistency. Function and variable names should be written in uncapitalised `camelCase`, where as classes and components should be written in capitalised `CamelCase`. 
 Tabs should be used for indentation, and single quotes should be used for strings. 
@@ -80,7 +78,7 @@ The Front-End serves two separate [React](https://facebook.github.io/react/) app
 The `lib` folder contains generic and reusable React components that have no specific custom functionality. If a component can be reused on other projects, it belongs in the `lib` folder. Any new components added to this folder should be independent of any other components or functionalities of this application. 
 
 #### `public`
-The `public` folder contains public assets that are served by the server. Compiled scripts, fonts and images are placed in this folder. You will usually not need to add anything to this folder except for fonts or images. Compiled and minified JS scripts are automatically output to this folder. 
+The `public` folder contains public assets that are served by the server. Compiled scripts, fonts and images are placed in this folder. Compiled and minified JS scripts, fonts and images are automatically output to this folder. 
 
 #### `src` 
 The `src` folder contains the meat of the project. The main entry points for both the server and client are found in the respective folders `client` and `server` inside `src`. 
