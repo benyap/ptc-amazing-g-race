@@ -2,7 +2,7 @@ import React from 'react';
 import autobind from 'core-decorators/es/autobind';
 import { Link } from 'react-router-dom';
 import { graphql } from 'react-apollo';
-import { Button } from '@blueprintjs/core';
+import { Button, NonIdealState } from '@blueprintjs/core';
 import { getArticles } from '../../../../graphql/article';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import InstructionCollapse from './InstructionCollapse';
@@ -33,6 +33,31 @@ class Instructions extends React.Component {
 	}
 
 	render() {
+		const { loading, getArticles } = this.props.QueryGetArticles;
+		let content;
+
+		if (getArticles) {
+			if (getArticles.length) {
+				content = (
+					<div>
+						{getArticles.map((article) => {
+							return <InstructionCollapse key={article._id} article={article}/>;
+						})}
+					</div>
+				);
+			}
+			else {
+				content = (
+					<div style={{margin:'3rem 0'}}>
+						<NonIdealState title='No instructions found' description={`You'll be alright.`} visual='clipboard'/>
+					</div>
+				);
+			}
+		}
+		else if (loading) {
+			content = <LoadingSpinner/>;
+		}
+
 		return (
 			<main id='instructions' className='dashboard'>
 				<div className='content'>
@@ -47,12 +72,7 @@ class Instructions extends React.Component {
 						</div>
 						: null
 					}
-					{ this.props.QueryGetArticles.getArticles ? 
-						this.props.QueryGetArticles.getArticles.map((article) => {
-							return <InstructionCollapse key={article._id} article={article}/>;
-						})
-						: <LoadingSpinner/>
-					}
+					{content}
 				</div>
 			</main>
 		);
