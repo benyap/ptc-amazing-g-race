@@ -13,7 +13,7 @@ import UserPasswordReset from './UserPasswordReset';
 
 
 const QueryUserParams = 
-	'firstname lastname username email isAdmin university studentID ' + 
+	'_id firstname lastname username email isAdmin university studentID ' + 
 	'mobileNumber enabled registerDate paidAmount roles permissions ' + 
 	'raceDetails{hasSmartphone friends PTProficiency dietaryRequirements}';
 

@@ -18,7 +18,7 @@ import UsersSummary from './UsersSummary';
 import '../../scss/views/_users-view.scss';
 
 
-const QueryUserParams = 'firstname lastname username email university enabled paidAmount teamId isAdmin';
+const QueryUserParams = '_id firstname lastname username email university enabled paidAmount teamId isAdmin raceDetails{dietaryRequirements}';
 
 const QueryUsersOptions = {
 	name: 'QueryUsers',
@@ -123,10 +123,11 @@ class UsersView extends React.Component {
 			const search = this.state.search.toLowerCase();
 			const matchFirst = user.firstname.toLowerCase().indexOf(search) >= 0;
 			const matchLast = user.lastname.toLowerCase().indexOf(search) >= 0;
+			const matchFull = `${user.firstname.toLowerCase()} ${user.lastname.toLowerCase()}`.indexOf(search) >= 0;
 			const matchUser = user.username.toLowerCase().indexOf(search) >= 0;
 			const matchUni = user.university.toLowerCase().indexOf(search) >= 0;
 
-			if (matchFirst || matchLast || matchUser || matchUni) return true;
+			if (matchFirst || matchLast || matchFull ||matchUser || matchUni) return true;
 			else return false;
 		}
 		else return true;
