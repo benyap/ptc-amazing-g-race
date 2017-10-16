@@ -94,7 +94,7 @@ class AddChallenge extends React.Component {
 
 						<b>Challenge key:</b> 
 						<FormInput id='challenge-key' value={this.state.challengeKey} onChange={this.editValue('challengeKey')}
-							helperText='Use the format <type>_<name>, where <type> is one of [challenge, station].'/>
+							helperText='Use the format <type>-<name>, where <type> is one of [challenge, station].'/>
 
 						<b>Order:</b> 
 						<FormInput id='challenge-order' value={this.state.order} onChange={this.editValue('order')}/>
