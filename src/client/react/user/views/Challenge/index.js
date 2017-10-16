@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
 import { Link } from 'react-router-dom';
-import { Icon } from '@blueprintjs/core';
+import { Icon, NonIdealState } from '@blueprintjs/core';
 import MarkdownRenderer from '../../../../../../lib/react/components/MarkdownRenderer';
 import { getChallengeById } from '../../../../graphql/challenge';
 import NotificationToaster from '../../../components/NotificationToaster';
@@ -37,14 +37,8 @@ class Challenge extends React.Component {
 		else {
 			if (!loading) {
 				content = (
-					<div className='pt-non-ideal-state' style={{height:'40vh'}}>
-						<div className='pt-non-ideal-state-visual pt-non-ideal-state-icon'>
-							<span className='pt-icon pt-icon-error'></span>
-						</div>
-						<h4>There's nothing here.</h4>
-						<div className='pt-non-ideal-state-description'>
-							Sorry.
-						</div>
+					<div style={{margin:'3rem'}}>
+						<NonIdealState title={`There's nothing here.`} description='Sorry.' visual='error'/>
 					</div>
 				);
 			}
