@@ -4,6 +4,7 @@ import autobind from 'core-decorators/es/autobind';
 import DateFormat from 'dateformat';
 import { graphql } from 'react-apollo';
 import { Button, Dialog } from '@blueprintjs/core';
+import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import { getResponseData } from '../../../../graphql/response';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import ImageContainer from '../../components/ImageContainer';
@@ -57,12 +58,13 @@ class ResponsePreview extends React.Component {
 		let responseData;
 
 		if (getResponseData) {
+			const date = (
+				<div className='pt-callout' style={{marginBottom:'0.5rem'}}>
+					{`Retrieved from server at ${DateFormat(new Date(getResponseData.date), 'hh:MM TT mmm dd yyyy')}`}
+				</div>
+			);
+
 			if (responseType === 'upload') {
-				const date = (
-					<div className='pt-callout' style={{marginBottom:'0.5rem'}}>
-						{`Retrieved from server at ${DateFormat(new Date(getResponseData.date), 'hh:MM TT mmm dd yyyy')}`}
-					</div>
-				);
 
 				responseData = (
 					<div>
