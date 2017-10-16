@@ -143,7 +143,7 @@ class AdminDashboard extends React.Component {
 		catch (err) {
 			NotificationToaster.show({
 				intent: Intent.DANGER,
-				message: error.toString()
+				message: err.toString()
 			});
 		}
 	}
