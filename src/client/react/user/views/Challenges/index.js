@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { Button, Intent } from '@blueprintjs/core';
 import { graphql } from 'react-apollo';
+import { connect } from 'react-redux';
+import { challengeLoadWasSuccessful } from '../../../../actions/stateActions';
 import { getChallenges } from '../../../../graphql/challenge';
 import NotificationToaster from '../../../components/NotificationToaster';
 import ChallengeUnlock from './ChallengeUnlock';
@@ -15,6 +17,7 @@ const QueryGetChallengesOptions = {
 };
 
 @graphql(getChallenges('_id key order title locked public teams'), QueryGetChallengesOptions)
+@connect()
 @autobind
 class Challenges extends React.Component {
 	state = {
@@ -27,15 +30,23 @@ class Challenges extends React.Component {
 		});
 	}
 
+	componentDidMount() {
+		this.refresh();
+	}
+
 	async refresh() {
 		try {
 			await this.props.QueryGetChallenges.refetch();
+			this.props.dispatch(challengeLoadWasSuccessful(true));
 		}
 		catch (err) {
-			NotificationToaster.show({
-				intent: Intent.DANGER,
-				message: err.toString()
-			});
+			this.props.dispatch(challengeLoadWasSuccessful(false));
+			if (err.toString() !== 'Error: GraphQL error: You are not in a team.') {
+				NotificationToaster.show({
+					intent: Intent.DANGER,
+					message: err.toString()
+				});
+			}
 		}
 	}
 
@@ -60,7 +71,7 @@ class Challenges extends React.Component {
 						: null
 					}
 
-					<ChallengeList challenges={this.props.QueryGetChallenges.getChallenges}/>
+					<ChallengeList challengesQuery={this.props.QueryGetChallenges}/>
 					
 				</div>
 			</main>

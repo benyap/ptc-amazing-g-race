@@ -1,5 +1,6 @@
 const initialState = {
-	loaded: false
+	loaded: false,
+	challengeLoadWasSuccessful: false
 };
 
 export default function reducer(state = initialState, { type, payload }) {
@@ -11,6 +12,19 @@ export default function reducer(state = initialState, { type, payload }) {
 			}
 		}
 
+		case 'CHALLENGE_LOAD_WAS_SUCCESSFUL': {
+			return { ...state,
+				challengeLoadWasSuccessful: payload.successful
+			}
+		}
+
+		// Reset challenge load state on logout
+		case 'AUTH_LOGOUT': {
+			return { ...state,
+				challengeLoadWasSuccessful: false
+			}
+		}
+		
 		default: {
 			return state;
 		}
