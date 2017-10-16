@@ -6,6 +6,7 @@ import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core
 import { getArticle, setArticleTitle, editArticle } from '../../../../graphql/article';
 import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEditor';
 import NotificationToaster from '../../../components/NotificationToaster';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 import DeleteInstructionArticle from './DeleteInstructionArticle';
 
 import '../../../user/scss/components/_instruction-panel.scss';
@@ -138,7 +139,19 @@ class InstructionArticleProfile extends React.Component {
 
 	render() {
 		const { loading, getArticle } = this.props.QueryGetArticle;
-		
+		let content;
+
+		if (getArticle) {
+			content = (
+				<div className='markdown-preview instruction-panel'>
+					<MarkdownEditor content={this.state.content || this.props.QueryGetArticle.getArticle.content} onChange={this.editContent}/>
+			</div>
+			);
+		}
+		else if (loading) {
+			content = <LoadingSpinner/>;
+		}
+
 		return (
 			<div className='pt-card instruction-article-profile'>
 				<Button className='pt-minimal' intent={Intent.NONE} iconName='cross' onClick={this.toggleConfirmClose} style={{float:'right'}}/>
@@ -154,12 +167,7 @@ class InstructionArticleProfile extends React.Component {
 					<EditableText value={this.state.titleText} onChange={this.editTitle} onConfirm={this.confirmTitle}/>
 				</b></h4>
 				
-					{ loading ? 
-						<div className='pt-text-muted' style={{margin:'1rem 0'}}>Loading content...</div>:
-						<div className='markdown-preview instruction-panel'>
-							<MarkdownEditor content={this.state.content || this.props.QueryGetArticle.getArticle.content} onChange={this.editContent}/>
-						</div>
-					}
+				{content}
 
 				{/* Confirm close dialog */}
 				<Dialog isOpen={this.state.showConfirmClose} onClose={this.toggleConfirmClose} title='Unsaved changes'>
