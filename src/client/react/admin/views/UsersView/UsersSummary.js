@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
-import Filter from './Filter';
-import Search from './Search';
+import UsersFilter from './UsersFilter';
+import Search from '../../components/Search';
 
 
 @autobind
@@ -33,7 +33,7 @@ class UserSummary extends React.Component {
 			<div id='user-summary' className={'pt-callout ' + intent}>
 				{this.props.displayPaidCount} out of {this.props.displayCount} users have paid.
 				<div className='user-summary-controls'>
-					<Filter value={this.props.filterValue} onChange={this.onFilterChange}/>
+					<UsersFilter value={this.props.filterValue} onChange={this.onFilterChange}/>
 					<Search value={this.props.searchValue} onChange={this.onSearchChange}/>
 				</div>
 			</div>
