@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
-import Filter from './Filter';
-import Search from './Search';
+import UsersFilter from './UsersFilter';
+import Search from '../../components/Search';
+
+import '../../scss/components/_summary-panel.scss';
 
 
 @autobind
@@ -26,15 +28,18 @@ class UserSummary extends React.Component {
 	}
 
 	render() {
+		const { displayPaidCount, displayCount, filterValue, searchValue } = this.props;
+		const descriptor = filterValue!=='all' || searchValue ? ' shown ' : ' total ';
 		let intent = 'pt-intent-danger';
-		if (this.props.displayPaidCount === this.props.displayCount) intent = 'pt-intent-success';
+
+		if (displayPaidCount === displayCount) intent = 'pt-intent-success';
 		
 		return (
-			<div id='user-summary' className={'pt-callout ' + intent}>
-				{this.props.displayPaidCount} out of {this.props.displayCount} users have paid.
-				<div className='user-summary-controls'>
-					<Filter value={this.props.filterValue} onChange={this.onFilterChange}/>
-					<Search value={this.props.searchValue} onChange={this.onSearchChange}/>
+			<div className={'pt-callout summary-panel ' + intent}>
+				{displayPaidCount} out of {displayCount}{descriptor}users have paid.
+				<div className='summary-controls'>
+					<UsersFilter value={filterValue} onChange={this.onFilterChange}/>
+					<Search value={searchValue} onChange={this.onSearchChange}/>
 				</div>
 			</div>
 		);

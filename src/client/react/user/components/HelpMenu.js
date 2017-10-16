@@ -33,7 +33,7 @@ class HelpMenu extends React.Component {
 	menu = (
 		<Menu>
 			<MenuItem text='Team dashboard' iconName='people' onClick={this.navigate('/dashboard')}/>
-			<MenuItem text='Challenges' iconName='map' onClick={this.navigate('/dashboard/challenges')}/>
+			<MenuItem text='Challenges' iconName='flag' onClick={this.navigate('/dashboard/challenges')}/>
 			<MenuItem text='News feed' iconName='feed' onClick={this.navigate('/dashboard/feed')}/>
 			<MenuDivider/>
 			<MenuItem text='Instructions' iconName='clipboard' onClick={this.navigate('/dashboard/instructions')}/>

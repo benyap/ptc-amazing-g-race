@@ -7,7 +7,7 @@ import { gql } from 'react-apollo';
 
 const getTeamResponses = (params) => {
 	return gql`
-	query GetTeamResponses($challengeKey:String!,$itemKey:String!){
+	query GetTeamResponses($challengeKey:String,$itemKey:String){
 		getTeamResponses(challengeKey:$challengeKey,itemKey:$itemKey){ ${params} }
 	}`;
 }

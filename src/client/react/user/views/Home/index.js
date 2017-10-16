@@ -6,6 +6,7 @@ import { graphql } from 'react-apollo';
 import { getUserByEmail } from '../../../../graphql/user';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import TeamPointsPanel from './TeamPointsPanel';
+import TeamResponsesPanel from './TeamResponsesPanel';
 
 import '../../scss/views/_main.scss'
 import '../../scss/views/_home.scss';
@@ -35,19 +36,24 @@ class Home extends React.Component {
 	
 	render() {
 		const { loading, getUserByEmail: user } = this.props.QueryGetUser;
-		let teamPointsPanel;
+		let content;
 
 		if (user) {
-			teamPointsPanel = <TeamPointsPanel user={user}/>;
+			content = (
+				<div>
+					<TeamPointsPanel user={user}/>
+					<TeamResponsesPanel/>
+				</div>
+			);
 		}
 		else {
-			teamPointsPanel = <LoadingSpinner/>;
+			content = <LoadingSpinner/>;
 		}
 
 		return (
-			<main id='home' className='dashboard'>
+			<main id='dashboard-home' className='dashboard'>
 				<div className='content'>
-					{teamPointsPanel}
+					{content}
 				</div>
 			</main>
 		);

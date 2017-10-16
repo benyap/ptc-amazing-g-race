@@ -1,0 +1,17 @@
+#dashboard-home {
+	#team-points-panel {
+		.points {
+			color: white;
+			text-align: center;
+			font-size: x-large;
+		}
+	}
+
+	#team-responses-panel {
+		.response-list {
+			.pt-callout:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+}

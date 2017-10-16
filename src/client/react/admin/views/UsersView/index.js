@@ -208,7 +208,7 @@ class UsersView extends React.Component {
 						</div>
 					);
 
-					if (displayCount < 1) {
+					if (displayCount === 0) {
 						content = (
 							<div style={{margin:'3rem'}}>
 								<NonIdealState title='No users match your query.' description='Did you make a typo?' visual='search'/>

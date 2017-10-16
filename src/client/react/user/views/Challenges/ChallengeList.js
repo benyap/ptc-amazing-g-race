@@ -25,7 +25,7 @@ class ChallengeList extends React.Component {
 
 		let noChallengeTitle = 'No challenges'
 		let noChallengeDescription = 'No challenges are currently available.';
-		let noChallengeVisual = 'map';
+		let noChallengeVisual = 'flag';
 
 		if (getChallenges && this.props.challengeLoadWasSuccessful) {
 			if (getChallenges.length > 0) {
