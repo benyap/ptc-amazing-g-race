@@ -36,20 +36,24 @@ class Home extends React.Component {
 	
 	render() {
 		const { loading, getUserByEmail: user } = this.props.QueryGetUser;
-		let teamPointsPanel;
+		let content;
 
 		if (user) {
-			teamPointsPanel = <TeamPointsPanel user={user}/>;
+			content = (
+				<div>
+					<TeamPointsPanel user={user}/>
+					<TeamResponsesPanel/>
+				</div>
+			);
 		}
 		else {
-			teamPointsPanel = <LoadingSpinner/>;
+			content = <LoadingSpinner/>;
 		}
 
 		return (
 			<main id='dashboard-home' className='dashboard'>
 				<div className='content'>
-					{teamPointsPanel}
-					<TeamResponsesPanel/>
+					{content}
 				</div>
 			</main>
 		);
