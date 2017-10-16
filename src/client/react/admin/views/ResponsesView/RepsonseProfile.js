@@ -22,7 +22,7 @@ const QueryGetResponseOptions = {
 	}
 }
 
-const QueryGetResponseParams = '_id responseType challengeKey itemKey teamId uploadedBy uploadDate checked checkedBy checkedOn pointsAwarded responseValid retry';
+const QueryGetResponseParams = '_id responseType challengeKey itemKey teamId uploadedBy uploadDate checked checkedBy checkedOn pointsAwarded comment responseValid retry';
 
 @graphql(getResponse(QueryGetResponseParams), QueryGetResponseOptions)
 @withApollo

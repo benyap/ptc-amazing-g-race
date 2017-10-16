@@ -18,7 +18,8 @@ class ResponseCheck extends React.Component {
 			responseValid: PropTypes.bool.isRequired,
 			checked: PropTypes.bool.isRequired,
 			retry: PropTypes.bool.isRequired,
-			pointsAwarded: PropTypes.number.isRequired
+			pointsAwarded: PropTypes.number.isRequired,
+			comment: PropTypes.string.isRequired
 		}).isRequired,
 		refetchResponse: PropTypes.func.isRequired
 	}
@@ -29,7 +30,8 @@ class ResponseCheck extends React.Component {
 		checkResponseError: null,
 		responseValid: this.props.response.responseValid,
 		retry: this.props.response.retry,
-		pointsAwarded: this.props.response.pointsAwarded
+		pointsAwarded: this.props.response.pointsAwarded,
+		comment: this.props.response.comment
 	}
 
 	toggle(state) {
@@ -44,6 +46,10 @@ class ResponseCheck extends React.Component {
 		this.setState({ pointsAwarded: e.target.value });
 	}
 
+	onCommentChange(e) {
+		this.setState({ comment: e.target.value });
+	}
+
 	async submitCheckResponse() {
 		try {
 			this.setState({ checkResponseError: null, checkResponseLoading: true });
@@ -52,7 +58,8 @@ class ResponseCheck extends React.Component {
 					responseId: this.props.response._id,
 					responseValid: this.state.responseValid, 
 					retry: this.state.retry,
-					pointsAwarded: this.state.pointsAwarded
+					pointsAwarded: this.state.pointsAwarded,
+					comment: this.state.comment
 				}
 			});
 			await this.props.refetchResponse();
@@ -111,7 +118,7 @@ class ResponseCheck extends React.Component {
 					{warning}
 					<Switch checked={this.state.responseValid} label='Response valid' onChange={this.toggle('responseValid')} className='pt-large' disabled={this.state.checkResponseLoading}/>
 					<Switch checked={this.state.retry} label='Retry' onChange={this.toggle('retry')} className='pt-large' disabled={this.state.checkResponseLoading}/>
-					<div class='pt-form-group pt-inline'>
+					<div class='pt-form-group pt-inline' style={{marginBottom:'0.3rem'}}>
 						<label class='pt-label' for='points'>
 							Points Awarded
 						</label>
@@ -121,6 +128,8 @@ class ResponseCheck extends React.Component {
 							</div>
 						</div>
 					</div>
+					<FormInput id='comment' value={this.state.comment} onChange={this.onCommentChange} disabled={this.state.checkResponseLoading}
+						label='Comment' helperText='Teams will see this comment on their response'/>
 					<Button intent={Intent.DANGER} className='pt-fill' text='Save' onClick={this.submitCheckResponse} loading={this.state.checkResponseLoading}/>
 				</Collapse>
 			</div>

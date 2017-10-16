@@ -47,8 +47,8 @@ const addResponse = (params) => {
 
 const checkResponse = (params) => {
 	return gql`
-	mutation CheckResponse($responseId:ID!,$responseValid:Boolean!,$retry:Boolean!,$pointsAwarded:Float!){
-		checkResponse(responseId:$responseId,responseValid:$responseValid,retry:$retry,pointsAwarded:$pointsAwarded){ ${params} }
+	mutation CheckResponse($responseId:ID!,$responseValid:Boolean!,$retry:Boolean!,$pointsAwarded:Float!,$comment:String!){
+		checkResponse(responseId:$responseId,responseValid:$responseValid,retry:$retry,pointsAwarded:$pointsAwarded,comment:$comment){ ${params} }
 	}`;
 }
 
