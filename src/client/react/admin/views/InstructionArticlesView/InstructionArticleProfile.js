@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
-import { connect } from 'react-redux';
 import { compose, graphql } from 'react-apollo';
 import { Button, Intent, Spinner, EditableText, Dialog } from '@blueprintjs/core';
 import { getArticle, setArticleTitle, editArticle, removeArticle } from '../../../../graphql/article';
-import { saveState } from '../../../../actions/stateActions';
 import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEditor';
 import NotificationToaster from '../../../components/NotificationToaster';
 
@@ -30,7 +28,6 @@ const QueryGetArticleOptions = {
 	graphql(editArticle('ok'), { name: 'MutationEditArticle' }),
 	graphql(removeArticle('ok'), { name: 'MutationRemoveArticle' })
 )
-@connect()
 @autobind
 class InstructionArticleProfile extends React.Component {
 	static propTypes = {
@@ -155,7 +152,6 @@ class InstructionArticleProfile extends React.Component {
 			await mutation(mutationOptions);
 	
 			await this.props.QueryGetArticle.refetch();
-			this.props.dispatch(saveState());
 			if (this._mounted) this.setState({saving: false});
 		}
 		catch (e) {
