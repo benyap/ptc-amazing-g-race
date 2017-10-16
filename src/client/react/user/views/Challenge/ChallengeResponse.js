@@ -53,12 +53,12 @@ class ChallengeResponse extends React.Component {
 		// Create response element
 		switch (responseType) {
 			case 'upload': {
-				helpPhrase = 'This item requires you to upload an image for us to verify.';
+				helpPhrase = 'This item requires you to upload an image for us to review.';
 				response = <ResponseUpload itemKey={itemKey} challengeKey={challengeKey} onSuccess={this.refetch}/>;
 				break;
 			}
 			case 'phrase': {
-				helpPhrase = 'This item requires you enter a phrase for us to verify.';
+				helpPhrase = 'This item requires you enter a phrase for us to review.';
 				response = <ResponsePhrase itemKey={itemKey} challengeKey={challengeKey} onSuccess={this.refetch}/>;
 				break;
 			}
@@ -89,9 +89,9 @@ class ChallengeResponse extends React.Component {
 				comment = latestResponse.comment;
 				if (latestResponse.responseValid) {
 					// Response valid
-					classNames = 'pt-callout pt-intent-success pt-icon-endorsed';
-					title = 'Correct';
-					text = `Well done! You team was awarded ${latestResponse.pointsAwarded} ${latestResponse.pointsAwarded===1?'point':'points'} for your efforts.`;
+					classNames = 'pt-callout pt-intent-success pt-icon-tick-circle';
+					title = 'Accepted';
+					text = `You team was awarded ${latestResponse.pointsAwarded} ${latestResponse.pointsAwarded===1?'point':'points'} for your efforts.`;
 				}
 				else {
 					// Response invalid
@@ -105,7 +105,7 @@ class ChallengeResponse extends React.Component {
 				// Response pending
 				classNames = 'pt-callout pt-intent-warning pt-icon-time';
 				title = 'Pending';
-				text = `Your team's response is being verified. Check back in a few minutes!`;
+				text = `Your team's response is being reviewed. Check back in a few minutes!`;
 			}
 		}
 
