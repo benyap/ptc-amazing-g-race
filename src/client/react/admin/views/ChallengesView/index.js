@@ -96,7 +96,7 @@ class ChallengesView extends React.Component {
 					<div>
 						<AddChallenge refetchChallenges={this.props.QueryGetAllChallenges.refetch}/>
 						<div style={{margin:'3rem'}}>
-							<NonIdealState title='No challenges' description={`This is going to be a rather boring race if you don't add some!`} visual='map'/>
+							<NonIdealState title='No challenges' description={`This is going to be a rather boring race if you don't add some challenges!`} visual='map'/>
 						</div>
 					</div>
 				);
