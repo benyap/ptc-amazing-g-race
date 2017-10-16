@@ -516,8 +516,9 @@ const setUserPaidAmount = async function(user, username, amount) {
 			action: action
 		}
 	}
-
-	return new Error('Unable to modify user paid amount.');
+	else {
+		return new Error(`${userToModify.username}'s paid amount is already that value.`);
+	}
 }
 
 
