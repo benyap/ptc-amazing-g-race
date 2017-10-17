@@ -9,11 +9,12 @@ import NotificationToaster from '../../../components/NotificationToaster';
 import ViewError from '../../components/ViewError';
 import RefreshBar from '../../components/RefreshBar';
 import StoryCard from './StoryCard';
+import StoryCreate from './StoryCreate';
 
 import '../../scss/views/_feed-view.scss';
 
 
-const GetAllStoriesParams = '_id type createdBy published iconName intent content likes';
+const GetAllStoriesParams = '_id type createdBy published publishDate iconName intent content likes';
 
 const GetAllStoriesOptions = {
 	name: 'QueryGetAllStories',
@@ -84,19 +85,24 @@ class FeedView extends React.Component {
 		if (getAllStories) {
 			if (getAllStories.length) {
 				content = (
-					<div className='story-list pt-dark'>
-						{ getAllStories.map((story) => {
-							return <StoryCard key={story._id} story={story} refetch={this.props.QueryGetAllStories.refetch} 
-												publishing={this.state.publishing} setPublishing={this.setPublishing}/>;
-						})}
-						
+					<div className='story-list'>
+						<div className='pt-dark'>
+							{ getAllStories.map((story) => {
+								return <StoryCard key={story._id} story={story} refetch={this.props.QueryGetAllStories.refetch} 
+													publishing={this.state.publishing} setPublishing={this.setPublishing}/>;
+							})}
+						</div>
+						<StoryCreate refetch={this.props.QueryGetAllStories.refetch}/>
 					</div>
 				);
 			}
 			else {
 				content = (
-					<div style={{margin:'3rem'}}>
-						<NonIdealState title='No stories' description={`How boring.`} visual='feed'/>
+					<div>
+						<StoryCreate refetch={this.props.QueryGetAllStories.refetch}/>
+						<div style={{margin:'3rem'}}>
+							<NonIdealState title='No stories' description={`How boring.`} visual='feed'/>
+						</div>
 					</div>
 				);
 			}

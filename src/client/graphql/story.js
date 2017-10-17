@@ -41,9 +41,18 @@ const deleteStory = (params) => {
 }
 
 
+const createStory = (params) => {
+	return gql`
+	mutation CreateStory($type:StoryType!,$content:String!,$iconName:String!,$intent:StoryIntent!){
+		createStory(type:$type,content:$content,iconName:$iconName,intent:$intent){ ${params} }
+	}`;
+}
+
+
 export {
 	getAllStories,
 	getStories,
 	setStoryPublished,
-	deleteStory
+	deleteStory,
+	createStory
 };
