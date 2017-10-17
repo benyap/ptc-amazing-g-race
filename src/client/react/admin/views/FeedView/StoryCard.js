@@ -85,7 +85,7 @@ class StoryCard extends React.Component {
 		return (
 			<div className='pt-card pt-elevation-0 pt-interactive'>
 				<div className='story-preview-container markdown-preview'>
-					<Story story={this.props.story}/>
+					<Story story={this.props.story} refetch={this.props.refetch} disableLike/>
 				</div>
 
 				<div style={{marginTop:'0.2rem',display:'flex',justifyContent:'space-between',alignItems:'center'}}>

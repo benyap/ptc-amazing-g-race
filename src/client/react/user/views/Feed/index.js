@@ -43,7 +43,7 @@ class Feed extends React.Component {
 
 		if (getStories) {
 			if (getStories.length) {
-				content = <StoryList stories={getStories}/>;
+				content = <StoryList stories={getStories} refetch={this.props.QueryGetStories.refetch}/>;
 			}
 			else {
 				content = (

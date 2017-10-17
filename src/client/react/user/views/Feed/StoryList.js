@@ -19,14 +19,15 @@ class StoryList extends React.Component {
 				content: PropTypes.string.isRequired,
 				likes: PropTypes.array.isRequired
 			})
-		).isRequired
+		).isRequired,
+		refetch: PropTypes.func.isRequired
 	}
 
 	render() {
 		return (
 			<div>
 				{this.props.stories.map((story) => {
-					return <Story key={story._id} story={story}/>;
+					return <Story key={story._id} story={story} refetch={this.props.refetch}/>;
 				})}
 			</div>
 		);

@@ -56,6 +56,13 @@ const createUserStory = (params) => {
 	}`;
 }
 
+const setStoryLiked = (params) => {
+	return gql`
+	mutation SetStoryLike($storyId:ID!,$like:Boolean!){
+		setStoryLike(storyId:$storyId,like:$like){ ${params} }
+	}`;
+}
+
 
 export {
 	getAllStories,
@@ -63,5 +70,6 @@ export {
 	setStoryPublished,
 	deleteStory,
 	createStory,
-	createUserStory
+	createUserStory,
+	setStoryLiked
 };
