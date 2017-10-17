@@ -24,6 +24,11 @@ const createStory = {
 			description: 'The content in the story',
 			type: new GraphQLNonNull(GraphQLString)
 		},
+		who: {
+			name: 'who',
+			description: 'The author type',
+			type: new GraphQLNonNull(types.storyWhoType)
+		},
 		iconName: {
 			name: 'iconName',
 			description: 'The name of the icon to be displayed along the story',

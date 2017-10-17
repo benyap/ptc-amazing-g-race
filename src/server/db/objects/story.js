@@ -13,6 +13,13 @@ const STORY_TYPES = [
 ];
 
 
+const WHO_TYPES = [
+	'me',
+	'admins',
+	'generated'
+];
+
+
 /**
  * Get all published stories
  * @param {*} user
@@ -83,15 +90,29 @@ const _getStories = async function(all, user, storyType, skip, limit) {
  * @param {String} storyType 
  */
 const _validateStoryType = function(storyType) {
+	return _validateType(STORY_TYPES, storyType);
+}
+
+
+/**
+ * Helper method for validating who type
+ * @param {String} whoType 
+ */
+const _validateWhoType = function(whoType) {
+	return _validateType(WHO_TYPES, whoType);
+}
+
+
+const _validateType = function(types, target) {
 	let valid = false;
-
-	STORY_TYPES.forEach((type) => { 
-		if (!valid) {
-			if (type === storyType) valid = true;
-		}
-	});
-
-	return valid;
+	
+		types.forEach((type) => { 
+			if (!valid) {
+				if (type === target) valid = true;
+			}
+		});
+	
+		return valid;
 }
 
 
@@ -100,10 +121,11 @@ const _validateStoryType = function(storyType) {
  * @param {*} user 
  * @param {String} type 
  * @param {String} content 
+ * @param {String} who 
  * @param {String?} iconName 
  * @param {String?} intent 
  */
-const createStory = async function(user, type, content, iconName = '', intent = 'none') {
+const createStory = async function(user, type, content, who = 'me', iconName = '', intent = 'none') {
 	if (!user) return new Error('No user logged in');
 	
 	const authorized = await permission.checkPermission(user, ['admin:modify-feed']);
@@ -118,6 +140,24 @@ const createStory = async function(user, type, content, iconName = '', intent = 
 		return new Error(`The story type '${type}' is not valid.`);
 	}
 
+	// Ensure valid 'who' type
+	if (!_validateWhoType(who)) {
+		return new Error(`The who type '${who}' is not valid.`);
+	}
+
+	let createdBy;
+	switch(who) {
+		case 'me': {
+			createdBy = user.username; break;
+		}
+		case 'admins': {
+			createdBy = 'Planning Team'; break;
+		}
+		case 'generated': {
+			createdBy = ''; break;
+		}
+	}
+
 	const db = await connect();
 	
 	// Create story object
@@ -125,7 +165,7 @@ const createStory = async function(user, type, content, iconName = '', intent = 
 		_id: new Mongo.ObjectID(),
 		type,
 		createDate: new Date(),
-		createdBy: user.username,
+		createdBy,
 		publishDate: null,
 		published: false,
 		iconName,
