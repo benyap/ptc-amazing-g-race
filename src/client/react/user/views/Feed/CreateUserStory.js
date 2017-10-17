@@ -23,7 +23,11 @@ class CreateUserStory extends React.Component {
 	toggleShowCreateStory() {
 		if (!this.state.createStoryLoading) {
 			this.setState((prevState) => {
-				return { showCreateStory: !prevState.showCreateStory, createStoryError: null };
+				return { 
+					showCreateStory: !prevState.showCreateStory, 
+					createStoryError: null,
+					content: ''
+				 };
 			});
 		}
 	}
