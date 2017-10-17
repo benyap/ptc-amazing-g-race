@@ -156,7 +156,7 @@ class TeamResponsesPanel extends React.Component {
 		}
 
 		return (
-			<div id='team-responses-panel'>
+			<div id='team-responses-panel' style={{marginBottom:'1rem'}}>
 				<Button iconName='refresh' className='pt-intent-warning pt-small pt-minimal' style={{float:'right',padding:'0'}} 
 					loading={loading} onClick={this.refetch}/>
 				<h4>Your team's responses</h4>
