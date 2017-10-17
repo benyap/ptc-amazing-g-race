@@ -12,7 +12,7 @@ import NotificationToaster from '../../../components/NotificationToaster';
 @graphql(createStory('ok'), { name: 'MutationCreateStory' })
 @autobind
 class StoryCreate extends React.Component {
-	propTypes = {
+	static propTypes = {
 		refetch: PropTypes.func.isRequired
 	}
 	
@@ -74,7 +74,7 @@ class StoryCreate extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<div style={{marginBottom:'0.5rem'}}>
 				<Button text='Create story' iconName='feed' className='pt-fill pt-minimal' intent={Intent.PRIMARY} onClick={this.toggleCreateStory}/>
 
 				<Dialog isOpen={this.state.showCreateStory} title='Create story' iconName='feed' onClose={this.toggleCreateStory}>
@@ -116,7 +116,7 @@ class StoryCreate extends React.Component {
 								<Icon iconName={this.state.iconName} iconSize={20}/>
 							</div>
 							<div style={{flexGrow:'1',marginLeft:'1rem'}}>
-								<FormInput id='iconName' value={this.state.iconName} onChange={this.editValue('iconName')} label='Icon name' helperText='Preview the icon on the left if it is a valid icon name'/>
+								<FormInput id='iconName' value={this.state.iconName} onChange={this.editValue('iconName')} label='Icon name (optional)' helperText='Preview the icon on the left if it is a valid icon name'/>
 							</div>
 						</div>
 						

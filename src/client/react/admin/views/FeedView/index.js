@@ -86,13 +86,13 @@ class FeedView extends React.Component {
 			if (getAllStories.length) {
 				content = (
 					<div className='story-list'>
+						<StoryCreate refetch={this.props.QueryGetAllStories.refetch}/>
 						<div className='pt-dark'>
 							{ getAllStories.map((story) => {
 								return <StoryCard key={story._id} story={story} refetch={this.props.QueryGetAllStories.refetch} 
 													publishing={this.state.publishing} setPublishing={this.setPublishing}/>;
 							})}
 						</div>
-						<StoryCreate refetch={this.props.QueryGetAllStories.refetch}/>
 					</div>
 				);
 			}
