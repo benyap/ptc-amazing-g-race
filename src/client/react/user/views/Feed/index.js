@@ -8,7 +8,7 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import StoryList from './StoryList';
 
 
-const GetStoriesParams = '_id type createdBy published iconName intent content likes';
+const GetStoriesParams = '_id type createdBy published publishDate iconName intent content likes';
 
 const GetStoriesOptions = {
 	name: 'QueryGetStories',
