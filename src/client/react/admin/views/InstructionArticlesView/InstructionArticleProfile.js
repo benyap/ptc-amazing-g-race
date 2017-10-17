@@ -144,7 +144,7 @@ class InstructionArticleProfile extends React.Component {
 		if (getArticle) {
 			content = (
 				<div className='markdown-preview instruction-panel'>
-					<MarkdownEditor content={this.state.content || this.props.QueryGetArticle.getArticle.content} onChange={this.editContent}/>
+					<MarkdownEditor title='Article Content' content={this.state.content || this.props.QueryGetArticle.getArticle.content} onChange={this.editContent}/>
 			</div>
 			);
 		}
@@ -163,9 +163,12 @@ class InstructionArticleProfile extends React.Component {
 					</div>
 				: null }
 
-				<h4><b>
-					<EditableText value={this.state.titleText} onChange={this.editTitle} onConfirm={this.confirmTitle}/>
-				</b></h4>
+				<h4>
+					Title:&nbsp;
+					<b>
+						<EditableText value={this.state.titleText} onChange={this.editTitle} onConfirm={this.confirmTitle}/>
+					</b>
+				</h4>
 				
 				{content}
 

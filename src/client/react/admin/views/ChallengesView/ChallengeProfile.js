@@ -299,12 +299,9 @@ class ChallengeProfile extends React.Component {
 								</tbody>
 							</table>
 							<div className='content'>
-								<div className='pt-callout pt-intent-primary pt-icon-info-sign'>
-									The information below is presented to users if they have access to the challenge.
-								</div>
 								<div className='instruction-panel markdown-preview'>
 									{ loading ? <div className='pt-text-muted' style={{marginTop:'1rem'}}>Loading description content...</div> :
-										<MarkdownEditor content={this.state.description} onChange={(e)=>{this.handleChange('description')(e.target.value)}}/>
+										<MarkdownEditor title='Challenge Description' content={this.state.description} onChange={(e)=>{this.handleChange('description')(e.target.value)}}/>
 									}
 								</div>
 							</div>

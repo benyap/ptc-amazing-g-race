@@ -136,7 +136,7 @@ class StoryCreate extends React.Component {
 						</div>
 						
 						<div className='instruction-panel markdown-preview'>
-							<MarkdownEditor content={this.state.content} onChange={this.editValue('content')} disabled={this.state.createStoryLoading}/>
+							<MarkdownEditor title='Post content' content={this.state.content} onChange={this.editValue('content')} disabled={this.state.createStoryLoading}/>
 						</div>
 						
 					</div>

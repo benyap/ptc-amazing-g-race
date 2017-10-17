@@ -188,7 +188,7 @@ class ChallengeItemProfile extends React.Component {
 					</tbody>
 				</table>
 				<div className='instruction-panel markdown-preview'>
-					<MarkdownEditor content={this.state.description} onChange={this.handleDescriptionChange}/>
+					<MarkdownEditor title='Item Description' content={this.state.description} onChange={this.handleDescriptionChange}/>
 				</div>
 
 				{/* Confirm close dialog */}
