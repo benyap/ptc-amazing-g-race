@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
+import { Link } from 'react-router-dom';
 import { getUserByEmail } from '../../../../graphql/user';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import TeamPointsPanel from './TeamPointsPanel';
@@ -58,6 +59,29 @@ class Home extends React.Component {
 			<main id='dashboard-home' className='dashboard'>
 				<div className='content'>
 					{content}
+
+					<h4>
+						See your challenges
+					</h4>
+					<p>
+						Go to the challenges page to see how you can earn points!
+						Every time you submit something, you do it on behalf of your team.
+						Make sure everyone is happy before submitting a response!
+					</p>
+					<Link to='/dashboard/challenges' className='pt-button pt-minimal pt-icon-flag pt-fill pt-small pt-intent-primary' style={{marginBottom:'1rem'}}>
+						Take me there!
+					</Link>
+
+					<h4>
+						Check out the newsfeed!
+					</h4>
+					<p>
+						Everyone in the Amazing GRace has access to the newsfeed! 
+						See what's new, or post some news of your own!
+					</p>
+					<Link to='/dashboard/feed' className='pt-button pt-minimal pt-fill pt-small pt-icon-feed pt-intent-primary' style={{marginBottom:'1rem'}}>
+						Show me!
+					</Link>
 				</div>
 			</main>
 		);
