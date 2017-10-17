@@ -41,6 +41,22 @@ const createStory = {
 }
 
 
+const createUserStory = {
+	type: types.confirmType,
+	description: 'Create a user story on the newsfeed (basic)',
+	args: {
+		content: {
+			name: 'content',
+			description: 'The content in the story',
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.storyResolver.createUserStory(root, params, ctx, options);
+	}
+}
+
+
 const editStory = {
 	type: types.confirmType,
 	description: 'Edit a story',
@@ -134,6 +150,7 @@ const setStoryLike = {
 
 export default {
 	createStory,
+	createUserStory,
 	editStory,
 	deleteStory,
 	setStoryPublished,

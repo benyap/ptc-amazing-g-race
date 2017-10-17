@@ -13,6 +13,10 @@ const createStory = async function(root, params, ctx, options) {
 	return database.story.createStory(ctx.user, params.type, params.content, params.iconName, params.intent);
 }
 
+const createUserStory = async function(root, params, ctx, options) {
+	return database.story.createUserStory(ctx.user, params.content);
+}
+
 const editStory = async function(root, params, ctx, options) {
 	return database.story.editStory(ctx.user, params.storyId, params.property, params.value);
 }
@@ -34,6 +38,7 @@ export default {
 	getStories,
 	getAllStories,
 	createStory,
+	createUserStory,
 	editStory,
 	deleteStory,
 	setStoryPublished,
