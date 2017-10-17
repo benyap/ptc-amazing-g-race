@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
-import { connect } from 'react-redux';
 import * as GameState from './gameStates';
 import State from './State';
 import '../../../components/LoadingSpinner';
@@ -22,7 +21,6 @@ const QueryRaceStateOptions = {
 }
 
 @graphql(getPublicSetting('value'), QueryRaceStateOptions)
-@connect()
 @autobind
 class GameStateView extends React.Component {
 	static propTypes = {
