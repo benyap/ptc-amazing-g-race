@@ -42,7 +42,7 @@ class LoginPage extends React.Component {
 				query: 
 				`mutation AdminLogin($email: String!, $password: String!) {
 					adminLogin(email: $email, password: $password) {
-						ok message access_token refresh_token
+						ok username message access_token refresh_token
 					}
 				}`
 			}

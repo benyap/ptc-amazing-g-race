@@ -54,6 +54,11 @@ class Home extends React.Component {
 								Register now
 							</Button>
 						</Link>
+						<Link to='/pay'>
+							<Button className='pt-large pt-fill pt-minimal' intent={Intent.PRIMARY}>
+								How do I pay?
+							</Button>
+						</Link>
 						{link}
 					</div>
 				</ScrollAnimation>

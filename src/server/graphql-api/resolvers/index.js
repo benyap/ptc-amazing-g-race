@@ -6,6 +6,7 @@ import articleResolver from './articleResolver';
 import uploadResolver from './uploadResolver';
 import challengeResolver from './challengeResolver';
 import responseResolver from './responseResolver';
+import storyResolver from './storyResolver';
 
 
 export default {
@@ -16,5 +17,6 @@ export default {
 	articleResolver,
 	uploadResolver,
 	challengeResolver,
-	responseResolver
+	responseResolver,
+	storyResolver
 };

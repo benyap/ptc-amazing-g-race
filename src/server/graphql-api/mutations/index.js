@@ -6,6 +6,7 @@ import articleMutation from './articleMutation';
 import uploadMutation from './uploadMutation';
 import challengeMutation from './challengeMutation';
 import responseMutation from './responseMutation';
+import storyMutation from './storyMutation';
 
 
 export default {
@@ -16,5 +17,6 @@ export default {
 	...articleMutation,
 	...uploadMutation,
 	...challengeMutation,
-	...responseMutation
+	...responseMutation,
+	...storyMutation
 };

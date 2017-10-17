@@ -44,6 +44,7 @@ class Login extends React.Component {
 				`mutation Login($email: String!, $password: String!) {
 					login(email: $email, password: $password) {
 						ok
+						username
 						message
 						access_token
 						refresh_token

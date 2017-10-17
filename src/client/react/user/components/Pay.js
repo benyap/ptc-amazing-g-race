@@ -16,6 +16,7 @@ const mapStateToProps = (state, ownProps) => {
 	return { 
 		authenticated: state.auth.login.authenticated,
 		email: state.auth.login.email,
+		username: state.auth.login.username,
 		refresh: state.auth.tokens.refresh
 	}
 }
@@ -44,7 +45,7 @@ const QueryPaymentPriceOptions = {
 
 @connect(mapStateToProps)
 @compose(
-	graphql(getUserByEmail('firstname lastname username'), QueryMeOptions),
+	graphql(getUserByEmail('_id firstname lastname'), QueryMeOptions),
 	graphql(getPublicSetting('value'), QueryPaymentPriceOptions),
 	graphql(getProtectedSetting('value'), PaymentQueryOptions('QueryBsb', 'payment_bsb')),
 	graphql(getProtectedSetting('value'), PaymentQueryOptions('QueryAcc', 'payment_acc'))
@@ -84,12 +85,8 @@ class Pay extends React.Component {
 			);
 		}
 
-
 		if (this.props.authenticated) {
-			let reference = <Spinner className='pt-small'/>;
-			if (!this.props.QueryMe.loading) {
-				reference = `AGR-${this.props.QueryMe.getUserByEmail.username}`;
-			}
+			const reference = `AGR-${this.props.username}`;
 
 			payment = (
 				<div className='payment-details'>

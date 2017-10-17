@@ -107,7 +107,7 @@ class AddChallenge extends React.Component {
 						</div>
 					</div>
 				</Dialog>
-			</div>	
+			</div>
 		);
 	}
 }

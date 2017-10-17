@@ -15,6 +15,7 @@ import S3ExplorerView from '../../views/S3ExplorerView';
 import ChallengesView from '../../views/ChallengesView';
 import LogsView from '../../views/LogsView';
 import ResponsesView from '../../views/ResponsesView';
+import FeedView from '../../views/FeedView';
 import NotificationToaster from '../../../components/NotificationToaster';
 import UncheckedResponseToaster from '../../../components/UncheckedResponseToaster';
 import { getResponses } from '../../../../graphql/response';
@@ -31,7 +32,8 @@ const VIEWS = [
 	'state', 
 	'server',
 	'logs',
-	'responses'
+	'responses',
+	'feed'
 ];
 
 const QueryGetResponsesOptions = {
@@ -162,6 +164,7 @@ class AdminDashboard extends React.Component {
 				<Tab2 id={VIEWS[1]} title='Teams' panel={<TeamsView shouldRefresh={this.state.selectedTabId===VIEWS[1]} item={item}/>}/>
 				<Tab2 id={VIEWS[2]} title='Challenges' panel={<ChallengesView shouldRefresh={this.state.selectedTabId===VIEWS[2]} item={item}/>}/>
 				<Tab2 id={VIEWS[8]} title='Responses' panel={<ResponsesView shouldRefresh={this.state.selectedTabId===VIEWS[8]} item={item}/>}/>
+				<Tab2 id={VIEWS[9]} title='Newsfeed' panel={<FeedView shouldRefresh={this.state.selectedTabId===VIEWS[9]} item={item}/>}/>
 				<Tab2 id={VIEWS[4]} title='Instructions' panel={<InstructionArticlesView shouldRefresh={this.state.selectedTabId===VIEWS[4]} item={item}/>}/>
 				<Tab2 id={VIEWS[3]} title='Uploads' panel={<S3ExplorerView shouldRefresh={this.state.selectedTabId===VIEWS[3]} item={item}/>}/>
 				<Tab2 id={VIEWS[5]} title='Game State' panel={<GameStateView shouldRefresh={this.state.selectedTabId===VIEWS[5]} item={item}/>}/>

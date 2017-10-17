@@ -29,7 +29,7 @@ class Contacts extends React.Component {
 	render() {
 		const { QueryTelEventCoordinator, QueryTelFirstAidOfficer, QueryTelWebsiteAdmin } = this.props;
 		return (
-			<main id='help' className='dashboard'>
+			<main id='contacts' className='dashboard'>
 				<div className='content'>
 					<h2>Important contacts</h2>
 

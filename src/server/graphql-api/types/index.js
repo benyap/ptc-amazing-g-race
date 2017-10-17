@@ -11,6 +11,9 @@ import s3ObjectType from './s3ObjectType';
 import challengeType from './challengeType';
 import responseType from './responseType';
 import uploadDataType from './uploadDataType';
+import storyType from './storyType';
+import storyTypeType from './storyTypeType';
+import storyIntentType from './storyIntentType';
 
 
 export default {
@@ -26,5 +29,8 @@ export default {
 	s3ObjectType,
 	challengeType,
 	responseType,
-	uploadDataType
+	uploadDataType,
+	storyType,
+	storyTypeType,
+	storyIntentType
 };

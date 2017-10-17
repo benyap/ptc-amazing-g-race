@@ -1,0 +1,13 @@
+.story {
+	&.pt-callout {
+		border-radius: 0.5rem;
+		padding: 0.3rem; 
+		margin-bottom: 0.5rem;
+	}
+
+	.instruction-panel {
+		.markdown.output.markdown-content {
+			margin-bottom: 0;
+		}
+	}
+}
