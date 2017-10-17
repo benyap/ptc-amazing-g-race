@@ -4,7 +4,7 @@ import MediaQuery from 'react-responsive';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
-import { Tab2, Tabs2, Intent } from '@blueprintjs/core';
+import { Tab2, Tabs2, Intent, Icon } from '@blueprintjs/core';
 import bp from '../../../../../../lib/react/components/utility/bp';
 import UsersView from '../../views/UsersView';
 import TeamsView from '../../views/TeamsView';
@@ -160,16 +160,37 @@ class AdminDashboard extends React.Component {
 		return (
 			<Tabs2 id='dashboard' className={vertical?'':'mobile-tabs'} onChange={this.handleTabChange} 
 				selectedTabId={this.state.selectedTabId} vertical={vertical}>
-				<Tab2 id={VIEWS[0]} title='Users' panel={<UsersView shouldRefresh={this.state.selectedTabId===VIEWS[0]} item={item}/>}/>
-				<Tab2 id={VIEWS[1]} title='Teams' panel={<TeamsView shouldRefresh={this.state.selectedTabId===VIEWS[1]} item={item}/>}/>
-				<Tab2 id={VIEWS[2]} title='Challenges' panel={<ChallengesView shouldRefresh={this.state.selectedTabId===VIEWS[2]} item={item}/>}/>
-				<Tab2 id={VIEWS[8]} title='Responses' panel={<ResponsesView shouldRefresh={this.state.selectedTabId===VIEWS[8]} item={item}/>}/>
-				<Tab2 id={VIEWS[9]} title='Newsfeed' panel={<FeedView shouldRefresh={this.state.selectedTabId===VIEWS[9]} item={item}/>}/>
-				<Tab2 id={VIEWS[4]} title='Instructions' panel={<InstructionArticlesView shouldRefresh={this.state.selectedTabId===VIEWS[4]} item={item}/>}/>
-				<Tab2 id={VIEWS[3]} title='Uploads' panel={<S3ExplorerView shouldRefresh={this.state.selectedTabId===VIEWS[3]} item={item}/>}/>
-				<Tab2 id={VIEWS[5]} title='Game State' panel={<GameStateView shouldRefresh={this.state.selectedTabId===VIEWS[5]} item={item}/>}/>
-				<Tab2 id={VIEWS[6]} title='Settings' panel={<ServerSettingsView shouldRefresh={this.state.selectedTabId===VIEWS[6]} item={item}/>}/>
-				<Tab2 id={VIEWS[7]} title='Logs' panel={<LogsView shouldRefresh={this.state.selectedTabId===VIEWS[7]} item={item}/>}/>
+
+				<Tab2 id={VIEWS[0]} title={<span><Icon iconName='person'/>&nbsp;Users</span>}
+					panel={<UsersView shouldRefresh={this.state.selectedTabId===VIEWS[0]} item={item}/>}/>
+					
+				<Tab2 id={VIEWS[1]} title={<span><Icon iconName='people'/>&nbsp;Teams</span>}
+					panel={<TeamsView shouldRefresh={this.state.selectedTabId===VIEWS[1]} item={item}/>}/>
+
+				<Tab2 id={VIEWS[2]} title={<span><Icon iconName='flag'/>&nbsp;Challenges</span>}
+					panel={<ChallengesView shouldRefresh={this.state.selectedTabId===VIEWS[2]} item={item}/>}/>
+
+				<Tab2 id={VIEWS[8]} title={<span><Icon iconName='inbox'/>&nbsp;Responses</span>}
+					panel={<ResponsesView shouldRefresh={this.state.selectedTabId===VIEWS[8]} item={item}/>}/>
+
+				<Tab2 id={VIEWS[9]} title={<span><Icon iconName='feed'/>&nbsp;Newsfeed</span>}
+					panel={<FeedView shouldRefresh={this.state.selectedTabId===VIEWS[9]} item={item}/>}/>
+
+				<Tab2 id={VIEWS[4]} title={<span><Icon iconName='clipboard'/>&nbsp;Instructions</span>}
+					panel={<InstructionArticlesView shouldRefresh={this.state.selectedTabId===VIEWS[4]} item={item}/>}/>
+
+				<Tab2 id={VIEWS[3]} title={<span><Icon iconName='cloud-upload'/>&nbsp;Uploads</span>}
+					panel={<S3ExplorerView shouldRefresh={this.state.selectedTabId===VIEWS[3]} item={item}/>}/>
+
+				<Tab2 id={VIEWS[5]} title={<span><Icon iconName='property'/>&nbsp;Game State</span>}
+					panel={<GameStateView shouldRefresh={this.state.selectedTabId===VIEWS[5]} item={item}/>}/>
+
+				<Tab2 id={VIEWS[6]} title={<span><Icon iconName='cog'/>&nbsp;Settings</span>}
+					panel={<ServerSettingsView shouldRefresh={this.state.selectedTabId===VIEWS[6]} item={item}/>}/>
+
+				<Tab2 id={VIEWS[7]} title={<span><Icon iconName='application'/>&nbsp;Logs</span>}
+					panel={<LogsView shouldRefresh={this.state.selectedTabId===VIEWS[7]} item={item}/>}/>
+
 			</Tabs2>
 		);
 	}
