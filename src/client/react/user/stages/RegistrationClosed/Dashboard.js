@@ -43,7 +43,9 @@ class Dashboard extends React.Component {
 				<Base/>
 				<HelpMenu/>
 				<div style={this.helpStyle} className='pt-callout pt-icon-info-sign'>
-					What you're seeing on this page is a template of how the app will look like on game day.
+					Welcome to the Amazing GRace app! 
+					This is what it will look like during the race, 
+					so make sure you know how to get around.
 				</div>
 				<Switch>
 					<Route exact path={`${url}`} component={Home}/>
