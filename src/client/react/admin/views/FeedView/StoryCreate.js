@@ -90,7 +90,7 @@ class StoryCreate extends React.Component {
 						<label className='pt-label'>
 							Story type: 
 							<div className='pt-select'>
-								<select onChange={this.editValue('type')}>
+								<select onChange={this.editValue('type')} disabled={this.state.createStoryLoading}>
 									<option value='custom'>Custom</option>
 									<option value='user'>User</option>
 									<option value='useHint'>Use hint</option>
@@ -104,7 +104,7 @@ class StoryCreate extends React.Component {
 						<label className='pt-label'>
 							Intent: 
 							<div className='pt-select'>
-								<select onChange={this.editValue('intent')}>
+								<select onChange={this.editValue('intent')} disabled={this.state.createStoryLoading}>
 									<option value='none'>None (white)</option>
 									<option value='primary'>Primary (blue)</option>
 									<option value='success'>Success (green)</option>
@@ -117,7 +117,7 @@ class StoryCreate extends React.Component {
 						<label className='pt-label'>
 							Post as: 
 							<div className='pt-select'>
-								<select onChange={this.editValue('who')}>
+								<select onChange={this.editValue('who')} disabled={this.state.createStoryLoading}>
 									<option value='me'>Me</option>
 									<option value='admins'>Planning Team</option>
 									<option value='generated'>Auto-generated</option>
@@ -130,12 +130,13 @@ class StoryCreate extends React.Component {
 								<Icon iconName={this.state.iconName} iconSize={20}/>
 							</div>
 							<div style={{flexGrow:'1',marginLeft:'1rem'}}>
-								<FormInput id='iconName' value={this.state.iconName} onChange={this.editValue('iconName')} label='Icon name (optional)' helperText='Preview the icon on the left if it is a valid icon name'/>
+								<FormInput id='iconName' value={this.state.iconName} onChange={this.editValue('iconName')} disabled={this.state.createStoryLoading}
+									label='Icon name (optional)' helperText='Preview the icon on the left if it is a valid icon name'/>
 							</div>
 						</div>
 						
 						<div className='instruction-panel markdown-preview'>
-							<MarkdownEditor content={this.state.content} onChange={this.editValue('content')}/>
+							<MarkdownEditor content={this.state.content} onChange={this.editValue('content')} disabled={this.state.createStoryLoading}/>
 						</div>
 						
 					</div>
