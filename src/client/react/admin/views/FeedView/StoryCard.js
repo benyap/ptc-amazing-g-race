@@ -7,6 +7,7 @@ import MarkdownRenderer from '../../../../../../lib/react/components/MarkdownRen
 import NotificationToaster from '../../../components/NotificationToaster';
 import Story from '../../../components/Story';
 import { setStoryPublished } from '../../../../graphql/story';
+import StoryDelete from './StoryDelete';
 
 
 @graphql(setStoryPublished('ok'), { name: 'MutationSetStoryPublished' })
@@ -29,7 +30,8 @@ class StoryCard extends React.Component {
 	}
 
 	state = {
-		publishing: false
+		publishing: false,
+		deleting: false
 	}
 
 	openProfile(e) {
@@ -39,6 +41,10 @@ class StoryCard extends React.Component {
 	_setPublishing(publishing) {
 		this.setState({publishing});
 		this.props.setPublishing(publishing);
+	}
+
+	setDeleting(deleting) {
+		this.setState({ deleting });
 	}
 
 	async togglePublish() {
@@ -85,9 +91,9 @@ class StoryCard extends React.Component {
 						{published ? 'Published' : 'Not published'}
 					</div>
 					<div>
-						<Button className='pt-minimal pt-small pt-intent-primary' text={publishLabel} disabled={this.props.publishing} onClick={this.togglePublish}/>
-						<Button className='pt-minimal pt-small pt-intent-primary' text='Edit'/>
-						<Button className='pt-minimal pt-small pt-intent-danger' text='Delete'/>
+						<Button className='pt-minimal pt-small pt-intent-primary' text={publishLabel} disabled={this.props.publishing || this.state.deleting} onClick={this.togglePublish}/>
+						<Button className='pt-minimal pt-small pt-intent-primary' text='Edit' disabled={this.state.deleting}/>
+						<StoryDelete storyId={this.props.story._id} refetch={this.props.refetch} setDeleting={this.setDeleting}/>
 					</div>
 				</div>
 

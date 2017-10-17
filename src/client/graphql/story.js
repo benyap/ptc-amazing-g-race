@@ -33,8 +33,17 @@ const setStoryPublished = (params) => {
 }
 
 
+const deleteStory = (params) => {
+	return gql`
+	mutation DeleteStory($storyId:ID!){
+		deleteStory(storyId:$storyId){ ${params} }
+	}`;
+}
+
+
 export {
 	getAllStories,
 	getStories,
-	setStoryPublished
+	setStoryPublished,
+	deleteStory
 };
