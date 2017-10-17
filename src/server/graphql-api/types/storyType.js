@@ -29,13 +29,17 @@ const storyType = new GraphQLObjectType({
 			type: new GraphQLNonNull(storyTypeType),
 			description: 'The type of story'
 		},
-		date: {
+		createDate: {
 			type: new GraphQLNonNull(GraphQLDateTime),
 			description: 'The date the story was created'
 		},
 		createdBy: {
 			type: GraphQLString,
 			description: 'The user who created the story. This can be null if it was automatically generated.'
+		},
+		publishDate: {
+			type: GraphQLDateTime,
+			description: 'The date the story was published'
 		},
 		published: {
 			type: new GraphQLNonNull(GraphQLBoolean),

@@ -6,7 +6,7 @@ const getStories = async function(root, params, ctx, options) {
 }
 
 const getAllStories = async function(root, params, ctx, options) {
-	return database.story.getAllStories(params.key, params.storyType, params.skip, params.limit);
+	return database.story.getAllStories(ctx.user, params.storyType, params.skip, params.limit);
 }
 
 const createStory = async function(root, params, ctx, options) {
@@ -22,7 +22,7 @@ const deleteStory = async function(root, params, ctx, options) {
 }
 
 const setStoryPublished = async function(root, params, ctx, options) {
-	return database.story.setStoryPublished(ctx.user, params.storyId, params.published);
+	return database.story.setStoryPublished(ctx.user, params.storyId, params.publish);
 }
 
 const setStoryLike = async function(root, params, ctx, options) {

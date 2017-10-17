@@ -99,8 +99,8 @@ const setStoryPublished = {
 			description: 'The id of story to modify',
 			type: new GraphQLNonNull(GraphQLID)
 		},
-		published: {
-			name: 'published',
+		publish: {
+			name: 'publish',
 			description: 'True if the story should be published',
 			type: new GraphQLNonNull(GraphQLBoolean)
 		}
