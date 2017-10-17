@@ -29,7 +29,7 @@ class Story extends React.Component {
 		const { _id, type, createdBy, publishDate, iconName, intent, content, likes } = this.props.story;
 
 		return (
-			<div className={`pt-callout pt-intent-${intent} pt-icon-${iconName} story`}>
+			<div className={`pt-callout pt-intent-${intent} ${iconName?`pt-icon-${iconName}`:``} story`}>
 				<div className='instruction-panel'>
 					<MarkdownRenderer className='markdown-content' src={content}/>
 					<div style={{marginTop:'0.2rem',display:'flex',flexDirection:'row-reverse'}}>
