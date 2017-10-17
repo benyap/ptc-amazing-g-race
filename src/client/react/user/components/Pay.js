@@ -86,7 +86,8 @@ class Pay extends React.Component {
 
 
 		if (this.props.authenticated) {
-			let reference = <Spinner className='pt-small'/>;
+			let reference;
+			
 			if (!this.props.QueryMe.loading) {
 				reference = `AGR-${this.props.QueryMe.getUserByEmail.username}`;
 			}
@@ -98,7 +99,7 @@ class Pay extends React.Component {
 						<br/>
 						ACC: {this.props.QueryAcc.loading ? <span style={{color:'gray'}}>Loading...</span> : this.props.QueryAcc.getProtectedSetting.value}
 					</p>
-						Please use <span className='highlight'>{reference.substring(0, 18)}</span> as the payee reference.
+						Please use <span className='highlight'>{reference ? reference.substring(0, 18) : <Spinner className='pt-small'/>}</span> as the payee reference.
 				</div>
 			);
 		}
