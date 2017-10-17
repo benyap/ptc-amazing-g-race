@@ -23,7 +23,7 @@ class InstructionCollapse extends React.Component {
 
 		return (
 			<div className='instruction-collapse'>
-				<Button className='pt-fill ' text={title} 
+				<Button className='pt-fill' text={title} intent={Intent.PRIMARY}
 					iconName={this.state.isOpen?'chevron-down':'chevron-right'} onClick={this.toggleOpen}/>
 				<Collapse isOpen={this.state.isOpen}>
 					<div className='instruction-panel'>
