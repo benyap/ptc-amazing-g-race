@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { withRouter, Link, Redirect } from 'react-router-dom';
 import { Spinner, Button, Intent } from '@blueprintjs/core';
+import LoadingSpinner from '../../../../components/LoadingSpinner';
 import { getUserByEmail } from '../../../../../graphql/user';
 import { logout } from '../../../../../actions/authActions';
 import axios from 'axios';
@@ -27,12 +28,17 @@ const mapStateToProps = (state, ownProps) => {
 
 const QueryMeOptions = {
 	name: 'QueryMe',
-	options: ({email}) => ({ variables: {email} }),
-	skip: (ownProps) => !ownProps.authenticated
+	skip: (ownProps) => !ownProps.authenticated,
+	options: (props) => { 
+		return { 
+			variables: { email: props.email },
+			fetchPolicy: 'cache-and-network'
+		}
+	}
 }
 
 @connect(mapStateToProps)
-@graphql(getUserByEmail('firstname lastname username'), QueryMeOptions)
+@graphql(getUserByEmail('_id firstname lastname username raceDetails{friends}'), QueryMeOptions)
 @withRouter
 @autobind
 class Dashboard extends React.Component {
@@ -56,18 +62,34 @@ class Dashboard extends React.Component {
 			return <Redirect to='/login'/>
 		}
 		else {
-			let content = (
-				<div className='dashboard loading'>
-					<Spinner className='pt-large'/>
-				</div>
-			);
+			const { getUserByEmail, loading } = this.props.QueryMe;
+			let content, friends;
 
-			if (!this.props.QueryMe.loading) {
-				const { firstname } = this.props.QueryMe.getUserByEmail;
+			if (getUserByEmail) {
+				if (getUserByEmail.raceDetails.friends) {
+					friends = (
+						<div className='pt-callout pt-intent-primary pt-icon-info-sign'>
+							<h5>Remember to invite your friends!</h5>
+							By the way, you put down these people as your friends: <em>{getUserByEmail.raceDetails.friends}</em>.
+							Invite them and tell them to put your name down as their friend for a chance to win movie tickets!
+						</div>
+					);
+				}
+				else {
+					friends = (
+						<div className='pt-callout pt-intent-primary pt-icon-info-sign'>
+							<h5>Remember to invite your friends!</h5>
+							By the way, if you put people down as your friends, 
+							and they put your name down as their friends when they sign up,
+							you have a chance of winning some movie tickets!
+							You haven't put any friends down - let Ben Yap know and he can fix this for you.
+						</div>
+					);
+				}
 
 				content = (
-					<div className='dashboard'>
-						<h2>Hello, {firstname}!</h2>
+					<div>
+						<h2>Hello, {getUserByEmail.firstname}!</h2>
 						<p>
 							Welcome to your dashboard.
 							This area will be updated with more information as the event approaches,
@@ -77,18 +99,26 @@ class Dashboard extends React.Component {
 						<p>
 							If you haven't paid yet, please go <Link to='/pay'>here</Link> to see payment details.
 						</p>
-						<Button text='Log out' style={{marginTop: '2rem'}} intent={Intent.WARNING} 
+	
+						{friends}
+	
+						<Button text='Log out' style={{marginTop: '1rem'}} intent={Intent.WARNING} 
 							onClick={this.logout} loading={this.state.logoutLoading}/>
 					</div>
 				);
+			}
+			else if (loading) {
+				content = <LoadingSpinner/>;
 			}
 			
 			return (
 				<main id='dashboard'>
 					<LoginRefresher refreshToken={this.props.refresh}/>
 					<Title notAnimated/>
-					<ScrollAnimation animateOnce animateIn='zoomIn' offset={0} duration={0.5}>
-						{content}
+					<ScrollAnimation animateOnce animateIn='zoomIn' offset={-500} duration={0.5}>
+						<div className='dashboard pt-dark'>
+							{content}
+						</div>
 					</ScrollAnimation>
 				</main>
 			);
