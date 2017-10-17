@@ -11,7 +11,8 @@ const storyTypeType = new GraphQLEnumType({
 		challengeRespond: { value: 'challengeRespond' },
 		challengeCheck: { value: 'challengeCheck' },
 		useHint: { value: 'useHint' },
-		custom: { value: 'custom' }
+		custom: { value: 'custom' },
+		user: { value: 'user' }
 	}
 });
 

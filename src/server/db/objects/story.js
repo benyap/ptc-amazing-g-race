@@ -8,7 +8,8 @@ const STORY_TYPES = [
 	'challengeRespond',
 	'challengeCheck',
 	'useHint',
-	'custom'
+	'custom',
+	'user'
 ];
 
 
@@ -102,7 +103,7 @@ const _validateStoryType = function(storyType) {
  * @param {String?} iconName 
  * @param {String?} intent 
  */
-const createStory = async function(user, type, content, iconName = 'blank', intent = 'none') {
+const createStory = async function(user, type, content, iconName = '', intent = 'none') {
 	if (!user) return new Error('No user logged in');
 	
 	const authorized = await permission.checkPermission(user, ['admin:modify-feed']);
@@ -148,6 +149,56 @@ const createStory = async function(user, type, content, iconName = 'blank', inte
 			content,
 			intent
 		})
+	};
+	db.collection('actions').insert(action);
+
+	return {
+		ok: true,
+		action: action
+	}
+}
+
+
+/**
+ * Create a user (basic) story
+ * @param {*} user 
+ * @param {String} content 
+ */
+const createUserStory = async function(user, content) {
+	if (!user) return new Error('No user logged in');
+	
+	const authorized = await permission.checkPermission(user, ['user:view-feed']);
+	if (authorized !== true) return authorized;
+	
+	// Validate paramters
+	if (!content) return new Error('Story content is required');
+
+	const db = await connect();
+	
+	// Create story object
+	const story = {
+		_id: new Mongo.ObjectID(),
+		type: 'user',
+		createDate: new Date(),
+		createdBy: user.username,
+		publishDate: null,
+		published: false,
+		iconName: '',
+		content,
+		intent: 'none',
+		edited: false,
+		likes: []
+	}
+	db.collection('stories').insert(story);
+
+	// Log action
+	const action = {
+		action: 'Create user story',
+		target: story._id,
+		targetCollection: 'stories',
+		who: user.username,
+		date: new Date(),
+		infoJSONString: JSON.stringify({ content })
 	};
 	db.collection('actions').insert(action);
 
@@ -379,6 +430,7 @@ export default {
 	getStories,
 	getAllStories,
 	createStory,
+	createUserStory,
 	editStory,
 	deleteStory,
 	setStoryPublished,

@@ -90,6 +90,7 @@ class StoryCreate extends React.Component {
 							<div className='pt-select'>
 								<select onChange={this.editValue('type')}>
 									<option value='custom'>Custom</option>
+									<option value='user'>User</option>
 									<option value='useHint'>Use hint</option>
 									<option value='challengeUnlock'>Challenge unlock</option>
 									<option value='challengeRespond'>Challenge response</option>
