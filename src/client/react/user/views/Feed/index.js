@@ -72,7 +72,11 @@ class Feed extends React.Component {
 					{ this.state.showHelp ? 
 						<div className='pt-callout pt-icon-help pt-intent-primary'>
 							See regular updates on what the other teams have been up to... 
-							so make sure you keep up or you don't stand a chance!
+							make sure you keep up or you don't stand a chance!
+							<br/>
+							<br/>
+							Or, you could say a few words and send the other teams some love with a word of encourgement.
+							Double tap to like!
 						</div>
 						: null
 					}
