@@ -4,7 +4,7 @@ import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
 import * as GameState from './gameStates';
 import State from './State';
-import '../../../components/LoadingSpinner';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 import ViewError from '../../components/ViewError';
 import RefreshBar from '../../components/RefreshBar';
 import { getPublicSetting } from '../../../../graphql/setting';
