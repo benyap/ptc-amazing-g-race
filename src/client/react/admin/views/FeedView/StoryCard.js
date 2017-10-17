@@ -20,7 +20,7 @@ class StoryCard extends React.Component {
 			type: PropTypes.string.isRequired,
 			createdBy: PropTypes.string.isRequired,
 			published: PropTypes.bool.isRequired,
-			publishDate: PropTypes.bool,
+			publishDate: PropTypes.string,
 			iconName: PropTypes.string.isRequired,
 			intent: PropTypes.string.isRequired,
 			content: PropTypes.string.isRequired,
