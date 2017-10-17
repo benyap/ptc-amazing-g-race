@@ -29,19 +29,18 @@ class TeamResponsesPanel extends React.Component {
 		super(props);
 		const { getTeamResponses } = props.QueryGetTeamResponses;
 
+		this.state = {
+			loaded: false,
+			pending: null,
+			valid: null, 
+			invalid: null,
+			retry: null
+		}
+		
 		// Initialize inital state
 		if (props.user.teamId) {
 			if (getTeamResponses) {
 				this.state = this._countResponses(getTeamResponses);
-			}
-			else {
-				this.state = {
-					loaded: false,
-					pending: null,
-					valid: null, 
-					invalid: null,
-					retry: null
-				}
 			}
 		}
 	}
