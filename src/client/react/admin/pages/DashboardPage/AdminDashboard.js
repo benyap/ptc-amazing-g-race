@@ -130,7 +130,7 @@ class AdminDashboard extends React.Component {
 			}
 			else if (getResponses.length > 0) {
 				UncheckedResponseToaster.show({
-					timeout: 20000,						
+					timeout: 20000,
 					intent: Intent.PRIMARY,
 					message: `There ${getResponses.length===1?'is':'are'} ${getResponses.length} unchecked ${getResponses.length===1?'response':'responses'}.`,
 					action: {
