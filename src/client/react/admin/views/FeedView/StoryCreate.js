@@ -26,6 +26,7 @@ class StoryCreate extends React.Component {
 		intent: 'none',
 		iconName: '',
 		content: '',
+		who: 'me'
 	}
 
 	toggleCreateStory() {
@@ -53,6 +54,7 @@ class StoryCreate extends React.Component {
 				variables: {
 					type: this.state.type,
 					intent: this.state.intent,
+					who: this.state.who,
 					iconName: this.state.iconName,
 					content: this.state.content
 				}
@@ -112,6 +114,17 @@ class StoryCreate extends React.Component {
 							</div>
 						</label>
 						
+						<label className='pt-label'>
+							Post as: 
+							<div className='pt-select'>
+								<select onChange={this.editValue('who')}>
+									<option value='me'>Me</option>
+									<option value='admins'>Planning Team</option>
+									<option value='generated'>Auto-generated</option>
+								</select>
+							</div>
+						</label>
+
 						<div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
 							<div style={{width:'40px',height:'40px',padding:'10px',textAlign:'center',border:'solid 1px slategray',borderRadius:'0.3rem'}}>
 								<Icon iconName={this.state.iconName} iconSize={20}/>
