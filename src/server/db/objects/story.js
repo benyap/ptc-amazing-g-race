@@ -47,15 +47,17 @@ const getAllStories = async function(user, storyType, skip = 0, limit = 0) {
 const _getStories = async function(all, user, storyType, skip, limit) {
 	if (!user) return new Error('No user logged in');
 	
-	let authorized, findParams;
+	let authorized, findParams, sortParams;
 
 	if (all) {
 		authorized = await permission.checkPermission(user, ['admin:modify-feed']);
 		findParams = { };
+		sortParams = { createDate: -1 };
 	}
 	else {
 		authorized = await permission.checkPermission(user, ['user:view-feed']);
 		findParams = { published: true };
+		sortParams = { publishDate: -1 };
 	}
 
 	if (authorized !== true) return authorized;
@@ -71,7 +73,7 @@ const _getStories = async function(all, user, storyType, skip, limit) {
 	}
 
 	const db = await connect();
-	return await db.collection('stories').find(findParams).sort({publishDate:-1}).skip(skip).limit(limit).toArray();	
+	return await db.collection('stories').find(findParams).sort(sortParams).skip(skip).limit(limit).toArray();	
 }
 
 
