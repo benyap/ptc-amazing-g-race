@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
+import DateFormat from 'dateformat';
 import { Button, Intent } from '@blueprintjs/core';
 import { graphql } from 'react-apollo';
 import MarkdownRenderer from '../../../../../../lib/react/components/MarkdownRenderer';
@@ -19,6 +20,7 @@ class StoryCard extends React.Component {
 			type: PropTypes.string.isRequired,
 			createdBy: PropTypes.string.isRequired,
 			published: PropTypes.bool.isRequired,
+			publishDate: PropTypes.bool,
 			iconName: PropTypes.string.isRequired,
 			intent: PropTypes.string.isRequired,
 			content: PropTypes.string.isRequired,
@@ -68,7 +70,7 @@ class StoryCard extends React.Component {
 	}
 
 	render() {
-		const { _id, type, createdBy, published, iconName, intent, content, likes } = this.props.story;
+		const { _id, type, createdBy, published, publishDate, iconName, intent, content, likes } = this.props.story;
 		let publishLabel;
 
 		if (this.state.publishing) {
@@ -88,7 +90,7 @@ class StoryCard extends React.Component {
 
 				<div style={{marginTop:'0.2rem',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
 					<div className='pt-text-muted'>
-						{published ? 'Published' : 'Not published'}
+						{published ? 'Published' : 'Not published'} | {DateFormat(publishDate ? new Date(publishDate) : new Date(), 'mmm dd hh:MM TT')}
 					</div>
 					<div>
 						<Button className='pt-minimal pt-small pt-intent-primary' text={publishLabel} disabled={this.props.publishing || this.state.deleting} onClick={this.togglePublish}/>
