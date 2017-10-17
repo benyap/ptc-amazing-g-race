@@ -1,0 +1,23 @@
+#dashboard-feed {
+	.story-preview-container {
+		max-width: 20rem;
+	}
+
+	.story-list {
+		.pt-card.pt-interactive {
+			margin-bottom: 0.5rem;
+			padding: 0.8rem;
+			background-color: rgba(0,0,0,.8);
+
+			&:hover {
+				cursor: default;
+			}
+
+			&:active {
+				opacity: 1;
+			}
+		}
+
+		margin-bottom: 1rem;
+	}
+}

@@ -2,24 +2,108 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
-import '../../../components/LoadingSpinner';
+import { NonIdealState } from '@blueprintjs/core';
+import { getAllStories } from '../../../../graphql/story';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+import NotificationToaster from '../../../components/NotificationToaster';
 import ViewError from '../../components/ViewError';
 import RefreshBar from '../../components/RefreshBar';
+import StoryCard from './StoryCard';
+
+import '../../scss/views/_feed-view.scss';
 
 
+const GetAllStoriesParams = '_id type createdBy published iconName intent content likes';
+
+const GetAllStoriesOptions = {
+	name: 'QueryGetAllStories',
+	options: { 
+		fetchPolicy: 'cache-and-network',
+		variables: { skip: 0, limit: 50 }
+	}
+};
+
+@graphql(getAllStories(GetAllStoriesParams), GetAllStoriesOptions)
 @autobind
 class FeedView extends React.Component {
 	static propTypes = {
 		shouldRefresh: PropTypes.bool
 	}
 
+	state = {
+		skip: '0',
+		limit: '50',
+		refetching: false,
+		renderStory: null
+	}
+
+	componentDidMount() {
+		this._mounted = true;
+	}
+
+	componentWillUnmount() {
+		this._mounted = false;
+	}
+
+	renderProfile(story) {
+		this.setState({ renderStory: story });
+	}
+
+	closeProfile() {
+		this.setState({ viewProfile: null }, () => {
+			this.refetchStories();
+		});
+	}
+
+	async refetchStories() {
+		if (!this.state.viewProfile) {
+			if (this._mounted) this.setState({refetching: true});
+
+			try {
+				await this.props.QueryGetAllStories.refetch();
+				if (this._mounted) this.setState({refetching: false});
+			}
+			catch (err) {
+				NotificationToaster.show({
+					intent: Intent.DANGER,
+					message: err.toString()
+				});
+			}
+		}
+	}
+
 	render() {
+		const { loading, getAllStories } = this.props.QueryGetAllStories;
+		let content;
+
+		if (getAllStories) {
+			if (getAllStories.length) {
+				content = (
+					<div className='story-list pt-dark'>
+						{ getAllStories.map((story) => {
+							return <StoryCard key={story._id} story={story} renderProfile={this.renderProfile}/>;
+						})}
+						
+					</div>
+				);
+			}
+			else {
+				content = (
+					<div style={{margin:'3rem'}}>
+						<NonIdealState title='No stories' description={`How boring.`} visual='feed'/>
+					</div>
+				);
+			}
+		}
+		else if (loading) {
+			content = <LoadingSpinner/>;
+		}
 
 		return (
 			<div id='dashboard-feed' className='dashboard-tab'>
 				<h4>Newsfeed</h4>
-				{/* <RefreshBar query={} shouldRefresh={this.props.shouldRefresh}/> */}
-				
+				<RefreshBar query={this.props.QueryGetAllStories} shouldRefresh={this.props.shouldRefresh}/>
+				{content}
 			</div>
 		);
 	}
