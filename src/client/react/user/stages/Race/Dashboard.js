@@ -5,7 +5,7 @@ import { Switch, Redirect } from 'react-router-dom';
 import Base from '../../components/Base';
 import HelpMenu from '../../components/HelpMenu';
 import Home from '../../views/Home';
-import Help from '../../views/Help';
+import About from '../../views/About';
 import Contacts from '../../views/Contacts';
 import Instructions from '../../views/Instructions';
 import Feed from '../../views/Feed';
@@ -43,7 +43,7 @@ class Dashboard extends React.Component {
 					<Route exact path={`${url}/feed`} component={Feed}/>
 					<Route exact path={`${url}/challenges`} component={Challenges}/>
 					<Route exact path={`${url}/challenges/:id`} component={Challenge}/>
-					<Route exact path={`${url}/help`} component={Help}/>
+					<Route exact path={`${url}/about`} component={About}/>
 					<Route exact path={`${url}/contacts`} component={Contacts}/>
 					<Route component={NotFound}/>
 			</Switch>
