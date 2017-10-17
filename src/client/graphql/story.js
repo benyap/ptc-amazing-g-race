@@ -25,9 +25,16 @@ const getStories = (params) => {
 //	MUTATIONS
 // ===========
 
+const setStoryPublished = (params) => {
+	return gql`
+	mutation SetStoryPublished($storyId:ID!,$publish:Boolean!){
+		setStoryPublished(storyId:$storyId,publish:$publish){ ${params} }
+	}`;
+}
 
 
 export {
 	getAllStories,
-	getStories
+	getStories,
+	setStoryPublished
 };

@@ -34,7 +34,8 @@ class FeedView extends React.Component {
 		skip: '0',
 		limit: '50',
 		refetching: false,
-		renderStory: null
+		renderStory: null,
+		publishing: false
 	}
 
 	componentDidMount() {
@@ -53,6 +54,10 @@ class FeedView extends React.Component {
 		this.setState({ viewProfile: null }, () => {
 			this.refetchStories();
 		});
+	}
+
+	setPublishing(publishing) {
+		this.setState({publishing});
 	}
 
 	async refetchStories() {
@@ -81,7 +86,8 @@ class FeedView extends React.Component {
 				content = (
 					<div className='story-list pt-dark'>
 						{ getAllStories.map((story) => {
-							return <StoryCard key={story._id} story={story} renderProfile={this.renderProfile}/>;
+							return <StoryCard key={story._id} story={story} refetch={this.props.QueryGetAllStories.refetch} 
+												publishing={this.state.publishing} setPublishing={this.setPublishing}/>;
 						})}
 						
 					</div>
