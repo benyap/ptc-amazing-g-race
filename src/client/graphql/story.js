@@ -49,10 +49,19 @@ const createStory = (params) => {
 }
 
 
+const createUserStory = (params) => {
+	return gql`
+	mutation CreateUserStory($content:String!){
+		createUserStory(content:$content){ ${params} }
+	}`;
+}
+
+
 export {
 	getAllStories,
 	getStories,
 	setStoryPublished,
 	deleteStory,
-	createStory
+	createStory,
+	createUserStory
 };

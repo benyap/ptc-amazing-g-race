@@ -6,6 +6,7 @@ import { graphql } from 'react-apollo';
 import { getStories } from '../../../../graphql/story';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import StoryList from './StoryList';
+import CreateUserStory from './CreateUserStory';
 
 
 const GetStoriesParams = '_id type createdBy published publishDate iconName intent content likes';
@@ -71,6 +72,7 @@ class Feed extends React.Component {
 						</div>
 						: null
 					}
+					<CreateUserStory refetch={this.props.QueryGetStories.refetch}/>
 					{content}
 				</div>
 			</main>
