@@ -2,16 +2,18 @@
  * Log in a user by setting their email, accces and refresh tokens in the store, and `authenticted` will be set to true.
  * If `remember` is set to true, the email will be retained on logout.
  * @param {*} email 
+ * @param {*} username 
  * @param {*} access 
  * @param {*} refresh 
  * @param {*} remember 
  * @param {*} time 
  */
-export function login(email, access, refresh, remember, time) {
+export function login(email, username, access, refresh, remember, time) {
 	return {
 		type: 'AUTH_LOGIN',
 		payload: {
 			email,
+			username, 
 			remember,
 			access,
 			refresh,
@@ -25,16 +27,18 @@ export function login(email, access, refresh, remember, time) {
  * Log in a user by setting their email, accces and refresh tokens in the store, and `authenticted` will be set to true.
  * If `remember` is set to true, the email will be retained on logout.
  * @param {*} email 
+ * @param {*} username 
  * @param {*} access 
  * @param {*} refresh 
  * @param {*} remember 
  * @param {*} time 
  */
-export function loginAdmin(email, access, refresh, remember, time) {
+export function loginAdmin(email, username, access, refresh, remember, time) {
 	return {
 		type: 'AUTH_LOGIN',
 		payload: {
 			email,
+			username, 
 			remember,
 			access,
 			refresh,
