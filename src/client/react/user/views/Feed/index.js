@@ -33,6 +33,10 @@ class Feed extends React.Component {
 		});
 	}
 
+	componentDidMount() {
+		this.refresh();
+	}
+
 	refresh() {
 		this.props.QueryGetStories.refetch();
 	}

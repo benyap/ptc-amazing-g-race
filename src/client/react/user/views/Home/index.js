@@ -33,6 +33,10 @@ class Home extends React.Component {
 	static propTypes = {
 		email: PropTypes.string
 	}
+
+	componentDidMount() {
+		this.props.QueryGetUser.refetch();
+	}
 	
 	render() {
 		const { loading, getUserByEmail: user } = this.props.QueryGetUser;
