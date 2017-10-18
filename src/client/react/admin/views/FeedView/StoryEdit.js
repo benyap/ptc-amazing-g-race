@@ -42,7 +42,12 @@ class StoryEdit extends React.Component {
 
 	toggleEditStory() {
 		this.setState((prevState) => {
-			return { showEditStory: !prevState.showEditStory }
+			return { 
+				showEditStory: !prevState.showEditStory, 
+				intent: this.props.story.intent,
+				iconName: this.props.story.iconName,
+				content: this.props.story.content,
+			}
 		});
 	}
 
