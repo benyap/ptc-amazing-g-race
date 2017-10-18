@@ -119,7 +119,6 @@ class FeedView extends React.Component {
 			else {
 				content = (
 					<div>
-						<StoryCreate refetch={this.props.QueryGetAllStories.refetch}/>
 						<div style={{margin:'3rem'}}>
 							<NonIdealState title='No stories' description={`How boring.`} visual='feed'/>
 						</div>
