@@ -63,25 +63,25 @@ class Home extends React.Component {
 					<h4>
 						See your challenges
 					</h4>
-					<p>
+					<div className='pt-callout'>
 						Go to the challenges page to see how you can earn points!
 						Every time you submit something, you do it on behalf of your team.
 						Make sure everyone is happy before submitting a response!
-					</p>
-					<Link to='/dashboard/challenges' className='pt-button pt-minimal pt-icon-flag pt-fill pt-small pt-intent-primary' style={{marginBottom:'1rem'}}>
-						Take me there!
-					</Link>
+						<Link to='/dashboard/challenges' className='pt-button pt-minimal pt-icon-flag pt-fill pt-small pt-intent-primary' style={{marginTop:'0.5rem'}}>
+							Take me there!
+						</Link>
+					</div>
 
 					<h4>
 						Check out the newsfeed!
 					</h4>
-					<p>
+					<div className='pt-callout'>
 						Everyone in the Amazing GRace has access to the newsfeed! 
 						See what's new, or post some news of your own!
-					</p>
-					<Link to='/dashboard/feed' className='pt-button pt-minimal pt-fill pt-small pt-icon-feed pt-intent-primary' style={{marginBottom:'1rem'}}>
-						Show me!
-					</Link>
+						<Link to='/dashboard/feed' className='pt-button pt-minimal pt-fill pt-small pt-icon-feed pt-intent-primary' style={{marginTop:'0.5rem'}}>
+							Show me!
+						</Link>
+					</div>
 				</div>
 			</main>
 		);
