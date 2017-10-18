@@ -155,41 +155,60 @@ class AdminDashboard extends React.Component {
 		this.setState({selectedTabId: newTabId});
 	}
 
+	_generateTab(vertical, idIndex, iconName, label, panel) {
+		if (vertical) {
+			return <Tab2 id={VIEWS[idIndex]} title={<span><Icon iconName={iconName}/>&nbsp;&nbsp;{label}</span>} panel={panel}/>;
+		}
+		else {
+			return <Tab2 id={VIEWS[idIndex]} title={<Icon iconName={iconName}/>} panel={panel}/>;
+		}
+	}
+
 	renderTabs(vertical) {
 		const { item } = this.props.match.params;
 		return (
 			<Tabs2 id='dashboard' className={vertical?'':'mobile-tabs'} onChange={this.handleTabChange} 
 				selectedTabId={this.state.selectedTabId} vertical={vertical}>
 
-				<Tab2 id={VIEWS[0]} title={<span><Icon iconName='person'/>&nbsp;Users</span>}
-					panel={<UsersView shouldRefresh={this.state.selectedTabId===VIEWS[0]} item={item}/>}/>
-					
-				<Tab2 id={VIEWS[1]} title={<span><Icon iconName='people'/>&nbsp;Teams</span>}
-					panel={<TeamsView shouldRefresh={this.state.selectedTabId===VIEWS[1]} item={item}/>}/>
+				{this._generateTab(vertical, 0, 'person', 'Users', 
+					<UsersView shouldRefresh={this.state.selectedTabId===VIEWS[0]} item={item}/>
+				)}
 
-				<Tab2 id={VIEWS[2]} title={<span><Icon iconName='flag'/>&nbsp;Challenges</span>}
-					panel={<ChallengesView shouldRefresh={this.state.selectedTabId===VIEWS[2]} item={item}/>}/>
+				{this._generateTab(vertical, 1, 'people', 'Teams', 
+					<TeamsView shouldRefresh={this.state.selectedTabId===VIEWS[1]} item={item}/>
+				)}
 
-				<Tab2 id={VIEWS[8]} title={<span><Icon iconName='inbox'/>&nbsp;Responses</span>}
-					panel={<ResponsesView shouldRefresh={this.state.selectedTabId===VIEWS[8]} item={item}/>}/>
+				{this._generateTab(vertical, 2, 'flag', 'Challenges', 
+					<ChallengesView shouldRefresh={this.state.selectedTabId===VIEWS[2]} item={item}/>
+				)}
+				
+				{this._generateTab(vertical, 8, 'inbox', 'Responses', 
+					<ResponsesView shouldRefresh={this.state.selectedTabId===VIEWS[8]} item={item}/>
+				)}
 
-				<Tab2 id={VIEWS[9]} title={<span><Icon iconName='feed'/>&nbsp;Newsfeed</span>}
-					panel={<FeedView shouldRefresh={this.state.selectedTabId===VIEWS[9]} item={item}/>}/>
+				{this._generateTab(vertical, 9, 'feed', 'Newsfeed', 
+					<FeedView shouldRefresh={this.state.selectedTabId===VIEWS[9]} item={item}/>
+				)}
 
-				<Tab2 id={VIEWS[4]} title={<span><Icon iconName='clipboard'/>&nbsp;Instructions</span>}
-					panel={<InstructionArticlesView shouldRefresh={this.state.selectedTabId===VIEWS[4]} item={item}/>}/>
+				{this._generateTab(vertical, 4, 'clipboard', 'Instructions', 
+					<InstructionArticlesView shouldRefresh={this.state.selectedTabId===VIEWS[4]} item={item}/>
+				)}
 
-				<Tab2 id={VIEWS[3]} title={<span><Icon iconName='cloud-upload'/>&nbsp;Uploads</span>}
-					panel={<S3ExplorerView shouldRefresh={this.state.selectedTabId===VIEWS[3]} item={item}/>}/>
+				{this._generateTab(vertical, 3, 'cloud-upload', 'Uploads', 
+					<S3ExplorerView shouldRefresh={this.state.selectedTabId===VIEWS[3]} item={item}/>
+				)}
 
-				<Tab2 id={VIEWS[5]} title={<span><Icon iconName='property'/>&nbsp;Game State</span>}
-					panel={<GameStateView shouldRefresh={this.state.selectedTabId===VIEWS[5]} item={item}/>}/>
+				{this._generateTab(vertical, 5, 'property', 'Game State', 
+					<GameStateView shouldRefresh={this.state.selectedTabId===VIEWS[5]} item={item}/>
+				)}
 
-				<Tab2 id={VIEWS[6]} title={<span><Icon iconName='cog'/>&nbsp;Settings</span>}
-					panel={<ServerSettingsView shouldRefresh={this.state.selectedTabId===VIEWS[6]} item={item}/>}/>
+				{this._generateTab(vertical, 6, 'cog', 'Settings', 
+					<ServerSettingsView shouldRefresh={this.state.selectedTabId===VIEWS[6]} item={item}/>
+				)}
 
-				<Tab2 id={VIEWS[7]} title={<span><Icon iconName='application'/>&nbsp;Logs</span>}
-					panel={<LogsView shouldRefresh={this.state.selectedTabId===VIEWS[7]} item={item}/>}/>
+				{this._generateTab(vertical, 7, 'application', 'Logs', 
+					<LogsView shouldRefresh={this.state.selectedTabId===VIEWS[7]} item={item}/>
+				)}
 
 			</Tabs2>
 		);
