@@ -45,52 +45,58 @@ class InstructionArticlesView extends React.Component {
 
 	render() {
 		const { loading, error, getArticles } = this.props.QueryGetArticles;
-		let content;
+		let content, help;
 		
 		if (error) {
 			content = <ViewError error={error}/>;
 		}
-		else if (this.state.viewProfile) {
-			content = <InstructionArticleProfile article={this.state.viewProfile} closeProfile={this.closeProfile} refetchArticles={this.props.QueryGetArticles.refetch}/>;
-		}
-		else if (getArticles) {
-			if (getArticles.length) {
-				content = (
-					<div className='view-list'>
-						{getArticles.map((article) => {
-							return (
-								<InstructionArticleCard key={article._id} article={article} renderProfile={this.renderProfile}/>
-							);
-						})}
-						<AddInstructionArticle refetchArticles={this.props.QueryGetArticles.refetch}/>
-					</div>
-				);
+		else {
+			if (this.state.viewProfile) {
+				content = <InstructionArticleProfile article={this.state.viewProfile} closeProfile={this.closeProfile} refetchArticles={this.props.QueryGetArticles.refetch}/>;
 			}
-			else {
-				content = (
-					<div>
-						<AddInstructionArticle refetchArticles={this.props.QueryGetArticles.refetch}/>
-						<div style={{margin:'3rem'}}>
-							<NonIdealState title='No instructions' description={`Poor souls. They are going to get so lost.`} visual='clipboard'/>
+			else if (getArticles) {
+				if (getArticles.length) {
+					content = (
+						<div className='view-list'>
+							{getArticles.map((article) => {
+								return (
+									<InstructionArticleCard key={article._id} article={article} renderProfile={this.renderProfile}/>
+								);
+							})}
+							<AddInstructionArticle refetchArticles={this.props.QueryGetArticles.refetch}/>
 						</div>
-					</div>
-				);
+					);
+				}
+				else {
+					content = (
+						<div>
+							<AddInstructionArticle refetchArticles={this.props.QueryGetArticles.refetch}/>
+							<div style={{margin:'3rem'}}>
+								<NonIdealState title='No instructions' description={`Poor souls. They are going to get so lost.`} visual='clipboard'/>
+							</div>
+						</div>
+					);
+				}
 			}
-		}
-		else if (loading) {
-			content = <LoadingSpinner/>;
-		}
-		
-		return (
-			<div id='dashboard-instructions' className='dashboard-tab'>
-				<h4>Instruction Articles</h4>
-				<RefreshBar query={this.props.QueryGetArticles} disabled={this.state.viewProfile} shouldRefresh={this.props.shouldRefresh}/>
+			else if (loading) {
+				content = <LoadingSpinner/>;
+			}
+
+			help = (
 				<div className='pt-callout pt-icon-info-sign' style={{marginBottom: '0.5rem'}}>
 					These instruction articles are displayed on the 'Instructions' tab on the app.
 					They should not contain any challenge-specific instructions, 
 					as they are not protected and are accessible to all teams at any time.
 					These articles will appear in the order they appear here.
 				</div>
+			);
+		}
+		
+		return (
+			<div id='dashboard-instructions' className='dashboard-tab'>
+				<h4>Instruction Articles</h4>
+				<RefreshBar query={this.props.QueryGetArticles} disabled={this.state.viewProfile} shouldRefresh={this.props.shouldRefresh}/>
+				{help}
 				{content}
 			</div>
 		);

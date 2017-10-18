@@ -44,8 +44,10 @@ class S3ExplorerView extends React.Component {
 	}
 
 	render() {
-		let content;
-		if (this.props.QueryS3Objects.loading) {
+		const { loading, error, _listObjectsFromS3 } = this.props.QueryS3Objects;
+		let content, help;
+
+		if (loading) {
 			if (this.objects) {
 				content = (
 					<S3Explorer root={'uploads/'} objects={this.objects} navigateTo={this.navigateTo} open={this.openPreview} loading/>
@@ -56,24 +58,22 @@ class S3ExplorerView extends React.Component {
 			}
 		}
 		else {
-			if (this.props.QueryS3Objects.error) {
+			if (error) {
 				content = (
-					<ViewError error={this.props.QueryS3Objects.error}/>
+					<ViewError error={error}/>
 				);
 			}
 			else {
-				this.objects = this.props.QueryS3Objects._listObjectsFromS3
+				this.objects = _listObjectsFromS3;
 				content = (
-					<S3Explorer root={'uploads/'} objects={this.props.QueryS3Objects._listObjectsFromS3} 
+					<S3Explorer root={'uploads/'} objects={_listObjectsFromS3} 
 						navigateTo={this.navigateTo} open={this.openPreview}/>
 				);
 			}
 		}
 
-		return (
-			<div id='dashboard-s3explorer' className='dashboard-tab'>
-				<h4>AWS S3 uploads explorer</h4>
-				<RefreshBar query={this.props.QueryS3Objects} shouldRefresh={this.props.shouldRefresh}/>
+		if (!error) {
+			help = (
 				<div className='pt-callout pt-icon-info-sign' style={{marginBottom:'0.5rem'}}>
 					<ul style={{margin:'0',padding:'0 0 0 1rem'}}>
 						<li>
@@ -88,8 +88,16 @@ class S3ExplorerView extends React.Component {
 						</li>
 					</ul>
 				</div>
-				<AssetUpload refetchAssets={this.props.QueryS3Objects.refetch}/>
-				<ObjectPreview objectKey={this.state.previewObject} close={this.closePreview} refetchObjects={this.props.QueryS3Objects.refetch}/> 
+			);
+		}
+
+		return (
+			<div id='dashboard-s3explorer' className='dashboard-tab'>
+				<h4>AWS S3 uploads explorer</h4>
+				<RefreshBar query={this.props.QueryS3Objects} shouldRefresh={this.props.shouldRefresh}/>
+				{help}
+				{error ? null : <AssetUpload refetchAssets={this.props.QueryS3Objects.refetch}/>}
+				{error ? null : <ObjectPreview objectKey={this.state.previewObject} close={this.closePreview} refetchObjects={this.props.QueryS3Objects.refetch}/>}
 				{content}
 			</div>
 		);

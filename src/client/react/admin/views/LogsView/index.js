@@ -118,45 +118,52 @@ class LogsView extends React.Component {
 	}
 
 	render() {
-		let content = null;
+		let content, filter;
 		const { loading, error, getActions } = this.props.QueryActions;
 
 		if (error) {
 			content = <ViewError error={error}/>;
 		}
-		else if (this.state.nodes) {
-			let startDate;
-			let results;
-
-			if (this.state.nodes.length > 0) {
-				let endDate = DateFormat(new Date(this.state.nodes[0].date), 'mmmm d');
-
-				if (this.state.nodes.length > 1) {
-					startDate = DateFormat(new Date(this.state.nodes[this.state.nodes.length-1].date), 'mmmm d');
-				}
-				else startDate = endDate;
-
-				results = `Showing ${this.state.nodes.length} results from ${startDate} to ${endDate}`;
-			}
-			else {
-				results = 'No logs to show.';
-			}
-
-			content = (
-				<div>
-					<div className='results-info'style={{margin:'0.8rem 0'}}>
-						<em>{results}</em>
-					</div>
-					<Tree
-						contents={this.state.nodes}
-						onNodeCollapse={this.onNodeCollapse}
-						onNodeExpand={this.onNodeExpand}
-					/>
-				</div>
+		else {
+			filter = (
+				<Filters onChange={this.onChange} onFilter={this.onFilter} loading={this.props.QueryActions.loading}
+					action={this.state.action} username={this.state.username} skip={this.state.skip} limit={this.state.limit}/>
 			);
-		}
-		else if (loading) {
-			content = <LoadingSpinner/>;
+
+			if (this.state.nodes) {
+				let startDate;
+				let results;
+	
+				if (this.state.nodes.length > 0) {
+					let endDate = DateFormat(new Date(this.state.nodes[0].date), 'mmmm d');
+	
+					if (this.state.nodes.length > 1) {
+						startDate = DateFormat(new Date(this.state.nodes[this.state.nodes.length-1].date), 'mmmm d');
+					}
+					else startDate = endDate;
+	
+					results = `Showing ${this.state.nodes.length} results from ${startDate} to ${endDate}`;
+				}
+				else {
+					results = 'No logs to show.';
+				}
+	
+				content = (
+					<div>
+						<div className='results-info'style={{margin:'0.8rem 0'}}>
+							<em>{results}</em>
+						</div>
+						<Tree
+							contents={this.state.nodes}
+							onNodeCollapse={this.onNodeCollapse}
+							onNodeExpand={this.onNodeExpand}
+						/>
+					</div>
+				);
+			}
+			else if (loading) {
+				content = <LoadingSpinner/>;
+			}
 		}
 
 		const variables = {
@@ -170,8 +177,7 @@ class LogsView extends React.Component {
 			<div id='dashboard-logs' className='dashboard-tab'>
 				<h4>Server Action Log</h4>
 				{/* <RefreshBar query={this.props.QueryActions} shouldRefresh={this.props.shouldRefresh}/> */}
-				<Filters onChange={this.onChange} onFilter={this.onFilter} loading={this.props.QueryActions.loading}
-					action={this.state.action} username={this.state.username} skip={this.state.skip} limit={this.state.limit}/>
+				{filter}
 				{content}
 			</div>
 		);
