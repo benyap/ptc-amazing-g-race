@@ -80,7 +80,7 @@ class UsersView extends React.Component {
 			catch (err) {
 				if (this._mounted) this.setState({refetching: false});
 				NotificationToaster.show({
-					intent: Intent.DANGER,
+					intent: Intent.WARNING,
 					message: err.toString()
 				});
 			}

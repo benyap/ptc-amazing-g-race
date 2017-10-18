@@ -19,6 +19,10 @@ const MutationAccessRefreshOptions = {
 	name: 'MutationAccessRefresh'
 };
 
+const mapStateToProps = (state, ownProps) => {
+	return { authenticated: state.auth.login.authenticated };
+}
+
 @connect()
 @graphql(MutationAccessRefresh, MutationAccessRefreshOptions)
 @autobind
@@ -42,11 +46,16 @@ class LoginRefresh extends React.Component {
 
 	componentDidMount() {
 		// Start timer
-		this.refresh();
+		this.refreshAccessToken();
 		this.interval = setInterval(this.refresh, this.props.interval);
 	}
 
-	async refresh() {
+	async refreshAccessToken() {
+		if (!this.props.authenticated) {
+			// Don't need to do anything if not authenticated
+			return;
+		}
+
 		if (!this.props.refreshToken) {
 			// Don't try to refresh if there is no refresh token
 			this._dispatchLogout();
@@ -79,8 +88,8 @@ class LoginRefresh extends React.Component {
 		}
 	}
 
-	_dispatchRefresh(refreshToken) {
-		this.props.dispatch(refresh(refreshToken), new Date());
+	_dispatchRefresh(accessToken) {
+		this.props.dispatch(refresh(accessToken), new Date());
 	}
 
 	_dispatchLogout() {

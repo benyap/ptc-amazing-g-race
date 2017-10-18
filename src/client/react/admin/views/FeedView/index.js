@@ -88,11 +88,14 @@ class FeedView extends React.Component {
 	}
 
 	render() {
-		const { loading, getAllStories } = this.props.QueryGetAllStories;
+		const { loading, getAllStories, error } = this.props.QueryGetAllStories;
 		let content, summary;
 		let storyCount = 0, storyTotal = 0;
 		
-		if (getAllStories) {
+		if (error) {
+			content = <ViewError error={error}/>;
+		}
+		else if (getAllStories) {
 			if (getAllStories.length) {
 				content = (
 					<div className='story-list'>
@@ -119,7 +122,6 @@ class FeedView extends React.Component {
 			else {
 				content = (
 					<div>
-						<StoryCreate refetch={this.props.QueryGetAllStories.refetch}/>
 						<div style={{margin:'3rem'}}>
 							<NonIdealState title='No stories' description={`How boring.`} visual='feed'/>
 						</div>
@@ -130,16 +132,18 @@ class FeedView extends React.Component {
 		else if (loading) {
 			content = <LoadingSpinner/>;
 		}
-
-		summary = (
-			<div>
-				<FeedSummary 
-					searchValue={this.state.search} onSearchChange={this.searchFeed} 
-					filterValue={this.state.filter} onFilterChange={this.filterFeed}
-					storyTotal={storyTotal} storyCount={storyCount}/>
-				<StoryCreate refetch={this.props.QueryGetAllStories.refetch}/>
-			</div>
-		);
+		
+		if (!error) {
+			summary = (
+				<div>
+					<FeedSummary 
+						searchValue={this.state.search} onSearchChange={this.searchFeed} 
+						filterValue={this.state.filter} onFilterChange={this.filterFeed}
+						storyTotal={storyTotal} storyCount={storyCount}/>
+					<StoryCreate refetch={this.props.QueryGetAllStories.refetch}/>
+				</div>
+			);
+		}
 
 		return (
 			<div id='dashboard-feed' className='dashboard-tab'>

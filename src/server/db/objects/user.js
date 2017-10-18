@@ -364,6 +364,9 @@ const getUserActions = async function(user, action, skip = 0, limit = 0) {
 		const actionRegex = new RegExp(['^', escapedAction, '$'].join(''), 'i');
 		findParams.action = actionRegex;
 	}
+	
+	// Set a hard limit of 1000 results
+	if (limit > 1000 || limit === 0) limit = 1000;
 
 	const db = await connect();
 	return db.collection('actions').find(findParams).sort({date: -1}).skip(skip).limit(limit).toArray();
@@ -401,6 +404,9 @@ const getActions = async function(user, username, action, skip = 0, limit = 0) {
 		if (!userCheck) return new Error(`User \'${username}\' not found`);
 		else findParams.who = username;
 	}
+
+	// Set a hard limit of 1000 results
+	if (limit > 1000 || limit === 0) limit = 1000;
 	
 	return db.collection('actions').find(findParams).sort({date: -1}).skip(skip).limit(limit).toArray();
 }
