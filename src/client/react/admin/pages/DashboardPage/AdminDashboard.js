@@ -4,7 +4,7 @@ import MediaQuery from 'react-responsive';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
-import { Tab2, Tabs2, Intent } from '@blueprintjs/core';
+import { Tab2, Tabs2, Intent, Icon } from '@blueprintjs/core';
 import bp from '../../../../../../lib/react/components/utility/bp';
 import UsersView from '../../views/UsersView';
 import TeamsView from '../../views/TeamsView';
@@ -130,7 +130,7 @@ class AdminDashboard extends React.Component {
 			}
 			else if (getResponses.length > 0) {
 				UncheckedResponseToaster.show({
-					timeout: 20000,						
+					timeout: 20000,
 					intent: Intent.PRIMARY,
 					message: `There ${getResponses.length===1?'is':'are'} ${getResponses.length} unchecked ${getResponses.length===1?'response':'responses'}.`,
 					action: {
@@ -155,21 +155,61 @@ class AdminDashboard extends React.Component {
 		this.setState({selectedTabId: newTabId});
 	}
 
+	_generateTab(vertical, idIndex, iconName, label, panel) {
+		if (vertical) {
+			return <Tab2 id={VIEWS[idIndex]} title={<span><Icon iconName={iconName}/>&nbsp;&nbsp;{label}</span>} panel={panel}/>;
+		}
+		else {
+			return <Tab2 id={VIEWS[idIndex]} title={<Icon iconName={iconName}/>} panel={panel}/>;
+		}
+	}
+
 	renderTabs(vertical) {
 		const { item } = this.props.match.params;
 		return (
 			<Tabs2 id='dashboard' className={vertical?'':'mobile-tabs'} onChange={this.handleTabChange} 
 				selectedTabId={this.state.selectedTabId} vertical={vertical}>
-				<Tab2 id={VIEWS[0]} title='Users' panel={<UsersView shouldRefresh={this.state.selectedTabId===VIEWS[0]} item={item}/>}/>
-				<Tab2 id={VIEWS[1]} title='Teams' panel={<TeamsView shouldRefresh={this.state.selectedTabId===VIEWS[1]} item={item}/>}/>
-				<Tab2 id={VIEWS[2]} title='Challenges' panel={<ChallengesView shouldRefresh={this.state.selectedTabId===VIEWS[2]} item={item}/>}/>
-				<Tab2 id={VIEWS[8]} title='Responses' panel={<ResponsesView shouldRefresh={this.state.selectedTabId===VIEWS[8]} item={item}/>}/>
-				<Tab2 id={VIEWS[9]} title='Newsfeed' panel={<FeedView shouldRefresh={this.state.selectedTabId===VIEWS[9]} item={item}/>}/>
-				<Tab2 id={VIEWS[4]} title='Instructions' panel={<InstructionArticlesView shouldRefresh={this.state.selectedTabId===VIEWS[4]} item={item}/>}/>
-				<Tab2 id={VIEWS[3]} title='Uploads' panel={<S3ExplorerView shouldRefresh={this.state.selectedTabId===VIEWS[3]} item={item}/>}/>
-				<Tab2 id={VIEWS[5]} title='Game State' panel={<GameStateView shouldRefresh={this.state.selectedTabId===VIEWS[5]} item={item}/>}/>
-				<Tab2 id={VIEWS[6]} title='Settings' panel={<ServerSettingsView shouldRefresh={this.state.selectedTabId===VIEWS[6]} item={item}/>}/>
-				<Tab2 id={VIEWS[7]} title='Logs' panel={<LogsView shouldRefresh={this.state.selectedTabId===VIEWS[7]} item={item}/>}/>
+
+				{this._generateTab(vertical, 0, 'person', 'Users', 
+					<UsersView shouldRefresh={this.state.selectedTabId===VIEWS[0]} item={item}/>
+				)}
+
+				{this._generateTab(vertical, 1, 'people', 'Teams', 
+					<TeamsView shouldRefresh={this.state.selectedTabId===VIEWS[1]} item={item}/>
+				)}
+
+				{this._generateTab(vertical, 2, 'flag', 'Challenges', 
+					<ChallengesView shouldRefresh={this.state.selectedTabId===VIEWS[2]} item={item}/>
+				)}
+				
+				{this._generateTab(vertical, 8, 'inbox', 'Responses', 
+					<ResponsesView shouldRefresh={this.state.selectedTabId===VIEWS[8]} item={item}/>
+				)}
+
+				{this._generateTab(vertical, 9, 'feed', 'Newsfeed', 
+					<FeedView shouldRefresh={this.state.selectedTabId===VIEWS[9]} item={item}/>
+				)}
+
+				{this._generateTab(vertical, 4, 'clipboard', 'Instructions', 
+					<InstructionArticlesView shouldRefresh={this.state.selectedTabId===VIEWS[4]} item={item}/>
+				)}
+
+				{this._generateTab(vertical, 3, 'cloud-upload', 'Uploads', 
+					<S3ExplorerView shouldRefresh={this.state.selectedTabId===VIEWS[3]} item={item}/>
+				)}
+
+				{this._generateTab(vertical, 5, 'property', 'Game State', 
+					<GameStateView shouldRefresh={this.state.selectedTabId===VIEWS[5]} item={item}/>
+				)}
+
+				{this._generateTab(vertical, 6, 'cog', 'Settings', 
+					<ServerSettingsView shouldRefresh={this.state.selectedTabId===VIEWS[6]} item={item}/>
+				)}
+
+				{this._generateTab(vertical, 7, 'application', 'Logs', 
+					<LogsView shouldRefresh={this.state.selectedTabId===VIEWS[7]} item={item}/>
+				)}
+
 			</Tabs2>
 		);
 	}

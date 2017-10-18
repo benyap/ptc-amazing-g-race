@@ -10,7 +10,7 @@ const getAllStories = async function(root, params, ctx, options) {
 }
 
 const createStory = async function(root, params, ctx, options) {
-	return database.story.createStory(ctx.user, params.type, params.content, params.iconName, params.intent);
+	return database.story.createStory(ctx.user, params.type, params.content, params.who, params.iconName, params.intent);
 }
 
 const createUserStory = async function(root, params, ctx, options) {

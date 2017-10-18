@@ -27,7 +27,7 @@ const QueryGetResponsesOptions = {
 @autobind
 class ResponsesView extends React.Component {
 	state = {
-		filter: 'none',
+		filter: 'all',
 		search: ''
 	}
 
@@ -46,7 +46,6 @@ class ResponsesView extends React.Component {
 	filterResponses(filter) {
 		this.setState({filter});
 	}
-
 
 	_applySearchResponse(response) {
 		if (this.state.search.length > 0) {

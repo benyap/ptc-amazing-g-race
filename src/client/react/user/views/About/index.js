@@ -31,11 +31,13 @@ class About extends React.Component {
 						you'll save a bit of data as the website will already be downloaded. 
 						It will only use your data it needs to send or retreive NEW information.
 						Examples of this include: 
-						<ul style={{paddingLeft:'1rem'}}>
-							<li>When you open up a challenge you have not opened before</li>
-							<li>When you press the refresh button to get the latest stats</li>
-							<li>When you upload a photo</li>
-						</ul>
+					</p>
+					<ul style={{paddingLeft:'1rem'}}>
+						<li>When you open up a challenge you have not opened before</li>
+						<li>When you press the refresh button to get the latest stats</li>
+						<li>When you upload a photo</li>
+					</ul>
+					<p>
 						Efforts have been made to reduce data usage by the website as much as possible.
 						That being said, we are not responsible for any data charges as a result of using this website. 
 					</p>

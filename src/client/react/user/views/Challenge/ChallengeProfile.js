@@ -38,36 +38,52 @@ class ChallengeProfile extends React.Component {
 		
 		let items, description;
 		
-		if (challenge.items.length > 0) {
-			description = (
-				<div>
-					<Button text={`${this.state.showDescription?'Hide':'Show'} description`} className='pt-fill pt-minimal' style={{margin: '-0.3rem 0 0.3rem 0'}}
-						iconName={this.state.showDescription?'chevron-down':'chevron-right'} onClick={this.toggleCollapse('Description')}/>
-					<Collapse isOpen={this.state.showDescription}>
-						<div className='instruction-panel'>
-							<MarkdownRenderer className='markdown-content' src={challenge.description}/>
-						</div>
-					</Collapse>
-				</div>
-			);
+		// if (challenge.items.length > 0) {
+		// 	description = (
+		// 		<div>
+		// 			<Button text={`${this.state.showDescription?'Hide':'Show'} description`} className='pt-fill pt-minimal' style={{margin: '-0.3rem 0 0.3rem 0'}}
+		// 				iconName={this.state.showDescription?'chevron-down':'chevron-right'} onClick={this.toggleCollapse('Description')}/>
+		// 			<Collapse isOpen={this.state.showDescription}>
+		// 				<div className='instruction-panel'>
+		// 					<MarkdownRenderer className='markdown-content' src={challenge.description}/>
+		// 				</div>
+		// 			</Collapse>
+		// 		</div>
+		// 	);
 
-			items = (
-				challenge.items.map((item) => {
-					return <ChallengeItem key={item.key} order={item.order} challengeKey={challenge.key} item={item}/>
-				}).sort((a, b) => {
-					if (a.props.order > b.props.order) return 1;
-					else if (a.props.order < b.props.order) return -1;
-					else return 0;
-				})
-			);
-		}
-		else {
-			description = (
-				<div className='instruction-panel'>
-					<MarkdownRenderer className='markdown-content' src={challenge.description}/>
-				</div>
-			);
-		}
+		// 	items = (
+		// 		challenge.items.map((item) => {
+		// 			return <ChallengeItem key={item.key} order={item.order} challengeKey={challenge.key} item={item}/>
+		// 		}).sort((a, b) => {
+		// 			if (a.props.order > b.props.order) return 1;
+		// 			else if (a.props.order < b.props.order) return -1;
+		// 			else return 0;
+		// 		})
+		// 	);
+		// }
+		// else {
+		// 	description = (
+		// 		<div className='instruction-panel'>
+		// 			<MarkdownRenderer className='markdown-content' src={challenge.description}/>
+		// 		</div>
+		// 	);
+		// }
+
+		description = (
+			<div className='instruction-panel'>
+				<MarkdownRenderer className='markdown-content' src={challenge.description}/>
+			</div>
+		);
+		
+		items = (
+			challenge.items.map((item) => {
+				return <ChallengeItem key={item.key} order={item.order} challengeKey={challenge.key} item={item}/>
+			}).sort((a, b) => {
+				if (a.props.order > b.props.order) return 1;
+				else if (a.props.order < b.props.order) return -1;
+				else return 0;
+			})
+		);
 
 		return (
 			<div>

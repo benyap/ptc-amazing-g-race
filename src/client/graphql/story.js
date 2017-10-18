@@ -43,8 +43,8 @@ const deleteStory = (params) => {
 
 const createStory = (params) => {
 	return gql`
-	mutation CreateStory($type:StoryType!,$content:String!,$iconName:String!,$intent:StoryIntent!){
-		createStory(type:$type,content:$content,iconName:$iconName,intent:$intent){ ${params} }
+	mutation CreateStory($type:StoryType!,$content:String!,$who:StoryWho!,$iconName:String!,$intent:StoryIntent!){
+		createStory(type:$type,content:$content,who:$who,iconName:$iconName,intent:$intent){ ${params} }
 	}`;
 }
 
@@ -64,6 +64,14 @@ const setStoryLiked = (params) => {
 }
 
 
+const editStory = (params) => {
+	return gql`
+	mutation EditStory($storyId:ID!,$property:StoryEditProperty!,$value:String!){
+		editStory(storyId:$storyId,property:$property,value:$value){ ${params} }
+	}`;
+}
+
+
 export {
 	getAllStories,
 	getStories,
@@ -71,5 +79,6 @@ export {
 	deleteStory,
 	createStory,
 	createUserStory,
-	setStoryLiked
+	setStoryLiked,
+	editStory
 };

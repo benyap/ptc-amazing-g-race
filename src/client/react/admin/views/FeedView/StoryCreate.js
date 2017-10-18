@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
 import { Button, Intent, Dialog, Icon } from '@blueprintjs/core';
-import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEditor';
 import { createStory } from '../../../../graphql/story';
 import NotificationToaster from '../../../components/NotificationToaster';
+import IconSelect from './IconSelect';
+import IntentSelect from './IntentSelect';
 
 
 @graphql(createStory('ok'), { name: 'MutationCreateStory' })
@@ -26,6 +27,7 @@ class StoryCreate extends React.Component {
 		intent: 'none',
 		iconName: '',
 		content: '',
+		who: 'me'
 	}
 
 	toggleCreateStory() {
@@ -53,6 +55,7 @@ class StoryCreate extends React.Component {
 				variables: {
 					type: this.state.type,
 					intent: this.state.intent,
+					who: this.state.who,
 					iconName: this.state.iconName,
 					content: this.state.content
 				}
@@ -88,41 +91,41 @@ class StoryCreate extends React.Component {
 						<label className='pt-label'>
 							Story type: 
 							<div className='pt-select'>
-								<select onChange={this.editValue('type')}>
+								<select onChange={this.editValue('type')} value={this.state.type}  disabled={this.state.createStoryLoading}>
 									<option value='custom'>Custom</option>
-									<option value='user'>User</option>
-									<option value='useHint'>Use hint</option>
-									<option value='challengeUnlock'>Challenge unlock</option>
-									<option value='challengeRespond'>Challenge response</option>
-									<option value='challengeCheck'>Challenge checked</option>
-								</select>
-							</div>
-						</label>
-
-						<label className='pt-label'>
-							Intent: 
-							<div className='pt-select'>
-								<select onChange={this.editValue('intent')}>
-									<option value='none'>None (white)</option>
-									<option value='primary'>Primary (blue)</option>
-									<option value='success'>Success (green)</option>
-									<option value='warning'>Warning (yellow)</option>
-									<option value='danger'>Danger (red)</option>
+									<option value='user'>User story</option>
+									<option value='useHint'>Use hint (system)</option>
+									<option value='challengeUnlock'>Challenge unlock (system)</option>
+									<option value='challengeRespond'>Challenge response (system)</option>
+									<option value='challengeCheck'>Challenge checked (system)</option>
 								</select>
 							</div>
 						</label>
 						
+						<IntentSelect onChange={this.editValue('intent')} value={this.state.intent} disabled={this.state.createStoryLoading}/>
+						
+						<label className='pt-label'>
+							Post as: 
+							<div className='pt-select'>
+								<select onChange={this.editValue('who')} value={this.state.who} disabled={this.state.createStoryLoading}>
+									<option value='me'>Me</option>
+									<option value='admins'>Planning Team</option>
+									<option value='generated'>Auto-generated</option>
+								</select>
+							</div>
+						</label>
+
 						<div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
 							<div style={{width:'40px',height:'40px',padding:'10px',textAlign:'center',border:'solid 1px slategray',borderRadius:'0.3rem'}}>
 								<Icon iconName={this.state.iconName} iconSize={20}/>
 							</div>
 							<div style={{flexGrow:'1',marginLeft:'1rem'}}>
-								<FormInput id='iconName' value={this.state.iconName} onChange={this.editValue('iconName')} label='Icon name (optional)' helperText='Preview the icon on the left if it is a valid icon name'/>
+								<IconSelect value={this.state.iconName} onChange={this.editValue('iconName')} disabled={this.state.createStoryLoading}/>
 							</div>
 						</div>
 						
-						<div className='instruction-panel markdown-preview'>
-							<MarkdownEditor content={this.state.content} onChange={this.editValue('content')}/>
+						<div className='instruction-panel markdown-preview create-story'>
+							<MarkdownEditor title='Post content' content={this.state.content} onChange={this.editValue('content')} disabled={this.state.createStoryLoading}/>
 						</div>
 						
 					</div>

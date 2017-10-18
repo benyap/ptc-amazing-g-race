@@ -93,8 +93,8 @@ class TeamResponsesPanel extends React.Component {
 
 		if (!this.props.user.teamId) {
 			content =  (
-				<div className='pt-callout pt-intent-primary pt-icon-info-sign'>
-					<h5>Challenges overview</h5>
+				<div className='pt-callout pt-icon-info-sign'>
+					<h5 style={{color:'white'}}>Challenges overview</h5>
 					This panel will show an overview of how your team is going in answering challenges in the race.
 				</div>
 			);

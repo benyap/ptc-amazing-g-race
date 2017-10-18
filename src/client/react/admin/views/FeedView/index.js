@@ -10,6 +10,7 @@ import ViewError from '../../components/ViewError';
 import RefreshBar from '../../components/RefreshBar';
 import StoryCard from './StoryCard';
 import StoryCreate from './StoryCreate';
+import FeedSummary from './FeedSummary';
 
 import '../../scss/views/_feed-view.scss';
 
@@ -20,7 +21,7 @@ const GetAllStoriesOptions = {
 	name: 'QueryGetAllStories',
 	options: { 
 		fetchPolicy: 'cache-and-network',
-		variables: { skip: 0, limit: 50 }
+		variables: { skip: 0, limit: 0 }
 	}
 };
 
@@ -32,11 +33,9 @@ class FeedView extends React.Component {
 	}
 
 	state = {
-		skip: '0',
-		limit: '50',
-		refetching: false,
-		renderStory: null,
-		publishing: false
+		publishing: false,
+		filter: 'none',
+		search: ''
 	}
 
 	componentDidMount() {
@@ -47,54 +46,75 @@ class FeedView extends React.Component {
 		this._mounted = false;
 	}
 
-	renderProfile(story) {
-		this.setState({ renderStory: story });
-	}
-
-	closeProfile() {
-		this.setState({ viewProfile: null }, () => {
-			this.refetchStories();
-		});
-	}
-
 	setPublishing(publishing) {
 		this.setState({publishing});
 	}
 
-	async refetchStories() {
-		if (!this.state.viewProfile) {
-			if (this._mounted) this.setState({refetching: true});
+	_applySearchFeed(story) {
+		if (this.state.search.length > 0) {
+			const search = this.state.search.toLowerCase();
+			const matchContent = story.content.toLowerCase().indexOf(search) >= 0;
+			const matchIntent = story.intent.toLowerCase().indexOf(search) >= 0;
+			const matchAuthor = story.createdBy.toLowerCase().indexOf(search) >= 0;
 
-			try {
-				await this.props.QueryGetAllStories.refetch();
-				if (this._mounted) this.setState({refetching: false});
-			}
-			catch (err) {
-				NotificationToaster.show({
-					intent: Intent.DANGER,
-					message: err.toString()
-				});
-			}
+			if (matchContent || matchIntent || matchAuthor) return true;
+			else return false;
 		}
+		else return true;
+	}
+
+	_applyFilterFeed(story) {
+		switch (this.state.filter) {
+			case 'custom': {
+				return story.type === 'custom';
+			}
+			case 'user': {
+				return story.type === 'user';
+			}
+			case 'system': {
+				return story.type !== 'custom' && story.type !== 'user';
+			}
+			case 'none':
+			default: return true;
+		}
+	}
+
+	searchFeed(search) {
+		this.setState({search});
+	}
+
+	filterFeed(filter) {
+		this.setState({filter});
 	}
 
 	render() {
 		const { loading, getAllStories } = this.props.QueryGetAllStories;
-		let content;
-
+		let content, summary;
+		let storyCount = 0, storyTotal = 0;
+		
 		if (getAllStories) {
 			if (getAllStories.length) {
 				content = (
 					<div className='story-list'>
-						<StoryCreate refetch={this.props.QueryGetAllStories.refetch}/>
 						<div className='pt-dark'>
 							{ getAllStories.map((story) => {
-								return <StoryCard key={story._id} story={story} refetch={this.props.QueryGetAllStories.refetch} 
-													publishing={this.state.publishing} setPublishing={this.setPublishing}/>;
-							})}
+									storyTotal += 1;
+									if (this._applySearchFeed(story) && this._applyFilterFeed(story)) {
+										storyCount += 1;
+										return <StoryCard key={story._id} story={story} refetch={this.props.QueryGetAllStories.refetch} publishing={this.state.publishing} setPublishing={this.setPublishing}/>;
+									}
+								})}
 						</div>
 					</div>
 				);
+
+				if (storyCount === 0) {
+					content = (
+						<div style={{margin:'3rem'}}>
+							<NonIdealState title='No stories match your query.' description='Did you make a typo?' visual='search'/>
+						</div>
+					);
+				}
 			}
 			else {
 				content = (
@@ -111,10 +131,21 @@ class FeedView extends React.Component {
 			content = <LoadingSpinner/>;
 		}
 
+		summary = (
+			<div>
+				<FeedSummary 
+					searchValue={this.state.search} onSearchChange={this.searchFeed} 
+					filterValue={this.state.filter} onFilterChange={this.filterFeed}
+					storyTotal={storyTotal} storyCount={storyCount}/>
+				<StoryCreate refetch={this.props.QueryGetAllStories.refetch}/>
+			</div>
+		);
+
 		return (
 			<div id='dashboard-feed' className='dashboard-tab'>
 				<h4>Newsfeed</h4>
 				<RefreshBar query={this.props.QueryGetAllStories} shouldRefresh={this.props.shouldRefresh}/>
+				{summary}
 				{content}
 			</div>
 		);

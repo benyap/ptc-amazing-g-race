@@ -37,7 +37,7 @@ class Login extends React.Component {
 		const config = {
 			url: API.api,
 			method: 'POST',
-			timeout: 10000,
+			timeout: 30000,
 			data: {
 				variables: { email, password },
 				query: 

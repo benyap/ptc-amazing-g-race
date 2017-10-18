@@ -14,6 +14,7 @@ import uploadDataType from './uploadDataType';
 import storyType from './storyType';
 import storyTypeType from './storyTypeType';
 import storyIntentType from './storyIntentType';
+import storyWhoType from './storyWhoType';
 
 
 export default {
@@ -32,5 +33,6 @@ export default {
 	uploadDataType,
 	storyType,
 	storyTypeType,
-	storyIntentType
+	storyIntentType,
+	storyWhoType
 };

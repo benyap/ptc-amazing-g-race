@@ -71,6 +71,8 @@ class Dashboard extends React.Component {
 						<div className='pt-callout pt-intent-primary pt-icon-info-sign'>
 							<h5>Remember to invite your friends!</h5>
 							By the way, you put down these people as your friends: <em>{getUserByEmail.raceDetails.friends}</em>.
+							<br/>
+							<br/>
 							Invite them and tell them to put your name down as their friend for a chance to win movie tickets!
 						</div>
 					);
@@ -82,7 +84,10 @@ class Dashboard extends React.Component {
 							By the way, if you put people down as your friends, 
 							and they put your name down as their friends when they sign up,
 							you have a chance of winning some movie tickets!
-							You haven't put any friends down - let Ben Yap know and he can fix this for you.
+							<br/>
+							<br/>
+							You haven't put any friends down - let Ben Yap (<a href='mailto:bwyap@outlook.com'>bwyap@outlook.com</a>)
+							know and he can add people to your registration.
 						</div>
 					);
 				}

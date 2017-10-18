@@ -21,3 +21,15 @@
 		margin-bottom: 1rem;
 	}
 }
+
+.instruction-panel.markdown-preview.create-story {
+	.markdown.editor {
+		.pt-tab-panel {
+			min-height: 8rem;
+		}
+
+		textarea {
+			min-height: 8rem;
+		}
+	}
+}

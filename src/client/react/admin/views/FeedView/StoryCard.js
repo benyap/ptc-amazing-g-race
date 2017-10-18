@@ -9,6 +9,7 @@ import NotificationToaster from '../../../components/NotificationToaster';
 import Story from '../../../components/Story';
 import { setStoryPublished } from '../../../../graphql/story';
 import StoryDelete from './StoryDelete';
+import StoryEdit from './StoryEdit';
 
 
 @graphql(setStoryPublished('ok'), { name: 'MutationSetStoryPublished' })
@@ -94,7 +95,7 @@ class StoryCard extends React.Component {
 					</div>
 					<div>
 						<Button className='pt-minimal pt-small pt-intent-primary' text={publishLabel} disabled={this.props.publishing || this.state.deleting} onClick={this.togglePublish}/>
-						<Button className='pt-minimal pt-small pt-intent-primary' text='Edit' disabled={this.state.deleting}/>
+						<StoryEdit storyId={this.props.story._id} refetch={this.props.refetch} story={this.props.story}/>
 						<StoryDelete storyId={this.props.story._id} refetch={this.props.refetch} setDeleting={this.setDeleting}/>
 					</div>
 				</div>
