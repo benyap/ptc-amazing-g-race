@@ -54,7 +54,7 @@ class About extends React.Component {
 						Some of these assets are cached and only need to be loaded once.
 					</p>
 					<p>
-						The assets required to load the page come to a total of just under 1.5MB. 
+						The assets required to load the page come to a total of just under 2MB. 
 						These assets are cached so after the first time the page loaded, 
 						subsequence page reloads will only cost a few kB.
 					</p>
