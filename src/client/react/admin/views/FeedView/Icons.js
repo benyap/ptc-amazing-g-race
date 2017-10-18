@@ -1,18 +1,18 @@
 export default [
-	[
-		'add',
-		'Add'
-	],
+	// [
+	// 	'add',
+	// 	'Add'
+	// ],
 
-	[
-		'add-to-artifact',
-		'Add to artifact'
-	],
+	// [
+	// 	'add-to-artifact',
+	// 	'Add to artifact'
+	// ],
 
-	[
-		'automatic-updates',
-		'Automatic updates'
-	],
+	// [
+	// 	'automatic-updates',
+	// 	'Automatic updates'
+	// ],
 
 	[
 		'ban-circle',
@@ -29,10 +29,10 @@ export default [
 		'Build'
 	],
 
-	[
-		'changes',
-		'Changes'
-	],
+	// [
+	// 	'changes',
+	// 	'Changes'
+	// ],
 
 	[
 		'chat',
@@ -44,20 +44,20 @@ export default [
 		'Clipboard'
 	],
 
-	[
-		'code',
-		'Code'
-	],
+	// [
+	// 	'code',
+	// 	'Code'
+	// ],
 
 	[
 		'comment',
 		'Comment'
 	],
 
-	[
-		'comparison',
-		'Comparison'
-	],
+	// [
+	// 	'comparison',
+	// 	'Comparison'
+	// ],
 
 	[
 		'confirm',
@@ -84,10 +84,10 @@ export default [
 		'Delete'
 	],
 
-	[
-		'derive-column',
-		'Derive column'
-	],
+	// [
+	// 	'derive-column',
+	// 	'Derive column'
+	// ],
 
 	[
 		'disable',
@@ -99,115 +99,115 @@ export default [
 		'Download'
 	],
 
-	[
-		'drag-handle-horizontal',
-		'Drag handle: horizontal'
-	],
+	// [
+	// 	'drag-handle-horizontal',
+	// 	'Drag handle: horizontal'
+	// ],
 
-	[
-		'drag-handle-vertical',
-		'Drag handle: vertical'
-	],
+	// [
+	// 	'drag-handle-vertical',
+	// 	'Drag handle: vertical'
+	// ],
 
-	[
-		'draw',
-		'Draw'
-	],
+	// [
+	// 	'draw',
+	// 	'Draw'
+	// ],
 
-	[
-		'duplicate',
-		'Duplicate'
-	],
+	// [
+	// 	'duplicate',
+	// 	'Duplicate'
+	// ],
 
 	[
 		'edit',
 		'Edit'
 	],
 
-	[
-		'endorsed',
-		'Endorsed'
-	],
+	// [
+	// 	'endorsed',
+	// 	'Endorsed'
+	// ],
 
-	[
-		'exchange',
-		'Exchange'
-	],
+	// [
+	// 	'exchange',
+	// 	'Exchange'
+	// ],
 
-	[
-		'export',
-		'Export'
-	],
+	// [
+	// 	'export',
+	// 	'Export'
+	// ],
 
-	[
-		'filter',
-		'Filter'
-	],
+	// [
+	// 	'filter',
+	// 	'Filter'
+	// ],
 
-	[
-		'filter-keep',
-		'Filter: keep'
-	],
+	// [
+	// 	'filter-keep',
+	// 	'Filter: keep'
+	// ],
 
-	[
-		'filter-list',
-		'Filter: list'
-	],
+	// [
+	// 	'filter-list',
+	// 	'Filter: list'
+	// ],
 
-	[
-		'filter-remove',
-		'Filter: remove'
-	],
+	// [
+	// 	'filter-remove',
+	// 	'Filter: remove'
+	// ],
 
-	[
-		'fork',
-		'Fork'
-	],
+	// [
+	// 	'fork',
+	// 	'Fork'
+	// ],
 
 	[
 		'geosearch',
 		'Geosearch'
 	],
 
-	[
-		'git-branch',
-		'Git: branch'
-	],
+	// [
+	// 	'git-branch',
+	// 	'Git: branch'
+	// ],
 
-	[
-		'git-commit',
-		'Git: commit'
-	],
+	// [
+	// 	'git-commit',
+	// 	'Git: commit'
+	// ],
 
-	[
-		'git-merge',
-		'Git: merge'
-	],
+	// [
+	// 	'git-merge',
+	// 	'Git: merge'
+	// ],
 
-	[
-		'git-new-branch',
-		'Git: new branch'
-	],
+	// [
+	// 	'git-new-branch',
+	// 	'Git: new branch'
+	// ],
 
-	[
-		'git-pull',
-		'Git: pull'
-	],
+	// [
+	// 	'git-pull',
+	// 	'Git: pull'
+	// ],
 
-	[
-		'git-push',
-		'Git: push'
-	],
+	// [
+	// 	'git-push',
+	// 	'Git: push'
+	// ],
 
-	[
-		'git-repo',
-		'Git: repo'
-	],
+	// [
+	// 	'git-repo',
+	// 	'Git: repo'
+	// ],
 
-	[
-		'group-objects',
-		'Group objects'
-	],
+	// [
+	// 	'group-objects',
+	// 	'Group objects'
+	// ],
 
 	[
 		'help',
@@ -224,20 +224,20 @@ export default [
 		'History'
 	],
 
-	[
-		'import',
-		'Import'
-	],
+	// [
+	// 	'import',
+	// 	'Import'
+	// ],
 
-	[
-		'insert',
-		'Insert'
-	],
+	// [
+	// 	'insert',
+	// 	'Insert'
+	// ],
 
-	[
-		'intersection',
-		'Intersection'
-	],
+	// [
+	// 	'intersection',
+	// 	'Intersection'
+	// ],
 
 	[
 		'locate',
@@ -249,70 +249,70 @@ export default [
 		'Lock'
 	],
 
-	[
-		'log-in',
-		'Login'
-	],
+	// [
+	// 	'log-in',
+	// 	'Login'
+	// ],
 
-	[
-		'log-out',
-		'Logout'
-	],
+	// [
+	// 	'log-out',
+	// 	'Logout'
+	// ],
 
-	[
-		'maximize',
-		'Maximize'
-	],
+	// [
+	// 	'maximize',
+	// 	'Maximize'
+	// ],
 
-	[
-		'merge-links',
-		'Merge into links'
-	],
+	// [
+	// 	'merge-links',
+	// 	'Merge into links'
+	// ],
 
-	[
-		'minimize',
-		'Minimize'
-	],
+	// [
+	// 	'minimize',
+	// 	'Minimize'
+	// ],
 
 	[
 		'minus',
 		'Minus'
 	],
 
-	[
-		'move',
-		'Move'
-	],
+	// [
+	// 	'move',
+	// 	'Move'
+	// ],
 
-	[
-		'new-link',
-		'New link'
-	],
+	// [
+	// 	'new-link',
+	// 	'New link'
+	// ],
 
-	[
-		'new-object',
-		'New object'
-	],
+	// [
+	// 	'new-object',
+	// 	'New object'
+	// ],
 
-	[
-		'new-text-box',
-		'New text box'
-	],
+	// [
+	// 	'new-text-box',
+	// 	'New text box'
+	// ],
 
-	[
-		'numbered-list',
-		'Numbered list'
-	],
+	// [
+	// 	'numbered-list',
+	// 	'Numbered list'
+	// ],
 
-	[
-		'numerical',
-		'Numerical'
-	],
+	// [
+	// 	'numerical',
+	// 	'Numerical'
+	// ],
 
-	[
-		'one-column',
-		'One column'
-	],
+	// [
+	// 	'one-column',
+	// 	'One column'
+	// ],
 
 	[
 		'paperclip',
@@ -324,20 +324,20 @@ export default [
 		'Path search'
 	],
 
-	[
-		'percentage',
-		'Percentage'
-	],
+	// [
+	// 	'percentage',
+	// 	'Percentage'
+	// ],
 
 	[
 		'pin',
 		'Pin'
 	],
 
-	[
-		'pivot',
-		'Pivot'
-	],
+	// [
+	// 	'pivot',
+	// 	'Pivot'
+	// ],
 
 	[
 		'plus',
@@ -349,20 +349,20 @@ export default [
 		'Predictive analysis'
 	],
 
-	[
-		'print',
-		'Print'
-	],
+	// [
+	// 	'print',
+	// 	'Print'
+	// ],
 
-	[
-		'circle',
-		'Radial'
-	],
+	// [
+	// 	'circle',
+	// 	'Radial'
+	// ],
 
-	[
-		'redo',
-		'Redo'
-	],
+	// [
+	// 	'redo',
+	// 	'Redo'
+	// ],
 
 	[
 		'refresh',
@@ -374,138 +374,138 @@ export default [
 		'Remove'
 	],
 
-	[
-		'graph-remove',
-		'Remove from graph'
-	],
+	// [
+	// 	'graph-remove',
+	// 	'Remove from graph'
+	// ],
 
 	[
 		'repeat',
 		'Repeat'
 	],
 
-	[
-		'resolve',
-		'Resolve'
-	],
+	// [
+	// 	'resolve',
+	// 	'Resolve'
+	// ],
 
 	[
 		'search',
 		'Search'
 	],
 
-	[
-		'search-around',
-		'Search around'
-	],
+	// [
+	// 	'search-around',
+	// 	'Search around'
+	// ],
 
-	[
-		'search-template',
-		'Search template'
-	],
+	// [
+	// 	'search-template',
+	// 	'Search template'
+	// ],
 
-	[
-		'search-text',
-		'Search text'
-	],
+	// [
+	// 	'search-text',
+	// 	'Search text'
+	// ],
 
-	[
-		'select',
-		'Select'
-	],
+	// [
+	// 	'select',
+	// 	'Select'
+	// ],
 
-	[
-		'selection',
-		'Selection'
-	],
+	// [
+	// 	'selection',
+	// 	'Selection'
+	// ],
 
-	[
-		'send-to',
-		'Send to'
-	],
+	// [
+	// 	'send-to',
+	// 	'Send to'
+	// ],
 
-	[
-		'send-to-graph',
-		'Send to graph'
-	],
+	// [
+	// 	'send-to-graph',
+	// 	'Send to graph'
+	// ],
 
 	[
 		'send-to-map',
 		'Send to map'
 	],
 
-	[
-		'share',
-		'Share'
-	],
+	// [
+	// 	'share',
+	// 	'Share'
+	// ],
 
-	[
-		'slash',
-		'Slash'
-	],
+	// [
+	// 	'slash',
+	// 	'Slash'
+	// ],
 
-	[
-		'small-cross',
-		'Small cross'
-	],
+	// [
+	// 	'small-cross',
+	// 	'Small cross'
+	// ],
 
-	[
-		'small-minus',
-		'Small minus'
-	],
+	// [
+	// 	'small-minus',
+	// 	'Small minus'
+	// ],
 
-	[
-		'small-plus',
-		'Small plus'
-	],
+	// [
+	// 	'small-plus',
+	// 	'Small plus'
+	// ],
 
-	[
-		'small-tick',
-		'Small tick'
-	],
+	// [
+	// 	'small-tick',
+	// 	'Small tick'
+	// ],
 
 	[
 		'social-media',
 		'Social media'
 	],
 
-	[
-		'sort',
-		'Sort'
-	],
+	// [
+	// 	'sort',
+	// 	'Sort'
+	// ],
+
+	// [
+	// 	'sort-alphabetical',
+	// 	'Sort: alphabetical'
+	// ],
+
+	// [
+	// 	'sort-alphabetical-desc',
+	// 	'Sort: alphabetical descending'
+	// ],
+
+	// [
+	// 	'sort-asc',
+	// 	'Sort: ascending'
+	// ],
+
+	// [
+	// 	'sort-desc',
+	// 	'Sort: descending'
+	// ],
+
+	// [
+	// 	'sort-numerical',
+	// 	'Sort: numerical'
+	// ],
+
+	// [
+	// 	'sort-numerical-desc',
+	// 	'Sort: numerical descending'
+	// ],
 
 	[
-		'sort-alphabetical',
-		'Sort: alphabetical'
-	],
-
-	[
-		'pt-icon-sort-alphabetical-desc',
-		'Sort: alphabetical descending'
-	],
-
-	[
-		'pt-icon-sort-asc',
-		'Sort: ascending'
-	],
-
-	[
-		'pt-icon-sort-desc',
-		'Sort: descending'
-	],
-
-	[
-		'pt-icon-sort-numerical',
-		'Sort: numerical'
-	],
-
-	[
-		'pt-icon-sort-numerical-desc',
-		'Sort: numerical descending'
-	],
-
-	[
-		'pt-icon-tag',
+		'tag',
 		'Tag'
 	],
 
@@ -524,265 +524,265 @@ export default [
 		'Tick circle'
 	],
 
-	[
-		'translate',
-		'Translate'
-	],
+	// [
+	// 	'translate',
+	// 	'Translate'
+	// ],
 
 	[
 		'trash',
 		'Trash'
 	],
 
-	[
-		'two-columns',
-		'Two columns'
-	],
+	// [
+	// 	'two-columns',
+	// 	'Two columns'
+	// ],
 
-	[
-		'undo',
-		'Undo'
-	],
+	// [
+	// 	'undo',
+	// 	'Undo'
+	// ],
 
-	[
-		'ungroup-objects',
-		'Ungroup objects'
-	],
+	// [
+	// 	'ungroup-objects',
+	// 	'Ungroup objects'
+	// ],
 
 	[
 		'unlock',
 		'Unlock'
 	],
 
-	[
-		'unpin',
-		'Unpin'
-	],
+	// [
+	// 	'unpin',
+	// 	'Unpin'
+	// ],
 
-	[
-		'unresolve',
-		'Unresolve'
-	],
+	// [
+	// 	'unresolve',
+	// 	'Unresolve'
+	// ],
 
 	[
 		'upload',
 		'Upload'
 	],
 
-	[
-		'zoom-in',
-		'Zoom in'
-	],
+	// [
+	// 	'zoom-in',
+	// 	'Zoom in'
+	// ],
 
-	[
-		'zoom-out',
-		'Zoom out'
-	],
+	// [
+	// 	'zoom-out',
+	// 	'Zoom out'
+	// ],
 
-	[
-		'zoom-to-fit',
-		'Zoom to fit'
-	],
+	// [
+	// 	'zoom-to-fit',
+	// 	'Zoom to fit'
+	// ],
 
-	[
-		'timeline-area-chart',
-		'Area chart'
-	],
+	// [
+	// 	'timeline-area-chart',
+	// 	'Area chart'
+	// ],
 
-	[
-		'timeline-bar-chart',
-		'Bar chart'
-	],
+	// [
+	// 	'timeline-bar-chart',
+	// 	'Bar chart'
+	// ],
 
 	[
 		'chart',
 		'Chart'
 	],
 
-	[
-		'curved-range-chart',
-		'Curved range chart'
-	],
+	// [
+	// 	'curved-range-chart',
+	// 	'Curved range chart'
+	// ],
 
 	[
 		'database',
 		'Database'
 	],
 
-	[
-		'doughnut-chart',
-		'Doughnut chart'
-	],
+	// [
+	// 	'doughnut-chart',
+	// 	'Doughnut chart'
+	// ],
 
-	[
-		'flows',
-		'Flows'
-	],
+	// [
+	// 	'flows',
+	// 	'Flows'
+	// ],
 
-	[
-		'form',
-		'Form'
-	],
+	// [
+	// 	'form',
+	// 	'Form'
+	// ],
 
-	[
-		'full-stacked-chart',
-		'Full stacked chart'
-	],
+	// [
+	// 	'full-stacked-chart',
+	// 	'Full stacked chart'
+	// ],
 
-	[
-		'gantt-chart',
-		'Gantt chart'
-	],
+	// [
+	// 	'gantt-chart',
+	// 	'Gantt chart'
+	// ],
 
-	[
-		'graph',
-		'Graph'
-	],
+	// [
+	// 	'graph',
+	// 	'Graph'
+	// ],
 
-	[
-		'grid',
-		'Grid'
-	],
+	// [
+	// 	'grid',
+	// 	'Grid'
+	// ],
 
-	[
-		'grouped-bar-chart',
-		'Grouped bar chart'
-	],
+	// [
+	// 	'grouped-bar-chart',
+	// 	'Grouped bar chart'
+	// ],
 
-	[
-		'heat-grid',
-		'Heat grid'
-	],
+	// [
+	// 	'heat-grid',
+	// 	'Heat grid'
+	// ],
 
 	[
 		'heatmap',
 		'Heatmap'
 	],
 
-	[
-		'horizontal-bar-chart',
-		'Horizontal bar chart'
-	],
+	// [
+	// 	'horizontal-bar-chart',
+	// 	'Horizontal bar chart'
+	// ],
 
-	[
-		'Horizontal bar chart: ascending',
-		'horizontal-bar-chart-asc'
-	],
+	// [
+	// 	'Horizontal bar chart: ascending',
+	// 	'horizontal-bar-chart-asc'
+	// ],
 
-	[
-		'Horizontal bar chart: descending',
-		'horizontal-bar-chart-desc'
-	],
+	// [
+	// 	'Horizontal bar chart: descending',
+	// 	'horizontal-bar-chart-desc'
+	// ],
 	
-	[
-		'layout',
-		'Layout'
-	],
+	// [
+	// 	'layout',
+	// 	'Layout'
+	// ],
 
-	[
-		'layout-auto',
-		'Layout: auto'
-	],
+	// [
+	// 	'layout-auto',
+	// 	'Layout: auto'
+	// ],
 
-	[
-		'layout-balloon',
-		'Layout: balloon'
-	],
+	// [
+	// 	'layout-balloon',
+	// 	'Layout: balloon'
+	// ],
 
-	[
-		'layout-circle',
-		'Layout: circle'
-	],
+	// [
+	// 	'layout-circle',
+	// 	'Layout: circle'
+	// ],
 
-	[
-		'layout-grid',
-		'Layout: grid'
-	],
+	// [
+	// 	'layout-grid',
+	// 	'Layout: grid'
+	// ],
 
-	[
-		'layout-group-by',
-		'Layout: group by'
-	],
+	// [
+	// 	'layout-group-by',
+	// 	'Layout: group by'
+	// ],
 
-	[
-		'layout-hierarchy',
-		'Layout: hierarchy'
-	],
+	// [
+	// 	'layout-hierarchy',
+	// 	'Layout: hierarchy'
+	// ],
 
-	[
-		'layout-linear',
-		'Layout: linear'
-	],
+	// [
+	// 	'layout-linear',
+	// 	'Layout: linear'
+	// ],
 
-	[
-		'layout-skew-grid',
-		'Layout: skew grid'
-	],
+	// [
+	// 	'layout-skew-grid',
+	// 	'Layout: skew grid'
+	// ],
 
-	[
-		'layout-sorted-clusters',
-		'Layout: sorted clusters'
-	],
+	// [
+	// 	'layout-sorted-clusters',
+	// 	'Layout: sorted clusters'
+	// ],
 
-	[
-		'timeline-line-chart',
-		'Line chart'
-	],
+	// [
+	// 	'timeline-line-chart',
+	// 	'Line chart'
+	// ],
 
-	[
-		'pie-chart',
-		'Pie chart'
-	],
+	// [
+	// 	'pie-chart',
+	// 	'Pie chart'
+	// ],
 
-	[
-		'polygon-filter',
-		'Polygon filter'
-	],
+	// [
+	// 	'polygon-filter',
+	// 	'Polygon filter'
+	// ],
 
-	[
-		'regression-chart',
-		'Regression chart'
-	],
+	// [
+	// 	'regression-chart',
+	// 	'Regression chart'
+	// ],
 
-	[
-		'scatter-plot',
-		'Scatter plot'
-	],
+	// [
+	// 	'scatter-plot',
+	// 	'Scatter plot'
+	// ],
 
-	[
-		'series-add',
-		'Series: add'
-	],
+	// [
+	// 	'series-add',
+	// 	'Series: add'
+	// ],
 
-	[
-		'series-configuration',
-		'Series: configuration'
-	],
+	// [
+	// 	'series-configuration',
+	// 	'Series: configuration'
+	// ],
 
-	[
-		'series-derived',
-		'Series: derived'
-	],
+	// [
+	// 	'series-derived',
+	// 	'Series: derived'
+	// ],
 
-	[
-		'series-filtered',
-		'Series: filtered'
-	],
+	// [
+	// 	'series-filtered',
+	// 	'Series: filtered'
+	// ],
 
-	[
-		'series-search',
-		'Series: search'
-	],
+	// [
+	// 	'series-search',
+	// 	'Series: search'
+	// ],
 
-	[
-		'stacked-chart',
-		'Stacked chart'
-	],
+	// [
+	// 	'stacked-chart',
+	// 	'Stacked chart'
+	// ],
 
-	[
-		'step-chart',
-		'Step chart'
-	],
+	// [
+	// 	'step-chart',
+	// 	'Step chart'
+	// ],
 
 	[
 		'trending-down',
@@ -804,15 +804,15 @@ export default [
 		'Vertical bar chart: descending'
 	],
 
-	[
-		'waterfall-chart',
-		'Waterfall chart'
-	],
+	// [
+	// 	'waterfall-chart',
+	// 	'Waterfall chart'
+	// ],
 
-	[
-		'add-to-folder',
-		'Add to folder'
-	],
+	// [
+	// 	'add-to-folder',
+	// 	'Add to folder'
+	// ],
 
 	[
 		'box',
@@ -834,10 +834,10 @@ export default [
 		'Cloud: upload'
 	],
 
-	[
-		'code-block',
-		'Code block'
-	],
+	// [
+	// 	'code-block',
+	// 	'Code block'
+	// ],
 
 	[
 		'compressed',
@@ -849,171 +849,170 @@ export default [
 		'Document'
 	],
 
-	[
-		'document-open',
-		'Document: open'
-	],
+	// [
+	// 	'document-open',
+	// 	'Document: open'
+	// ],
 
-	[
-		'document-share',
-		'Document: share'
-	],
+	// [
+	// 	'document-share',
+	// 	'Document: share'
+	// ],
 
-	[
-		'folder-close',
-		'Folder: closed'
-	],
+	// [
+	// 	'folder-close',
+	// 	'Folder: closed'
+	// ],
 
-	[
-		'folder-open',
-		'Folder: opened'
-	],
+	// [
+	// 	'folder-open',
+	// 	'Folder: opened'
+	// ],
 
-	[
-		'folder-shared',
-		'Folder: shared'
-	],
+	// [
+	// 	'folder-shared',
+	// 	'Folder: shared'
+	// ],
 
-	[
-		'folder-shared-open',
-		'Folder: shared open'
-	],
+	// [
+	// 	'folder-shared-open',
+	// 	'Folder: shared open'
+	// ],
 
 	[
 		'inbox',
 		'Inbox'
 	],
 
-	[
-		'saved',
-		'Saved'
-	],
+	// [
+	// 	'saved',
+	// 	'Saved'
+	// ],
 
 	[
 		'airplane',
 		'Airplane'
 	],
 
-	[
-		'application',
-		'Application'
-	],
+	// [
+	// 	'application',
+	// 	'Application'
+	// ],
 
-	[
-		'applications',
-		'Applications'
-	],
+	// [
+	// 	'applications',
+	// 	'Applications'
+	// ],
 
-	[
-		'arrow-bottom-left',
-		'Arrow: bottom left'
-	],
+	// [
+	// 	'arrow-bottom-left',
+	// 	'Arrow: bottom left'
+	// ],
 
-	[
-		'arrow-bottom-right',
-		'Arrow: bottom right'
-	],
+	// [
+	// 	'arrow-bottom-right',
+	// 	'Arrow: bottom right'
+	// ],
 
-	[
-		'arrow-down',
-		'Arrow: down'
-	],
+	// [
+	// 	'arrow-down',
+	// 	'Arrow: down'
+	// ],
 
-	[
-		'arrow-left',
-		'Arrow: left'
-	],
+	// [
+	// 	'arrow-left',
+	// 	'Arrow: left'
+	// ],
 
-	[
-		'arrow-right',
-		'Arrow: right'
-	],
+	// [
+	// 	'arrow-right',
+	// 	'Arrow: right'
+	// ],
 
+	// [
+	// 	'arrow-top-left',
+	// 	'Arrow: top left'
+	// ],
 
-	[
-		'arrow-top-left',
-		'Arrow: top left'
-	],
+	// [
+	// 	'arrow-top-right',
+	// 	'Arrow: top right'
+	// ],
 
-	[
-		'arrow-top-right',
-		'Arrow: top right'
-	],
+	// [
+	// 	'arrow-up',
+	// 	'Arrow: up'
+	// ],
 
-	[
-		'arrow-up',
-		'Arrow: up'
-	],
+	// [
+	// 	'arrows-horizontal',
+	// 	'Arrows: horizontal'
+	// ],
 
-	[
-		'arrows-horizontal',
-		'Arrows: horizontal'
-	],
+	// [
+	// 	'arrows-vertical',
+	// 	'Arrows: vertical'
+	// ],
 
-	[
-		'arrows-vertical',
-		'Arrows: vertical'
-	],
-
-	[
-		'blocked-person',
-		'Blocked person'
-	],
+	// [
+	// 	'blocked-person',
+	// 	'Blocked person'
+	// ],
 
 	[
 		'calendar',
 		'Calendar'
 	],
 
-	[
-		'caret-down',
-		'Caret: down'
-	],
+	// [
+	// 	'caret-down',
+	// 	'Caret: down'
+	// ],
 
-	[
-		'caret-left',
-		'Caret: left'
-	],
+	// [
+	// 	'caret-left',
+	// 	'Caret: left'
+	// ],
 
-	[
-		'caret-right',
-		'Caret: right'
-	],
+	// [
+	// 	'caret-right',
+	// 	'Caret: right'
+	// ],
 
-	[
-		'caret-up',
-		'Caret: up'
-	],
+	// [
+	// 	'caret-up',
+	// 	'Caret: up'
+	// ],
 
-	[
-		'chevron-backward',
-		'Chevron: backward'
-	],
+	// [
+	// 	'chevron-backward',
+	// 	'Chevron: backward'
+	// ],
 
-	[
-		'chevron-down',
-		'Chevron: down'
-	],
+	// [
+	// 	'chevron-down',
+	// 	'Chevron: down'
+	// ],
 
-	[
-		'chevron-forward',
-		'Chevron: forward'
-	],
+	// [
+	// 	'chevron-forward',
+	// 	'Chevron: forward'
+	// ],
 
-	[
-		'chevron-left',
-		'Chevron: left'
-	],
+	// [
+	// 	'chevron-left',
+	// 	'Chevron: left'
+	// ],
 
-	[
-		'chevron-right',
-		'Chevron: right'
-	],
+	// [
+	// 	'chevron-right',
+	// 	'Chevron: right'
+	// ],
 
-	[
-		'chevron-up',
-		'Chevron: up'
-	],
+	// [
+	// 	'chevron-up',
+	// 	'Chevron: up'
+	// ],
 
 	[
 		'circle-arrow-down',
@@ -1040,25 +1039,25 @@ export default [
 		'Cog'
 	],
 
-	[
-		'collapse-all',
-		'Collapse all'
-	],
+	// [
+	// 	'collapse-all',
+	// 	'Collapse all'
+	// ],
 
-	[
-		'compass',
-		'Compass'
-	],
+	// [
+	// 	'compass',
+	// 	'Compass'
+	// ],
 
-	[
-		'console',
-		'Console'
-	],
+	// [
+	// 	'console',
+	// 	'Console'
+	// ],
 
-	[
-		'control',
-		'Control'
-	],
+	// [
+	// 	'control',
+	// 	'Control'
+	// ],
 
 	[
 		'dashboard',
@@ -1075,35 +1074,35 @@ export default [
 		'Direction: right'
 	],
 
-	[
-		'double-caret-horizontal',
-		'Double caret: horizontal'
-	],
+	// [
+	// 	'double-caret-horizontal',
+	// 	'Double caret: horizontal'
+	// ],
 
-	[
-		'double-caret-vertical',
-		'Double caret: vertical'
-	],
+	// [
+	// 	'double-caret-vertical',
+	// 	'Double caret: vertical'
+	// ],
 
-	[
-		'double-chevron-down',
-		'Double chevron: down'
-	],
+	// [
+	// 	'double-chevron-down',
+	// 	'Double chevron: down'
+	// ],
 
-	[
-		'double-chevron-left',
-		'Double chevron: left'
-	],
+	// [
+	// 	'double-chevron-left',
+	// 	'Double chevron: left'
+	// ],
 
-	[
-		'double-chevron-right',
-		'Double chevron: right'
-	],
+	// [
+	// 	'double-chevron-right',
+	// 	'Double chevron: right'
+	// ],
 
-	[
-		'double-chevron-up',
-		'Double chevron: up'
-	],
+	// [
+	// 	'double-chevron-up',
+	// 	'Double chevron: up'
+	// ],
 
 	[
 		'drive-time',
@@ -1125,10 +1124,10 @@ export default [
 		'Events'
 	],
 
-	[
-		'expand-all',
-		'Expand all'
-	],
+	// [
+	// 	'expand-all',
+	// 	'Expand all'
+	// ],
 
 	[
 		'eye-open',
@@ -1140,40 +1139,40 @@ export default [
 		'Eye: off'
 	],
 
-	[
-		'eye-on',
-		'Eye: on'
-	],
+	// [
+	// 	'eye-on',
+	// 	'Eye: on'
+	// ],
 
 	[
 		'feed',
 		'Feed'
 	],
 
-	[
-		'feed-subscribed',
-		'Feed: subscribed'
-	],
+	// [
+	// 	'feed-subscribed',
+	// 	'Feed: subscribed'
+	// ],
 
 	[
 		'flag',
 		'Flag'
 	],
 
-	[
-		'floppy-disk',
-		'Floppy disk'
-	],
+	// [
+	// 	'floppy-disk',
+	// 	'Floppy disk'
+	// ],
 
-	[
-		'follower',
-		'Follower'
-	],
+	// [
+	// 	'follower',
+	// 	'Follower'
+	// ],
 
-	[
-		'following',
-		'Following'
-	],
+	// [
+	// 	'following',
+	// 	'Following'
+	// ],
 
 	[
 		'geolocation',
@@ -1205,10 +1204,10 @@ export default [
 		'Hand: up'
 	],
 
-	[
-		'helper-management',
-		'Helper management'
-	],
+	// [
+	// 	'helper-management',
+	// 	'Helper management'
+	// ],
 
 	[
 		'info-sign',
@@ -1220,50 +1219,50 @@ export default [
 		'Issue'
 	],
 
-	[
-		'issue-closed',
-		'Issue: closed'
-	],
+	// [
+	// 	'issue-closed',
+	// 	'Issue: closed'
+	// ],
 
-	[
-		'issue-new',
-		'Issue: new'
-	],
+	// [
+	// 	'issue-new',
+	// 	'Issue: new'
+	// ],
 
-	[
-		'key',
-		'Key'
-	],
+	// [
+	// 	'key',
+	// 	'Key'
+	// ],
 
-	[
-		'known-vehicle',
-		'Known vehicle'
-	],
+	// [
+	// 	'known-vehicle',
+	// 	'Known vehicle'
+	// ],
 
-	[
-		'label',
-		'Label'
-	],
+	// [
+	// 	'label',
+	// 	'Label'
+	// ],
 
-	[
-		'layer',
-		'Layer'
-	],
+	// [
+	// 	'layer',
+	// 	'Layer'
+	// ],
 
-	[
-		'layers',
-		'Layers'
-	],
+	// [
+	// 	'layers',
+	// 	'Layers'
+	// ],
 
-	[
-		'link',
-		'Link'
-	],
+	// [
+	// 	'link',
+	// 	'Link'
+	// ],
 
-	[
-		'manual',
-		'Manual'
-	],
+	// [
+	// 	'manual',
+	// 	'Manual'
+	// ],
 
 	[
 		'map',
@@ -1275,45 +1274,45 @@ export default [
 		'Map marker'
 	],
 
-	[
-		'menu',
-		'Menu'
-	],
+	// [
+	// 	'menu',
+	// 	'Menu'
+	// ],
 
-	[
-		'menu-closed',
-		'Menu: closed'
-	],
+	// [
+	// 	'menu-closed',
+	// 	'Menu: closed'
+	// ],
 
-	[
-		'menu-open',
-		'Menu: opened'
-	],
+	// [
+	// 	'menu-open',
+	// 	'Menu: opened'
+	// ],
 
-	[
-		'more',
-		'More'
-	],
+	// [
+	// 	'more',
+	// 	'More'
+	// ],
 
-	[
-		'mugshot',
-		'Mugshot'
-	],
+	// [
+	// 	'mugshot',
+	// 	'Mugshot'
+	// ],
 
-	[
-		'multi-select',
-		'Multi select'
-	],
+	// [
+	// 	'multi-select',
+	// 	'Multi select'
+	// ],
 
-	[
-		'map-create',
-		'New map'
-	],
+	// [
+	// 	'map-create',
+	// 	'New map'
+	// ],
 
-	[
-		'new-person',
-		'New person'
-	],
+	// [
+	// 	'new-person',
+	// 	'New person'
+	// ],
 
 	[
 		'notifications',
@@ -1325,15 +1324,15 @@ export default [
 		'Offline'
 	],
 
-	[
-		'oil-field',
-		'Oil field'
-	],
+	// [
+	// 	'oil-field',
+	// 	'Oil field'
+	// ],
 
-	[
-		'path',
-		'Path'
-	],
+	// [
+	// 	'path',
+	// 	'Path'
+	// ],
 
 	[
 		'people',
@@ -1345,40 +1344,40 @@ export default [
 		'Person'
 	],
 
-	[
-		'presentation',
-		'Presentation'
-	],
+	// [
+	// 	'presentation',
+	// 	'Presentation'
+	// ],
 
-	[
-		'projects',
-		'Projects'
-	],
+	// [
+	// 	'projects',
+	// 	'Projects'
+	// ],
 
-	[
-		'properties',
-		'Properties'
-	],
+	// [
+	// 	'properties',
+	// 	'Properties'
+	// ],
 
-	[
-		'property',
-		'Property'
-	],
+	// [
+	// 	'property',
+	// 	'Property'
+	// ],
 
-	[
-		'random',
-		'Random'
-	],
+	// [
+	// 	'random',
+	// 	'Random'
+	// ],
 
-	[
-		'rig',
-		'Rig'
-	],
+	// [
+	// 	'rig',
+	// 	'Rig'
+	// ],
 
-	[
-		'segmented-control',
-		'Segmented control'
-	],
+	// [
+	// 	'segmented-control',
+	// 	'Segmented control'
+	// ],
 
 	[
 		'star-empty',
@@ -1390,50 +1389,50 @@ export default [
 		'Star: filled'
 	],
 
-	[
-		'swap-horizontal',
-		'Swap: horizontal'
-	],
+	// [
+	// 	'swap-horizontal',
+	// 	'Swap: horizontal'
+	// ],
 
-	[
-		'swap-vertical',
-		'Swap: vertical'
-	],
+	// [
+	// 	'swap-vertical',
+	// 	'Swap: vertical'
+	// ],
 
-	[
-		'symbol-circle',
-		'Symbol: circle'
-	],
+	// [
+	// 	'symbol-circle',
+	// 	'Symbol: circle'
+	// ],
 
-	[
-		'symbol-cross',
-		'Symbol: cross'
-	],
+	// [
+	// 	'symbol-cross',
+	// 	'Symbol: cross'
+	// ],
 
-	[
-		'symbol-diamond',
-		'Symbol: diamond'
-	],
+	// [
+	// 	'symbol-diamond',
+	// 	'Symbol: diamond'
+	// ],
 
-	[
-		'symbol-square',
-		'Symbol: square'
-	],
+	// [
+	// 	'symbol-square',
+	// 	'Symbol: square'
+	// ],
 
-	[
-		'symbol-triangle-down',
-		'Symbol: triangle down'
-	],
+	// [
+	// 	'symbol-triangle-down',
+	// 	'Symbol: triangle down'
+	// ],
 
-	[
-		'symbol-triangle-up',
-		'Symbol: triangle up'
-	],
+	// [
+	// 	'symbol-triangle-up',
+	// 	'Symbol: triangle up'
+	// ],
 
-	[
-		'taxi',
-		'Taxi'
-	],
+	// [
+	// 	'taxi',
+	// 	'Taxi'
+	// ],
 
 	[
 		'thumbs-down',
@@ -1450,10 +1449,10 @@ export default [
 		'Time'
 	],
 
-	[
-		'train',
-		'Train'
-	],
+	// [
+	// 	'train',
+	// 	'Train'
+	// ],
 
 	[
 		'unknown-vehicle',
@@ -1465,130 +1464,130 @@ export default [
 		'User'
 	],
 
-	[
-		'walk',
-		'Walk'
-	],
+	// [
+	// 	'walk',
+	// 	'Walk'
+	// ],
 
 	[
 		'warning-sign',
 		'Warning'
 	],
 
-	[
-		'widget',
-		'Widget'
-	],
+	// [
+	// 	'widget',
+	// 	'Widget'
+	// ],
 
-	[
-		'widget-button',
-		'Widget: button'
-	],
+	// [
+	// 	'widget-button',
+	// 	'Widget: button'
+	// ],
 
-	[
-		'widget-footer',
-		'Widget: footer'
-	],
+	// [
+	// 	'widget-footer',
+	// 	'Widget: footer'
+	// ],
 
-	[
-		'widget-header',
-		'Widget: header'
-	],
+	// [
+	// 	'widget-header',
+	// 	'Widget: header'
+	// ],
 
 	[
 		'camera',
 		'Camera'
 	],
 
-	[
-		'contrast',
-		'Contrast'
-	],
+	// [
+	// 	'contrast',
+	// 	'Contrast'
+	// ],
 
-	[
-		'desktop',
-		'Desktop'
-	],
+	// [
+	// 	'desktop',
+	// 	'Desktop'
+	// ],
 
-	[
-		'eject',
-		'Eject'
-	],
+	// [
+	// 	'eject',
+	// 	'Eject'
+	// ],
 
-	[
-		'fast-backward',
-		'Fast backward'
-	],
+	// [
+	// 	'fast-backward',
+	// 	'Fast backward'
+	// ],
 
-	[
-		'fast-forward',
-		'Fast forward'
-	],
+	// [
+	// 	'fast-forward',
+	// 	'Fast forward'
+	// ],
 
 	[
 		'film',
 		'Film'
 	],
 
-	[
-		'flash',
-		'Flash'
-	],
+	// [
+	// 	'flash',
+	// 	'Flash'
+	// ],
 
-	[
-		'fullscreen',
-		'Fullscreen'
-	],
+	// [
+	// 	'fullscreen',
+	// 	'Fullscreen'
+	// ],
 
-	[
-		'headset',
-		'Headset'
-	],
+	// [
+	// 	'headset',
+	// 	'Headset'
+	// ],
 
-	[
-		'key-backspace',
-		'Key: backspace'
-	],
+	// [
+	// 	'key-backspace',
+	// 	'Key: backspace'
+	// ],
 
-	[
-		'key-command',
-		'Key: command'
-	],
+	// [
+	// 	'key-command',
+	// 	'Key: command'
+	// ],
 
-	[
-		'key-control',
-		'Key: control'
-	],
+	// [
+	// 	'key-control',
+	// 	'Key: control'
+	// ],
 
-	[
-		'key-delete',
-		'Key: delete'
-	],
+	// [
+	// 	'key-delete',
+	// 	'Key: delete'
+	// ],
 
-	[
-		'key-enter',
-		'Key: enter'
-	],
+	// [
+	// 	'key-enter',
+	// 	'Key: enter'
+	// ],
 
-	[
-		'key-escape',
-		'Key: escape'
-	],
+	// [
+	// 	'key-escape',
+	// 	'Key: escape'
+	// ],
 
-	[
-		'key-option',
-		'Key: option'
-	],
+	// [
+	// 	'key-option',
+	// 	'Key: option'
+	// ],
 
-	[
-		'key-shift',
-		'Key: shift'
-	],
+	// [
+	// 	'key-shift',
+	// 	'Key: shift'
+	// ],
 
-	[
-		'key-tab',
-		'Key: tab'
-	],
+	// [
+	// 	'key-tab',
+	// 	'Key: tab'
+	// ],
 
 	[
 		'media',
@@ -1610,65 +1609,65 @@ export default [
 		'Music'
 	],
 
-	[
-		'pause',
-		'Pause'
-	],
+	// [
+	// 	'pause',
+	// 	'Pause'
+	// ],
 
 	[
 		'phone',
 		'Phone'
 	],
 
-	[
-		'play',
-		'Play'
-	],
+	// [
+	// 	'play',
+	// 	'Play'
+	// ],
 
-	[
-		'power',
-		'Power'
-	],
+	// [
+	// 	'power',
+	// 	'Power'
+	// ],
 
-	[
-		'record',
-		'Record'
-	],
+	// [
+	// 	'record',
+	// 	'Record'
+	// ],
 
-	[
-		'image-rotate-left',
-		'Rotate image: left'
-	],
+	// [
+	// 	'image-rotate-left',
+	// 	'Rotate image: left'
+	// ],
 
-	[
-		'image-rotate-right',
-		'Rotate image: right'
-	],
+	// [
+	// 	'image-rotate-right',
+	// 	'Rotate image: right'
+	// ],
 
-	[
-		'settings',
-		'Settings'
-	],
+	// [
+	// 	'settings',
+	// 	'Settings'
+	// ],
 
-	[
-		'sim-card',
-		'Sim card'
-	],
+	// [
+	// 	'sim-card',
+	// 	'Sim card'
+	// ],
 
-	[
-		'step-backward',
-		'Step backward'
-	],
+	// [
+	// 	'step-backward',
+	// 	'Step backward'
+	// ],
 
-	[
-		'step-forward',
-		'Step forward'
-	],
+	// [
+	// 	'step-forward',
+	// 	'Step forward'
+	// ],
 
-	[
-		'stop',
-		'Stop'
-	],
+	// [
+	// 	'stop',
+	// 	'Stop'
+	// ],
 
 	[
 		'tint',
@@ -1680,40 +1679,40 @@ export default [
 		'Video'
 	],
 
-	[
-		'volume-down',
-		'Volume: down'
-	],
+	// [
+	// 	'volume-down',
+	// 	'Volume: down'
+	// ],
 
-	[
-		'volume-off',
-		'Volume: off'
-	],
+	// [
+	// 	'volume-off',
+	// 	'Volume: off'
+	// ],
 
-	[
-		'volume-up',
-		'Volume: up'
-	],
+	// [
+	// 	'volume-up',
+	// 	'Volume: up'
+	// ],
 
-	[
-		'asterisk',
-		'Asterisk'
-	],
+	// [
+	// 	'asterisk',
+	// 	'Asterisk'
+	// ],
 	
 	[
 		'badge',
 		'Badge'
 	],
 	
-	[
-		'bank-account',
-		'Bank account'
-	],
+	// [
+	// 	'bank-account',
+	// 	'Bank account'
+	// ],
 	
-	[
-		'barcode',
-		'Barcode'
-	],
+	// [
+	// 	'barcode',
+	// 	'Barcode'
+	// ],
 	
 	[
 		'blank',
@@ -1740,30 +1739,30 @@ export default [
 		'Cell tower'
 	],
 	
-	[
-		'delta',
-		'Delta'
-	],
+	// [
+	// 	'delta',
+	// 	'Delta'
+	// ],
 	
 	[
 		'dollar',
 		'Dollar'
 	],
 	
-	[
-		'dot',
-		'Dot'
-	],
+	// [
+	// 	'dot',
+	// 	'Dot'
+	// ],
 	
-	[
-		'euro',
-		'Euro'
-	],
+	// [
+	// 	'euro',
+	// 	'Euro'
+	// ],
 	
-	[
-		'full-circle',
-		'Full circle'
-	],
+	// [
+	// 	'full-circle',
+	// 	'Full circle'
+	// ],
 	
 	[
 		'glass',
@@ -1790,10 +1789,10 @@ export default [
 		'ID number'
 	],
 	
-	[
-		'ip-address',
-		'IP address'
-	],
+	// [
+	// 	'ip-address',
+	// 	'IP address'
+	// ],
 	
 	[
 		'lightbulb',
@@ -1805,55 +1804,55 @@ export default [
 		'Moon'
 	],
 	
-	[
-		'ninja',
-		'Ninja'
-	],
+	// [
+	// 	'ninja',
+	// 	'Ninja'
+	// ],
 	
 	[
 		'office',
 		'Office'
 	],
 	
-	[
-		'prescription',
-		'Prescription'
-	],
+	// [
+	// 	'prescription',
+	// 	'Prescription'
+	// ],
 	
-	[
-		'new-prescription',
-		'Prescription: new'
-	],
+	// [
+	// 	'new-prescription',
+	// 	'Prescription: new'
+	// ],
 	
 	[
 		'pulse',
 		'Pulse'
 	],
 	
-	[
-		'ring',
-		'Ring'
-	],
+	// [
+	// 	'ring',
+	// 	'Ring'
+	// ],
 	
 	[
 		'satellite',
 		'Satellite'
 	],
 	
-	[
-		'shop',
-		'Shop'
-	],
+	// [
+	// 	'shop',
+	// 	'Shop'
+	// ],
 	
 	[
 		'shopping-cart',
 		'Shopping cart'
 	],
 	
-	[
-		'square',
-		'Square'
-	],
+	// [
+	// 	'square',
+	// 	'Square'
+	// ],
 	
 	[
 		'torch',
