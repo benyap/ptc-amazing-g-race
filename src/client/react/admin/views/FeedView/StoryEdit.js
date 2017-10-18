@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import { graphql } from 'react-apollo';
 import { Button, Intent, Dialog, Icon } from '@blueprintjs/core';
-import FormInput from '../../../../../../lib/react/components/forms/FormInput';
 import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEditor';
 import { editStory } from '../../../../graphql/story';
 import NotificationToaster from '../../../components/NotificationToaster';
+import IconSelect from './IconSelect';
 
 
 @graphql(editStory('ok'), { name: 'MutationEditStory' })
@@ -121,8 +121,7 @@ class StoryEdit extends React.Component {
 								<Icon iconName={this.state.iconName} iconSize={20}/>
 							</div>
 							<div style={{flexGrow:'1',marginLeft:'1rem'}}>
-								<FormInput id='iconName' value={this.state.iconName} onChange={this.editValue('iconName')} disabled={this.state.editStoryLoading}
-									label='Icon name (optional)' helperText='Preview the icon on the left if it is a valid icon name'/>
+								<IconSelect value={this.state.iconName} onChange={this.editValue('iconName')} disabled={this.state.editStoryLoading}/>
 							</div>
 						</div>
 						
