@@ -7,6 +7,7 @@ import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEdito
 import { createStory } from '../../../../graphql/story';
 import NotificationToaster from '../../../components/NotificationToaster';
 import IconSelect from './IconSelect';
+import IntentSelect from './IntentSelect';
 
 
 @graphql(createStory('ok'), { name: 'MutationCreateStory' })
@@ -100,19 +101,8 @@ class StoryCreate extends React.Component {
 								</select>
 							</div>
 						</label>
-
-						<label className='pt-label'>
-							Intent: 
-							<div className='pt-select'>
-								<select onChange={this.editValue('intent')} value={this.state.intent} disabled={this.state.createStoryLoading}>
-									<option value='none'>None (white)</option>
-									<option value='primary'>Primary (blue)</option>
-									<option value='success'>Success (green)</option>
-									<option value='warning'>Warning (yellow)</option>
-									<option value='danger'>Danger (red)</option>
-								</select>
-							</div>
-						</label>
+						
+						<IntentSelect onChange={this.editValue('intent')} value={this.state.intent} disabled={this.state.createStoryLoading}/>
 						
 						<label className='pt-label'>
 							Post as: 

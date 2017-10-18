@@ -7,6 +7,7 @@ import MarkdownEditor from '../../../../../../lib/react/components/MarkdownEdito
 import { editStory } from '../../../../graphql/story';
 import NotificationToaster from '../../../components/NotificationToaster';
 import IconSelect from './IconSelect';
+import IntentSelect from './IntentSelect';
 
 
 @graphql(editStory('ok'), { name: 'MutationEditStory' })
@@ -103,18 +104,7 @@ class StoryEdit extends React.Component {
 							</div>
 							:null}
 
-						<label className='pt-label'>
-							Intent: 
-							<div className='pt-select'>
-								<select onChange={this.editValue('intent')} value={this.state.intent} disabled={this.state.editStoryLoading}>
-									<option value='none'>None (white)</option>
-									<option value='primary'>Primary (blue)</option>
-									<option value='success'>Success (green)</option>
-									<option value='warning'>Warning (yellow)</option>
-									<option value='danger'>Danger (red)</option>
-								</select>
-							</div>
-						</label>
+						<IntentSelect onChange={this.editValue('intent')} value={this.state.intent} disabled={this.state.editStoryLoading}/>
 
 						<div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
 							<div style={{width:'40px',height:'40px',padding:'10px',textAlign:'center',border:'solid 1px slategray',borderRadius:'0.3rem'}}>
