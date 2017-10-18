@@ -90,7 +90,7 @@ class StoryCreate extends React.Component {
 						<label className='pt-label'>
 							Story type: 
 							<div className='pt-select'>
-								<select onChange={this.editValue('type')} disabled={this.state.createStoryLoading}>
+								<select onChange={this.editValue('type')} value={this.state.type}  disabled={this.state.createStoryLoading}>
 									<option value='custom'>Custom</option>
 									<option value='user'>User</option>
 									<option value='useHint'>Use hint</option>
@@ -104,7 +104,7 @@ class StoryCreate extends React.Component {
 						<label className='pt-label'>
 							Intent: 
 							<div className='pt-select'>
-								<select onChange={this.editValue('intent')} disabled={this.state.createStoryLoading}>
+								<select onChange={this.editValue('intent')} value={this.state.intent} disabled={this.state.createStoryLoading}>
 									<option value='none'>None (white)</option>
 									<option value='primary'>Primary (blue)</option>
 									<option value='success'>Success (green)</option>
@@ -117,7 +117,7 @@ class StoryCreate extends React.Component {
 						<label className='pt-label'>
 							Post as: 
 							<div className='pt-select'>
-								<select onChange={this.editValue('who')} disabled={this.state.createStoryLoading}>
+								<select onChange={this.editValue('who')} value={this.state.who} disabled={this.state.createStoryLoading}>
 									<option value='me'>Me</option>
 									<option value='admins'>Planning Team</option>
 									<option value='generated'>Auto-generated</option>
