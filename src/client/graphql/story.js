@@ -64,6 +64,14 @@ const setStoryLiked = (params) => {
 }
 
 
+const editStory = (params) => {
+	return gql`
+	mutation EditStory($storyId:ID!,$property:StoryEditProperty!,$value:String!){
+		editStory(storyId:$storyId,property:$property,value:$value){ ${params} }
+	}`;
+}
+
+
 export {
 	getAllStories,
 	getStories,
@@ -71,5 +79,6 @@ export {
 	deleteStory,
 	createStory,
 	createUserStory,
-	setStoryLiked
+	setStoryLiked,
+	editStory
 };
