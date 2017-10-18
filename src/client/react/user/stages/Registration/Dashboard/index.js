@@ -11,7 +11,6 @@ import axios from 'axios';
 import ScrollAnimation from 'react-animate-on-scroll';
 import Title from '../../../components/Title';
 import NotificationToaster from '../../../../components/NotificationToaster';
-import LoginRefresher from '../../../../components/LoginRefresher';
 import LogoutFunction from '../../../../components/LogoutFunction';
 
 import '../../../scss/components/_dashboard.scss';
@@ -118,7 +117,6 @@ class Dashboard extends React.Component {
 			
 			return (
 				<main id='dashboard'>
-					<LoginRefresher refreshToken={this.props.refresh}/>
 					<Title notAnimated/>
 					<ScrollAnimation animateOnce animateIn='zoomIn' offset={-500} duration={0.5}>
 						<div className='dashboard pt-dark'>
