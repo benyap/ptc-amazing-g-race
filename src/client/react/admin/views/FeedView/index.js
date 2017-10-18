@@ -34,8 +34,6 @@ class FeedView extends React.Component {
 	state = {
 		skip: '0',
 		limit: '50',
-		refetching: false,
-		renderStory: null,
 		publishing: false
 	}
 
@@ -47,35 +45,8 @@ class FeedView extends React.Component {
 		this._mounted = false;
 	}
 
-	renderProfile(story) {
-		this.setState({ renderStory: story });
-	}
-
-	closeProfile() {
-		this.setState({ viewProfile: null }, () => {
-			this.refetchStories();
-		});
-	}
-
 	setPublishing(publishing) {
 		this.setState({publishing});
-	}
-
-	async refetchStories() {
-		if (!this.state.viewProfile) {
-			if (this._mounted) this.setState({refetching: true});
-
-			try {
-				await this.props.QueryGetAllStories.refetch();
-				if (this._mounted) this.setState({refetching: false});
-			}
-			catch (err) {
-				NotificationToaster.show({
-					intent: Intent.DANGER,
-					message: err.toString()
-				});
-			}
-		}
 	}
 
 	render() {
