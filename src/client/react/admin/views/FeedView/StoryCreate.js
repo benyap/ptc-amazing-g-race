@@ -93,11 +93,11 @@ class StoryCreate extends React.Component {
 							<div className='pt-select'>
 								<select onChange={this.editValue('type')} value={this.state.type}  disabled={this.state.createStoryLoading}>
 									<option value='custom'>Custom</option>
-									<option value='user'>User</option>
-									<option value='useHint'>Use hint</option>
-									<option value='challengeUnlock'>Challenge unlock</option>
-									<option value='challengeRespond'>Challenge response</option>
-									<option value='challengeCheck'>Challenge checked</option>
+									<option value='user'>User story</option>
+									<option value='useHint'>Use hint (system)</option>
+									<option value='challengeUnlock'>Challenge unlock (system)</option>
+									<option value='challengeRespond'>Challenge response (system)</option>
+									<option value='challengeCheck'>Challenge checked (system)</option>
 								</select>
 							</div>
 						</label>
