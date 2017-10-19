@@ -34,20 +34,20 @@ class ChallengesView extends React.Component {
 		refetching: false
 	}
 
-	refetchChallenges() {
+	async refetchChallenges() {
 		if (!this.state.viewProfile) {
 			this.setState({refetching: true});
-			this.props.QueryGetAllChallenges.refetch()
-			.then(() => {
+			try {
+				await this.props.QueryGetAllChallenges.refetch();
 				this.setState({refetching: false});
 				this.props.dispatch(saveState());
-			})
-			.catch((err) => {
+			}
+			catch (err) {
 				NotificationToaster.show({
 					intent: Intent.DANGER,
 					message: err.toString()
 				});
-			});
+			}
 		}
 	}
 
