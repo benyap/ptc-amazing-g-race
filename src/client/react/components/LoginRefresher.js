@@ -8,6 +8,8 @@ import { refresh, logout } from '../../actions/authActions';
 import NotificationToaster from './NotificationToaster';
 
 
+const DEBUG = false;
+
 const MutationAccessRefresh = gql`
 mutation GetRefresh($refreshToken: String!){
 	refresh(refreshToken:$refreshToken) {
@@ -23,7 +25,7 @@ const mapStateToProps = (state, ownProps) => {
 	return { authenticated: state.auth.login.authenticated };
 }
 
-@connect()
+@connect(mapStateToProps)
 @graphql(MutationAccessRefresh, MutationAccessRefreshOptions)
 @autobind
 class LoginRefresh extends React.Component {
@@ -51,8 +53,11 @@ class LoginRefresh extends React.Component {
 	}
 
 	async refreshAccessToken() {
+		if (DEBUG) console.log('Access refresh: start');
+
 		if (!this.props.authenticated) {
 			// Don't need to do anything if not authenticated
+			if (DEBUG) console.log('Access refresh: stopped - not authenticated');
 			return;
 		}
 
@@ -73,7 +78,7 @@ class LoginRefresh extends React.Component {
 			if (result.data.refresh.ok) {
 				// Refresh successful
 				if (this.props.setRefreshing) this.props.setRefreshing(false);
-				this.props.dispatch(refresh(accessToken), new Date());
+				this.props.dispatch(refresh(result.data.refresh.access_token), new Date());
 			}
 			else {
 				// Refresh failed
@@ -83,6 +88,8 @@ class LoginRefresh extends React.Component {
 		catch (err) {
 			this._dispatchLogout(err.toString());
 		}
+
+		if (DEBUG) console.log('Access refresh: complete');
 	}
 
 	_dispatchLogout(message) {
