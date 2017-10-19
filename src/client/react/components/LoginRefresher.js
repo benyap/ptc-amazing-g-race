@@ -58,10 +58,10 @@ class LoginRefresh extends React.Component {
 
 		if (!this.props.refreshToken) {
 			// Don't try to refresh if there is no refresh token
-			this._dispatchLogout();
+			this._dispatchLogout('missing token');
 			return;
 		}
-
+		
 		if (this.props.setRefreshing) this.props.setRefreshing(true);
 
 		// Send refresh request
@@ -69,30 +69,25 @@ class LoginRefresh extends React.Component {
 			const result = await this.props.MutationAccessRefresh({
 				variables: { refreshToken: this.props.refreshToken }
 			});
-
 			
 			if (result.data.refresh.ok) {
 				// Refresh successful
 				if (this.props.setRefreshing) this.props.setRefreshing(false);
-				this._dispatchRefresh(result.data.refresh.access_token);
+				this.props.dispatch(refresh(accessToken), new Date());
 			}
 			else {
 				// Refresh failed
-				if (this.props.setRefreshing) this.props.setRefreshing(false, result.data.refresh.message);
-				this._dispatchLogout();
+				this._dispatchLogout(result.data.refresh.message);
 			}
 		}
 		catch (err) {
-			if (this.props.setRefreshing) this.props.setRefreshing(false, err.toString());
-			this._dispatchLogout();
+			this._dispatchLogout(err.toString());
 		}
 	}
 
-	_dispatchRefresh(accessToken) {
-		this.props.dispatch(refresh(accessToken), new Date());
-	}
-
-	_dispatchLogout() {
+	_dispatchLogout(message) {
+		if (this.props.setRefreshing) this.props.setRefreshing(false, message);
+		console.warn(`Refresh access failed: ${message}`);
 		this.props.dispatch(logout(new Date()));
 	}
 
