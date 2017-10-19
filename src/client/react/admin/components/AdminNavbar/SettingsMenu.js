@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import autobind from 'core-decorators/es/autobind';
 import { Menu, MenuItem, MenuDivider } from "@blueprintjs/core";
 import { connect } from 'react-redux';
 import { toggleShowNotifications } from '../../../../actions/settingsActions';
-import autobind from 'core-decorators/es/autobind';
 
 
 const mapStateToProps = (state, ownProps) => {
