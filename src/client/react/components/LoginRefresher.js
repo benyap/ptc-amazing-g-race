@@ -39,15 +39,15 @@ class LoginRefresh extends React.Component {
 
 	componentWillUnmount() {
 		// Stop timer
-		if (this.interval) {
-			clearInterval(this.interval);
+		if (this.refreshInterval) {
+			clearInterval(this.refreshInterval);
 		}
 	}
 
 	componentDidMount() {
 		// Start timer
 		this.refreshAccessToken();
-		this.interval = setInterval(this.refresh, this.props.interval);
+		this.refreshInterval = setInterval(this.refreshAccessToken, this.props.interval);
 	}
 
 	async refreshAccessToken() {
