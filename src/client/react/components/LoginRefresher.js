@@ -8,6 +8,8 @@ import { refresh, logout } from '../../actions/authActions';
 import NotificationToaster from './NotificationToaster';
 
 
+const DEBUG = false;
+
 const MutationAccessRefresh = gql`
 mutation GetRefresh($refreshToken: String!){
 	refresh(refreshToken:$refreshToken) {
@@ -23,7 +25,7 @@ const mapStateToProps = (state, ownProps) => {
 	return { authenticated: state.auth.login.authenticated };
 }
 
-@connect()
+@connect(mapStateToProps)
 @graphql(MutationAccessRefresh, MutationAccessRefreshOptions)
 @autobind
 class LoginRefresh extends React.Component {
@@ -39,29 +41,32 @@ class LoginRefresh extends React.Component {
 
 	componentWillUnmount() {
 		// Stop timer
-		if (this.interval) {
-			clearInterval(this.interval);
+		if (this.refreshInterval) {
+			clearInterval(this.refreshInterval);
 		}
 	}
 
 	componentDidMount() {
 		// Start timer
 		this.refreshAccessToken();
-		this.interval = setInterval(this.refresh, this.props.interval);
+		this.refreshInterval = setInterval(this.refreshAccessToken, this.props.interval);
 	}
 
 	async refreshAccessToken() {
+		if (DEBUG) console.log('Access refresh: start');
+
 		if (!this.props.authenticated) {
 			// Don't need to do anything if not authenticated
+			if (DEBUG) console.log('Access refresh: stopped - not authenticated');
 			return;
 		}
 
 		if (!this.props.refreshToken) {
 			// Don't try to refresh if there is no refresh token
-			this._dispatchLogout();
+			this._dispatchLogout('missing token');
 			return;
 		}
-
+		
 		if (this.props.setRefreshing) this.props.setRefreshing(true);
 
 		// Send refresh request
@@ -69,30 +74,27 @@ class LoginRefresh extends React.Component {
 			const result = await this.props.MutationAccessRefresh({
 				variables: { refreshToken: this.props.refreshToken }
 			});
-
 			
 			if (result.data.refresh.ok) {
 				// Refresh successful
 				if (this.props.setRefreshing) this.props.setRefreshing(false);
-				this._dispatchRefresh(result.data.refresh.access_token);
+				this.props.dispatch(refresh(result.data.refresh.access_token), new Date());
 			}
 			else {
 				// Refresh failed
-				if (this.props.setRefreshing) this.props.setRefreshing(false, result.data.refresh.message);
-				this._dispatchLogout();
+				this._dispatchLogout(result.data.refresh.message);
 			}
 		}
 		catch (err) {
-			if (this.props.setRefreshing) this.props.setRefreshing(false, err.toString());
-			this._dispatchLogout();
+			this._dispatchLogout(err.toString());
 		}
+
+		if (DEBUG) console.log('Access refresh: complete');
 	}
 
-	_dispatchRefresh(accessToken) {
-		this.props.dispatch(refresh(accessToken), new Date());
-	}
-
-	_dispatchLogout() {
+	_dispatchLogout(message) {
+		if (this.props.setRefreshing) this.props.setRefreshing(false, message);
+		console.warn(`Refresh access failed: ${message}`);
 		this.props.dispatch(logout(new Date()));
 	}
 
