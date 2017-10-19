@@ -55,6 +55,8 @@ class ChallengeItemProfile extends React.Component {
 	}
 
 	componentDidMount() {
+		this._mounted = true;
+
 		if (this.state.challengeItem === null) {
 			this.props.challenge.items.forEach((item) => {
 				if (item.key === this.props.itemKey) {
@@ -69,6 +71,10 @@ class ChallengeItemProfile extends React.Component {
 		}
 	}
 
+	componentWillUnmount() {
+		this._mounted = false;
+	}
+	
 	closeItem() {
 		if (this.state.modified) {
 			this.toggleDialog('ConfirmClose')();
