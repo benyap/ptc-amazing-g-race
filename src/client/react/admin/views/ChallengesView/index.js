@@ -34,20 +34,12 @@ class ChallengesView extends React.Component {
 		refetching: false
 	}
 
-	componentDidMount() {
-		this._mounted = true;
-	}
-
-	componentWillUnmount() {
-		this._mounted = false;
-	}
-
 	refetchChallenges() {
 		if (!this.state.viewProfile) {
-			if (this._mounted) this.setState({refetching: true});
+			this.setState({refetching: true});
 			this.props.QueryGetAllChallenges.refetch()
 			.then(() => {
-				if (this._mounted) this.setState({refetching: false});
+				this.setState({refetching: false});
 				this.props.dispatch(saveState());
 			})
 			.catch((err) => {
