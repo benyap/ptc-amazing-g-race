@@ -94,7 +94,6 @@ class StoryCreate extends React.Component {
 								<select onChange={this.editValue('type')} value={this.state.type}  disabled={this.state.createStoryLoading}>
 									<option value='custom'>Custom</option>
 									<option value='user'>User story</option>
-									<option value='useHint'>Use hint (system)</option>
 									<option value='challengeUnlock'>Challenge unlock (system)</option>
 									<option value='challengeRespond'>Challenge response (system)</option>
 									<option value='challengeCheck'>Challenge checked (system)</option>

@@ -3,6 +3,7 @@ import Mongo from 'mongodb';
 import connect from '../connect';
 import permission from '../permission';
 import { s3, s3Admin, AWS_S3_BUCKET, AWS_S3_UPLOAD_LOCATION } from '../s3';
+import StoryGenerator from './StoryGenerator';
 
 import upload from './upload';
 import team from './team';
@@ -146,7 +147,7 @@ const addResponse = async function(user, challengeKey, itemKey, responseType, re
 
 	const authorized = await permission.checkPermission(user, ['user:access-challenges']);
 	if (authorized !== true) return authorized;
-
+	
 	// Validate parameters
 	if (!challengeKey) return new Error('A challenge key is required.');
 	if (!itemKey) return new Error('An item key is required.');
@@ -161,11 +162,11 @@ const addResponse = async function(user, challengeKey, itemKey, responseType, re
 	const db = await connect();
 	
 	// Ensure user is in a team 
-	let userCheck = await db.collection('users').findOne({username: user.username});
+	const userCheck = await db.collection('users').findOne({username: user.username});
 	if (!userCheck.teamId) return new Error(`You are not in a team.`);
 
 	// Ensure challenge exists
-	let challengeCheck = await db.collection('challenges').findOne({key: challengeKey});
+	const challengeCheck = await db.collection('challenges').findOne({key: challengeKey});
 	if (!challengeCheck) return new Error(`A challenge with the key '${challengeKey}' does not exist.`);
 	
 	// Ensure challenge item exists
@@ -219,6 +220,13 @@ const addResponse = async function(user, challengeKey, itemKey, responseType, re
 		infoJSONString: JSON.stringify({challengeKey, itemKey, responseType, responseValue})
 	}
 	db.collection('actions').insert(action);
+
+	// Get user team
+	const teamCheck = await db.collection('teams').findOne({_id: Mongo.ObjectID(userCheck.teamId)});
+	if (!teamCheck) return new Error(`The team with the id '${userCheck.teamId}' does not exist.`);
+	
+	// Generate story
+	StoryGenerator.challengeRespondStory(teamCheck.teamName, teamCheck._id);
 
 	return {
 		ok: true,
@@ -285,6 +293,13 @@ const checkResponse = async function(user, responseId, responseValid, retry, poi
 	}
 	db.collection('actions').insert(action);
 
+	// Get the team
+	const teamCheck = await db.collection('teams').findOne({_id: Mongo.ObjectID(responseCheck.teamId)});
+	if (!teamCheck) return new Error(`The team with the id '${responseCheck.teamId}' does not exist.`);
+	
+	// Generate story
+	StoryGenerator.challengeCheckStory(teamCheck.teamName, teamCheck._id);
+	
 	return {
 		ok: true,
 		action

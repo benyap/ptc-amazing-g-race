@@ -57,28 +57,23 @@ class UsersView extends React.Component {
 	}
 
 	componentDidMount() {
-		this._mounted = true;
 		this.refetchUsers();
-	}
-
-	componentWillUnmount() {
-		this._mounted = false;
 	}
 
 	async refetchUsers() {
 		if (!this.state.viewProfile && this.props.shouldRefresh) {
-			if (this._mounted) this.setState({refetching: true});
+			this.setState({refetching: true});
 			try {
 				await Promise.all([
 					this.props.QueryPaymentAmount.refetch(),
 					this.props.QueryUsers.refetch()
 				]);
 
-				if (this._mounted) this.setState({refetching: false, lastFetch: new Date()});
+				this.setState({refetching: false, lastFetch: new Date()});
 				this.props.dispatch(saveState());
 			}
 			catch (err) {
-				if (this._mounted) this.setState({refetching: false});
+				this.setState({refetching: false});
 				NotificationToaster.show({
 					intent: Intent.WARNING,
 					message: err.toString()

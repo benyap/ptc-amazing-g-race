@@ -37,15 +37,7 @@ class FeedView extends React.Component {
 		filter: 'none',
 		search: ''
 	}
-
-	componentDidMount() {
-		this._mounted = true;
-	}
-
-	componentWillUnmount() {
-		this._mounted = false;
-	}
-
+	
 	setPublishing(publishing) {
 		this.setState({publishing});
 	}

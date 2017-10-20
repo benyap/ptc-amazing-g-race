@@ -42,12 +42,13 @@ class ResponseCard extends React.Component {
 		if (checked) {
 			checkedByName = `Checked by ${checkedBy}`;
 			if (responseValid) {
-				iconName = 'tick-circle';
 				className = 'valid';
+				if (retry) iconName = 'tick';
+				else iconName = 'tick-circle';
 			}
 			else {
 				className = 'error';
-				if (retry) iconName = 'error';
+				if (retry) iconName = 'cross';
 				else iconName = 'delete'
 			}
 		}

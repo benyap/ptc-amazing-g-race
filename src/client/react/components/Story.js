@@ -127,15 +127,15 @@ class Story extends React.Component {
 						if (this._withinMinutes(date, 15)) {
 							if (this._withinMinutes(date, 5)) {
 								if (this._withinMinutes(date, 2)) {
-									dateLabel = 'Just a moment ago';
+									dateLabel = 'A moment ago';
 								}
 								else dateLabel = 'A few minutes ago';
 							}
-							else dateLabel = 'About ten minutes ago';
+							else dateLabel = 'About 10m ago';
 						}
-						else dateLabel = 'About half an hour ago';
+						else dateLabel = 'About 30m ago';
 					}
-					else dateLabel = 'About an hour ago';
+					else dateLabel = 'About 1h ago';
 				}
 				else dateLabel = 'A few hours ago';
 			}

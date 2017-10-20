@@ -7,7 +7,6 @@ const STORY_TYPES = [
 	'challengeUnlock',
 	'challengeRespond',
 	'challengeCheck',
-	'useHint',
 	'custom',
 	'user'
 ];

@@ -1,6 +1,7 @@
 import Mongo from 'mongodb';
 import connect from '../connect';
 import permission from '../permission';
+import StoryGenerator from './StoryGenerator';
 
 
 /**
@@ -607,7 +608,10 @@ const unlockAttempt = async function(user, phrase) {
 			})
 		};
 		db.collection('actions').insert(action);
-	
+		
+		// Generate story
+		StoryGenerator.challengeUnlockStory(team.teamName, team._id);
+		
 		return {
 			ok: true,
 			action: action
