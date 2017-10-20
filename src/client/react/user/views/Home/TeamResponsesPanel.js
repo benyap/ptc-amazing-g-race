@@ -7,7 +7,7 @@ import { getTeamResponses } from '../../../../graphql/response';
 import NotificationToaster from '../../../components/NotificationToaster';
 
 
-const QueryGetTeamResponsesParams = '_id checked responseValid retry';
+const QueryGetTeamResponsesParams = '_id challengeKey itemKey checked responseValid retry';
 
 const QueryGetTeamResponsesOptions = {
 	name: 'QueryGetTeamResponses',
@@ -70,16 +70,26 @@ class TeamResponsesPanel extends React.Component {
 	}
 
 	_countResponses(responses) {
+		const keys = new Set();
 		let pending = 0, valid = 0, invalid = 0, retry = 0;
 
 		responses.forEach((response) => {
-			if (response.checked) {
-				if (response.responseValid) valid += 1;
-				else invalid += 1;
-				if (response.retry) retry += 1;
-			}
-			else {
-				pending += 1;
+			const id = response.challengeKey + response.itemKey;
+
+			// Ensure we only count unique challenge items.
+			// The responses should be sorted in chronological order so the latest challenge response should come first.
+			if (!keys.has(id)) {
+				keys.add(id);
+
+				if (response.checked) {
+					// Count unique challenge items
+					if (response.responseValid) valid += 1;
+					else invalid += 1;
+					if (response.retry) retry += 1;
+				}
+				else {
+					pending += 1;
+				}
 			}
 		});
 
@@ -132,7 +142,7 @@ class TeamResponsesPanel extends React.Component {
 				retry = (
 					<div className='pt-callout pt-icon-refresh pt-intent-success'>
 						<span style={loading?loadingStyle:null}>
-							{`There ${this.state.retry === 1 ? 'is' : 'are'} ${this.state.retry} ${this.state.retry === 1 ? 'challenge' : 'challenges'} your team can resubmit a response for.`}
+							{`There ${this.state.retry === 1 ? 'is' : 'are'} ${this.state.retry} challenge ${this.state.retry === 1 ? 'item' : 'items'} your team can resubmit a response for.`}
 						</span>
 					</div>
 				);
