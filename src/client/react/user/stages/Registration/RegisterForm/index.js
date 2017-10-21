@@ -3,9 +3,10 @@ import axios from 'axios';
 import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
-import { ProgressBar, Intent, Icon } from '@blueprintjs/core';
+import { ProgressBar, Intent, Icon, Button } from '@blueprintjs/core';
 import { logout } from '../../../../../actions/authActions';
 import API from '../../../../../API';
+import LogoutFunction from '../../../../components/LogoutFunction';
 import Form1 from './Form1';
 import Form2 from './Form2';
 import Form3 from './Form3';
@@ -24,7 +25,9 @@ const MutationRegisterUser =
 
 const mapStateToProps = (state, ownProps) => {
 	return { 
-		authenticated: state.auth.login.authenticated
+		authenticated: state.auth.login.authenticated,
+		access: state.auth.tokens.access,
+		refresh: state.auth.tokens.refresh
 	}
 }
 
@@ -48,7 +51,8 @@ class RegisterForm extends React.Component {
 		currentStage: 1,
 		loading: false,
 		error: false,
-		complete: false
+		complete: false,
+		logoutLoading: false
 	}
 
 	handleInputChange(id, value) {
@@ -107,8 +111,14 @@ class RegisterForm extends React.Component {
 		}
 	}
 
-	logout() {
-		this.props.dispatch(logout(new Date()));
+	async logout() {
+		this.setState({logoutLoading: true});
+
+		await LogoutFunction(this.props.access, this.props.refresh);
+		
+		this.setState({logoutLoading: false}, () => {
+			this.props.dispatch(logout(new Date()));
+		});
 	}
 
 	render() {
@@ -120,9 +130,10 @@ class RegisterForm extends React.Component {
 					</div>
 					<p>
 						Hey! You're logged in at the moment which means already have an account.
-						If someone else is trying to register, please&nbsp;
-						<a style={{color: 'yellow'}}onClick={this.logout}>log out</a> first. 
+						If someone else is trying to register, please <b>log out</b> first. 
 					</p>
+					<Button text='Log out' style={{marginTop: '1rem'}} intent={Intent.WARNING} 
+						onClick={this.logout} loading={this.state.logoutLoading}/>
 				</div>
 			);
 		}
