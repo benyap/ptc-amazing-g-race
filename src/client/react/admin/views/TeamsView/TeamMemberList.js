@@ -53,6 +53,7 @@ class TeamMemberList extends React.Component {
 			else {
 				return (
 					<div>
+						<TeamAddUser teamId={this.props.teamId} refetchTeam={this.props.QueryTeam.refetch}/>
 						<br/>
 						<em>There are no users in this team.</em>
 					</div>

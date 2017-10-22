@@ -173,7 +173,7 @@ class TeamProfile extends React.Component {
 
 				<h4><b>
 					{
-						this.state.teamName ? 
+						this.state.teamName !== null ? 
 						<EditableText value={this.state.teamName} 
 							onEdit={this.onEdit('teamName')}
 							onChange={this.onChange('teamName')} 
