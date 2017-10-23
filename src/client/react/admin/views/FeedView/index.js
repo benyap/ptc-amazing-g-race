@@ -15,7 +15,7 @@ import FeedSummary from './FeedSummary';
 import '../../scss/views/_feed-view.scss';
 
 
-const GetAllStoriesParams = '_id type createdBy published publishDate iconName intent content likes';
+const GetAllStoriesParams = '_id type createdBy createDate published publishDate iconName intent content likes';
 
 const GetAllStoriesOptions = {
 	name: 'QueryGetAllStories',

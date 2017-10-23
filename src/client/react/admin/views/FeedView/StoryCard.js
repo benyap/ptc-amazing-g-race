@@ -20,6 +20,7 @@ class StoryCard extends React.Component {
 			_id: PropTypes.string.isRequired,
 			type: PropTypes.string.isRequired,
 			createdBy: PropTypes.string.isRequired,
+			createDate: PropTypes.string.isRequired,
 			published: PropTypes.bool.isRequired,
 			publishDate: PropTypes.string,
 			iconName: PropTypes.string.isRequired,
@@ -71,7 +72,7 @@ class StoryCard extends React.Component {
 	}
 
 	render() {
-		const { _id, type, createdBy, published, publishDate, iconName, intent, content, likes } = this.props.story;
+		const { _id, type, createdBy, createDate, published, publishDate, iconName, intent, content, likes } = this.props.story;
 		let publishLabel;
 
 		if (this.state.publishing) {
@@ -91,7 +92,8 @@ class StoryCard extends React.Component {
 
 				<div style={{marginTop:'0.2rem',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
 					<div className='pt-text-muted'>
-						{published ? 'Published' : 'Not published'} | {DateFormat(publishDate ? new Date(publishDate) : new Date(), 'mmm dd hh:MM TT')}
+						{published ? 'Published' : 'Not published'}&nbsp;|&nbsp;
+						{publishDate ? DateFormat(new Date(publishDate), 'mmm dd hh:MM TT') : `Created ${DateFormat(new Date(createDate), 'mmm dd hh:MM TT')}`}
 					</div>
 					<div>
 						<Button className='pt-minimal pt-small pt-intent-primary' text={publishLabel} disabled={this.props.publishing || this.state.deleting} onClick={this.togglePublish}/>
