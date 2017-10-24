@@ -26,7 +26,7 @@ class ResponseTable extends React.Component {
 		const { response, challenge } = this.props;
 
 		return (
-			<div style={{paddingRight:'0.5rem'}}>
+			<div style={{marginRight:'1rem'}}>
 				<h6><b>Response data</b></h6>
 				<table className='pt-table pt-striped'>
 					<tbody>
