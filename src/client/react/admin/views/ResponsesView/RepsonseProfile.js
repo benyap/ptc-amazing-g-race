@@ -62,7 +62,7 @@ class ResponseProfile extends React.Component {
 	render() {
 		const { loading, getResponse } = this.props.QueryGetResponse;
 		const { teamInfo } = this.state;
-		let heading, receivedDate, content, responsePreview, responseCheck, warning;
+		let heading, receivedDate, content, responsePreview, responseCheck;
 
 		if (getResponse) {
 			receivedDate = `Recieved ${DateFormat(new Date(getResponse.uploadDate), 'hh:MM:ss TT (mmm dd yyyy)')}`
@@ -70,30 +70,6 @@ class ResponseProfile extends React.Component {
 
 			if (teamInfo) {
 				heading = <span><b>Response from {teamInfo.teamName}</b></span>;
-			}
-
-			if (getResponse.checked) {
-				warning = (
-					<div className='pt-callout pt-intent-warning pt-icon-warning-sign' style={{margin:'0.5rem 0'}}>
-						<h5>Response checked</h5>
-						<div>
-							This response has already been checked. 
-							Avoid modifying a checked response unless it is absolutely necessary.
-							Team point correction will be applied upon saving the modification.
-						</div>
-					</div>
-				);
-			}
-			else {
-				warning = (
-					<div className='pt-callout pt-intent-primary pt-icon-info-sign' style={{margin:'0.5rem 0'}}>
-						<h5>Modifying the responses status</h5>
-						<div>
-							Modifying this response and saving it will apply the point change to the team and cause your verdict to be reflected on the user's dashboard.
-							Please check your action is correct before proceeding.
-						</div>
-					</div>
-				);
 			}
 			
 			content = (
