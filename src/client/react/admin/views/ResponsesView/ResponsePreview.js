@@ -89,7 +89,8 @@ class ResponsePreview extends React.Component {
 		return (
 			<div>
 				<Button className='pt-fill pt-minimal pt-intent-primary' iconName='upload' text='See response' onClick={this.toggleShowResponseData}/>
-				<Dialog title={`[${uploadedBy}] ${challengeKey}: ${itemKey}`} isOpen={this.state.showResponseData} onClose={this.toggleShowResponseData}>
+				<Dialog title={`[${uploadedBy}] ${challengeKey}: ${itemKey}`} isOpen={this.state.showResponseData} 
+					onClose={this.toggleShowResponseData} style={{maxWidth:'100%'}}>
 					<div className='pt-dialog-body'>
 						{responseData}
 					</div>
