@@ -99,6 +99,28 @@ const getResponses = async function(user, challengeKey, itemKey, uncheckedOnly =
 
 
 /**
+ * Get challenge responses for a team (admin only)
+ * @param {*} user 
+ * @param {String} teamId
+ */
+const getResponsesByTeam = async function(user, teamId) {
+	if (!user) return new Error('No user logged in');
+
+	const authorized = await permission.checkPermission(user, ['admin:view-responses']);
+	if (authorized !== true) return authorized;
+		
+	const db = await connect();
+
+	if (!teamId) return new Error('Team id is required.');
+
+	const teamCheck = await db.collection('teams').findOne({_id: Mongo.ObjectID(teamId)});
+	if (!teamCheck) return new Error(`The team with the id '${teamId}' does not exist.`);
+
+	return db.collection('responses').find({teamId: Mongo.ObjectID(teamId)}).toArray();
+}
+
+
+/**
  * Get a team's responses to a challenge
  * @param {*} user 
  * @param {String} challengeKey
@@ -315,6 +337,7 @@ export default {
 	getResponse,
 	getResponseData,
 	getResponses,
+	getResponsesByTeam,
 	getTeamResponses,
 	addResponse,
 	checkResponse
