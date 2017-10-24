@@ -36,7 +36,7 @@ const QueryGetChallengeOptions = {
 }
 
 @compose(
-	graphql(getChallenge('key public order passphrase notes title description locked teams items{key type order title description}'), QueryGetChallengeOptions),
+	graphql(getChallenge('_id key public order passphrase notes title description locked teams items{key type order title description}'), QueryGetChallengeOptions),
 	graphql(setChallengePublic('ok'), { name: 'MutationSetChallengePublic' }),
 	graphql(setChallengeOrder('ok'), { name: 'MutationSetChallengeOrder' }),
 	graphql(setChallengePassphrase('ok'), { name: 'MutationSetChallengePassphrase' }),
