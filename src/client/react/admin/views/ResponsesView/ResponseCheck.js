@@ -63,7 +63,7 @@ class ResponseCheck extends React.Component {
 				}
 			});
 			await this.props.refetchResponse();
-			this.setState({ checkResponseLoading: false });
+			this.setState({ checkResponseLoading: false, showCheckResponse: false });
 		}
 		catch (err) {
 			this.setState({ checkResponseLoading: false, checkResponseError: err.toString() });
