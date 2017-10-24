@@ -226,7 +226,7 @@ const addResponse = async function(user, challengeKey, itemKey, responseType, re
 	if (!teamCheck) return new Error(`The team with the id '${userCheck.teamId}' does not exist.`);
 	
 	// Generate story
-	StoryGenerator.challengeRespondStory(teamCheck.teamName, teamCheck._id);
+	// StoryGenerator.challengeRespondStory(teamCheck.teamName, teamCheck._id);
 
 	return {
 		ok: true,
@@ -298,7 +298,7 @@ const checkResponse = async function(user, responseId, responseValid, retry, poi
 	if (!teamCheck) return new Error(`The team with the id '${responseCheck.teamId}' does not exist.`);
 	
 	// Generate story
-	StoryGenerator.challengeCheckStory(teamCheck.teamName, teamCheck._id);
+	// StoryGenerator.challengeCheckStory(teamCheck.teamName, teamCheck._id);
 	
 	return {
 		ok: true,
