@@ -94,7 +94,7 @@ const getResponses = async function(user, challengeKey, itemKey, uncheckedOnly =
 	if (itemKey) findParams.itemKey = itemKey;
 	if (uncheckedOnly) findParams.checked = false;
 
-	return db.collection('responses').find(findParams).sort({uploadDate:1}).toArray();
+	return db.collection('responses').find(findParams).sort({uploadDate:-1}).toArray();
 }
 
 
