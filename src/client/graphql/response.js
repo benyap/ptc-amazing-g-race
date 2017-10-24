@@ -12,6 +12,13 @@ const getTeamResponses = (params) => {
 	}`;
 }
 
+const getResponsesByTeam = (params) => {
+	return gql`
+	query GetResponsesByTeam($teamId:ID!){
+		getResponsesByTeam(teamId:$teamId){ ${params} }
+	}`;
+}
+
 const getResponse = (params) => {
 	return gql`
 	query GetResponse($responseId:ID!){
@@ -55,6 +62,7 @@ const checkResponse = (params) => {
 
 export {
 	getTeamResponses,
+	getResponsesByTeam,
 	getResponse,
 	getResponseData,
 	getResponses,
