@@ -75,6 +75,13 @@ const setChallengePassphrase = (params) => {
 	}`;
 }
 
+const setChallengeNotes = (params) => {
+	return gql`
+	mutation SetChallengeNotes($key:String!,$value:String!){
+		setChallengeNotes(key:$key,value:$value){ ${params} }
+	}`;
+}
+
 const setChallengeTitle = (params) => {
 	return gql`
 	mutation SetChallengeTitle($key:String!,$value:String!){
@@ -170,6 +177,7 @@ export {
 	setChallengePublic,
 	setChallengeOrder,
 	setChallengePassphrase,
+	setChallengeNotes,
 	setChallengeTitle,
 	setChallengeDescription,
 	setChallengeLocked,
