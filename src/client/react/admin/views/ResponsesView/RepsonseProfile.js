@@ -12,7 +12,8 @@ import NotificationToaster from '../../../components/NotificationToaster';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import ResponsePreview from './ResponsePreview';
 import ResponseCheck from './ResponseCheck';
-import ResponseTable from './ResponseTable';
+import ChallengeInfoTable from './ChallengeInfoTable';
+import ResponseInfoTable from './ResponseInfoTable';
 import TeamProgressTable from './TeamProgressTable';
 
 
@@ -94,7 +95,10 @@ class ResponseProfile extends React.Component {
 			
 			content = (
 				<div style={{display:'flex',flexWrap:'wrap'}}>
-					<ResponseTable response={getResponse} challenge={this.state.challengeInfo}/>
+					<div style={{marginRight:'1rem',maxWidth:'30rem',overflow:'scroll'}}>
+						<ChallengeInfoTable response={getResponse} challenge={this.state.challengeInfo}/>
+						<ResponseInfoTable response={getResponse} challenge={this.state.challengeInfo}/>
+					</div>
 					<TeamProgressTable teamId={getResponse.teamId}/>
 				</div>
 			);

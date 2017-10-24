@@ -4,11 +4,9 @@ import DateFormat from 'dateformat';
 import { EditableText } from '@blueprintjs/core';
 
 
-class ResponseTable extends React.Component {
+class ResponseInfoTable extends React.Component {
 	static propTypes = {
 		response: PropTypes.shape({
-			challengeKey: PropTypes.string.isRequired,
-			itemKey: PropTypes.string.isRequired,
 			uploadedBy: PropTypes.string.isRequired,
 			checked: PropTypes.bool.isRequired,
 			checkedBy: PropTypes.string,
@@ -16,41 +14,20 @@ class ResponseTable extends React.Component {
 			responseValid: PropTypes.bool.isRequired,
 			retry: PropTypes.bool.isRequired,
 			pointsAwarded: PropTypes.number.isRequired
-		}).isRequired,
-		challenge: PropTypes.shape({
-			notes: PropTypes.string
-		})
+		}).isRequired
 	}
 
 	render() {
 		const { response, challenge } = this.props;
 
 		return (
-			<div style={{marginRight:'1rem'}}>
+			<div style={{marginBottom:'1rem',width:'100%'}}>
 				<h6><b>Response data</b></h6>
-				<table className='pt-table pt-striped'>
+				<table className='pt-table pt-striped' style={{width:'100%'}}>
 					<tbody>
-						<tr>
-							<td>Challenge</td>
-							<td>{response.challengeKey}</td>
-						</tr>
-						<tr>
-							<td>Item</td>
-							<td>{response.itemKey}</td>
-						</tr>
 						<tr>
 							<td>Uploader</td>
 							<td>{response.uploadedBy}</td>
-						</tr>
-						<tr>
-							<td>Challenge notes</td>
-							<td>
-								{
-									challenge ? 
-									<EditableText multiline maxLines={6} disabled value={challenge.notes} placeholder='No notes'/>:
-									<div className='pt-text-muted'>Loading...</div>
-								}
-							</td>
 						</tr>
 						<tr>
 							<td>Status</td>
@@ -94,4 +71,4 @@ class ResponseTable extends React.Component {
 }
 
 
-export default ResponseTable;
+export default ResponseInfoTable;
