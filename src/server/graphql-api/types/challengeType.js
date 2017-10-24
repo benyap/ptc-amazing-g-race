@@ -42,6 +42,10 @@ const challengeType = new GraphQLObjectType({
 			type: new GraphQLNonNull(GraphQLString),
 			description: 'A description for the challenge'
 		},
+		notes: {
+			type: new GraphQLNonNull(GraphQLString),
+			description: 'Notes about the challenge (not viewable by the public)'
+		},
 		locked: {
 			type: new GraphQLNonNull(GraphQLBoolean),
 			description: 'True if the challenge is locked'

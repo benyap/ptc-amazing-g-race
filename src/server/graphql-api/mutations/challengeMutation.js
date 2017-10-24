@@ -116,6 +116,12 @@ const setChallengeDescription = _editChallengeProperty(
 );
 
 
+const setChallengeNotes = _editChallengeProperty(
+	'Set the challenge notes', 'notes',
+	new GraphQLNonNull(GraphQLString)
+);
+
+
 const setChallengeLocked = _editChallengeProperty(
 	'Set to true if the challenge should be locked for everyone', 'locked',
 	new GraphQLNonNull(GraphQLBoolean)
@@ -293,6 +299,7 @@ export default {
 	setChallengeTitle,
 	setChallengeDescription,
 	setChallengeLocked,
+	setChallengeNotes,
 	addTeamToUnlocked,
 	removeTeamFromUnlocked,
 	createChallengeItem,

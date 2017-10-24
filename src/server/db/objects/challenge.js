@@ -124,7 +124,8 @@ const _editChallengeProperty = async function(user, key, property, value) {
 		'passphrase',
 		'title',
 		'description',
-		'locked'
+		'locked',
+		'notes'
 	];
 
 	let valid = false;
