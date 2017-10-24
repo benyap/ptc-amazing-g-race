@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import DateFormat from 'dateformat';
 import { Link } from 'react-router-dom';
-import { graphql, withApollo } from 'react-apollo';
-import { Intent } from '@blueprintjs/core';
+import { compose, graphql, withApollo } from 'react-apollo';
+import { Intent, EditableText } from '@blueprintjs/core';
 import { getResponse } from '../../../../graphql/response';
 import { getTeam } from '../../../../graphql/team';
+import { getChallenge } from '../../../../graphql/challenge';
 import NotificationToaster from '../../../components/NotificationToaster';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import ResponsePreview from './ResponsePreview';
@@ -34,7 +35,8 @@ class ResponseProfile extends React.Component {
 	}
 
 	state = {
-		teamInfo: null
+		teamInfo: null,
+		challengeInfo: null
 	}
 
 	async componentDidUpdate() {
@@ -48,6 +50,22 @@ class ResponseProfile extends React.Component {
 						variables: { teamId: getResponse.teamId }
 					});
 					this.setState({ teamInfo: result.data.getTeam	});
+				}
+				catch (err) {
+					NotificationToaster.show({
+						intent: Intent.DANGER,
+						message: err.toString()
+					});
+				}
+			}
+
+			if (!this.state.challengeInfo) {
+				try {
+					const result = await this.props.client.query({
+						query: getChallenge('_id notes'),
+						variables: { key: getResponse.challengeKey }
+					});
+					this.setState({ challengeInfo: result.data.getChallenge });
 				}
 				catch (err) {
 					NotificationToaster.show({
@@ -85,8 +103,18 @@ class ResponseProfile extends React.Component {
 								<td>{getResponse.itemKey}</td>
 							</tr>
 							<tr>
-								<td>Uplaoded by</td>
+								<td>Uploaded by</td>
 								<td>{getResponse.uploadedBy}</td>
+							</tr>
+							<tr>
+								<td>Challenge notes</td>
+								<td>
+									{
+										this.state.challengeInfo ? 
+										<EditableText multiline maxLines={6} disabled value={this.state.challengeInfo.notes} placeholder='No notes'/>:
+										<div className='pt-text-muted'>Loading...</div>
+									}
+								</td>
 							</tr>
 							<tr>
 								<td>Status</td>
