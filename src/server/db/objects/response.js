@@ -173,6 +173,10 @@ const addResponse = async function(user, challengeKey, itemKey, responseType, re
 	const challengeItemCheck = await db.collection('challenges').findOne({key: challengeKey, 'items.key': itemKey});
 	if (!challengeItemCheck) return new Error(`A challenge item with the key '${itemKey}' does not exist.`);
 
+	// Ensure there is no pending response
+	const responseCheck = await db.collection('responses').findOne({challengeKey, itemKey, teamId: userCheck.teamId, checked: false});
+	if (responseCheck) return new Error(`Your team has already given a response for this item. It is currently pending.`);
+
 	// Process response
 	switch (responseType) {
 		case 'upload': {
