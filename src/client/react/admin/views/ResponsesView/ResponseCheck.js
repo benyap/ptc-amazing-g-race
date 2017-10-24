@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import DateFormat from 'dateformat';
 import { graphql } from 'react-apollo';
+import { withRouter } from 'react-router-dom';
 import { Intent, Button, Collapse, Switch } from '@blueprintjs/core';
 import { checkResponse } from '../../../../graphql/response';
 import FormInput from '../../../../../../lib/react/components/forms/FormInput';
@@ -10,6 +11,7 @@ import NotificationToaster from '../../../components/NotificationToaster';
 
 
 @graphql(checkResponse('ok'), { name: 'MutationCheckResponse' })
+@withRouter
 @autobind
 class ResponseCheck extends React.Component {
 	static propTypes = {
@@ -63,7 +65,8 @@ class ResponseCheck extends React.Component {
 				}
 			});
 			await this.props.refetchResponse();
-			this.setState({ checkResponseLoading: false, showCheckResponse: false });
+			// this.setState({ checkResponseLoading: false, showCheckResponse: false });
+			this.props.history.push('/admin/dashboard/responses');
 		}
 		catch (err) {
 			this.setState({ checkResponseLoading: false, checkResponseError: err.toString() });
