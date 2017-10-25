@@ -3,14 +3,18 @@ import PropTypes from 'prop-types';
 import autobind from 'core-decorators/es/autobind';
 import DateFormat from 'dateformat';
 import { Link } from 'react-router-dom';
-import { graphql, withApollo } from 'react-apollo';
+import { compose, graphql, withApollo } from 'react-apollo';
 import { Intent } from '@blueprintjs/core';
 import { getResponse } from '../../../../graphql/response';
 import { getTeam } from '../../../../graphql/team';
+import { getChallenge } from '../../../../graphql/challenge';
 import NotificationToaster from '../../../components/NotificationToaster';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import ResponsePreview from './ResponsePreview';
 import ResponseCheck from './ResponseCheck';
+import ChallengeInfoTable from './ChallengeInfoTable';
+import ResponseInfoTable from './ResponseInfoTable';
+import TeamProgressTable from './TeamProgressTable';
 
 
 const QueryGetResponseOptions = {
@@ -34,7 +38,8 @@ class ResponseProfile extends React.Component {
 	}
 
 	state = {
-		teamInfo: null
+		teamInfo: null,
+		challengeInfo: null
 	}
 
 	async componentDidUpdate() {
@@ -56,13 +61,29 @@ class ResponseProfile extends React.Component {
 					});
 				}
 			}
+
+			if (!this.state.challengeInfo) {
+				try {
+					const result = await this.props.client.query({
+						query: getChallenge('_id notes'),
+						variables: { key: getResponse.challengeKey }
+					});
+					this.setState({ challengeInfo: result.data.getChallenge });
+				}
+				catch (err) {
+					NotificationToaster.show({
+						intent: Intent.DANGER,
+						message: err.toString()
+					});
+				}
+			}
 		}
 	}
 
 	render() {
 		const { loading, getResponse } = this.props.QueryGetResponse;
 		const { teamInfo } = this.state;
-		let heading, receivedDate, content, responsePreview, responseCheck, warning;
+		let heading, receivedDate, content, responsePreview, responseCheck;
 
 		if (getResponse) {
 			receivedDate = `Recieved ${DateFormat(new Date(getResponse.uploadDate), 'hh:MM:ss TT (mmm dd yyyy)')}`
@@ -71,83 +92,14 @@ class ResponseProfile extends React.Component {
 			if (teamInfo) {
 				heading = <span><b>Response from {teamInfo.teamName}</b></span>;
 			}
-
-			if (getResponse.checked) {
-				warning = (
-					<div className='pt-callout pt-intent-warning pt-icon-warning-sign' style={{margin:'0.5rem 0'}}>
-						<h5>Response checked</h5>
-						<div>
-							This response has already been checked. 
-							Avoid modifying a checked response unless it is absolutely necessary.
-							Team point correction will be applied upon saving the modification.
-						</div>
-					</div>
-				);
-			}
-			else {
-				warning = (
-					<div className='pt-callout pt-intent-primary pt-icon-info-sign' style={{margin:'0.5rem 0'}}>
-						<h5>Modifying the responses status</h5>
-						<div>
-							Modifying this response and saving it will apply the point change to the team and cause your verdict to be reflected on the user's dashboard.
-							Please check your action is correct before proceeding.
-						</div>
-					</div>
-				);
-			}
 			
 			content = (
-				<div>
-					<table className='pt-table pt-striped'>
-						<tbody>
-							<tr>
-								<td>Challenge</td>
-								<td>{getResponse.challengeKey}</td>
-							</tr>
-							<tr>
-								<td>Item</td>
-								<td>{getResponse.itemKey}</td>
-							</tr>
-							<tr>
-								<td>Uplaoded by</td>
-								<td>{getResponse.uploadedBy}</td>
-							</tr>
-							<tr>
-								<td>Status</td>
-								<td>
-									{
-										getResponse.checked ?
-										<span style={{color:'green'}}>Checked by {getResponse.checkedBy}<br/>{DateFormat(new Date(getResponse.checkedOn), 'hh:MM:ss TT mmm dd yyyy')}</span> :
-										<span style={{color:'red'}}><b>Not checked</b></span>
-									}
-								</td>
-							</tr>
-							<tr>
-								<td>Response valid</td>
-								<td>
-									{
-										getResponse.responseValid ?
-										<span style={{color:'green'}}>Valid</span> :
-										<span style={{color:'darkred'}}>Invalid</span>
-									}
-								</td>
-							</tr>
-							<tr>
-								<td>Retry</td>
-								<td>
-									{
-										getResponse.retry ?
-										<span style={{color:'green'}}>Can retry</span> :
-										<span style={{color:'darkred'}}>Cannot retry</span>
-									}
-								</td>
-							</tr>
-							<tr>
-								<td>Points awarded</td>
-								<td>{getResponse.pointsAwarded}</td>
-							</tr>
-						</tbody>
-					</table>
+				<div style={{display:'flex',flexWrap:'wrap'}}>
+					<div style={{marginRight:'1rem',maxWidth:'30rem',overflow:'scroll'}}>
+						<ChallengeInfoTable response={getResponse} challenge={this.state.challengeInfo}/>
+						<ResponseInfoTable response={getResponse} challenge={this.state.challengeInfo}/>
+					</div>
+					<TeamProgressTable teamId={getResponse.teamId}/>
 				</div>
 			);
 
@@ -168,7 +120,7 @@ class ResponseProfile extends React.Component {
 		}
 
 		return (
-			<div className='pt-card'>
+			<div className='pt-card' style={{overflow:'scroll'}}>
 				<Link className='pt-minimal pt-button pt-icon pt-icon-cross' to='/admin/dashboard/responses' style={{float:'right'}}/>
 				<h5>{heading}</h5>
 				<p className='pt-text-muted'>{receivedDate}</p>

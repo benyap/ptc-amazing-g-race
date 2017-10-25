@@ -37,9 +37,9 @@ class StoryDelete extends React.Component {
 			await this.props.MutationDeleteStory({
 				variables: { storyId: this.props.storyId }
 			});
-			await this.props.refetch();
-			this.props.setDeleting(false);
-			this.setState({ deleteLoading: false, showConfirmDelete: false });
+			this.setState({ deleteLoading: false, showConfirmDelete: false }, async () => {
+				this.props.refetch();
+			});
 		}
 		catch (err) {
 			this.props.setDeleting(false);

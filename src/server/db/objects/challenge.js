@@ -124,7 +124,8 @@ const _editChallengeProperty = async function(user, key, property, value) {
 		'passphrase',
 		'title',
 		'description',
-		'locked'
+		'locked',
+		'notes'
 	];
 
 	let valid = false;
@@ -610,7 +611,7 @@ const unlockAttempt = async function(user, phrase) {
 		db.collection('actions').insert(action);
 		
 		// Generate story
-		StoryGenerator.challengeUnlockStory(team.teamName, team._id);
+		// StoryGenerator.challengeUnlockStory(team.teamName, team._id);
 		
 		return {
 			ok: true,

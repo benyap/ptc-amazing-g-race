@@ -94,7 +94,29 @@ const getResponses = async function(user, challengeKey, itemKey, uncheckedOnly =
 	if (itemKey) findParams.itemKey = itemKey;
 	if (uncheckedOnly) findParams.checked = false;
 
-	return db.collection('responses').find(findParams).sort({uploadDate:1}).toArray();
+	return db.collection('responses').find(findParams).sort({uploadDate:-1}).toArray();
+}
+
+
+/**
+ * Get challenge responses for a team (admin only)
+ * @param {*} user 
+ * @param {String} teamId
+ */
+const getResponsesByTeam = async function(user, teamId) {
+	if (!user) return new Error('No user logged in');
+
+	const authorized = await permission.checkPermission(user, ['admin:view-responses']);
+	if (authorized !== true) return authorized;
+		
+	const db = await connect();
+
+	if (!teamId) return new Error('Team id is required.');
+
+	const teamCheck = await db.collection('teams').findOne({_id: Mongo.ObjectID(teamId)});
+	if (!teamCheck) return new Error(`The team with the id '${teamId}' does not exist.`);
+
+	return db.collection('responses').find({teamId: Mongo.ObjectID(teamId)}).toArray();
 }
 
 
@@ -173,6 +195,10 @@ const addResponse = async function(user, challengeKey, itemKey, responseType, re
 	const challengeItemCheck = await db.collection('challenges').findOne({key: challengeKey, 'items.key': itemKey});
 	if (!challengeItemCheck) return new Error(`A challenge item with the key '${itemKey}' does not exist.`);
 
+	// Ensure there is no pending response
+	const responseCheck = await db.collection('responses').findOne({challengeKey, itemKey, teamId: userCheck.teamId, checked: false});
+	if (responseCheck) return new Error(`Your team has already given a response for this item. It is currently pending.`);
+
 	// Process response
 	switch (responseType) {
 		case 'upload': {
@@ -226,7 +252,7 @@ const addResponse = async function(user, challengeKey, itemKey, responseType, re
 	if (!teamCheck) return new Error(`The team with the id '${userCheck.teamId}' does not exist.`);
 	
 	// Generate story
-	StoryGenerator.challengeRespondStory(teamCheck.teamName, teamCheck._id);
+	// StoryGenerator.challengeRespondStory(teamCheck.teamName, teamCheck._id);
 
 	return {
 		ok: true,
@@ -298,7 +324,7 @@ const checkResponse = async function(user, responseId, responseValid, retry, poi
 	if (!teamCheck) return new Error(`The team with the id '${responseCheck.teamId}' does not exist.`);
 	
 	// Generate story
-	StoryGenerator.challengeCheckStory(teamCheck.teamName, teamCheck._id);
+	// StoryGenerator.challengeCheckStory(teamCheck.teamName, teamCheck._id);
 	
 	return {
 		ok: true,
@@ -311,6 +337,7 @@ export default {
 	getResponse,
 	getResponseData,
 	getResponses,
+	getResponsesByTeam,
 	getTeamResponses,
 	addResponse,
 	checkResponse

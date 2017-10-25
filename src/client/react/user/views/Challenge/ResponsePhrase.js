@@ -49,7 +49,7 @@ class ResponsePhrase extends React.Component {
 	toggleWindow() {
 		if (!this.state.uploading) {
 			this.setState((prevState) => {
-				return { showWindow: !prevState.showWindow };
+				return { showWindow: !prevState.showWindow, uploadError: null };
 			});
 		}
 	}

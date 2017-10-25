@@ -16,6 +16,11 @@ const getResponses = function(root, params, ctx, options) {
 	return database.response.getResponses(ctx.user, params.challengeKey, params.itemKey, params.uncheckedOnly);
 }
 
+// Get a team's challenge responses
+const getResponsesByTeam = function(root, params, ctx, options) {
+	return database.response.getResponsesByTeam(ctx.user, params.teamId);
+}
+
 // Get user's team's responses for a challenge item
 const getTeamResponses = function(root, params, ctx, options) {
 	return database.response.getTeamResponses(ctx.user, params.challengeKey, params.itemKey);
@@ -37,6 +42,7 @@ export default {
 	getResponse,
 	getResponseData,
 	getResponses,
+	getResponsesByTeam,
 	getTeamResponses,
 	addResponse,
 	checkResponse

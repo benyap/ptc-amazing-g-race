@@ -8,6 +8,7 @@ import {
 	setChallengePublic,
 	setChallengeOrder,
 	setChallengePassphrase,
+	setChallengeNotes,
 	setChallengeTitle,
 	setChallengeDescription,
 	setChallengeLocked
@@ -35,10 +36,11 @@ const QueryGetChallengeOptions = {
 }
 
 @compose(
-	graphql(getChallenge('key public order passphrase title description locked teams items{key type order title description}'), QueryGetChallengeOptions),
+	graphql(getChallenge('_id key public order passphrase notes title description locked teams items{key type order title description}'), QueryGetChallengeOptions),
 	graphql(setChallengePublic('ok'), { name: 'MutationSetChallengePublic' }),
 	graphql(setChallengeOrder('ok'), { name: 'MutationSetChallengeOrder' }),
 	graphql(setChallengePassphrase('ok'), { name: 'MutationSetChallengePassphrase' }),
+	graphql(setChallengeNotes('ok'), { name: 'MutationSetChallengeNotes' }),	
 	graphql(setChallengeTitle('ok'), { name: 'MutationSetChallengeTitle' }),
 	graphql(setChallengeDescription('ok'), { name: 'MutationSetChallengeDescription' }),
 	graphql(setChallengeLocked('ok'), { name: 'MutationSetChallengeLocked' })
@@ -91,7 +93,10 @@ class ChallengeProfile extends React.Component {
 		modified_description: false,
 
 		passphrase: '',
-		modified_passphrase: false
+		modified_passphrase: false,
+
+		notes: '',
+		modified_notes: false
 	}
 
 	confirmClose() {
@@ -118,7 +123,8 @@ class ChallengeProfile extends React.Component {
 						loaded: true,
 						description: challenge.description,
 						passphrase: challenge.passphrase,
-						teams: challenge.teams
+						teams: challenge.teams,
+						notes: challenge.notes
 					});
 				}
 			}
@@ -139,7 +145,7 @@ class ChallengeProfile extends React.Component {
 		this.setState({ saving: true });
 		const promises = [];
 
-		['Order','Passphrase','Title','Description','Public','Locked'].map((property) => {
+		['Order','Passphrase','Notes','Title','Description','Public','Locked'].map((property) => {
 			if (this.state[`modified_${property.toLowerCase()}`]) {
 				const promise = this.props[`MutationSetChallenge${property}`]({
 					variables: {
@@ -228,7 +234,7 @@ class ChallengeProfile extends React.Component {
 							</ul>
 						</div>
 						<div className='profile-content'>
-							<table className='pt-table pt-striped content'>
+							<table className='pt-table pt-striped content' style={{width:'100%',maxWidth:'40rem'}}>
 								<tbody>
 									<tr>
 										<td>Id</td>
@@ -255,6 +261,14 @@ class ChallengeProfile extends React.Component {
 										<td>
 											{ loading ? <span className='pt-text-muted'>Loading...</span> :
 												<EditableText value={this.state.passphrase} onChange={this.handleChange('passphrase')}/>
+											}
+										</td>
+									</tr>
+									<tr>
+										<td>Notes</td>
+										<td>
+											{ loading ? <span className='pt-text-muted'>Loading...</span> :
+												<EditableText value={this.state.notes} onChange={this.handleChange('notes')} multiline minLines={3} maxLines={6}/>
 											}
 										</td>
 									</tr>

@@ -90,9 +90,27 @@ const getTeamResponses = {
 };
 
 
+const getResponsesByTeam = {
+	type: new GraphQLList(types.responseType),
+	description: 'Get responses from a specified team',
+	args: {
+		teamId: {
+			name: 'teamId',
+			description: 'The id of the team',
+			type: new GraphQLNonNull(GraphQLID)
+		}
+	},
+	resolve(root, params, ctx, options) {
+		return resolvers.responseResolver.getResponsesByTeam(root, params, ctx, options);
+	}
+};
+
+
+
 export default {
 	getResponse,
 	getResponseData,
 	getResponses,
+	getResponsesByTeam,
 	getTeamResponses
 };
