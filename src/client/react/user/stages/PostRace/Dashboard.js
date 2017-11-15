@@ -33,7 +33,9 @@ class Dashboard extends React.Component {
 				<Base/>
 				<PostRaceMenu/>
 				<Switch>
-					<Route exact path={`${url}`} component={Home}/>
+					<Route exact path={`${url}`}>
+						<Home hideChallenges/>
+					</Route>
 					<Route exact path={`${url}/feed`} component={Feed}/>
 					<Route component={NotFound}/>
 			</Switch>

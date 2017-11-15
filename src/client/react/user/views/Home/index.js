@@ -32,7 +32,9 @@ const QueryGetUserOptions = {
 @autobind
 class Home extends React.Component {
 	static propTypes = {
-		email: PropTypes.string
+		email: PropTypes.string,
+		hideChallenges: PropTypes.bool,
+		hideNewsfeed: PropTypes.bool
 	}
 
 	componentDidMount() {
@@ -60,28 +62,36 @@ class Home extends React.Component {
 				<div className='content'>
 					{content}
 
-					<h4>
-						See your challenges
-					</h4>
-					<div className='pt-callout'>
-						Go to the challenges page to see how you can earn points!
-						Every time you submit something, you do it on behalf of your team.
-						Make sure everyone is happy before submitting a response!
-						<Link to='/dashboard/challenges' className='pt-button pt-minimal pt-icon-flag pt-fill pt-small pt-intent-primary' style={{marginTop:'0.5rem'}}>
-							Take me there!
-						</Link>
-					</div>
+					{this.props.hideChallenges ? null :
+						<div>
+							<h4>
+								See your challenges
+							</h4>
+							<div className='pt-callout'>
+								Go to the challenges page to see how you can earn points!
+								Every time you submit something, you do it on behalf of your team.
+								Make sure everyone is happy before submitting a response!
+								<Link to='/dashboard/challenges' className='pt-button pt-minimal pt-icon-flag pt-fill pt-small pt-intent-primary' style={{marginTop:'0.5rem'}}>
+									Take me there!
+								</Link>
+							</div>
+						</div>
+					}
 
-					<h4>
-						Check out the newsfeed!
-					</h4>
-					<div className='pt-callout'>
-						Everyone in the Amazing GRace has access to the newsfeed! 
-						See what's new, or post some news of your own!
-						<Link to='/dashboard/feed' className='pt-button pt-minimal pt-fill pt-small pt-icon-feed pt-intent-primary' style={{marginTop:'0.5rem'}}>
-							Show me!
-						</Link>
-					</div>
+					{this.props.hideNewsfeed ? null :
+						<div>
+							<h4>
+								Check out the newsfeed!
+							</h4>
+							<div className='pt-callout'>
+								Everyone in the Amazing GRace has access to the newsfeed! 
+								See what's new, or post some news of your own!
+								<Link to='/dashboard/feed' className='pt-button pt-minimal pt-fill pt-small pt-icon-feed pt-intent-primary' style={{marginTop:'0.5rem'}}>
+									Show me!
+								</Link>
+							</div>
+						</div>
+					}
 				</div>
 			</main>
 		);
