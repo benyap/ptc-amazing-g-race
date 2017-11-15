@@ -47,7 +47,11 @@ class Home extends React.Component {
 						<p>
 							Registration closes
 							<br/>
-							<span className='em'>Sunday 12th November</span>
+							<span className='em'>Tuesday 5th December</span>
+							<br/>
+							<span style={{fontSize:'smaller',color:'#ff6666'}}>
+								Limited spots available!
+							</span>
 						</p>
 						<Link to='/register'>
 							<Button className='pt-large pt-fill' intent={Intent.PRIMARY}>
