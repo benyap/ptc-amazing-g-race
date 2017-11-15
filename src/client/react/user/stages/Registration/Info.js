@@ -4,16 +4,16 @@ import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { withRouter, Link, Redirect } from 'react-router-dom';
 import { Spinner, Button, Intent } from '@blueprintjs/core';
-import LoadingSpinner from '../../../../components/LoadingSpinner';
-import { getUserByEmail } from '../../../../../graphql/user';
-import { logout } from '../../../../../actions/authActions';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+import { getUserByEmail } from '../../../../graphql/user';
+import { logout } from '../../../../actions/authActions';
 import axios from 'axios';
 import ScrollAnimation from 'react-animate-on-scroll';
-import Title from '../../../components/Title';
-import NotificationToaster from '../../../../components/NotificationToaster';
-import LogoutFunction from '../../../../components/LogoutFunction';
+import Title from '../../components/Title';
+import NotificationToaster from '../../../components/NotificationToaster';
+import LogoutFunction from '../../../components/LogoutFunction';
 
-import '../../../scss/components/_dashboard.scss';
+import '../../scss/components/_dashboard.scss';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -94,18 +94,20 @@ class Dashboard extends React.Component {
 				content = (
 					<div>
 						<h2>Hello, {getUserByEmail.firstname}!</h2>
-						<p>
-							Welcome to your dashboard.
-							This area will be updated with more information as the event approaches,
-							so watch this space and get connected on <a href='https://www.facebook.com/events/131023924193281'>Facebook</a>!
-							Be sure to remember your login details as you will need to login on the day of the event.
+						<p style={{lineHeight:'1.4rem'}}>
+							Welcome to the Amazing GRace Web App!
+							You will be using this app to keep track of your team's progress during the event, so please remember your login details. 
+							Be sure to check the <Link to='/dashboard/instructions'>Instructions</Link> page for more information as the event approaches. 
+							Have a look at the rest of the app to get familiar with it! 
 						</p>
+
+						<Link to='/dashboard'>
+							<Button className='pt-fill' intent={Intent.PRIMARY} style={{textAlign:'center',margin:'1rem auto'}} text='Take me to the rest of the app' rightIconName='arrow-right'/>
+						</Link>
+
 						<p>
 							If you haven't paid yet, please go <Link to='/pay'>here</Link> to see payment details.
 						</p>
-	
-						{friends}
-	
 						<Button text='Log out' style={{marginTop: '1rem'}} intent={Intent.WARNING} 
 							onClick={this.logout} loading={this.state.logoutLoading}/>
 					</div>

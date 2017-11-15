@@ -22,7 +22,7 @@ class Home extends React.Component {
 			link = (
 				<span className='small'>
 					You're already registered. &nbsp;
-					<Link to='/dashboard' style={{color: 'yellow'}}>
+					<Link to='/info' style={{color: 'yellow'}}>
 						Go to your dashboard
 					</Link>.
 				</span>
