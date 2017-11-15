@@ -106,8 +106,7 @@ class Setting extends React.Component {
 		return (
 			<div id={name} className='pt-card pt-elevation-0 pt-interactive' onClick={this.handleClick(name, value, valueType)}>
 				<h5><code>{name}</code></h5>
-				{value ? 
-					<p><b>Value: </b> {value}</p>:
+				{values ? 
 					<div>
 						<b>Values: </b>
 						<ul>
@@ -115,7 +114,8 @@ class Setting extends React.Component {
 								return <li key={value}>{value}</li>
 							})}
 						</ul>
-					</div>
+					</div>:
+					<p><b>Value: </b> {value}</p>
 				}
 				<p><b>Modified: </b> {DateFormat(new Date(modified), 'mmm dd yyyy hh:MM:ssTT')}</p>
 				<p><b>Modified by: </b> {modifiedBy}</p>
