@@ -65,31 +65,31 @@ class Dashboard extends React.Component {
 			let content, friends;
 
 			if (getUserByEmail) {
-				if (getUserByEmail.raceDetails.friends) {
-					friends = (
-						<div className='pt-callout pt-intent-primary pt-icon-info-sign'>
-							<h5>Remember to invite your friends!</h5>
-							By the way, you put down these people as your friends: <em>{getUserByEmail.raceDetails.friends}</em>.
-							<br/>
-							<br/>
-							Invite them and tell them to put your name down as their friend for a chance to win movie tickets!
-						</div>
-					);
-				}
-				else {
-					friends = (
-						<div className='pt-callout pt-intent-primary pt-icon-info-sign'>
-							<h5>Remember to invite your friends!</h5>
-							By the way, if you put people down as your friends, 
-							and they put your name down as their friends when they sign up,
-							you have a chance of winning some movie tickets!
-							<br/>
-							<br/>
-							You haven't put any friends down - let Ben Yap (<a href='mailto:bwyap@outlook.com'>bwyap@outlook.com</a>)
-							know and he can add people to your registration.
-						</div>
-					);
-				}
+				// if (getUserByEmail.raceDetails.friends) {
+				// 	friends = (
+				// 		<div className='pt-callout pt-intent-primary pt-icon-info-sign'>
+				// 			<h5>Remember to invite your friends!</h5>
+				// 			By the way, you put down these people as your friends: <em>{getUserByEmail.raceDetails.friends}</em>.
+				// 			<br/>
+				// 			<br/>
+				// 			Invite them and tell them to put your name down as their friend for a chance to win movie tickets!
+				// 		</div>
+				// 	);
+				// }
+				// else {
+				// 	friends = (
+				// 		<div className='pt-callout pt-intent-primary pt-icon-info-sign'>
+				// 			<h5>Remember to invite your friends!</h5>
+				// 			By the way, if you put people down as your friends, 
+				// 			and they put your name down as their friends when they sign up,
+				// 			you have a chance of winning some movie tickets!
+				// 			<br/>
+				// 			<br/>
+				// 			You haven't put any friends down - let Ben Yap (<a href='mailto:bwyap@outlook.com'>bwyap@outlook.com</a>)
+				// 			know and he can add people to your registration.
+				// 		</div>
+				// 	);
+				// }
 
 				content = (
 					<div>
