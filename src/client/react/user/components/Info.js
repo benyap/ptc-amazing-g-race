@@ -4,16 +4,16 @@ import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { withRouter, Link, Redirect } from 'react-router-dom';
 import { Spinner, Button, Intent } from '@blueprintjs/core';
-import LoadingSpinner from '../../../components/LoadingSpinner';
-import { getUserByEmail } from '../../../../graphql/user';
-import { logout } from '../../../../actions/authActions';
 import axios from 'axios';
 import ScrollAnimation from 'react-animate-on-scroll';
-import Title from '../../components/Title';
-import NotificationToaster from '../../../components/NotificationToaster';
-import LogoutFunction from '../../../components/LogoutFunction';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import { getUserByEmail } from '../../../graphql/user';
+import { logout } from '../../../actions/authActions';
+import Title from './Title';
+import NotificationToaster from '../../components/NotificationToaster';
+import LogoutFunction from '../../components/LogoutFunction';
 
-import '../../scss/components/_dashboard.scss';
+import '../scss/components/_dashboard.scss'
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -94,7 +94,7 @@ class Dashboard extends React.Component {
 				content = (
 					<div>
 						<h2>Hello, {getUserByEmail.firstname}!</h2>
-						<p style={{lineHeight:'1.4rem'}}>
+						<p style={{lineHeight:'1.5rem'}}>
 							Welcome to the Amazing GRace Web App!
 							You will be using this app to keep track of your team's progress during the event, so please remember your login details. 
 							Be sure to check the <Link to='/dashboard/instructions'>Instructions</Link> page for more information as the event approaches. 
