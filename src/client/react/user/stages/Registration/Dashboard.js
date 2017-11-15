@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Switch, Redirect } from 'react-router-dom';
 import Base from '../../components/Base';
 import HelpMenu from '../../components/HelpMenu';
-import Home from '../../views/Home';
+import TeamDashboard from '../../views/TeamDashboard';
 import About from '../../views/About';
 import Contacts from '../../views/Contacts';
 import Instructions from '../../views/Instructions';
@@ -48,7 +48,7 @@ class Dashboard extends React.Component {
 					so make sure you know how to get around.
 				</div>
 				<Switch>
-					<Route exact path={`${url}`} component={Home}/>
+					<Route exact path={`${url}`} component={TeamDashboard}/>
 					<Route exact path={`${url}/instructions`} component={Instructions}/>
 					<Route exact path={`${url}/feed`} component={Feed}/>
 					<Route exact path={`${url}/challenges`} component={Challenges}/>

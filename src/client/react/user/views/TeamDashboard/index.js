@@ -30,7 +30,7 @@ const QueryGetUserOptions = {
 @connect(mapStateToProps)
 @graphql(getUserByEmail('_id firstname teamId'), QueryGetUserOptions)
 @autobind
-class Home extends React.Component {
+class TeamDashboard extends React.Component {
 	static propTypes = {
 		email: PropTypes.string,
 		hideChallenges: PropTypes.bool,
@@ -99,4 +99,4 @@ class Home extends React.Component {
 }
 
 
-export default Home;
+export default TeamDashboard;

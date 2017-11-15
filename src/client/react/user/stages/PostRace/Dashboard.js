@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Switch, Redirect } from 'react-router-dom';
 import Base from '../../components/Base';
 import PostRaceMenu from '../../components/PostRaceMenu';
-import Home from '../../views/Home';
+import TeamDashboard from '../../views/TeamDashboard';
 import Feed from '../../views/Feed';
 import NotFound from '../../views/NotFound';
 
@@ -34,7 +34,7 @@ class Dashboard extends React.Component {
 				<PostRaceMenu/>
 				<Switch>
 					<Route exact path={`${url}`}>
-						<Home hideChallenges/>
+						<TeamDashboard hideChallenges/>
 					</Route>
 					<Route exact path={`${url}/feed`} component={Feed}/>
 					<Route component={NotFound}/>
