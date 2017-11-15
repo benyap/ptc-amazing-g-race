@@ -6,10 +6,10 @@ import AppContainer from '../../../../../../lib/react/components/AppContainer';
 import LoginRefresher from '../../../components/LoginRefresher';
 import Login from '../../components/Login';
 import Pay from '../../components/Pay';
+import Info from '../../components/Info';
 import Home from './Home';
 import Register from './Register';
 import Dashboard from './Dashboard';
-import Info from './Info';
 
 
 const mapStateToProps = (state, ownProps) => {
