@@ -111,6 +111,5 @@ module.exports = {
 			chunks: ['admin', 'vendor'],
 			template: 'src/client/assets/admin.html'
 		})
-	],
-	devtool: 'source-map'	
+	]
 };
