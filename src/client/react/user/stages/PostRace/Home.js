@@ -3,7 +3,7 @@ import autobind from 'core-decorators/es/autobind';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { withRouter, Link } from 'react-router-dom';
-import { Spinner, Button, Intent } from '@blueprintjs/core';
+import { Button, Intent } from '@blueprintjs/core';
 import { getUserByEmail } from '../../../../graphql/user';
 import { logout } from '../../../../actions/authActions';
 import LogoutFunction from '../../../components/LogoutFunction';

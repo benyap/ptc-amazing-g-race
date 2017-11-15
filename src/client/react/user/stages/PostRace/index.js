@@ -1,10 +1,11 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import NotFoundPage from '../../../pages/NotFound';
 import AppContainer from '../../../../../../lib/react/components/AppContainer';
 import Login from '../../components/Login';
 import Home from './Home';
 import Results from './Results';
+import Dashboard from './Dashboard';
 
 
 class Race extends React.Component {
@@ -22,7 +23,8 @@ class Race extends React.Component {
 						</Route>
 
 						<Route path='/results' component={Results}/>
-						
+						<Route path='/dashboard' component={Dashboard}/>
+
 						<Route component={NotFoundPage}/>
 
 					</Switch>
