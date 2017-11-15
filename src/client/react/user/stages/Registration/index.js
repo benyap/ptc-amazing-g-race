@@ -9,7 +9,7 @@ import Pay from '../../components/Pay';
 import Info from '../../components/Info';
 import Home from './Home';
 import Register from './Register';
-import Dashboard from './Dashboard';
+import PreRaceDashboard from '../../components/dashboards/PreRaceDashboard';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -33,7 +33,7 @@ class Registration extends React.Component {
 						</Route>
 						<Route exact path='/pay' component={Pay}/>
 						<Route exact path='/info' component={Info}/>
-						<Route path='/dashboard' component={Dashboard}/>
+						<Route path='/dashboard' component={PreRaceDashboard}/>
 
 						<Route component={NotFoundPage}/>
 

@@ -5,7 +5,7 @@ import AppContainer from '../../../../../../lib/react/components/AppContainer';
 import Login from '../../components/Login';
 import Home from './Home';
 import Results from './Results';
-import Dashboard from './Dashboard';
+import PostRaceDashboard from '../../components/dashboards/PostRaceDashboard';
 
 
 class Race extends React.Component {
@@ -23,7 +23,7 @@ class Race extends React.Component {
 						</Route>
 
 						<Route path='/results' component={Results}/>
-						<Route path='/dashboard' component={Dashboard}/>
+						<Route path='/dashboard' component={PostRaceDashboard}/>
 
 						<Route component={NotFoundPage}/>
 

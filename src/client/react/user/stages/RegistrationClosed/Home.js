@@ -40,7 +40,7 @@ class Home extends React.Component {
 					{ this.props.authenticated ?
 						<div className='closed'>
 							<h3>Welcome{name}</h3>
-							<Link to='/dashboard' className='pt-button pt-intent-primary pt-large pt-fill login-button'>
+							<Link to='/info' className='pt-button pt-intent-primary pt-large pt-fill login-button'>
 								Go to my dashboard
 							</Link>
 							<Link to='/pay' className='pt-button pt-minimal pt-large pt-fill pt-intent-primary login-button'>
