@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Switch, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Base from '../../components/Base';
 import PostRaceMenu from '../../components/menus/PostRaceMenu';
+import HideResults from './HideResults';
+import ShowResults from './ShowResults';
 
 import '../../scss/views/_main.scss';
 
@@ -36,7 +37,9 @@ class Results extends React.Component {
 				<main id='dashboard-home' className='dashboard'>
 					<div className='content'>
 						<h2 style={{textAlign:'center'}}>Results</h2>
-						{this.props.showResults?'show results':'hide results'}
+						{ this.props.showResults ? 
+							<ShowResults/> : <HideResults/>
+						}
 					</div>
 				</main>
 			</div>
