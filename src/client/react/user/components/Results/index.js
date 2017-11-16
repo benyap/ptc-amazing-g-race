@@ -34,7 +34,7 @@ class Results extends React.Component {
 			<div className='pt-dark'>
 				<Base/>
 				<PostRaceMenu/>
-				<main id='dashboard-home' className='dashboard'>
+				<main id='dashboard-results' className='dashboard'>
 					<div className='content'>
 						<h2 style={{textAlign:'center'}}>Results</h2>
 						{ this.props.showResults ? 
