@@ -36,7 +36,6 @@ class Results extends React.Component {
 				<PostRaceMenu/>
 				<main id='dashboard-results' className='dashboard'>
 					<div className='content'>
-						<h2 style={{textAlign:'center'}}>Results</h2>
 						{ this.props.showResults ? 
 							<ShowResults/> : <HideResults/>
 						}

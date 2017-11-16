@@ -38,7 +38,7 @@ class ShowResults extends React.Component {
 				});
 	
 				return (
-					<div style={{marginTop:'2rem'}}>
+					<div>
 						<Winner team={teamsSorted[0]}/>
 						<table class='pt-table pt-striped results-table'>
 							<thead>

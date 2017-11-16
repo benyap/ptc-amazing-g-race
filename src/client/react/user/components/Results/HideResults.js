@@ -13,8 +13,8 @@ class HideResults extends React.Component {
 	render() {
 		return (
 			<div>
+				<h2 style={{textAlign:'center'}}>Who will reign victorious?</h2>
 				<NonIdealState 
-					title='Hold your horses...' 
 					description='Results will be out soon. Check this page again in a few minutes!' 
 					visual={<LoadingSpinner hideText/>}
 					action={<Button intent={Intent.PRIMARY} text='Refresh page' onClick={this.refreshPage}/>}/>
