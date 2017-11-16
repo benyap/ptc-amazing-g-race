@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { withRouter, Link } from 'react-router-dom';
 import { Button, Intent } from '@blueprintjs/core';
-import { getUserByEmail } from '../../../../graphql/user';
-import { logout } from '../../../../actions/authActions';
-import LogoutFunction from '../../../components/LogoutFunction';
-import Title from '../../components/Title';
+import { getUserByEmail } from '../../../graphql/user';
+import { logout } from '../../../actions/authActions';
+import LogoutFunction from '../../components/LogoutFunction';
+import Title from './Title';
 import ScrollAnimation from 'react-animate-on-scroll';
 
-import '../../scss/components/_registration-closed.scss';
+import '../scss/components/_registration-closed.scss';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -32,7 +32,7 @@ const QueryMeOptions = {
 @graphql(getUserByEmail('_id firstname lastname username'), QueryMeOptions)
 @withRouter
 @autobind
-class Home extends React.Component {
+class PostRaceHome extends React.Component {
 	state = {
 		logoutLoading: false
 	}
@@ -84,4 +84,4 @@ class Home extends React.Component {
 }
 
 
-export default Home;
+export default PostRaceHome;

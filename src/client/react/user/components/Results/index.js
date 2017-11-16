@@ -5,6 +5,8 @@ import { Switch, Redirect } from 'react-router-dom';
 import Base from '../../components/Base';
 import PostRaceMenu from '../../components/menus/PostRaceMenu';
 
+import '../../scss/views/_main.scss';
+
 
 const mapStateToProps = (state, ownProps) => {
 	return { 
@@ -27,7 +29,12 @@ class Results extends React.Component {
 			<div className='pt-dark'>
 				<Base/>
 				<PostRaceMenu/>
-				
+				<main id='dashboard-home' className='dashboard'>
+					<div className='content'>
+						<h2 style={{textAlign:'center'}}>Results</h2>
+
+					</div>
+				</main>
 			</div>
 		);
 	}

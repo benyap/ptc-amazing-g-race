@@ -3,8 +3,8 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import NotFoundPage from '../../../pages/NotFound';
 import AppContainer from '../../../../../../lib/react/components/AppContainer';
 import Login from '../../components/Login';
-import Home from './Home';
-import Results from './Results';
+import Results from '../../components/Results';
+import PostRaceHome from '../../components/PostRaceHome';
 import PostRaceDashboard from '../../components/dashboards/PostRaceDashboard';
 
 
@@ -15,13 +15,10 @@ class Race extends React.Component {
 				<AppContainer>
 					<Switch>
 						
-						<Route exact path='/'>
-							<Home/>
-						</Route>
+						<Route exact path='/' component={PostRaceHome}/>
 						<Route exact path='/login'>
 							<Login notAnimated next='/results'/>
 						</Route>
-
 						<Route path='/results' component={Results}/>
 						<Route path='/dashboard' component={PostRaceDashboard}/>
 
