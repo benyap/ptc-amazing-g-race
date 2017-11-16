@@ -9,9 +9,9 @@
   },
   "scripts": {
     "server:build": "./node_modules/.bin/gulp build",
-    "server:dev:watch": "./node_modules/.bin/gulp build; concurrently -k \"nodemon dist/server/server.js\" \"gulp watch\"",
+    "server:dev:watch": "./node_modules/.bin/gulp build && concurrently -k \"nodemon dist/server/server.js\" \"gulp watch\"",
     "client:build": "./node_modules/.bin/webpack -p --config webpack/prod.config.js --progress",
-    "client:dev:watch": "./node_modules/.bin/webpack --config webpack/dev.config.js --progress; ./node_modules/.bin/webpack --config webpack/dev.config.js --watch;",
+    "client:dev:watch": "./node_modules/.bin/webpack --config webpack/dev.config.js --watch --progress",
     "heroku-postbuild": "npm run server:build; npm run client:build",
     "start": "node dist/server/server.js"
   },
