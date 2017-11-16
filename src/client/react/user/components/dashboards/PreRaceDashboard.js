@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Switch, Redirect } from 'react-router-dom';
 import Base from '../Base';
-import HelpMenu from '../HelpMenu';
+import HelpMenu from '../menus/HelpMenu';
 import TeamDashboard from '../../views/TeamDashboard';
 import About from '../../views/About';
 import Contacts from '../../views/Contacts';

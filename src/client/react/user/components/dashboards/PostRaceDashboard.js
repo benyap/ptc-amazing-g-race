@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Switch, Redirect } from 'react-router-dom';
 import Base from '../Base';
-import PostRaceMenu from '../PostRaceMenu';
+import PostRaceMenu from '../menus/PostRaceMenu';
 import TeamDashboard from '../../views/TeamDashboard';
 import Feed from '../../views/Feed';
 import NotFound from '../../views/NotFound';

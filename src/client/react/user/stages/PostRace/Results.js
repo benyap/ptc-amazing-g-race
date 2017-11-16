@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Switch, Redirect } from 'react-router-dom';
 import Base from '../../components/Base';
-import PostRaceMenu from '../../components/PostRaceMenu';
+import PostRaceMenu from '../../components/menus/PostRaceMenu';
 
 
 const mapStateToProps = (state, ownProps) => {
