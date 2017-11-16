@@ -71,8 +71,8 @@ class ShowResults extends React.Component {
 				return <NonIdealState title='No teams.' visual='error'/>;
 			}
 		}
-		else if (loading) {
-			return <LoadingSpinner hideText/>;
+		else {
+			return <LoadingSpinner/>;
 		}
 	}
 }
