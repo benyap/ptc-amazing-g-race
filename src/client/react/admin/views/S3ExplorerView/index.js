@@ -77,7 +77,7 @@ class S3ExplorerView extends React.Component {
 				<div className='pt-callout pt-icon-info-sign' style={{marginBottom:'0.5rem'}}>
 					<ul style={{margin:'0',padding:'0 0 0 1rem'}}>
 						<li>
-							User responses are uploaded to the <code>images</code> directory.
+							User responses are uploaded to the <code>responses</code> directory.
 						</li>
 						<li>
 							Public assets are uploaded to the <code>assets</code> directory.

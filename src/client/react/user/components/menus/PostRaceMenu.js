@@ -3,15 +3,15 @@ import autobind from 'core-decorators/es/autobind';
 import { withRouter } from 'react-router-dom';
 import { Position, Spinner, Menu, MenuItem, MenuDivider, Intent } from '@blueprintjs/core';
 import { connect } from 'react-redux';
-import { logout } from '../../../actions/authActions';
+import { logout } from '../../../../actions/authActions';
 import axios from 'axios';
-import API from '../../../API';
-import MenuButton from '../../../../../lib/react/components/MenuButton';
-import LoginRefresher from '../../components/LoginRefresher';
-import LogoutFunction from '../../components/LogoutFunction';
-import NotificationToaster from '../../components/NotificationToaster';
+import API from '../../../../API';
+import MenuButton from '../../../../../../lib/react/components/MenuButton';
+import LoginRefresher from '../../../components/LoginRefresher';
+import LogoutFunction from '../../../components/LogoutFunction';
+import NotificationToaster from '../../../components/NotificationToaster';
 
-import '../scss/components/_help-menu.scss';
+import '../../scss/components/_help-menu.scss';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -32,13 +32,10 @@ class HelpMenu extends React.Component {
 
 	menu = (
 		<Menu>
-			<MenuItem text='Team dashboard' iconName='people' onClick={this.navigate('/dashboard')}/>
-			<MenuItem text='Challenges' iconName='flag' onClick={this.navigate('/dashboard/challenges')}/>
-			<MenuItem text='News feed' iconName='feed' onClick={this.navigate('/dashboard/feed')}/>
+			<MenuItem text='Results!' iconName='timeline-area-chart' onClick={this.navigate('/results')}/>
 			<MenuDivider/>
-			<MenuItem text='Instructions' iconName='clipboard' onClick={this.navigate('/dashboard/instructions')}/>
-			<MenuItem text='Contacts' iconName='phone' onClick={this.navigate('/dashboard/contacts')}/>
-			<MenuItem text='About' iconName='info-sign' onClick={this.navigate('/dashboard/about')}/>
+			<MenuItem text='Team dashboard' iconName='people' onClick={this.navigate('/dashboard')}/>
+			<MenuItem text='News feed' iconName='feed' onClick={this.navigate('/dashboard/feed')}/>
 			<MenuDivider/>
 			<MenuItem text='Logout' iconName='log-out' onClick={this.logout}/>
 		</Menu>
