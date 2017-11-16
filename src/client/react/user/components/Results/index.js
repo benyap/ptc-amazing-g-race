@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Switch, Redirect } from 'react-router-dom';
@@ -16,7 +17,10 @@ const mapStateToProps = (state, ownProps) => {
 
 @connect(mapStateToProps)
 class Results extends React.Component {
-
+	static propTypes = {
+		showResults: PropTypes.bool.isRequired
+	}
+	
 	render() {
 		if (!this.props.authenticated) {
 			return <Redirect to={{
@@ -32,7 +36,7 @@ class Results extends React.Component {
 				<main id='dashboard-home' className='dashboard'>
 					<div className='content'>
 						<h2 style={{textAlign:'center'}}>Results</h2>
-
+						{this.props.showResults?'show results':'hide results'}
 					</div>
 				</main>
 			</div>

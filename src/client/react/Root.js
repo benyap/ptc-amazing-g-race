@@ -52,10 +52,10 @@ class Root extends React.Component {
 					return <Race/>;
 				}
 				case 'post_race': {
-					return <PostRace/>;
+					return <PostRace showResults={false}/>;
 				}
 				case 'closed': {
-
+					return <PostRace showResults/>;
 				}
 				default: return null;
 			}

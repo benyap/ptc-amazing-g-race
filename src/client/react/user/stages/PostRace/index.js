@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import NotFoundPage from '../../../pages/NotFound';
 import AppContainer from '../../../../../../lib/react/components/AppContainer';
@@ -8,7 +9,11 @@ import PostRaceHome from '../../components/PostRaceHome';
 import PostRaceDashboard from '../../components/dashboards/PostRaceDashboard';
 
 
-class Race extends React.Component {
+class PostRace extends React.Component {
+	static propTypes = {
+		showResults: PropTypes.bool.isRequired
+	}
+
 	render() {
 		return (
 			<BrowserRouter>
@@ -19,7 +24,9 @@ class Race extends React.Component {
 						<Route exact path='/login'>
 							<Login notAnimated next='/results'/>
 						</Route>
-						<Route path='/results' component={Results}/>
+						<Route path='/results'>
+							<Results showResults={this.props.showResults}/>
+						</Route>
 						<Route path='/dashboard' component={PostRaceDashboard}/>
 
 						<Route component={NotFoundPage}/>
@@ -33,4 +40,4 @@ class Race extends React.Component {
 }
 
 
-export default Race;
+export default PostRace;
