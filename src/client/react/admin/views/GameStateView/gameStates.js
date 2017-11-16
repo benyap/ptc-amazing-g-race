@@ -68,7 +68,7 @@ export const post_race = {
 };
 
 export const closed = {
-	name: 'Closed',
+	name: 'Show results',
 	key: 'closed',
 	settings: {
 		set: [

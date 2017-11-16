@@ -10,6 +10,7 @@ import Promotion from './user/stages/Promotion';
 import Registration from './user/stages/Registration';
 import RegistrationClosed from './user/stages/RegistrationClosed';
 import Race from './user/stages/Race';
+import PostRace from './user/stages/PostRace';
 
 import './scss/main.scss';
 import '../assets/favicon.ico';
@@ -51,10 +52,10 @@ class Root extends React.Component {
 					return <Race/>;
 				}
 				case 'post_race': {
-
+					return <PostRace showResults={false}/>;
 				}
 				case 'closed': {
-
+					return <PostRace showResults/>;
 				}
 				default: return null;
 			}
