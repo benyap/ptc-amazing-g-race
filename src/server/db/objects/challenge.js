@@ -39,7 +39,8 @@ const createChallenge = async function(user, key, order, passphrase = null, titl
 		description: description,
 		locked: true,
 		items: [],
-		teams: []
+		teams: [],
+		notes: ''
 	};
 	db.collection('challenges').insert(challenge);
 
